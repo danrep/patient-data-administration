@@ -182,6 +182,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\ClientOperations\ClientOperationsAreaRegistration.cs" />
+    <Compile Include="Areas\ClientOperations\Controllers\BioRegController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -190,11 +191,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\ClientOperations\Controllers\" />
     <Folder Include="Areas\ClientOperations\Models\" />
+    <Folder Include="Areas\ClientOperations\Views\BioReg\" />
     <Folder Include="Areas\ClientOperations\Views\Shared\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Home\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PatientDataAdministration.Core\PatientDataAdministration.Core.csproj">
+      <Project>{9b1a1cf1-1bd1-4ef1-9281-07b07d0b3a43}</Project>
+      <Name>PatientDataAdministration.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.Data\PatientDataAdministration.Data.csproj">
+      <Project>{0d35bda4-be0f-4fa4-b6c7-4766efd5500b}</Project>
+      <Name>PatientDataAdministration.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

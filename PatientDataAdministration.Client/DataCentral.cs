@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace PatientDataAdministration.Client
 {
-    public partial class Form1 : Form
+    public partial class DataCentral : MetroFramework.Forms.MetroForm
     {
-        public Form1()
+        public DataCentral()
         {
             InitializeComponent();
         }
