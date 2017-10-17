@@ -25,5 +25,14 @@ namespace PatientDataAdministration.Data
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
+        public virtual DbSet<Administration_ClientMap> Administration_ClientMap { get; set; }
+        public virtual DbSet<Administration_ClientRegistry> Administration_ClientRegistry { get; set; }
+        public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
+        public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
+        public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
+        public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
+        public virtual DbSet<Patient_PatientNearFieldCommunicationData> Patient_PatientNearFieldCommunicationData { get; set; }
+        public virtual DbSet<Patient_PatientTransferHistory> Patient_PatientTransferHistory { get; set; }
     }
 }
