@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Dictionary\EnumDescriptor.cs" />
     <Compile Include="Dictionary\EnumDictionary.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="SettingKey.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
