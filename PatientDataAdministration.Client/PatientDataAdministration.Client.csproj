@@ -183,6 +183,10 @@
       <Project>{0d35bda4-be0f-4fa4-b6c7-4766efd5500b}</Project>
       <Name>PatientDataAdministration.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj">
+      <Project>{c914f40e-8a5e-49c4-8d1e-7739d2453d8d}</Project>
+      <Name>PatientDataAdministration.EnumLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

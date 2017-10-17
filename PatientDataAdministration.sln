@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.Web", "PatientDataAdministration.Web\PatientDataAdministration.Web.csproj", "{654342CF-672C-43A7-83AE-02B337534E1D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.Client", "PatientDataAdministration.Client\PatientDataAdministration.Client.csproj", "{5E50DD36-1F28-4C7A-8281-AA182D5AE721}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.Data", "PatientDataAdministration.Data\PatientDataAdministration.Data.csproj", "{0D35BDA4-BE0F-4FA4-B6C7-4766EFD5500B}"
@@ -13,16 +11,16 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientDataAdministration.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.Core", "PatientDataAdministration.Core\PatientDataAdministration.Core.csproj", "{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.EnumLibrary", "PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj", "{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.Web", "PatientDataAdministration.Web\PatientDataAdministration.Web.csproj", "{E82C67C7-39B9-42B5-8870-683AD47080AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{654342CF-672C-43A7-83AE-02B337534E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{654342CF-672C-43A7-83AE-02B337534E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{654342CF-672C-43A7-83AE-02B337534E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{654342CF-672C-43A7-83AE-02B337534E1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E50DD36-1F28-4C7A-8281-AA182D5AE721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E50DD36-1F28-4C7A-8281-AA182D5AE721}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E50DD36-1F28-4C7A-8281-AA182D5AE721}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +39,14 @@ Global
 		{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E82C67C7-39B9-42B5-8870-683AD47080AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82C67C7-39B9-42B5-8870-683AD47080AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82C67C7-39B9-42B5-8870-683AD47080AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82C67C7-39B9-42B5-8870-683AD47080AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

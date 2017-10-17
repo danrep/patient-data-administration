@@ -9,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{654342CF-672C-43A7-83AE-02B337534E1D}</ProjectGuid>
+    <ProjectGuid>{E82C67C7-39B9-42B5-8870-683AD47080AF}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <ApplicationInsightsResourceId>/subscriptions/8077d858-8d71-4294-8fbb-b1300851bce0/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/PatientDataAdministration.Web</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +143,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Service References\Application Insights\ConnectedService.json" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -165,7 +167,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Areas\ClientOperations\Views\web.config" />
+    <Content Include="Areas\ClientCommunication\Views\web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -176,13 +178,13 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\ClientOperations\ClientOperationsAreaRegistration.cs" />
-    <Compile Include="Areas\ClientOperations\Controllers\BioRegController.cs" />
+    <Compile Include="Areas\ClientCommunication\ClientCommunicationAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -191,11 +193,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\ClientOperations\Models\" />
-    <Folder Include="Areas\ClientOperations\Views\BioReg\" />
-    <Folder Include="Areas\ClientOperations\Views\Shared\" />
+    <Folder Include="Areas\ClientCommunication\Controllers\" />
+    <Folder Include="Areas\ClientCommunication\Models\" />
+    <Folder Include="Areas\ClientCommunication\Views\Shared\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Home\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PatientDataAdministration.Core\PatientDataAdministration.Core.csproj">
@@ -205,6 +209,10 @@
     <ProjectReference Include="..\PatientDataAdministration.Data\PatientDataAdministration.Data.csproj">
       <Project>{0d35bda4-be0f-4fa4-b6c7-4766efd5500b}</Project>
       <Name>PatientDataAdministration.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj">
+      <Project>{c914f40e-8a5e-49c4-8d1e-7739d2453d8d}</Project>
+      <Name>PatientDataAdministration.EnumLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -220,7 +228,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>62273</DevelopmentServerPort>
+          <DevelopmentServerPort>51924</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:62273/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
