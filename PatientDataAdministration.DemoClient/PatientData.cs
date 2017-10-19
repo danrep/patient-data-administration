@@ -20,8 +20,11 @@ namespace PatientDataAdministration.DemoClient
         public string Surname { get; set; }
         public string Othernames { get; set; }
         public string Sex { get; set; }
+        public string PhoneHumber { get; set; }
+        public string Email { get; set; }
+        public string HouseAddress { get; set; }
         public System.DateTime DateOfBirth { get; set; }
-        public int StateOfOriginId { get; set; }
+        public string StateOfOrigin { get; set; }
         public Nullable<decimal> VitalsHeight { get; set; }
         public Nullable<decimal> VitalsWeight { get; set; }
         public string FacilityNumber { get; set; }

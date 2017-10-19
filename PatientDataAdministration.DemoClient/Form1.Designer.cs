@@ -57,15 +57,15 @@
             this.ribbonControlAdv2 = new Syncfusion.Windows.Forms.Tools.RibbonControlAdv();
             this.toolStripTabItem1 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
             this.toolStripEx1 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
-            this.toolStripButton13 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTabItem2 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
             this.toolStripEx3 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
-            this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripEx2 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
-            this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton15 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton13 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
             this.backStage1 = new Syncfusion.Windows.Forms.BackStage();
             this.gradientPanelExt1 = new Syncfusion.Windows.Forms.Tools.GradientPanelExt();
             this.label2 = new System.Windows.Forms.Label();
@@ -73,6 +73,8 @@
             this.gradientPanelExt2 = new Syncfusion.Windows.Forms.Tools.GradientPanelExt();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv2)).BeginInit();
             this.ribbonControlAdv2.SuspendLayout();
@@ -80,7 +82,6 @@
             this.toolStripEx1.SuspendLayout();
             this.toolStripTabItem2.Panel.SuspendLayout();
             this.toolStripEx3.SuspendLayout();
-            this.toolStripEx2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backStage1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelExt1)).BeginInit();
             this.gradientPanelExt1.SuspendLayout();
@@ -350,14 +351,12 @@
             this.ribbonControlAdv2.CaptionFont = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ribbonControlAdv2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.ribbonControlAdv2.Header.AddMainItem(toolStripTabItem1);
-            this.ribbonControlAdv2.Header.AddMainItem(toolStripTabItem2);
             this.ribbonControlAdv2.LauncherStyle = Syncfusion.Windows.Forms.Tools.LauncherStyle.Metro;
-            this.ribbonControlAdv2.Location = new System.Drawing.Point(1, 1);
+            this.ribbonControlAdv2.Location = new System.Drawing.Point(1, 0);
             this.ribbonControlAdv2.MenuButtonAutoSize = true;
             this.ribbonControlAdv2.MenuButtonFont = new System.Drawing.Font("Segoe UI", 8.25F);
             this.ribbonControlAdv2.MenuButtonText = "";
             this.ribbonControlAdv2.MenuButtonVisible = false;
-            this.ribbonControlAdv2.MenuButtonWidth = 56;
             this.ribbonControlAdv2.MenuColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
             this.ribbonControlAdv2.Name = "ribbonControlAdv2";
             this.ribbonControlAdv2.Office2013ColorScheme = Syncfusion.Windows.Forms.Tools.Office2013ColorScheme.DarkGray;
@@ -374,17 +373,16 @@
             this.ribbonControlAdv2.QuickPanelImageLayout = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ribbonControlAdv2.QuickPanelVisible = false;
             this.ribbonControlAdv2.RibbonHeaderImage = Syncfusion.Windows.Forms.Tools.RibbonHeaderImage.RoundedSquares;
-            this.ribbonControlAdv2.RibbonStyle = Syncfusion.Windows.Forms.Tools.RibbonStyle.Office2013;
             this.ribbonControlAdv2.SelectedTab = this.toolStripTabItem1;
             this.ribbonControlAdv2.ShowMinimizeButton = false;
             this.ribbonControlAdv2.ShowRibbonDisplayOptionButton = false;
-            this.ribbonControlAdv2.Size = new System.Drawing.Size(933, 210);
+            this.ribbonControlAdv2.Size = new System.Drawing.Size(929, 165);
             this.ribbonControlAdv2.SystemText.QuickAccessDialogDropDownName = "Start menu";
             this.ribbonControlAdv2.SystemText.RenameDisplayLabelText = "&Display Name:";
             this.ribbonControlAdv2.TabIndex = 0;
             this.ribbonControlAdv2.Text = "ribbonControlAdv2";
             this.ribbonControlAdv2.TitleAlignment = Syncfusion.Windows.Forms.Tools.TextAlignment.Left;
-            this.ribbonControlAdv2.TitleColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.ribbonControlAdv2.TitleColor = System.Drawing.Color.Black;
             // 
             // toolStripTabItem1
             // 
@@ -397,11 +395,11 @@
             this.toolStripTabItem1.Panel.Name = "ribbonPanel1";
             this.toolStripTabItem1.Panel.ScrollPosition = 0;
             this.toolStripTabItem1.Panel.TabIndex = 2;
-            this.toolStripTabItem1.Panel.Text = "Patients";
+            this.toolStripTabItem1.Panel.Text = "Patients Center";
             this.toolStripTabItem1.Position = 0;
-            this.toolStripTabItem1.Size = new System.Drawing.Size(68, 25);
+            this.toolStripTabItem1.Size = new System.Drawing.Size(91, 19);
             this.toolStripTabItem1.Tag = "1";
-            this.toolStripTabItem1.Text = "Patients";
+            this.toolStripTabItem1.Text = "Patients Center";
             // 
             // toolStripEx1
             // 
@@ -412,56 +410,55 @@
             this.toolStripEx1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripEx1.Image = null;
             this.toolStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton13,
-            this.toolStripButton1});
+            this.toolStripButton14,
+            this.toolStripButton21,
+            this.toolStripButton20});
             this.toolStripEx1.Location = new System.Drawing.Point(0, 1);
             this.toolStripEx1.Name = "toolStripEx1";
-            this.toolStripEx1.Office12Mode = false;
             this.toolStripEx1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.toolStripEx1.Size = new System.Drawing.Size(263, 151);
+            this.toolStripEx1.Size = new System.Drawing.Size(181, 103);
             this.toolStripEx1.TabIndex = 0;
             // 
-            // toolStripButton13
+            // toolStripButton14
             // 
-            this.ribbonControlAdv2.SetDescription(this.toolStripButton13, "Add New Patients");
-            this.toolStripButton13.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton13.Image")));
-            this.toolStripButton13.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton13.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton13.Name = "toolStripButton13";
-            this.toolStripButton13.Padding = new System.Windows.Forms.Padding(10);
-            this.toolStripButton13.Size = new System.Drawing.Size(120, 129);
-            this.toolStripButton13.Text = "Register";
-            this.toolStripButton13.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton13.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton13.ToolTipText = "Add New Patients";
+            this.toolStripButton14.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Counselor_48px;
+            this.toolStripButton14.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton14.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton14.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton14.Name = "toolStripButton14";
+            this.toolStripButton14.Size = new System.Drawing.Size(53, 77);
+            this.toolStripButton14.Text = "Register";
+            this.toolStripButton14.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton14.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton14.ToolTipText = "Register";
+            this.toolStripButton14.Click += new System.EventHandler(this.toolStripButton14_Click);
             // 
-            // toolStripButton1
+            // toolStripButton20
             // 
-            this.ribbonControlAdv2.SetDescription(this.toolStripButton1, "Add New Patients");
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Padding = new System.Windows.Forms.Padding(10);
-            this.toolStripButton1.Size = new System.Drawing.Size(120, 129);
-            this.toolStripButton1.Text = "Validate";
-            this.toolStripButton1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton1.ToolTipText = "Authenticate";
+            this.toolStripButton20.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Safety_Collection_Place_48px;
+            this.toolStripButton20.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton20.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton20.Name = "toolStripButton20";
+            this.toolStripButton20.Size = new System.Drawing.Size(53, 77);
+            this.toolStripButton20.Text = "Manage";
+            this.toolStripButton20.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton20.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton20.ToolTipText = "Register";
             // 
             // toolStripTabItem2
             // 
             this.toolStripTabItem2.Name = "toolStripTabItem2";
             // 
-            // ribbonControlAdv2.ribbonPanel2
+            // 
             // 
             this.toolStripTabItem2.Panel.Controls.Add(this.toolStripEx3);
             this.toolStripTabItem2.Panel.Name = "ribbonPanel2";
             this.toolStripTabItem2.Panel.ScrollPosition = 0;
             this.toolStripTabItem2.Panel.TabIndex = 3;
             this.toolStripTabItem2.Panel.Text = "Settings";
-            this.toolStripTabItem2.Position = 1;
-            this.toolStripTabItem2.Size = new System.Drawing.Size(69, 25);
+            this.toolStripTabItem2.Position = -1;
+            this.toolStripTabItem2.Size = new System.Drawing.Size(55, 19);
             this.toolStripTabItem2.Tag = "2";
             this.toolStripTabItem2.Text = "Settings";
             // 
@@ -474,27 +471,25 @@
             this.toolStripEx3.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolStripEx3.Image = null;
             this.toolStripEx3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton17});
+            this.toolStripButton15});
             this.toolStripEx3.Location = new System.Drawing.Point(0, 1);
             this.toolStripEx3.Name = "toolStripEx3";
-            this.toolStripEx3.Office12Mode = false;
             this.toolStripEx3.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.toolStripEx3.Size = new System.Drawing.Size(148, 144);
+            this.toolStripEx3.Size = new System.Drawing.Size(75, 103);
             this.toolStripEx3.TabIndex = 1;
             // 
-            // toolStripButton17
+            // toolStripButton15
             // 
-            this.ribbonControlAdv2.SetDescription(this.toolStripButton17, "Add New Patients");
-            this.toolStripButton17.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton17.Image")));
-            this.toolStripButton17.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton17.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton17.Name = "toolStripButton17";
-            this.toolStripButton17.Padding = new System.Windows.Forms.Padding(10);
-            this.toolStripButton17.Size = new System.Drawing.Size(120, 122);
-            this.toolStripButton17.Text = "Manage";
-            this.toolStripButton17.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton17.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton17.ToolTipText = "Add New Patients";
+            this.toolStripButton15.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Settings_48px;
+            this.toolStripButton15.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton15.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton15.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton15.Name = "toolStripButton15";
+            this.toolStripButton15.Size = new System.Drawing.Size(53, 81);
+            this.toolStripButton15.Text = "Settings";
+            this.toolStripButton15.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton15.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton15.ToolTipText = "Register";
             // 
             // toolStripButton12
             // 
@@ -505,49 +500,38 @@
             this.toolStripButton12.Size = new System.Drawing.Size(23, 20);
             this.toolStripButton12.Text = "toolStripButton12";
             // 
-            // toolStripEx2
+            // toolStripButton13
             // 
-            this.toolStripEx2.AutoSize = false;
-            this.toolStripEx2.Dock = System.Windows.Forms.DockStyle.None;
-            this.toolStripEx2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
-            this.toolStripEx2.ForeColor = System.Drawing.Color.MidnightBlue;
-            this.toolStripEx2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStripEx2.Image = null;
-            this.toolStripEx2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton14,
-            this.toolStripButton15});
-            this.toolStripEx2.Location = new System.Drawing.Point(0, 1);
-            this.toolStripEx2.Name = "toolStripEx2";
-            this.toolStripEx2.Office12Mode = false;
-            this.toolStripEx2.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.toolStripEx2.Size = new System.Drawing.Size(263, 154);
-            this.toolStripEx2.TabIndex = 0;
+            this.toolStripButton13.Name = "toolStripButton13";
+            this.toolStripButton13.Size = new System.Drawing.Size(23, 23);
             // 
-            // toolStripButton14
+            // toolStripButton1
             // 
-            this.toolStripButton14.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton14.Image")));
-            this.toolStripButton14.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton14.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton14.Name = "toolStripButton14";
-            this.toolStripButton14.Padding = new System.Windows.Forms.Padding(10);
-            this.toolStripButton14.Size = new System.Drawing.Size(120, 146);
-            this.toolStripButton14.Text = "Register";
-            this.toolStripButton14.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton14.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton14.ToolTipText = "Add New Patients";
+            this.toolStripButton1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Safety_Collection_Place_48px;
+            this.toolStripButton1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Padding = new System.Windows.Forms.Padding(10);
+            this.toolStripButton1.Size = new System.Drawing.Size(72, 71);
+            this.toolStripButton1.Text = "Validate";
+            this.toolStripButton1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton1.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton1.ToolTipText = "Authenticate";
             // 
-            // toolStripButton15
+            // toolStripButton17
             // 
-            this.toolStripButton15.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton15.Image")));
-            this.toolStripButton15.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton15.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton15.Name = "toolStripButton15";
-            this.toolStripButton15.Padding = new System.Windows.Forms.Padding(10);
-            this.toolStripButton15.Size = new System.Drawing.Size(120, 146);
-            this.toolStripButton15.Text = "Authenticate";
-            this.toolStripButton15.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton15.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton15.ToolTipText = "Authenticate";
+            this.toolStripButton17.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Settings_48px;
+            this.toolStripButton17.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton17.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton17.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton17.Name = "toolStripButton17";
+            this.toolStripButton17.Padding = new System.Windows.Forms.Padding(10);
+            this.toolStripButton17.Size = new System.Drawing.Size(73, 71);
+            this.toolStripButton17.Text = "Manage";
+            this.toolStripButton17.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton17.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton17.ToolTipText = "Add New Patients";
             // 
             // backStage1
             // 
@@ -654,25 +638,54 @@
             this.label4.Text = "0";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.Maroon;
+            this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(797, 376);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(130, 41);
+            this.button2.TabIndex = 127;
+            this.button2.Text = "Close and Exit";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // toolStripButton21
+            // 
+            this.toolStripButton21.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_Scan_48px;
+            this.toolStripButton21.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton21.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton21.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton21.Name = "toolStripButton21";
+            this.toolStripButton21.Size = new System.Drawing.Size(54, 77);
+            this.toolStripButton21.Text = "Bio-Pass";
+            this.toolStripButton21.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton21.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.blue_abstract_wallpapers;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.Borders = new System.Windows.Forms.Padding(0);
             this.ClientSize = new System.Drawing.Size(931, 427);
             this.ColorScheme = Syncfusion.Windows.Forms.Tools.RibbonForm.ColorSchemeType.Silver;
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.gradientPanelExt2);
             this.Controls.Add(this.gradientPanelExt1);
             this.Controls.Add(this.ribbonControlAdv2);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
             this.Padding = new System.Windows.Forms.Padding(1, 0, 1, 1);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PDA Demo";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv2)).EndInit();
             this.ribbonControlAdv2.ResumeLayout(false);
@@ -683,8 +696,6 @@
             this.toolStripTabItem2.Panel.ResumeLayout(false);
             this.toolStripEx3.ResumeLayout(false);
             this.toolStripEx3.PerformLayout();
-            this.toolStripEx2.ResumeLayout(false);
-            this.toolStripEx2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backStage1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelExt1)).EndInit();
             this.gradientPanelExt1.ResumeLayout(false);
@@ -730,9 +741,6 @@
         private Syncfusion.Windows.Forms.Tools.ToolStripTabItem toolStripTabItem2;
         private Syncfusion.Windows.Forms.Tools.ToolStripEx toolStripEx3;
         private System.Windows.Forms.ToolStripButton toolStripButton17;
-        private Syncfusion.Windows.Forms.Tools.ToolStripEx toolStripEx2;
-        private System.Windows.Forms.ToolStripButton toolStripButton14;
-        private System.Windows.Forms.ToolStripButton toolStripButton15;
         private Syncfusion.Windows.Forms.BackStage backStage1;
         private Syncfusion.Windows.Forms.Tools.GradientPanelExt gradientPanelExt1;
         private System.Windows.Forms.Label label2;
@@ -740,6 +748,11 @@
         private Syncfusion.Windows.Forms.Tools.GradientPanelExt gradientPanelExt2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolStripButton toolStripButton14;
+        private System.Windows.Forms.ToolStripButton toolStripButton20;
+        private System.Windows.Forms.ToolStripButton toolStripButton15;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolStripButton toolStripButton21;
     }
 }
 
