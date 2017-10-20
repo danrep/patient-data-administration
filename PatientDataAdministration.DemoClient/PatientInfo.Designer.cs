@@ -30,99 +30,100 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PatientInfo));
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.label40 = new System.Windows.Forms.Label();
-            this.textBoxExt1 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtPepId = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBoxExt2 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtSiteName = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxExt4 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtSurname = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxExt3 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtOthername = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBoxExt5 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtHouseAddress = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label7 = new System.Windows.Forms.Label();
             this.txtPhoneNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label6 = new System.Windows.Forms.Label();
             this.txtEmail = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.txtSex = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.txtMaritalStatus = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.txtPassport = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnPassport = new System.Windows.Forms.Button();
             this.btnDataFinger1 = new System.Windows.Forms.Button();
             this.btnDataFinger2 = new System.Windows.Forms.Button();
             this.btnDataCard = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.gradientPanel11 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.label20 = new System.Windows.Forms.Label();
+            this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
+            this.txtHeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.label18 = new System.Windows.Forms.Label();
+            this.txtWeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.label19 = new System.Windows.Forms.Label();
             this.gradientLabel2 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientLabel1 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientPanel1 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBoxExt10 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtHospitalNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBoxExt8 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtPatientHospitalNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label15 = new System.Windows.Forms.Label();
-            this.textBoxExt9 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
+            this.txtFacilityNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.dateTimePickerAdv1 = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
+            this.txtDateOfBirth = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
             this.monthCalendarAdv1 = new Syncfusion.Windows.Forms.Tools.MonthCalendarAdv();
-            this.textBoxExt11 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.label18 = new System.Windows.Forms.Label();
-            this.textBoxExt12 = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel11)).BeginInit();
             this.gradientPanel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).BeginInit();
             this.gradientPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt10)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt9)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateTimePickerAdv1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHospitalNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt12)).BeginInit();
             this.SuspendLayout();
             // 
-            // button2
+            // btnSave
             // 
-            this.button2.BackColor = System.Drawing.Color.DarkOliveGreen;
-            this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(786, 437);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(171, 41);
-            this.button2.TabIndex = 126;
-            this.button2.Text = "Save Patient Information";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnSave.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.btnSave.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(786, 437);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(171, 41);
+            this.btnSave.TabIndex = 126;
+            this.btnSave.Text = "Save Patient Information";
+            this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button3
+            // btnCancel
             // 
-            this.button3.BackColor = System.Drawing.Color.BurlyWood;
-            this.button3.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(609, 437);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(171, 41);
-            this.button3.TabIndex = 127;
-            this.button3.Text = "Cancel and Discard Changes";
-            this.button3.UseVisualStyleBackColor = false;
+            this.btnCancel.BackColor = System.Drawing.Color.BurlyWood;
+            this.btnCancel.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(609, 437);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(171, 41);
+            this.btnCancel.TabIndex = 127;
+            this.btnCancel.Text = "Cancel and Discard Changes";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // label40
             // 
@@ -134,21 +135,21 @@
             this.label40.TabIndex = 52;
             this.label40.Text = "PEP Id";
             // 
-            // textBoxExt1
+            // txtPepId
             // 
-            this.textBoxExt1.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt1.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt1.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt1.Location = new System.Drawing.Point(11, 50);
-            this.textBoxExt1.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt1.Name = "textBoxExt1";
-            this.textBoxExt1.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt1.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt1.Size = new System.Drawing.Size(167, 31);
-            this.textBoxExt1.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt1.TabIndex = 53;
+            this.txtPepId.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtPepId.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtPepId.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPepId.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPepId.Location = new System.Drawing.Point(11, 50);
+            this.txtPepId.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtPepId.Name = "txtPepId";
+            this.txtPepId.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtPepId.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtPepId.Size = new System.Drawing.Size(167, 31);
+            this.txtPepId.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtPepId.TabIndex = 53;
             // 
             // label1
             // 
@@ -168,21 +169,21 @@
             this.label2.TabIndex = 55;
             this.label2.Text = "Site Name";
             // 
-            // textBoxExt2
+            // txtSiteName
             // 
-            this.textBoxExt2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt2.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt2.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt2.Location = new System.Drawing.Point(184, 50);
-            this.textBoxExt2.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt2.Name = "textBoxExt2";
-            this.textBoxExt2.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt2.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt2.Size = new System.Drawing.Size(626, 31);
-            this.textBoxExt2.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt2.TabIndex = 56;
+            this.txtSiteName.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtSiteName.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtSiteName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtSiteName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSiteName.Location = new System.Drawing.Point(184, 50);
+            this.txtSiteName.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtSiteName.Name = "txtSiteName";
+            this.txtSiteName.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtSiteName.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtSiteName.Size = new System.Drawing.Size(626, 31);
+            this.txtSiteName.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtSiteName.TabIndex = 56;
             // 
             // label4
             // 
@@ -194,21 +195,21 @@
             this.label4.TabIndex = 57;
             this.label4.Text = "Surname";
             // 
-            // textBoxExt4
+            // txtSurname
             // 
-            this.textBoxExt4.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt4.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt4.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt4.Location = new System.Drawing.Point(11, 102);
-            this.textBoxExt4.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt4.Name = "textBoxExt4";
-            this.textBoxExt4.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt4.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt4.Size = new System.Drawing.Size(227, 31);
-            this.textBoxExt4.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt4.TabIndex = 58;
+            this.txtSurname.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtSurname.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtSurname.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtSurname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSurname.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSurname.Location = new System.Drawing.Point(11, 102);
+            this.txtSurname.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtSurname.Name = "txtSurname";
+            this.txtSurname.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtSurname.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtSurname.Size = new System.Drawing.Size(227, 31);
+            this.txtSurname.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtSurname.TabIndex = 58;
             // 
             // label3
             // 
@@ -220,21 +221,21 @@
             this.label3.TabIndex = 59;
             this.label3.Text = "Othernames";
             // 
-            // textBoxExt3
+            // txtOthername
             // 
-            this.textBoxExt3.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt3.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt3.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt3.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt3.Location = new System.Drawing.Point(244, 102);
-            this.textBoxExt3.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt3.Name = "textBoxExt3";
-            this.textBoxExt3.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt3.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt3.Size = new System.Drawing.Size(275, 31);
-            this.textBoxExt3.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt3.TabIndex = 60;
+            this.txtOthername.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtOthername.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtOthername.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtOthername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtOthername.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOthername.Location = new System.Drawing.Point(244, 102);
+            this.txtOthername.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtOthername.Name = "txtOthername";
+            this.txtOthername.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtOthername.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtOthername.Size = new System.Drawing.Size(275, 31);
+            this.txtOthername.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtOthername.TabIndex = 60;
             // 
             // label5
             // 
@@ -246,21 +247,21 @@
             this.label5.TabIndex = 61;
             this.label5.Text = "House Address";
             // 
-            // textBoxExt5
+            // txtHouseAddress
             // 
-            this.textBoxExt5.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt5.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt5.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt5.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt5.Location = new System.Drawing.Point(244, 206);
-            this.textBoxExt5.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt5.Name = "textBoxExt5";
-            this.textBoxExt5.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt5.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt5.Size = new System.Drawing.Size(566, 31);
-            this.textBoxExt5.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt5.TabIndex = 62;
+            this.txtHouseAddress.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtHouseAddress.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHouseAddress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtHouseAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtHouseAddress.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHouseAddress.Location = new System.Drawing.Point(244, 206);
+            this.txtHouseAddress.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtHouseAddress.Name = "txtHouseAddress";
+            this.txtHouseAddress.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtHouseAddress.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtHouseAddress.Size = new System.Drawing.Size(566, 31);
+            this.txtHouseAddress.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtHouseAddress.TabIndex = 62;
             // 
             // label7
             // 
@@ -275,7 +276,7 @@
             // txtPhoneNumber
             // 
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(333, 31);
+            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtPhoneNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPhoneNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -301,7 +302,7 @@
             // txtEmail
             // 
             this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(333, 31);
+            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtEmail.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmail.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -314,18 +315,18 @@
             this.txtEmail.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
             this.txtEmail.TabIndex = 66;
             // 
-            // comboBox1
+            // txtSex
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.txtSex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtSex.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSex.FormattingEnabled = true;
+            this.txtSex.Items.AddRange(new object[] {
             "Male",
             "Female"});
-            this.comboBox1.Location = new System.Drawing.Point(525, 102);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(95, 31);
-            this.comboBox1.TabIndex = 67;
+            this.txtSex.Location = new System.Drawing.Point(525, 102);
+            this.txtSex.Name = "txtSex";
+            this.txtSex.Size = new System.Drawing.Size(95, 31);
+            this.txtSex.TabIndex = 67;
             // 
             // label8
             // 
@@ -337,20 +338,20 @@
             this.label8.TabIndex = 68;
             this.label8.Text = "Sex";
             // 
-            // comboBox2
+            // txtMaritalStatus
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.txtMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtMaritalStatus.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaritalStatus.FormattingEnabled = true;
+            this.txtMaritalStatus.Items.AddRange(new object[] {
             "Single",
             "Married",
             "Divorced",
             "Widowed"});
-            this.comboBox2.Location = new System.Drawing.Point(11, 154);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(227, 31);
-            this.comboBox2.TabIndex = 69;
+            this.txtMaritalStatus.Location = new System.Drawing.Point(11, 154);
+            this.txtMaritalStatus.Name = "txtMaritalStatus";
+            this.txtMaritalStatus.Size = new System.Drawing.Size(227, 31);
+            this.txtMaritalStatus.TabIndex = 69;
             // 
             // label9
             // 
@@ -362,38 +363,38 @@
             this.label9.TabIndex = 70;
             this.label9.Text = "Marital Status";
             // 
-            // pictureBox1
+            // txtPassport
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
-            this.pictureBox1.Location = new System.Drawing.Point(816, 50);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 187);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 71;
-            this.pictureBox1.TabStop = false;
+            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
+            this.txtPassport.Location = new System.Drawing.Point(824, 50);
+            this.txtPassport.Name = "txtPassport";
+            this.txtPassport.Size = new System.Drawing.Size(128, 187);
+            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.txtPassport.TabIndex = 71;
+            this.txtPassport.TabStop = false;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(857, 32);
+            this.label10.Location = new System.Drawing.Point(865, 32);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(87, 15);
             this.label10.TabIndex = 72;
             this.label10.Text = "Passport Photo";
             // 
-            // button1
+            // btnPassport
             // 
-            this.button1.BackColor = System.Drawing.Color.SlateGray;
-            this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(820, 208);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(120, 24);
-            this.button1.TabIndex = 73;
-            this.button1.Text = "Select Passport";
-            this.button1.UseVisualStyleBackColor = false;
+            this.btnPassport.BackColor = System.Drawing.Color.SlateGray;
+            this.btnPassport.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPassport.ForeColor = System.Drawing.Color.White;
+            this.btnPassport.Location = new System.Drawing.Point(828, 208);
+            this.btnPassport.Name = "btnPassport";
+            this.btnPassport.Size = new System.Drawing.Size(120, 24);
+            this.btnPassport.TabIndex = 73;
+            this.btnPassport.Text = "Select Passport";
+            this.btnPassport.UseVisualStyleBackColor = false;
             // 
             // btnDataFinger1
             // 
@@ -464,44 +465,44 @@
             this.gradientPanel11.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(178)))), ((int)(((byte)(227)))));
             this.gradientPanel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.gradientPanel11.Controls.Add(this.label20);
-            this.gradientPanel11.Controls.Add(this.comboBox3);
-            this.gradientPanel11.Controls.Add(this.textBoxExt11);
+            this.gradientPanel11.Controls.Add(this.txtStateOfOrigin);
+            this.gradientPanel11.Controls.Add(this.txtHeight);
             this.gradientPanel11.Controls.Add(this.label18);
-            this.gradientPanel11.Controls.Add(this.textBoxExt12);
+            this.gradientPanel11.Controls.Add(this.txtWeight);
             this.gradientPanel11.Controls.Add(this.label19);
             this.gradientPanel11.Controls.Add(this.gradientLabel2);
             this.gradientPanel11.Controls.Add(this.gradientLabel1);
             this.gradientPanel11.Controls.Add(this.gradientPanel1);
             this.gradientPanel11.Controls.Add(this.label17);
-            this.gradientPanel11.Controls.Add(this.textBoxExt10);
+            this.gradientPanel11.Controls.Add(this.txtHospitalNumber);
             this.gradientPanel11.Controls.Add(this.label11);
-            this.gradientPanel11.Controls.Add(this.textBoxExt8);
+            this.gradientPanel11.Controls.Add(this.txtPatientHospitalNumber);
             this.gradientPanel11.Controls.Add(this.label15);
-            this.gradientPanel11.Controls.Add(this.textBoxExt9);
+            this.gradientPanel11.Controls.Add(this.txtFacilityNumber);
             this.gradientPanel11.Controls.Add(this.label16);
             this.gradientPanel11.Controls.Add(this.label14);
-            this.gradientPanel11.Controls.Add(this.dateTimePickerAdv1);
-            this.gradientPanel11.Controls.Add(this.button1);
+            this.gradientPanel11.Controls.Add(this.txtDateOfBirth);
+            this.gradientPanel11.Controls.Add(this.btnPassport);
             this.gradientPanel11.Controls.Add(this.label10);
-            this.gradientPanel11.Controls.Add(this.pictureBox1);
+            this.gradientPanel11.Controls.Add(this.txtPassport);
             this.gradientPanel11.Controls.Add(this.label9);
-            this.gradientPanel11.Controls.Add(this.comboBox2);
+            this.gradientPanel11.Controls.Add(this.txtMaritalStatus);
             this.gradientPanel11.Controls.Add(this.label8);
-            this.gradientPanel11.Controls.Add(this.comboBox1);
+            this.gradientPanel11.Controls.Add(this.txtSex);
             this.gradientPanel11.Controls.Add(this.txtEmail);
             this.gradientPanel11.Controls.Add(this.label6);
             this.gradientPanel11.Controls.Add(this.txtPhoneNumber);
             this.gradientPanel11.Controls.Add(this.label7);
-            this.gradientPanel11.Controls.Add(this.textBoxExt5);
+            this.gradientPanel11.Controls.Add(this.txtHouseAddress);
             this.gradientPanel11.Controls.Add(this.label5);
-            this.gradientPanel11.Controls.Add(this.textBoxExt3);
+            this.gradientPanel11.Controls.Add(this.txtOthername);
             this.gradientPanel11.Controls.Add(this.label3);
-            this.gradientPanel11.Controls.Add(this.textBoxExt4);
+            this.gradientPanel11.Controls.Add(this.txtSurname);
             this.gradientPanel11.Controls.Add(this.label4);
-            this.gradientPanel11.Controls.Add(this.textBoxExt2);
+            this.gradientPanel11.Controls.Add(this.txtSiteName);
             this.gradientPanel11.Controls.Add(this.label2);
             this.gradientPanel11.Controls.Add(this.label1);
-            this.gradientPanel11.Controls.Add(this.textBoxExt1);
+            this.gradientPanel11.Controls.Add(this.txtPepId);
             this.gradientPanel11.Controls.Add(this.label40);
             this.gradientPanel11.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gradientPanel11.Location = new System.Drawing.Point(0, 7);
@@ -509,6 +510,83 @@
             this.gradientPanel11.Size = new System.Drawing.Size(957, 425);
             this.gradientPanel11.TabIndex = 125;
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(11, 188);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(84, 15);
+            this.label20.TabIndex = 97;
+            this.label20.Text = "State Of Origin";
+            // 
+            // txtStateOfOrigin
+            // 
+            this.txtStateOfOrigin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtStateOfOrigin.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStateOfOrigin.FormattingEnabled = true;
+            this.txtStateOfOrigin.Items.AddRange(new object[] {
+            "Single",
+            "Married",
+            "Divorced",
+            "Widowed"});
+            this.txtStateOfOrigin.Location = new System.Drawing.Point(11, 206);
+            this.txtStateOfOrigin.Name = "txtStateOfOrigin";
+            this.txtStateOfOrigin.Size = new System.Drawing.Size(227, 31);
+            this.txtStateOfOrigin.TabIndex = 96;
+            // 
+            // txtHeight
+            // 
+            this.txtHeight.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtHeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtHeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHeight.Location = new System.Drawing.Point(11, 336);
+            this.txtHeight.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtHeight.Name = "txtHeight";
+            this.txtHeight.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtHeight.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtHeight.Size = new System.Drawing.Size(101, 31);
+            this.txtHeight.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtHeight.TabIndex = 95;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(147, 312);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(68, 15);
+            this.label18.TabIndex = 94;
+            this.label18.Text = "Weight (Kg)";
+            // 
+            // txtWeight
+            // 
+            this.txtWeight.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtWeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtWeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtWeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtWeight.Location = new System.Drawing.Point(150, 336);
+            this.txtWeight.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtWeight.Name = "txtWeight";
+            this.txtWeight.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtWeight.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtWeight.Size = new System.Drawing.Size(101, 31);
+            this.txtWeight.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtWeight.TabIndex = 93;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(11, 312);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(62, 15);
+            this.label19.TabIndex = 92;
+            this.label19.Text = "Height (m)";
             // 
             // gradientLabel2
             // 
@@ -563,21 +641,21 @@
             this.label17.Size = new System.Drawing.Size(997, 5);
             this.label17.TabIndex = 84;
             // 
-            // textBoxExt10
+            // txtHospitalNumber
             // 
-            this.textBoxExt10.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt10.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt10.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt10.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt10.Location = new System.Drawing.Point(503, 388);
-            this.textBoxExt10.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt10.Name = "textBoxExt10";
-            this.textBoxExt10.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt10.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt10.Size = new System.Drawing.Size(240, 31);
-            this.textBoxExt10.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt10.TabIndex = 82;
+            this.txtHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHospitalNumber.Location = new System.Drawing.Point(503, 388);
+            this.txtHospitalNumber.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtHospitalNumber.Name = "txtHospitalNumber";
+            this.txtHospitalNumber.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtHospitalNumber.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtHospitalNumber.Size = new System.Drawing.Size(240, 31);
+            this.txtHospitalNumber.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtHospitalNumber.TabIndex = 82;
             // 
             // label11
             // 
@@ -589,21 +667,21 @@
             this.label11.TabIndex = 81;
             this.label11.Text = "Hospital Number";
             // 
-            // textBoxExt8
+            // txtPatientHospitalNumber
             // 
-            this.textBoxExt8.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt8.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt8.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt8.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt8.Location = new System.Drawing.Point(257, 388);
-            this.textBoxExt8.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt8.Name = "textBoxExt8";
-            this.textBoxExt8.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt8.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt8.Size = new System.Drawing.Size(240, 31);
-            this.textBoxExt8.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt8.TabIndex = 80;
+            this.txtPatientHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtPatientHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtPatientHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtPatientHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPatientHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPatientHospitalNumber.Location = new System.Drawing.Point(257, 388);
+            this.txtPatientHospitalNumber.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtPatientHospitalNumber.Name = "txtPatientHospitalNumber";
+            this.txtPatientHospitalNumber.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtPatientHospitalNumber.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtPatientHospitalNumber.Size = new System.Drawing.Size(240, 31);
+            this.txtPatientHospitalNumber.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtPatientHospitalNumber.TabIndex = 80;
             // 
             // label15
             // 
@@ -615,21 +693,21 @@
             this.label15.TabIndex = 79;
             this.label15.Text = "Patient Hospital Number";
             // 
-            // textBoxExt9
+            // txtFacilityNumber
             // 
-            this.textBoxExt9.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt9.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt9.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt9.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt9.Location = new System.Drawing.Point(11, 388);
-            this.textBoxExt9.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt9.Name = "textBoxExt9";
-            this.textBoxExt9.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt9.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt9.Size = new System.Drawing.Size(240, 31);
-            this.textBoxExt9.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt9.TabIndex = 78;
+            this.txtFacilityNumber.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.txtFacilityNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtFacilityNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
+            this.txtFacilityNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtFacilityNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFacilityNumber.Location = new System.Drawing.Point(11, 388);
+            this.txtFacilityNumber.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
+            this.txtFacilityNumber.Name = "txtFacilityNumber";
+            this.txtFacilityNumber.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
+            this.txtFacilityNumber.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
+            this.txtFacilityNumber.Size = new System.Drawing.Size(240, 31);
+            this.txtFacilityNumber.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
+            this.txtFacilityNumber.TabIndex = 78;
             // 
             // label16
             // 
@@ -651,28 +729,28 @@
             this.label14.TabIndex = 76;
             this.label14.Text = "Date of Birth";
             // 
-            // dateTimePickerAdv1
+            // txtDateOfBirth
             // 
-            this.dateTimePickerAdv1.Border3DStyle = System.Windows.Forms.Border3DStyle.Flat;
-            this.dateTimePickerAdv1.BorderColor = System.Drawing.Color.Empty;
-            this.dateTimePickerAdv1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.dateTimePickerAdv1.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
-            this.dateTimePickerAdv1.CalendarSize = new System.Drawing.Size(189, 176);
-            this.dateTimePickerAdv1.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
-            this.dateTimePickerAdv1.CalendarTitleForeColor = System.Drawing.SystemColors.ControlText;
-            this.dateTimePickerAdv1.DropDownImage = null;
-            this.dateTimePickerAdv1.DropDownNormalColor = System.Drawing.SystemColors.Control;
-            this.dateTimePickerAdv1.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePickerAdv1.Location = new System.Drawing.Point(626, 102);
-            this.dateTimePickerAdv1.MetroColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(165)))), ((int)(((byte)(220)))));
-            this.dateTimePickerAdv1.MinValue = new System.DateTime(((long)(0)));
-            this.dateTimePickerAdv1.Name = "dateTimePickerAdv1";
-            this.dateTimePickerAdv1.ShowUpDown = true;
-            this.dateTimePickerAdv1.ShowUpDownOnFocus = true;
-            this.dateTimePickerAdv1.Size = new System.Drawing.Size(184, 31);
-            this.dateTimePickerAdv1.Style = Syncfusion.Windows.Forms.VisualStyle.Office2010;
-            this.dateTimePickerAdv1.TabIndex = 75;
-            this.dateTimePickerAdv1.Value = new System.DateTime(2017, 10, 19, 16, 46, 46, 851);
+            this.txtDateOfBirth.Border3DStyle = System.Windows.Forms.Border3DStyle.Flat;
+            this.txtDateOfBirth.BorderColor = System.Drawing.Color.Empty;
+            this.txtDateOfBirth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDateOfBirth.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
+            this.txtDateOfBirth.CalendarSize = new System.Drawing.Size(189, 176);
+            this.txtDateOfBirth.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
+            this.txtDateOfBirth.CalendarTitleForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtDateOfBirth.DropDownImage = null;
+            this.txtDateOfBirth.DropDownNormalColor = System.Drawing.SystemColors.Control;
+            this.txtDateOfBirth.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDateOfBirth.Location = new System.Drawing.Point(626, 102);
+            this.txtDateOfBirth.MetroColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(165)))), ((int)(((byte)(220)))));
+            this.txtDateOfBirth.MinValue = new System.DateTime(((long)(0)));
+            this.txtDateOfBirth.Name = "txtDateOfBirth";
+            this.txtDateOfBirth.ShowUpDown = true;
+            this.txtDateOfBirth.ShowUpDownOnFocus = true;
+            this.txtDateOfBirth.Size = new System.Drawing.Size(184, 31);
+            this.txtDateOfBirth.Style = Syncfusion.Windows.Forms.VisualStyle.Office2010;
+            this.txtDateOfBirth.TabIndex = 75;
+            this.txtDateOfBirth.Value = new System.DateTime(2017, 10, 19, 16, 46, 46, 851);
             // 
             // monthCalendarAdv1
             // 
@@ -706,90 +784,13 @@
             this.monthCalendarAdv1.TodayButton.Size = new System.Drawing.Size(167, 20);
             this.monthCalendarAdv1.TodayButton.Text = "Today";
             // 
-            // textBoxExt11
-            // 
-            this.textBoxExt11.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt11.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt11.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt11.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt11.Location = new System.Drawing.Point(11, 336);
-            this.textBoxExt11.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt11.Name = "textBoxExt11";
-            this.textBoxExt11.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt11.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt11.Size = new System.Drawing.Size(101, 31);
-            this.textBoxExt11.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt11.TabIndex = 95;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(147, 312);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(68, 15);
-            this.label18.TabIndex = 94;
-            this.label18.Text = "Weight (Kg)";
-            // 
-            // textBoxExt12
-            // 
-            this.textBoxExt12.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.textBoxExt12.BeforeTouchSize = new System.Drawing.Size(333, 31);
-            this.textBoxExt12.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.textBoxExt12.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxExt12.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxExt12.Location = new System.Drawing.Point(150, 336);
-            this.textBoxExt12.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.textBoxExt12.Name = "textBoxExt12";
-            this.textBoxExt12.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.textBoxExt12.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.textBoxExt12.Size = new System.Drawing.Size(101, 31);
-            this.textBoxExt12.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.textBoxExt12.TabIndex = 93;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(11, 312);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(62, 15);
-            this.label19.TabIndex = 92;
-            this.label19.Text = "Height (m)";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(11, 188);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(84, 15);
-            this.label20.TabIndex = 97;
-            this.label20.Text = "State Of Origin";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed"});
-            this.comboBox3.Location = new System.Drawing.Point(11, 206);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(227, 31);
-            this.comboBox3.TabIndex = 96;
-            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(957, 478);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.gradientPanel11);
             this.Font = new System.Drawing.Font("Calibri Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -801,56 +802,56 @@
             this.Tag = "";
             this.Text = "Patient Information Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PatientInfo_FormClosing);
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel11)).EndInit();
             this.gradientPanel11.ResumeLayout(false);
             this.gradientPanel11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).EndInit();
             this.gradientPanel1.ResumeLayout(false);
             this.gradientPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt10)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt9)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dateTimePickerAdv1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtHospitalNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.textBoxExt12)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Label label40;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt1;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPepId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt2;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSiteName;
         private System.Windows.Forms.Label label4;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt4;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSurname;
         private System.Windows.Forms.Label label3;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt3;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtOthername;
         private System.Windows.Forms.Label label5;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt5;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtHouseAddress;
         private System.Windows.Forms.Label label7;
         private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPhoneNumber;
         private System.Windows.Forms.Label label6;
         private Syncfusion.Windows.Forms.Tools.TextBoxExt txtEmail;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox txtSex;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox txtMaritalStatus;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox txtPassport;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPassport;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button btnDataCard;
@@ -859,22 +860,22 @@
         private Syncfusion.Windows.Forms.Tools.GradientPanel gradientPanel11;
         private Syncfusion.Windows.Forms.Tools.MonthCalendarAdv monthCalendarAdv1;
         private System.Windows.Forms.Label label14;
-        private Syncfusion.Windows.Forms.Tools.DateTimePickerAdv dateTimePickerAdv1;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt10;
+        private Syncfusion.Windows.Forms.Tools.DateTimePickerAdv txtDateOfBirth;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtHospitalNumber;
         private System.Windows.Forms.Label label11;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt8;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPatientHospitalNumber;
         private System.Windows.Forms.Label label15;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt9;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtFacilityNumber;
         private System.Windows.Forms.Label label16;
         private Syncfusion.Windows.Forms.Tools.GradientLabel gradientLabel1;
         private Syncfusion.Windows.Forms.Tools.GradientPanel gradientPanel1;
         private System.Windows.Forms.Label label17;
         private Syncfusion.Windows.Forms.Tools.GradientLabel gradientLabel2;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt11;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtHeight;
         private System.Windows.Forms.Label label18;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt textBoxExt12;
+        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtWeight;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox txtStateOfOrigin;
     }
 }

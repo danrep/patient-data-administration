@@ -29,7 +29,7 @@
           <Property Name="BioDataFingerSecondary" Type="varchar(max)" />
           <Property Name="CardDataUid" Type="varchar(max)" />
           <Property Name="CardDataChip" Type="varchar(max)" />
-          <Property Name="IsDeleted" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="SiteData">
           <Key>
@@ -75,7 +75,7 @@
           <Property Name="BioDataFingerSecondary" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CardDataUid" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CardDataChip" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="SiteData">
           <Key>

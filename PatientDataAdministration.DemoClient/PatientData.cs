@@ -34,6 +34,6 @@ namespace PatientDataAdministration.DemoClient
         public string BioDataFingerSecondary { get; set; }
         public string CardDataUid { get; set; }
         public string CardDataChip { get; set; }
-        public int IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
