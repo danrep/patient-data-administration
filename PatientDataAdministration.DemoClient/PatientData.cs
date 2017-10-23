@@ -30,6 +30,7 @@ namespace PatientDataAdministration.DemoClient
         public string FacilityNumber { get; set; }
         public string ClientNumber { get; set; }
         public string HospitalNumber { get; set; }
+        public string PassportImage { get; set; }
         public string BioDataFingerPrimary { get; set; }
         public string BioDataFingerSecondary { get; set; }
         public string CardDataUid { get; set; }

@@ -23,46 +23,16 @@ namespace PatientDataAdministration.DemoClient
 
         private void toolStripButton14_Click(object sender, EventArgs e)
         {
-            if (_runningForms.Any())
-            {
-                _runningForms = _runningForms.Where(x => x.CanFocus).ToList();
-                _runningForms.TrimExcess();
-            }
-
-            var patientInfo = new PatientInfo()
+            var patientInfo = new PatientInfo(false)
             {
                 Tag = Guid.NewGuid().ToString()
             };
-
-            _runningForms.Add(patientInfo);
-            patientInfo.Show();
+            patientInfo.ShowDialog();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!_runningForms.Any(x => x.CanFocus))
-                return;
-
-            var messageForm = System.Windows.Forms.MessageBox.Show(
-                @"Please Wait. It seems you have some Patient Information Windows Still Open. Do you want to Continue working on them? Your current progress will not be saved!",
-                @"Just a Moment", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (messageForm == DialogResult.Yes)
-            {
-                e.Cancel = true;
-
-                var form = _runningForms.FirstOrDefault();
-
-                if (form == null)
-                    return;
-
-                form.WindowState = FormWindowState.Normal;
-                form.Activate();
-                form.BringToFront();
-            }
-            else
-                foreach (var form in _runningForms.Where(form => form != null).ToList())
-                    form.Close();
+            System.Windows.Forms.Application.ExitThread();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -73,6 +43,15 @@ namespace PatientDataAdministration.DemoClient
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void toolStripButton21_Click(object sender, EventArgs e)
+        {
+            var patientInfo = new PatientInfo(true)
+            {
+                Tag = Guid.NewGuid().ToString()
+            };
+            patientInfo.ShowDialog();
         }
     }
 }

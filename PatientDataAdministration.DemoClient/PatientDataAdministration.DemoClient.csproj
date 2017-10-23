@@ -62,6 +62,9 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationFramework" />
+    <Reference Include="SecuGen.FDxSDKPro.Windows">
+      <HintPath>..\..\..\..\..\..\..\..\Program Files (x86)\SecuGen\FDx SDK Pro for Windows\DotNET\Bin\i386\SecuGen.FDxSDKPro.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="Syncfusion.Compression.Base, Version=15.3460.0.26, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.Diagram.Base, Version=15.3460.0.26, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
     <Reference Include="Syncfusion.Diagram.Windows, Version=15.3460.0.26, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89" />
@@ -191,6 +194,7 @@
       <LastGenOutput>DemoModel.cs</LastGenOutput>
     </Content>
     <Content Include="icons8_Facial_Recognition.ico" />
+    <None Include="Resources\apin.png" />
     <None Include="Resources\wallpaper_blue.jpg" />
     <None Include="Resources\icons8_Shutdown_48px.png" />
     <None Include="Resources\icons8_Save_48px.png" />

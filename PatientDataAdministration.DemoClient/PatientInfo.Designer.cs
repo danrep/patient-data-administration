@@ -51,15 +51,16 @@
             this.label8 = new System.Windows.Forms.Label();
             this.txtMaritalStatus = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.txtPassport = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
             this.btnPassport = new System.Windows.Forms.Button();
-            this.btnDataFinger1 = new System.Windows.Forms.Button();
-            this.btnDataFinger2 = new System.Windows.Forms.Button();
-            this.btnDataCard = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.gradientPanel11 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.gradientPanel2 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnCapture = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label20 = new System.Windows.Forms.Label();
             this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
             this.txtHeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
@@ -69,6 +70,9 @@
             this.gradientLabel2 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientLabel1 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientPanel1 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.btnDataFinger2 = new System.Windows.Forms.Button();
+            this.btnDataFinger1 = new System.Windows.Forms.Button();
+            this.btnDataCard = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.txtHospitalNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label11 = new System.Windows.Forms.Label();
@@ -78,7 +82,13 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtDateOfBirth = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
+            this.txtPassport = new System.Windows.Forms.PictureBox();
             this.monthCalendarAdv1 = new Syncfusion.Windows.Forms.Tools.MonthCalendarAdv();
+            this.btnClear = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.tmrCheckBioCon = new System.Windows.Forms.Timer(this.components);
+            this.lblBioDeviceInfo = new System.Windows.Forms.Label();
+            this.checkBioData = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
@@ -86,9 +96,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel11)).BeginInit();
             this.gradientPanel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).BeginInit();
+            this.gradientPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).BeginInit();
@@ -97,6 +109,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -175,6 +188,7 @@
             this.txtSiteName.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtSiteName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtSiteName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSiteName.Enabled = false;
             this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSiteName.Location = new System.Drawing.Point(184, 50);
             this.txtSiteName.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
@@ -184,6 +198,7 @@
             this.txtSiteName.Size = new System.Drawing.Size(626, 31);
             this.txtSiteName.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
             this.txtSiteName.TabIndex = 56;
+            this.txtSiteName.Text = "APIN Local Goverment Site A";
             // 
             // label4
             // 
@@ -363,17 +378,6 @@
             this.label9.TabIndex = 70;
             this.label9.Text = "Marital Status";
             // 
-            // txtPassport
-            // 
-            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
-            this.txtPassport.Location = new System.Drawing.Point(824, 50);
-            this.txtPassport.Name = "txtPassport";
-            this.txtPassport.Size = new System.Drawing.Size(128, 187);
-            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.txtPassport.TabIndex = 71;
-            this.txtPassport.TabStop = false;
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -395,56 +399,18 @@
             this.btnPassport.TabIndex = 73;
             this.btnPassport.Text = "Select Passport";
             this.btnPassport.UseVisualStyleBackColor = false;
-            // 
-            // btnDataFinger1
-            // 
-            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
-            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger1.Location = new System.Drawing.Point(90, 27);
-            this.btnDataFinger1.Name = "btnDataFinger1";
-            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger1.TabIndex = 134;
-            this.btnDataFinger1.UseVisualStyleBackColor = false;
-            // 
-            // btnDataFinger2
-            // 
-            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
-            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger2.Location = new System.Drawing.Point(144, 27);
-            this.btnDataFinger2.Name = "btnDataFinger2";
-            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger2.TabIndex = 135;
-            this.btnDataFinger2.UseVisualStyleBackColor = false;
-            // 
-            // btnDataCard
-            // 
-            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
-            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
-            this.btnDataCard.FlatAppearance.BorderSize = 0;
-            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataCard.Location = new System.Drawing.Point(144, 101);
-            this.btnDataCard.Name = "btnDataCard";
-            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
-            this.btnDataCard.TabIndex = 136;
-            this.btnDataCard.UseVisualStyleBackColor = false;
+            this.btnPassport.Click += new System.EventHandler(this.btnPassport_Click);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(5, 8);
+            this.label12.Location = new System.Drawing.Point(5, 5);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(187, 15);
+            this.label12.Size = new System.Drawing.Size(189, 15);
             this.label12.TabIndex = 137;
-            this.label12.Text = "Click to add or replace fingerprints";
+            this.label12.Text = "Click to add or replace Fingerprints";
             // 
             // label13
             // 
@@ -464,6 +430,7 @@
             this.gradientPanel11.BackColor = System.Drawing.Color.White;
             this.gradientPanel11.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(178)))), ((int)(((byte)(227)))));
             this.gradientPanel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel11.Controls.Add(this.gradientPanel2);
             this.gradientPanel11.Controls.Add(this.label20);
             this.gradientPanel11.Controls.Add(this.txtStateOfOrigin);
             this.gradientPanel11.Controls.Add(this.txtHeight);
@@ -509,7 +476,69 @@
             this.gradientPanel11.Name = "gradientPanel11";
             this.gradientPanel11.Size = new System.Drawing.Size(957, 425);
             this.gradientPanel11.TabIndex = 125;
+            this.gradientPanel11.Click += new System.EventHandler(this.PatientInfo_Click);
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
+            // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel2.Controls.Add(this.label21);
+            this.gradientPanel2.Controls.Add(this.button1);
+            this.gradientPanel2.Controls.Add(this.btnCapture);
+            this.gradientPanel2.Controls.Add(this.pictureBox1);
+            this.gradientPanel2.Location = new System.Drawing.Point(391, 83);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(173, 256);
+            this.gradientPanel2.TabIndex = 98;
+            this.gradientPanel2.Visible = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(4, 235);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(16, 14);
+            this.label21.TabIndex = 79;
+            this.label21.Text = "...";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.OrangeRed;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(139, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(27, 30);
+            this.button1.TabIndex = 78;
+            this.button1.Text = "X";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnCapture
+            // 
+            this.btnCapture.BackColor = System.Drawing.Color.ForestGreen;
+            this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCapture.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCapture.ForeColor = System.Drawing.Color.White;
+            this.btnCapture.Location = new System.Drawing.Point(4, 3);
+            this.btnCapture.Name = "btnCapture";
+            this.btnCapture.Size = new System.Drawing.Size(136, 30);
+            this.btnCapture.TabIndex = 77;
+            this.btnCapture.Text = "Capture Fingerprint";
+            this.btnCapture.UseVisualStyleBackColor = false;
+            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
+            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 76;
+            this.pictureBox1.TabStop = false;
             // 
             // label20
             // 
@@ -527,13 +556,18 @@
             this.txtStateOfOrigin.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtStateOfOrigin.FormattingEnabled = true;
             this.txtStateOfOrigin.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed"});
+            "Abuja",
+            "Anambra",
+            "Ebonyi",
+            "Kaduna",
+            "Kwara",
+            "Lagos",
+            "Osun",
+            "Zamfara"});
             this.txtStateOfOrigin.Location = new System.Drawing.Point(11, 206);
             this.txtStateOfOrigin.Name = "txtStateOfOrigin";
             this.txtStateOfOrigin.Size = new System.Drawing.Size(227, 31);
+            this.txtStateOfOrigin.Sorted = true;
             this.txtStateOfOrigin.TabIndex = 96;
             // 
             // txtHeight
@@ -628,10 +662,52 @@
             this.gradientPanel1.Controls.Add(this.label12);
             this.gradientPanel1.Controls.Add(this.btnDataFinger1);
             this.gradientPanel1.Controls.Add(this.btnDataCard);
-            this.gradientPanel1.Location = new System.Drawing.Point(752, 263);
+            this.gradientPanel1.Location = new System.Drawing.Point(752, 251);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(200, 156);
+            this.gradientPanel1.Size = new System.Drawing.Size(200, 84);
             this.gradientPanel1.TabIndex = 83;
+            this.gradientPanel1.Click += new System.EventHandler(this.PatientInfo_Click);
+            // 
+            // btnDataFinger2
+            // 
+            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
+            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger2.Location = new System.Drawing.Point(144, 27);
+            this.btnDataFinger2.Name = "btnDataFinger2";
+            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger2.TabIndex = 135;
+            this.btnDataFinger2.UseVisualStyleBackColor = false;
+            this.btnDataFinger2.Click += new System.EventHandler(this.btnDataFinger2_Click);
+            // 
+            // btnDataFinger1
+            // 
+            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
+            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger1.Location = new System.Drawing.Point(90, 27);
+            this.btnDataFinger1.Name = "btnDataFinger1";
+            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger1.TabIndex = 134;
+            this.btnDataFinger1.UseVisualStyleBackColor = false;
+            this.btnDataFinger1.Click += new System.EventHandler(this.btnDataFinger1_Click);
+            // 
+            // btnDataCard
+            // 
+            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
+            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
+            this.btnDataCard.FlatAppearance.BorderSize = 0;
+            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataCard.Location = new System.Drawing.Point(144, 101);
+            this.btnDataCard.Name = "btnDataCard";
+            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
+            this.btnDataCard.TabIndex = 136;
+            this.btnDataCard.UseVisualStyleBackColor = false;
             // 
             // label17
             // 
@@ -752,6 +828,17 @@
             this.txtDateOfBirth.TabIndex = 75;
             this.txtDateOfBirth.Value = new System.DateTime(2017, 10, 19, 16, 46, 46, 851);
             // 
+            // txtPassport
+            // 
+            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
+            this.txtPassport.Location = new System.Drawing.Point(824, 50);
+            this.txtPassport.Name = "txtPassport";
+            this.txtPassport.Size = new System.Drawing.Size(128, 187);
+            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.txtPassport.TabIndex = 71;
+            this.txtPassport.TabStop = false;
+            // 
             // monthCalendarAdv1
             // 
             this.monthCalendarAdv1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
@@ -784,11 +871,53 @@
             this.monthCalendarAdv1.TodayButton.Size = new System.Drawing.Size(167, 20);
             this.monthCalendarAdv1.TodayButton.Text = "Today";
             // 
+            // btnClear
+            // 
+            this.btnClear.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnClear.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.Location = new System.Drawing.Point(432, 437);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(171, 41);
+            this.btnClear.TabIndex = 128;
+            this.btnClear.Text = "Clear all Inputs";
+            this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "Patient Passport";
+            this.openFileDialog1.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif;" +
+    " *.png";
+            // 
+            // tmrCheckBioCon
+            // 
+            this.tmrCheckBioCon.Enabled = true;
+            this.tmrCheckBioCon.Interval = 3000;
+            this.tmrCheckBioCon.Tick += new System.EventHandler(this.tmrCheckBioCon_Tick);
+            // 
+            // lblBioDeviceInfo
+            // 
+            this.lblBioDeviceInfo.AutoSize = true;
+            this.lblBioDeviceInfo.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBioDeviceInfo.Location = new System.Drawing.Point(-3, 450);
+            this.lblBioDeviceInfo.Name = "lblBioDeviceInfo";
+            this.lblBioDeviceInfo.Size = new System.Drawing.Size(16, 15);
+            this.lblBioDeviceInfo.TabIndex = 129;
+            this.lblBioDeviceInfo.Text = "...";
+            // 
+            // checkBioData
+            // 
+            this.checkBioData.Enabled = true;
+            this.checkBioData.Interval = 500;
+            this.checkBioData.Tick += new System.EventHandler(this.checkBioData_Tick);
+            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(957, 478);
+            this.Controls.Add(this.lblBioDeviceInfo);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.gradientPanel11);
@@ -802,6 +931,8 @@
             this.Tag = "";
             this.Text = "Patient Information Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PatientInfo_FormClosing);
+            this.Load += new System.EventHandler(this.PatientInfo_Load);
+            this.Click += new System.EventHandler(this.PatientInfo_Click);
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).EndInit();
@@ -809,10 +940,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPhoneNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEmail)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel11)).EndInit();
             this.gradientPanel11.ResumeLayout(false);
             this.gradientPanel11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).EndInit();
+            this.gradientPanel2.ResumeLayout(false);
+            this.gradientPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).EndInit();
@@ -822,8 +956,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -877,5 +1013,15 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.ComboBox txtStateOfOrigin;
+        private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Timer tmrCheckBioCon;
+        private System.Windows.Forms.Label lblBioDeviceInfo;
+        private Syncfusion.Windows.Forms.Tools.GradientPanel gradientPanel2;
+        private System.Windows.Forms.Button btnCapture;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Timer checkBioData;
     }
 }
