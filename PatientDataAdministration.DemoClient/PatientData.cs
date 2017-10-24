@@ -16,10 +16,11 @@ namespace PatientDataAdministration.DemoClient
     {
         public int Id { get; set; }
         public string PepId { get; set; }
-        public int SiteId { get; set; }
+        public string SiteName { get; set; }
         public string Surname { get; set; }
         public string Othernames { get; set; }
         public string Sex { get; set; }
+        public string MaritalStatus { get; set; }
         public string PhoneHumber { get; set; }
         public string Email { get; set; }
         public string HouseAddress { get; set; }

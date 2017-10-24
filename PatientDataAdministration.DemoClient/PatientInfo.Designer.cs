@@ -36,7 +36,6 @@
             this.txtPepId = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtSiteName = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSurname = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label3 = new System.Windows.Forms.Label();
@@ -89,8 +88,11 @@
             this.tmrCheckBioCon = new System.Windows.Forms.Timer(this.components);
             this.lblBioDeviceInfo = new System.Windows.Forms.Label();
             this.checkBioData = new System.Windows.Forms.Timer(this.components);
+            this.txtSiteName = new System.Windows.Forms.ComboBox();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnFind = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).BeginInit();
@@ -111,6 +113,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
@@ -118,7 +122,7 @@
             this.btnSave.BackColor = System.Drawing.Color.DarkOliveGreen;
             this.btnSave.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(786, 437);
+            this.btnSave.Location = new System.Drawing.Point(780, 3);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(171, 41);
             this.btnSave.TabIndex = 126;
@@ -130,7 +134,7 @@
             // 
             this.btnCancel.BackColor = System.Drawing.Color.BurlyWood;
             this.btnCancel.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCancel.Location = new System.Drawing.Point(609, 437);
+            this.btnCancel.Location = new System.Drawing.Point(603, 3);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(171, 41);
             this.btnCancel.TabIndex = 127;
@@ -151,7 +155,7 @@
             // txtPepId
             // 
             this.txtPepId.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPepId.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtPepId.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtPepId.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPepId.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -182,24 +186,6 @@
             this.label2.TabIndex = 55;
             this.label2.Text = "Site Name";
             // 
-            // txtSiteName
-            // 
-            this.txtSiteName.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtSiteName.BeforeTouchSize = new System.Drawing.Size(240, 31);
-            this.txtSiteName.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.txtSiteName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSiteName.Enabled = false;
-            this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSiteName.Location = new System.Drawing.Point(184, 50);
-            this.txtSiteName.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
-            this.txtSiteName.Name = "txtSiteName";
-            this.txtSiteName.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
-            this.txtSiteName.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.txtSiteName.Size = new System.Drawing.Size(626, 31);
-            this.txtSiteName.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
-            this.txtSiteName.TabIndex = 56;
-            this.txtSiteName.Text = "APIN Local Goverment Site A";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -213,7 +199,7 @@
             // txtSurname
             // 
             this.txtSurname.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtSurname.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtSurname.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtSurname.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtSurname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSurname.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -239,7 +225,7 @@
             // txtOthername
             // 
             this.txtOthername.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtOthername.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtOthername.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtOthername.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtOthername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtOthername.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -265,7 +251,7 @@
             // txtHouseAddress
             // 
             this.txtHouseAddress.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHouseAddress.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHouseAddress.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtHouseAddress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHouseAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHouseAddress.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -291,7 +277,7 @@
             // txtPhoneNumber
             // 
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtPhoneNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPhoneNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -317,7 +303,7 @@
             // txtEmail
             // 
             this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtEmail.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmail.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -382,7 +368,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(865, 32);
+            this.label10.Location = new System.Drawing.Point(857, 32);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(87, 15);
             this.label10.TabIndex = 72;
@@ -393,7 +379,7 @@
             this.btnPassport.BackColor = System.Drawing.Color.SlateGray;
             this.btnPassport.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPassport.ForeColor = System.Drawing.Color.White;
-            this.btnPassport.Location = new System.Drawing.Point(828, 208);
+            this.btnPassport.Location = new System.Drawing.Point(820, 207);
             this.btnPassport.Name = "btnPassport";
             this.btnPassport.Size = new System.Drawing.Size(120, 24);
             this.btnPassport.TabIndex = 73;
@@ -406,7 +392,7 @@
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(5, 5);
+            this.label12.Location = new System.Drawing.Point(4, 12);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(189, 15);
             this.label12.TabIndex = 137;
@@ -417,7 +403,7 @@
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.Black;
-            this.label13.Location = new System.Drawing.Point(59, 82);
+            this.label13.Location = new System.Drawing.Point(60, 89);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(133, 15);
             this.label13.TabIndex = 138;
@@ -430,6 +416,7 @@
             this.gradientPanel11.BackColor = System.Drawing.Color.White;
             this.gradientPanel11.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(178)))), ((int)(((byte)(227)))));
             this.gradientPanel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel11.Controls.Add(this.txtSiteName);
             this.gradientPanel11.Controls.Add(this.gradientPanel2);
             this.gradientPanel11.Controls.Add(this.label20);
             this.gradientPanel11.Controls.Add(this.txtStateOfOrigin);
@@ -466,7 +453,6 @@
             this.gradientPanel11.Controls.Add(this.label3);
             this.gradientPanel11.Controls.Add(this.txtSurname);
             this.gradientPanel11.Controls.Add(this.label4);
-            this.gradientPanel11.Controls.Add(this.txtSiteName);
             this.gradientPanel11.Controls.Add(this.label2);
             this.gradientPanel11.Controls.Add(this.label1);
             this.gradientPanel11.Controls.Add(this.txtPepId);
@@ -474,7 +460,7 @@
             this.gradientPanel11.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gradientPanel11.Location = new System.Drawing.Point(0, 7);
             this.gradientPanel11.Name = "gradientPanel11";
-            this.gradientPanel11.Size = new System.Drawing.Size(957, 425);
+            this.gradientPanel11.Size = new System.Drawing.Size(951, 425);
             this.gradientPanel11.TabIndex = 125;
             this.gradientPanel11.Click += new System.EventHandler(this.PatientInfo_Click);
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
@@ -504,7 +490,7 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.OrangeRed;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
             this.button1.Location = new System.Drawing.Point(139, 3);
@@ -518,7 +504,7 @@
             // btnCapture
             // 
             this.btnCapture.BackColor = System.Drawing.Color.ForestGreen;
-            this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapture.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCapture.ForeColor = System.Drawing.Color.White;
             this.btnCapture.Location = new System.Drawing.Point(4, 3);
@@ -573,7 +559,7 @@
             // txtHeight
             // 
             this.txtHeight.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHeight.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtHeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -582,7 +568,7 @@
             this.txtHeight.Name = "txtHeight";
             this.txtHeight.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
             this.txtHeight.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.txtHeight.Size = new System.Drawing.Size(101, 31);
+            this.txtHeight.Size = new System.Drawing.Size(110, 31);
             this.txtHeight.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
             this.txtHeight.TabIndex = 95;
             // 
@@ -590,7 +576,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(147, 312);
+            this.label18.Location = new System.Drawing.Point(138, 312);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(68, 15);
             this.label18.TabIndex = 94;
@@ -599,16 +585,16 @@
             // txtWeight
             // 
             this.txtWeight.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtWeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtWeight.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtWeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtWeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtWeight.Location = new System.Drawing.Point(150, 336);
+            this.txtWeight.Location = new System.Drawing.Point(141, 336);
             this.txtWeight.Metrocolor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
             this.txtWeight.Name = "txtWeight";
             this.txtWeight.Office2007ColorScheme = Syncfusion.Windows.Forms.Office2007Theme.Black;
             this.txtWeight.Office2010ColorScheme = Syncfusion.Windows.Forms.Office2010Theme.Black;
-            this.txtWeight.Size = new System.Drawing.Size(101, 31);
+            this.txtWeight.Size = new System.Drawing.Size(110, 31);
             this.txtWeight.Style = Syncfusion.Windows.Forms.Tools.TextBoxExt.theme.Default;
             this.txtWeight.TabIndex = 93;
             // 
@@ -662,9 +648,9 @@
             this.gradientPanel1.Controls.Add(this.label12);
             this.gradientPanel1.Controls.Add(this.btnDataFinger1);
             this.gradientPanel1.Controls.Add(this.btnDataCard);
-            this.gradientPanel1.Location = new System.Drawing.Point(752, 251);
+            this.gradientPanel1.Location = new System.Drawing.Point(744, 251);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(200, 84);
+            this.gradientPanel1.Size = new System.Drawing.Size(200, 168);
             this.gradientPanel1.TabIndex = 83;
             this.gradientPanel1.Click += new System.EventHandler(this.PatientInfo_Click);
             // 
@@ -675,7 +661,7 @@
             this.btnDataFinger2.FlatAppearance.BorderSize = 0;
             this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger2.Location = new System.Drawing.Point(144, 27);
+            this.btnDataFinger2.Location = new System.Drawing.Point(145, 34);
             this.btnDataFinger2.Name = "btnDataFinger2";
             this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
             this.btnDataFinger2.TabIndex = 135;
@@ -689,7 +675,7 @@
             this.btnDataFinger1.FlatAppearance.BorderSize = 0;
             this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger1.Location = new System.Drawing.Point(90, 27);
+            this.btnDataFinger1.Location = new System.Drawing.Point(91, 34);
             this.btnDataFinger1.Name = "btnDataFinger1";
             this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
             this.btnDataFinger1.TabIndex = 134;
@@ -703,7 +689,7 @@
             this.btnDataCard.FlatAppearance.BorderSize = 0;
             this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataCard.Location = new System.Drawing.Point(144, 101);
+            this.btnDataCard.Location = new System.Drawing.Point(145, 108);
             this.btnDataCard.Name = "btnDataCard";
             this.btnDataCard.Size = new System.Drawing.Size(48, 48);
             this.btnDataCard.TabIndex = 136;
@@ -720,7 +706,7 @@
             // txtHospitalNumber
             // 
             this.txtHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtHospitalNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -746,7 +732,7 @@
             // txtPatientHospitalNumber
             // 
             this.txtPatientHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPatientHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtPatientHospitalNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtPatientHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPatientHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPatientHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -772,7 +758,7 @@
             // txtFacilityNumber
             // 
             this.txtFacilityNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtFacilityNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
+            this.txtFacilityNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
             this.txtFacilityNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtFacilityNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFacilityNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -832,7 +818,7 @@
             // 
             this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
-            this.txtPassport.Location = new System.Drawing.Point(824, 50);
+            this.txtPassport.Location = new System.Drawing.Point(816, 50);
             this.txtPassport.Name = "txtPassport";
             this.txtPassport.Size = new System.Drawing.Size(128, 187);
             this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -875,12 +861,13 @@
             // 
             this.btnClear.BackColor = System.Drawing.Color.SkyBlue;
             this.btnClear.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(432, 437);
+            this.btnClear.Location = new System.Drawing.Point(477, 3);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(171, 41);
+            this.btnClear.Size = new System.Drawing.Size(120, 41);
             this.btnClear.TabIndex = 128;
             this.btnClear.Text = "Clear all Inputs";
             this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Visible = false;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // openFileDialog1
@@ -897,13 +884,15 @@
             // 
             // lblBioDeviceInfo
             // 
-            this.lblBioDeviceInfo.AutoSize = true;
+            this.lblBioDeviceInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lblBioDeviceInfo.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBioDeviceInfo.Location = new System.Drawing.Point(-3, 450);
+            this.lblBioDeviceInfo.Location = new System.Drawing.Point(3, 0);
             this.lblBioDeviceInfo.Name = "lblBioDeviceInfo";
-            this.lblBioDeviceInfo.Size = new System.Drawing.Size(16, 15);
+            this.lblBioDeviceInfo.Size = new System.Drawing.Size(330, 41);
             this.lblBioDeviceInfo.TabIndex = 129;
             this.lblBioDeviceInfo.Text = "...";
+            this.lblBioDeviceInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // checkBioData
             // 
@@ -911,15 +900,64 @@
             this.checkBioData.Interval = 500;
             this.checkBioData.Tick += new System.EventHandler(this.checkBioData_Tick);
             // 
+            // txtSiteName
+            // 
+            this.txtSiteName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSiteName.FormattingEnabled = true;
+            this.txtSiteName.Items.AddRange(new object[] {
+            "Single",
+            "Married",
+            "Divorced",
+            "Widowed"});
+            this.txtSiteName.Location = new System.Drawing.Point(182, 50);
+            this.txtSiteName.Name = "txtSiteName";
+            this.txtSiteName.Size = new System.Drawing.Size(628, 31);
+            this.txtSiteName.TabIndex = 99;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.btnSave);
+            this.flowLayoutPanel1.Controls.Add(this.btnCancel);
+            this.flowLayoutPanel1.Controls.Add(this.btnClear);
+            this.flowLayoutPanel1.Controls.Add(this.btnFind);
+            this.flowLayoutPanel1.Controls.Add(this.flowLayoutPanel2);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 438);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(954, 48);
+            this.flowLayoutPanel1.TabIndex = 130;
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.lblBioDeviceInfo);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(333, 41);
+            this.flowLayoutPanel2.TabIndex = 129;
+            // 
+            // btnFind
+            // 
+            this.btnFind.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnFind.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnFind.Location = new System.Drawing.Point(351, 3);
+            this.btnFind.Name = "btnFind";
+            this.btnFind.Size = new System.Drawing.Size(120, 41);
+            this.btnFind.TabIndex = 130;
+            this.btnFind.Text = "Find";
+            this.btnFind.UseVisualStyleBackColor = false;
+            this.btnFind.Visible = false;
+            this.btnFind.Click += new System.EventHandler(this.buttonFind_Click);
+            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(957, 478);
-            this.Controls.Add(this.lblBioDeviceInfo);
-            this.Controls.Add(this.btnClear);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnSave);
+            this.ClientSize = new System.Drawing.Size(954, 486);
+            this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.gradientPanel11);
             this.Font = new System.Drawing.Font("Calibri Light", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -932,9 +970,9 @@
             this.Text = "Patient Information Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PatientInfo_FormClosing);
             this.Load += new System.EventHandler(this.PatientInfo_Load);
+            this.Shown += new System.EventHandler(this.PatientInfo_Shown);
             this.Click += new System.EventHandler(this.PatientInfo_Click);
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSiteName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHouseAddress)).EndInit();
@@ -958,8 +996,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -970,7 +1009,6 @@
         private Syncfusion.Windows.Forms.Tools.TextBoxExt txtPepId;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSiteName;
         private System.Windows.Forms.Label label4;
         private Syncfusion.Windows.Forms.Tools.TextBoxExt txtSurname;
         private System.Windows.Forms.Label label3;
@@ -1023,5 +1061,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Timer checkBioData;
+        private System.Windows.Forms.ComboBox txtSiteName;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
+        private System.Windows.Forms.Button btnFind;
     }
 }

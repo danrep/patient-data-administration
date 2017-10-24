@@ -30,6 +30,8 @@ namespace PatientDataAdministration.DemoClient
         private string _cardChip;
         private string _passportImage;
 
+        private List<PatientData> _patientDataStore = new List<PatientData>(); 
+
         private SGFingerPrintManager _mFpm;
         private SGFPMDeviceInfoParam _pInfo;
         private PatientData _patientData;
@@ -45,33 +47,13 @@ namespace PatientDataAdministration.DemoClient
         {
             _lockAndLoad = lockAndLoad;
             InitializeComponent();
-
-            Application.DoEvents();
-
-            if (lockAndLoad)
-            {
-                gradientPanel2.Visible = true;
-                label21.Text = @"Search for Patient";
-
-                while (lblBioDeviceInfo.ForeColor != Color.DarkGreen)
-                {
-                    var dialogueResult = MessageBox.Show(
-                        @"The Biometric Device is not ready yet. Please wait a little while longer. You can Cancel if you like.",
-                        @"Wait a Minute", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question);
-
-                    if (dialogueResult == DialogResult.Cancel)
-                        this.Close();
-                }
-            }
-            else
-            {
-                _patientData = new PatientData();
-            }
         }
 
         private void PatientInfo_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            _mFpm.CloseDevice();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void gradientPanel11_Paint(object sender, PaintEventArgs e)
@@ -111,12 +93,6 @@ namespace PatientDataAdministration.DemoClient
 
                 if (txtPassport.Image == null)
                     _passportImage = string.Empty;
-                else
-                {
-                    var converter = new ImageConverter();
-                    _passportImage =
-                        Convert.ToBase64String((byte[]) converter.ConvertTo(txtPassport.Image, typeof (byte[])));
-                }
 
                 if (_patientData.Id == 0)
                 {
@@ -147,12 +123,13 @@ namespace PatientDataAdministration.DemoClient
                         Othernames = txtOthername.Text.Trim(), 
                         PepId = txtPepId.Text.Trim(),
                         Sex = txtSex.Text,
-                        SiteId = 0, 
+                        SiteName = txtSiteName.Text, 
                         StateOfOrigin = txtStateOfOrigin.Text.Trim(),
                         Surname = txtSurname.Text.Trim(), 
                         VitalsHeight = Convert.ToInt32(txtHeight.Text.Trim()), 
                         VitalsWeight = Convert.ToInt32(txtWeight.Text.Trim()),
-                        PassportImage = _passportImage
+                        PassportImage = _passportImage,
+                        MaritalStatus = txtMaritalStatus.Text
                     };
 
                     _demoDb.PatientDatas.Add(_patientData);
@@ -186,6 +163,8 @@ namespace PatientDataAdministration.DemoClient
                     patientInfo.VitalsHeight = Convert.ToInt32(txtHeight.Text.Trim());
                     patientInfo.VitalsWeight = Convert.ToInt32(txtWeight.Text.Trim());
                     patientInfo.PassportImage = _passportImage;
+                    patientInfo.MaritalStatus = txtMaritalStatus.Text;
+                    patientInfo.SiteName = txtSiteName.Text;
 
                     _demoDb.Entry(patientInfo).State = EntityState.Modified;
                 }
@@ -306,7 +285,7 @@ namespace PatientDataAdministration.DemoClient
                     if (_mFpm.CreateTemplate(fpImage, mRegMin) == 0)
                     {
                         DrawImage(fpImage);
-                        return Convert.ToBase64String(mRegMin);
+                        return Convert.ToBase64String(_lockAndLoad ? fpImage : mRegMin);
                     }
                     else
                     {
@@ -392,6 +371,12 @@ namespace PatientDataAdministration.DemoClient
         {
             var data = GetBioData();
 
+            if (_lockAndLoad)
+            {
+                LoadPatientByFingerprint(data);
+                return;
+            }
+
             if (_dataOwner == btnDataFinger1.Name)
                 _bioFinger1 = !string.IsNullOrEmpty(data) ? data : _bioFinger1;
             if (_dataOwner == btnDataFinger2.Name)
@@ -423,6 +408,106 @@ namespace PatientDataAdministration.DemoClient
         {
             btnDataFinger1.BackColor = string.IsNullOrEmpty(_bioFinger1) ? Color.Black : Color.SteelBlue;
             btnDataFinger2.BackColor = string.IsNullOrEmpty(_bioFinger2) ? Color.Black : Color.SteelBlue;
+        }
+
+        private void PatientInfo_Shown(object sender, EventArgs e)
+        {
+            if (_lockAndLoad)
+            {
+                gradientPanel2.Visible = true;
+                var cancelRequested = false;
+                label21.Text = @"Search for Patient";
+
+                while (lblBioDeviceInfo.ForeColor != Color.DarkGreen)
+                {
+                    var dialogueResult = MessageBox.Show(
+                        @"The Biometric Device is not ready yet. Please wait a little while longer. You can Cancel if you like.",
+                        @"Wait a Minute", MessageBoxButtons.RetryCancel, MessageBoxIcon.Question);
+
+                    if (dialogueResult != DialogResult.Cancel)
+                        continue;
+
+                    cancelRequested = true;
+                    break;
+                }
+
+                if (cancelRequested) { this.Close(); }
+                btnFind.Visible = true;
+            }
+            else
+            {
+                _patientData = new PatientData();
+                btnClear.Visible = true;
+            }
+        }
+
+        private void LoadPatientByFingerprint(string fingerPrintData)
+        {
+            var capturedBioData = Convert.FromBase64String(fingerPrintData);
+            var matched = false;
+
+            _patientDataStore = _demoDb.PatientDatas.Where(x => !x.IsDeleted).ToList();
+
+            var matchingPatient = new PatientData();
+
+            foreach (var pds in _patientDataStore)
+            {
+                _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerPrimary), capturedBioData,
+                    SGFPMSecurityLevel.HIGH, ref matched);
+
+                if (!matched)
+                    _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerSecondary), capturedBioData,
+                        SGFPMSecurityLevel.HIGH, ref matched);
+
+                if (!matched)
+                    continue;
+
+                MessageBox.Show("Patient Found");
+
+                matchingPatient = pds;
+                gradientPanel2.Visible = false;
+                break;
+            }
+
+            if (matchingPatient.Id != 0)
+            {
+                txtEmail.Text = matchingPatient.Email;
+                txtDateOfBirth.Value = matchingPatient.DateOfBirth.Date;
+                txtFacilityNumber.Text = matchingPatient.FacilityNumber;
+                txtHeight.Text = matchingPatient.VitalsHeight?.ToString("0.00") ?? "0.00";
+                txtWeight.Text = matchingPatient.VitalsWeight?.ToString("0.00") ?? "0.00";
+                txtHospitalNumber.Text = matchingPatient.HospitalNumber;
+                txtHouseAddress.Text = matchingPatient.HouseAddress;
+                txtMaritalStatus.Text = matchingPatient.MaritalStatus;
+
+                txtPassport.Image = ByteToImage(Convert.FromBase64String(matchingPatient.PassportImage));
+
+                txtPatientHospitalNumber.Text = matchingPatient.ClientNumber;
+                txtPepId.Text = matchingPatient.PepId;
+                txtOthername.Text = matchingPatient.Othernames;
+                txtPhoneNumber.Text = matchingPatient.PhoneHumber;
+                txtSex.Text = matchingPatient.Sex;
+                txtSiteName.Text = matchingPatient.SiteName;
+                txtSurname.Text = matchingPatient.Surname;
+
+                _bioFinger1 = matchingPatient.BioDataFingerPrimary;
+                _bioFinger2 = matchingPatient.BioDataFingerSecondary;
+            }
+        }
+
+        private static Bitmap ByteToImage(byte[] blob)
+        {
+            var mStream = new MemoryStream();
+           var pData = blob;
+            mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
+            var bm = new Bitmap(mStream, false);
+            mStream.Dispose();
+            return bm;
+        }
+
+        private void buttonFind_Click(object sender, EventArgs e)
+        {
+            gradientPanel2.Visible = false;
         }
     }
 }

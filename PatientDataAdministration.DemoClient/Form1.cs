@@ -32,7 +32,7 @@ namespace PatientDataAdministration.DemoClient
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            System.Windows.Forms.Application.ExitThread();
+            System.Windows.Forms.Application.Exit();
         }
 
         private void Form1_Load(object sender, EventArgs e)
