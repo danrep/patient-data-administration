@@ -41,7 +41,7 @@ namespace PatientDataAdministration.DemoClient
         private int _deviceId = 0;
         private int _iError = 0;
 
-        private bool _lockAndLoad;
+        private readonly bool _lockAndLoad;
 
         public PatientInfo(bool lockAndLoad)
         {
@@ -172,6 +172,9 @@ namespace PatientDataAdministration.DemoClient
                 _demoDb.SaveChanges();
                 MessageBox.Show("Patient Configuration Successful");
                 btnClear_Click(this, e);
+
+                if (checkBox1.Checked)
+                    LaunchPrintDialog();
             }
             catch (Exception)
             {
@@ -274,7 +277,7 @@ namespace PatientDataAdministration.DemoClient
         {
             try
             {
-                var mRegMin = new byte[400];
+                var mDataMin = new byte[400];
 
                 var fpImage = new byte[_pInfo.ImageWidth * _pInfo.ImageHeight];
 
@@ -282,15 +285,27 @@ namespace PatientDataAdministration.DemoClient
 
                 if (iError == (int)SGFPMError.ERROR_NONE)
                 {
-                    if (_mFpm.CreateTemplate(fpImage, mRegMin) == 0)
+                    DrawImage(fpImage);
+
+                    if (_lockAndLoad)
                     {
-                        DrawImage(fpImage);
-                        return Convert.ToBase64String(_lockAndLoad ? fpImage : mRegMin);
+                        if (_mFpm.CreateTemplate(null, fpImage, mDataMin) == 0)
+                            return Convert.ToBase64String(mDataMin);
+                        else
+                        {
+                            pictureBox1.Image = DemoClient.Properties.Resources.icons8_Cancel_48px;
+                            return string.Empty;
+                        }
                     }
                     else
                     {
-                        pictureBox1.Image = DemoClient.Properties.Resources.icons8_Cancel_48px;
-                        return string.Empty;
+                        if (_mFpm.CreateTemplate(fpImage, mDataMin) == 0)
+                            return Convert.ToBase64String(mDataMin);
+                        else
+                        {
+                            pictureBox1.Image = DemoClient.Properties.Resources.icons8_Cancel_48px;
+                            return string.Empty;
+                        }
                     }
                 }
                 else
@@ -448,8 +463,6 @@ namespace PatientDataAdministration.DemoClient
 
             _patientDataStore = _demoDb.PatientDatas.Where(x => !x.IsDeleted).ToList();
 
-            var matchingPatient = new PatientData();
-
             foreach (var pds in _patientDataStore)
             {
                 _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerPrimary), capturedBioData,
@@ -464,41 +477,49 @@ namespace PatientDataAdministration.DemoClient
 
                 MessageBox.Show("Patient Found");
 
-                matchingPatient = pds;
+                _patientData = pds;
                 gradientPanel2.Visible = false;
                 break;
             }
 
-            if (matchingPatient.Id != 0)
+            if (matched)
             {
-                txtEmail.Text = matchingPatient.Email;
-                txtDateOfBirth.Value = matchingPatient.DateOfBirth.Date;
-                txtFacilityNumber.Text = matchingPatient.FacilityNumber;
-                txtHeight.Text = matchingPatient.VitalsHeight?.ToString("0.00") ?? "0.00";
-                txtWeight.Text = matchingPatient.VitalsWeight?.ToString("0.00") ?? "0.00";
-                txtHospitalNumber.Text = matchingPatient.HospitalNumber;
-                txtHouseAddress.Text = matchingPatient.HouseAddress;
-                txtMaritalStatus.Text = matchingPatient.MaritalStatus;
+                txtEmail.Text = _patientData.Email;
+                txtDateOfBirth.Value = _patientData.DateOfBirth.Date;
+                txtFacilityNumber.Text = _patientData.FacilityNumber;
+                txtHeight.Text = _patientData.VitalsHeight?.ToString("0.00") ?? "0.00";
+                txtWeight.Text = _patientData.VitalsWeight?.ToString("0.00") ?? "0.00";
+                txtHospitalNumber.Text = _patientData.HospitalNumber;
+                txtHouseAddress.Text = _patientData.HouseAddress;
+                txtMaritalStatus.Text = _patientData.MaritalStatus;
 
-                txtPassport.Image = ByteToImage(Convert.FromBase64String(matchingPatient.PassportImage));
+                txtPassport.Image = ByteToImage(Convert.FromBase64String(_patientData.PassportImage));
 
-                txtPatientHospitalNumber.Text = matchingPatient.ClientNumber;
-                txtPepId.Text = matchingPatient.PepId;
-                txtOthername.Text = matchingPatient.Othernames;
-                txtPhoneNumber.Text = matchingPatient.PhoneHumber;
-                txtSex.Text = matchingPatient.Sex;
-                txtSiteName.Text = matchingPatient.SiteName;
-                txtSurname.Text = matchingPatient.Surname;
+                txtPatientHospitalNumber.Text = _patientData.ClientNumber;
+                txtPepId.Text = _patientData.PepId;
+                txtOthername.Text = _patientData.Othernames;
+                txtPhoneNumber.Text = _patientData.PhoneHumber;
+                txtSex.Text = _patientData.Sex;
+                txtSiteName.Text = _patientData.SiteName;
+                txtSurname.Text = _patientData.Surname;
+                txtStateOfOrigin.Text = _patientData.StateOfOrigin;
 
-                _bioFinger1 = matchingPatient.BioDataFingerPrimary;
-                _bioFinger2 = matchingPatient.BioDataFingerSecondary;
+                _bioFinger1 = _patientData.BioDataFingerPrimary;
+                _bioFinger2 = _patientData.BioDataFingerSecondary;
+
+                if (txtPassport.Image.Height > txtPassport.Height || txtPassport.Image.Width > txtPassport.Width)
+                    txtPassport.SizeMode = PictureBoxSizeMode.Zoom;
+                else
+                    txtPassport.SizeMode = PictureBoxSizeMode.CenterImage;
             }
+            else
+                MessageBox.Show("No Match Found");
         }
 
         private static Bitmap ByteToImage(byte[] blob)
         {
             var mStream = new MemoryStream();
-           var pData = blob;
+            var pData = blob;
             mStream.Write(pData, 0, Convert.ToInt32(pData.Length));
             var bm = new Bitmap(mStream, false);
             mStream.Dispose();
@@ -508,6 +529,22 @@ namespace PatientDataAdministration.DemoClient
         private void buttonFind_Click(object sender, EventArgs e)
         {
             gradientPanel2.Visible = false;
+        }
+
+        private void LaunchPrintDialog()
+        {
+            var print = new Print(_patientData);
+            print.Show();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            LaunchPrintDialog();
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

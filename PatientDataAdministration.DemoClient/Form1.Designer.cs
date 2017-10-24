@@ -58,7 +58,6 @@
             this.toolStripEx1 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
             this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTabItem2 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
             this.toolStripEx3 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
@@ -404,12 +403,11 @@
             this.toolStripEx1.Image = null;
             this.toolStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton14,
-            this.toolStripButton21,
-            this.toolStripButton20});
+            this.toolStripButton21});
             this.toolStripEx1.Location = new System.Drawing.Point(0, 1);
             this.toolStripEx1.Name = "toolStripEx1";
             this.toolStripEx1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.toolStripEx1.Size = new System.Drawing.Size(181, 103);
+            this.toolStripEx1.Size = new System.Drawing.Size(129, 103);
             this.toolStripEx1.TabIndex = 0;
             // 
             // toolStripButton14
@@ -438,19 +436,6 @@
             this.toolStripButton21.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripButton21.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.toolStripButton21.Click += new System.EventHandler(this.toolStripButton21_Click);
-            // 
-            // toolStripButton20
-            // 
-            this.toolStripButton20.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Safety_Collection_Place_48px;
-            this.toolStripButton20.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.toolStripButton20.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.toolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton20.Name = "toolStripButton20";
-            this.toolStripButton20.Size = new System.Drawing.Size(53, 77);
-            this.toolStripButton20.Text = "Manage";
-            this.toolStripButton20.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.toolStripButton20.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
-            this.toolStripButton20.ToolTipText = "Register";
             // 
             // toolStripButton12
             // 
@@ -541,7 +526,7 @@
             this.gradientPanelExt1.Controls.Add(this.label2);
             this.gradientPanelExt1.Controls.Add(this.label1);
             this.gradientPanelExt1.CornerRadius = 5;
-            this.gradientPanelExt1.Location = new System.Drawing.Point(4, 217);
+            this.gradientPanelExt1.Location = new System.Drawing.Point(4, 171);
             this.gradientPanelExt1.Name = "gradientPanelExt1";
             this.gradientPanelExt1.Size = new System.Drawing.Size(260, 97);
             this.gradientPanelExt1.TabIndex = 3;
@@ -583,7 +568,7 @@
             this.gradientPanelExt2.Controls.Add(this.label3);
             this.gradientPanelExt2.Controls.Add(this.label4);
             this.gradientPanelExt2.CornerRadius = 5;
-            this.gradientPanelExt2.Location = new System.Drawing.Point(4, 320);
+            this.gradientPanelExt2.Location = new System.Drawing.Point(4, 274);
             this.gradientPanelExt2.Name = "gradientPanelExt2";
             this.gradientPanelExt2.Size = new System.Drawing.Size(260, 97);
             this.gradientPanelExt2.TabIndex = 4;
@@ -621,7 +606,7 @@
             this.button2.BackColor = System.Drawing.Color.Maroon;
             this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(797, 382);
+            this.button2.Location = new System.Drawing.Point(800, 335);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 41);
             this.button2.TabIndex = 127;
@@ -632,7 +617,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.apin;
-            this.pictureBox1.Location = new System.Drawing.Point(603, 217);
+            this.pictureBox1.Location = new System.Drawing.Point(603, 171);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(324, 161);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -682,7 +667,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.Borders = new System.Windows.Forms.Padding(0);
-            this.ClientSize = new System.Drawing.Size(931, 427);
+            this.ClientSize = new System.Drawing.Size(931, 380);
             this.ColorScheme = Syncfusion.Windows.Forms.Tools.RibbonForm.ColorSchemeType.Silver;
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
@@ -765,7 +750,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolStripButton toolStripButton14;
-        private System.Windows.Forms.ToolStripButton toolStripButton20;
         private System.Windows.Forms.ToolStripButton toolStripButton15;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripButton toolStripButton21;

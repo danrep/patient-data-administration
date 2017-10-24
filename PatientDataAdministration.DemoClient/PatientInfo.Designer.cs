@@ -55,11 +55,11 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.gradientPanel11 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.txtSiteName = new System.Windows.Forms.ComboBox();
             this.gradientPanel2 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.label21 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnCapture = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label20 = new System.Windows.Forms.Label();
             this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
             this.txtHeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
@@ -69,9 +69,6 @@
             this.gradientLabel2 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientLabel1 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientPanel1 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
-            this.btnDataFinger2 = new System.Windows.Forms.Button();
-            this.btnDataFinger1 = new System.Windows.Forms.Button();
-            this.btnDataCard = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.txtHospitalNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label11 = new System.Windows.Forms.Label();
@@ -81,17 +78,22 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtDateOfBirth = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
-            this.txtPassport = new System.Windows.Forms.PictureBox();
             this.monthCalendarAdv1 = new Syncfusion.Windows.Forms.Tools.MonthCalendarAdv();
             this.btnClear = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tmrCheckBioCon = new System.Windows.Forms.Timer(this.components);
             this.lblBioDeviceInfo = new System.Windows.Forms.Label();
             this.checkBioData = new System.Windows.Forms.Timer(this.components);
-            this.txtSiteName = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnFind = new System.Windows.Forms.Button();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnDataFinger2 = new System.Windows.Forms.Button();
+            this.btnDataFinger1 = new System.Windows.Forms.Button();
+            this.btnDataCard = new System.Windows.Forms.Button();
+            this.txtPassport = new System.Windows.Forms.PictureBox();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).BeginInit();
@@ -102,7 +104,6 @@
             this.gradientPanel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).BeginInit();
             this.gradientPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).BeginInit();
@@ -111,10 +112,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
@@ -155,7 +157,7 @@
             // txtPepId
             // 
             this.txtPepId.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPepId.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtPepId.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtPepId.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPepId.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -199,7 +201,7 @@
             // txtSurname
             // 
             this.txtSurname.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtSurname.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtSurname.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtSurname.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtSurname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSurname.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -225,7 +227,7 @@
             // txtOthername
             // 
             this.txtOthername.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtOthername.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtOthername.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtOthername.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtOthername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtOthername.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -251,7 +253,7 @@
             // txtHouseAddress
             // 
             this.txtHouseAddress.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHouseAddress.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtHouseAddress.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtHouseAddress.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHouseAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHouseAddress.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -277,7 +279,7 @@
             // txtPhoneNumber
             // 
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtPhoneNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtPhoneNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPhoneNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -303,7 +305,7 @@
             // txtEmail
             // 
             this.txtEmail.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtEmail.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtEmail.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmail.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -390,13 +392,14 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(4, 12);
+            this.label12.Location = new System.Drawing.Point(8, 6);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(189, 15);
+            this.label12.Size = new System.Drawing.Size(182, 13);
             this.label12.TabIndex = 137;
-            this.label12.Text = "Click to add or replace Fingerprints";
+            this.label12.Text = "Click to dd or replace Fingerprints";
+            this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // label13
             // 
@@ -416,10 +419,12 @@
             this.gradientPanel11.BackColor = System.Drawing.Color.White;
             this.gradientPanel11.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(178)))), ((int)(((byte)(227)))));
             this.gradientPanel11.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel11.Controls.Add(this.button2);
             this.gradientPanel11.Controls.Add(this.txtSiteName);
             this.gradientPanel11.Controls.Add(this.gradientPanel2);
             this.gradientPanel11.Controls.Add(this.label20);
             this.gradientPanel11.Controls.Add(this.txtStateOfOrigin);
+            this.gradientPanel11.Controls.Add(this.checkBox1);
             this.gradientPanel11.Controls.Add(this.txtHeight);
             this.gradientPanel11.Controls.Add(this.label18);
             this.gradientPanel11.Controls.Add(this.txtWeight);
@@ -465,6 +470,21 @@
             this.gradientPanel11.Click += new System.EventHandler(this.PatientInfo_Click);
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
             // 
+            // txtSiteName
+            // 
+            this.txtSiteName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSiteName.FormattingEnabled = true;
+            this.txtSiteName.Items.AddRange(new object[] {
+            "Single",
+            "Married",
+            "Divorced",
+            "Widowed"});
+            this.txtSiteName.Location = new System.Drawing.Point(182, 50);
+            this.txtSiteName.Name = "txtSiteName";
+            this.txtSiteName.Size = new System.Drawing.Size(628, 31);
+            this.txtSiteName.TabIndex = 99;
+            // 
             // gradientPanel2
             // 
             this.gradientPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -481,7 +501,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(4, 235);
+            this.label21.Location = new System.Drawing.Point(3, 235);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(16, 14);
             this.label21.TabIndex = 79;
@@ -489,7 +509,7 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.OrangeRed;
+            this.button1.BackColor = System.Drawing.Color.Maroon;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
@@ -503,7 +523,7 @@
             // 
             // btnCapture
             // 
-            this.btnCapture.BackColor = System.Drawing.Color.ForestGreen;
+            this.btnCapture.BackColor = System.Drawing.Color.DarkOliveGreen;
             this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCapture.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCapture.ForeColor = System.Drawing.Color.White;
@@ -514,17 +534,6 @@
             this.btnCapture.Text = "Capture Fingerprint";
             this.btnCapture.UseVisualStyleBackColor = false;
             this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 76;
-            this.pictureBox1.TabStop = false;
             // 
             // label20
             // 
@@ -559,7 +568,7 @@
             // txtHeight
             // 
             this.txtHeight.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHeight.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtHeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtHeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -585,7 +594,7 @@
             // txtWeight
             // 
             this.txtWeight.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtWeight.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtWeight.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtWeight.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtWeight.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtWeight.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -615,6 +624,7 @@
             this.gradientLabel2.BorderSides = ((System.Windows.Forms.Border3DSide)((((System.Windows.Forms.Border3DSide.Left | System.Windows.Forms.Border3DSide.Top) 
             | System.Windows.Forms.Border3DSide.Right) 
             | System.Windows.Forms.Border3DSide.Bottom)));
+            this.gradientLabel2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gradientLabel2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gradientLabel2.Location = new System.Drawing.Point(11, 5);
             this.gradientLabel2.Name = "gradientLabel2";
@@ -622,6 +632,7 @@
             this.gradientLabel2.TabIndex = 91;
             this.gradientLabel2.Text = "Personal Information";
             this.gradientLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.gradientLabel2.UseMnemonic = false;
             // 
             // gradientLabel1
             // 
@@ -630,6 +641,7 @@
             this.gradientLabel1.BorderSides = ((System.Windows.Forms.Border3DSide)((((System.Windows.Forms.Border3DSide.Left | System.Windows.Forms.Border3DSide.Top) 
             | System.Windows.Forms.Border3DSide.Right) 
             | System.Windows.Forms.Border3DSide.Bottom)));
+            this.gradientLabel1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.gradientLabel1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gradientLabel1.Location = new System.Drawing.Point(11, 283);
             this.gradientLabel1.Name = "gradientLabel1";
@@ -648,52 +660,11 @@
             this.gradientPanel1.Controls.Add(this.label12);
             this.gradientPanel1.Controls.Add(this.btnDataFinger1);
             this.gradientPanel1.Controls.Add(this.btnDataCard);
-            this.gradientPanel1.Location = new System.Drawing.Point(744, 251);
+            this.gradientPanel1.Location = new System.Drawing.Point(744, 252);
             this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.Size = new System.Drawing.Size(200, 168);
+            this.gradientPanel1.Size = new System.Drawing.Size(200, 83);
             this.gradientPanel1.TabIndex = 83;
             this.gradientPanel1.Click += new System.EventHandler(this.PatientInfo_Click);
-            // 
-            // btnDataFinger2
-            // 
-            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
-            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger2.Location = new System.Drawing.Point(145, 34);
-            this.btnDataFinger2.Name = "btnDataFinger2";
-            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger2.TabIndex = 135;
-            this.btnDataFinger2.UseVisualStyleBackColor = false;
-            this.btnDataFinger2.Click += new System.EventHandler(this.btnDataFinger2_Click);
-            // 
-            // btnDataFinger1
-            // 
-            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
-            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger1.Location = new System.Drawing.Point(91, 34);
-            this.btnDataFinger1.Name = "btnDataFinger1";
-            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger1.TabIndex = 134;
-            this.btnDataFinger1.UseVisualStyleBackColor = false;
-            this.btnDataFinger1.Click += new System.EventHandler(this.btnDataFinger1_Click);
-            // 
-            // btnDataCard
-            // 
-            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
-            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
-            this.btnDataCard.FlatAppearance.BorderSize = 0;
-            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataCard.Location = new System.Drawing.Point(145, 108);
-            this.btnDataCard.Name = "btnDataCard";
-            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
-            this.btnDataCard.TabIndex = 136;
-            this.btnDataCard.UseVisualStyleBackColor = false;
             // 
             // label17
             // 
@@ -706,7 +677,7 @@
             // txtHospitalNumber
             // 
             this.txtHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtHospitalNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -732,7 +703,7 @@
             // txtPatientHospitalNumber
             // 
             this.txtPatientHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtPatientHospitalNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtPatientHospitalNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtPatientHospitalNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtPatientHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPatientHospitalNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -758,7 +729,7 @@
             // txtFacilityNumber
             // 
             this.txtFacilityNumber.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtFacilityNumber.BeforeTouchSize = new System.Drawing.Size(110, 31);
+            this.txtFacilityNumber.BeforeTouchSize = new System.Drawing.Size(240, 31);
             this.txtFacilityNumber.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
             this.txtFacilityNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFacilityNumber.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -796,6 +767,7 @@
             this.txtDateOfBirth.Border3DStyle = System.Windows.Forms.Border3DStyle.Flat;
             this.txtDateOfBirth.BorderColor = System.Drawing.Color.Empty;
             this.txtDateOfBirth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtDateOfBirth.CalendarFont = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDateOfBirth.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
             this.txtDateOfBirth.CalendarSize = new System.Drawing.Size(189, 176);
             this.txtDateOfBirth.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
@@ -813,17 +785,6 @@
             this.txtDateOfBirth.Style = Syncfusion.Windows.Forms.VisualStyle.Office2010;
             this.txtDateOfBirth.TabIndex = 75;
             this.txtDateOfBirth.Value = new System.DateTime(2017, 10, 19, 16, 46, 46, 851);
-            // 
-            // txtPassport
-            // 
-            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
-            this.txtPassport.Location = new System.Drawing.Point(816, 50);
-            this.txtPassport.Name = "txtPassport";
-            this.txtPassport.Size = new System.Drawing.Size(128, 187);
-            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.txtPassport.TabIndex = 71;
-            this.txtPassport.TabStop = false;
             // 
             // monthCalendarAdv1
             // 
@@ -859,11 +820,12 @@
             // 
             // btnClear
             // 
-            this.btnClear.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnClear.BackColor = System.Drawing.Color.SteelBlue;
             this.btnClear.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.Location = new System.Drawing.Point(477, 3);
+            this.btnClear.ForeColor = System.Drawing.Color.White;
+            this.btnClear.Location = new System.Drawing.Point(493, 3);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(120, 41);
+            this.btnClear.Size = new System.Drawing.Size(104, 41);
             this.btnClear.TabIndex = 128;
             this.btnClear.Text = "Clear all Inputs";
             this.btnClear.UseVisualStyleBackColor = false;
@@ -889,7 +851,7 @@
             this.lblBioDeviceInfo.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBioDeviceInfo.Location = new System.Drawing.Point(3, 0);
             this.lblBioDeviceInfo.Name = "lblBioDeviceInfo";
-            this.lblBioDeviceInfo.Size = new System.Drawing.Size(330, 41);
+            this.lblBioDeviceInfo.Size = new System.Drawing.Size(343, 41);
             this.lblBioDeviceInfo.TabIndex = 129;
             this.lblBioDeviceInfo.Text = "...";
             this.lblBioDeviceInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -899,21 +861,6 @@
             this.checkBioData.Enabled = true;
             this.checkBioData.Interval = 500;
             this.checkBioData.Tick += new System.EventHandler(this.checkBioData_Tick);
-            // 
-            // txtSiteName
-            // 
-            this.txtSiteName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSiteName.FormattingEnabled = true;
-            this.txtSiteName.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed"});
-            this.txtSiteName.Location = new System.Drawing.Point(182, 50);
-            this.txtSiteName.Name = "txtSiteName";
-            this.txtSiteName.Size = new System.Drawing.Size(628, 31);
-            this.txtSiteName.TabIndex = 99;
             // 
             // flowLayoutPanel1
             // 
@@ -929,28 +876,117 @@
             this.flowLayoutPanel1.Size = new System.Drawing.Size(954, 48);
             this.flowLayoutPanel1.TabIndex = 130;
             // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.lblBioDeviceInfo);
-            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 3);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(333, 41);
-            this.flowLayoutPanel2.TabIndex = 129;
-            // 
             // btnFind
             // 
-            this.btnFind.BackColor = System.Drawing.Color.SkyBlue;
+            this.btnFind.BackColor = System.Drawing.Color.SteelBlue;
             this.btnFind.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFind.Location = new System.Drawing.Point(351, 3);
+            this.btnFind.ForeColor = System.Drawing.Color.White;
+            this.btnFind.Location = new System.Drawing.Point(383, 3);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(120, 41);
+            this.btnFind.Size = new System.Drawing.Size(104, 41);
             this.btnFind.TabIndex = 130;
             this.btnFind.Text = "Find";
             this.btnFind.UseVisualStyleBackColor = false;
             this.btnFind.Visible = false;
             this.btnFind.Click += new System.EventHandler(this.buttonFind_Click);
+            // 
+            // flowLayoutPanel2
+            // 
+            this.flowLayoutPanel2.Controls.Add(this.lblBioDeviceInfo);
+            this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.BottomUp;
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(31, 3);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(346, 41);
+            this.flowLayoutPanel2.TabIndex = 129;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.ForeColor = System.Drawing.Color.SteelBlue;
+            this.checkBox1.Location = new System.Drawing.Point(798, 11);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(146, 17);
+            this.checkBox1.TabIndex = 130;
+            this.checkBox1.Text = "Show Print Dialog on Save";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
+            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 76;
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnDataFinger2
+            // 
+            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
+            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger2.Location = new System.Drawing.Point(145, 28);
+            this.btnDataFinger2.Name = "btnDataFinger2";
+            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger2.TabIndex = 135;
+            this.btnDataFinger2.UseVisualStyleBackColor = false;
+            this.btnDataFinger2.Click += new System.EventHandler(this.btnDataFinger2_Click);
+            // 
+            // btnDataFinger1
+            // 
+            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
+            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger1.Location = new System.Drawing.Point(91, 28);
+            this.btnDataFinger1.Name = "btnDataFinger1";
+            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger1.TabIndex = 134;
+            this.btnDataFinger1.UseVisualStyleBackColor = false;
+            this.btnDataFinger1.Click += new System.EventHandler(this.btnDataFinger1_Click);
+            // 
+            // btnDataCard
+            // 
+            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
+            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
+            this.btnDataCard.FlatAppearance.BorderSize = 0;
+            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataCard.Location = new System.Drawing.Point(145, 108);
+            this.btnDataCard.Name = "btnDataCard";
+            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
+            this.btnDataCard.TabIndex = 136;
+            this.btnDataCard.UseVisualStyleBackColor = false;
+            // 
+            // txtPassport
+            // 
+            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
+            this.txtPassport.Location = new System.Drawing.Point(816, 50);
+            this.txtPassport.Name = "txtPassport";
+            this.txtPassport.Size = new System.Drawing.Size(128, 187);
+            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.txtPassport.TabIndex = 71;
+            this.txtPassport.TabStop = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.SteelBlue;
+            this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(688, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(104, 23);
+            this.button2.TabIndex = 131;
+            this.button2.Text = "Print";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // PatientInfo
             // 
@@ -984,7 +1020,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).EndInit();
             this.gradientPanel2.ResumeLayout(false);
             this.gradientPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).EndInit();
@@ -994,10 +1029,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1065,5 +1101,7 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Button btnFind;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button2;
     }
 }
