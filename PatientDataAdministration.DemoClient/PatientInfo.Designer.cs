@@ -55,13 +55,16 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.gradientPanel11 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.button2 = new System.Windows.Forms.Button();
             this.txtSiteName = new System.Windows.Forms.ComboBox();
             this.gradientPanel2 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.label21 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnCapture = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label20 = new System.Windows.Forms.Label();
             this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.txtHeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label18 = new System.Windows.Forms.Label();
             this.txtWeight = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
@@ -69,6 +72,9 @@
             this.gradientLabel2 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientLabel1 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientPanel1 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.btnDataFinger2 = new System.Windows.Forms.Button();
+            this.btnDataFinger1 = new System.Windows.Forms.Button();
+            this.btnDataCard = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.txtHospitalNumber = new Syncfusion.Windows.Forms.Tools.TextBoxExt();
             this.label11 = new System.Windows.Forms.Label();
@@ -78,6 +84,7 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtDateOfBirth = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
+            this.txtPassport = new System.Windows.Forms.PictureBox();
             this.monthCalendarAdv1 = new Syncfusion.Windows.Forms.Tools.MonthCalendarAdv();
             this.btnClear = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -87,13 +94,6 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnFind = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnDataFinger2 = new System.Windows.Forms.Button();
-            this.btnDataFinger1 = new System.Windows.Forms.Button();
-            this.btnDataCard = new System.Windows.Forms.Button();
-            this.txtPassport = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).BeginInit();
@@ -104,6 +104,7 @@
             this.gradientPanel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).BeginInit();
             this.gradientPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).BeginInit();
@@ -112,11 +113,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
@@ -470,16 +470,111 @@
             this.gradientPanel11.Click += new System.EventHandler(this.PatientInfo_Click);
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
             // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.SteelBlue;
+            this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Location = new System.Drawing.Point(688, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(104, 23);
+            this.button2.TabIndex = 131;
+            this.button2.Text = "Print";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // txtSiteName
             // 
             this.txtSiteName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.txtSiteName.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSiteName.FormattingEnabled = true;
             this.txtSiteName.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed"});
+            "Ahmadu Bello University Teaching Hospital",
+            "Administrator",
+            "Adeoyo Specialist Hospital",
+            "African Future International",
+            "African Health Project",
+            "Ancilla Catholic Hospital",
+            "Association for Family and Reproductive Health, Ibadan",
+            "General Hospital Askira",
+            "General Hosptal, Angware (aka Cottage General Hospital, Angware, Jos East)",
+            "Comprehensive Health Center, Banki",
+            "Barkin Ladi General Hospital",
+            "Baptist Medical Center Saki",
+            "General Hospital Briyel",
+            "Bingham University Teaching Hospital, Jos",
+            "Community Hospital, Abwa",
+            "General Hospital, Chibok",
+            "Comprehensive Health Centre, Dadin Kowa",
+            "General Hospital Damasak",
+            "St. Mary\'s Catholic Hospital, Eleta Hospital",
+            "St. Kizito Catholic Clinic Eti Osa",
+            "Education as a Vaccine Against AIDS",
+            "Police Hospital Falomo",
+            "Makurdi Federal Medical Center",
+            "General Hospital Gashua, Yobe State",
+            "Harvey Road Comprehensive Center, Yaba",
+            "Humanity Family Foundation for Peace & Development",
+            "Halt Aids Group, Jos",
+            "General Hospital Idekpa",
+            "General Hospital Ifako Ijaiye",
+            "General Hospital Igbeti",
+            "General Hospital Igboho",
+            "General Hospital, Ijebu-Ode",
+            "General Hospital Ibeju Lekki",
+            "General Hospital Iwere-lle",
+            "St. Joseph\'s Hospital, Kirikiri",
+            "Jos University Teaching Hospital",
+            "General Hospital Kisi Irepo",
+            "Karale Association for HIV Prevention",
+            "Cottage Hospital, Kwalla",
+            "SHH Lantoro Prevention Team",
+            "General Hospital Lassa",
+            "Sacred Heart Catholic Hospital, Lantoro",
+            "Lagos University Teaching Hospital",
+            "Comprehensive Health Center, Madagali",
+            "May Clinic, Shendam",
+            "Mashiah Foundation, Jos",
+            "General Hospital, Mangu",
+            "68 Military Hospital (Nigerian Army Reference Hospital)",
+            "General Hospital Moniya",
+            "General Hospital, Mushin",
+            "The Mercy Vincent Foundation",
+            "General Hospital Ngala",
+            "Nursing Home Maiduguri, Maiduguri",
+            "National Institute of Medical Research",
+            "General Hospital, Ngoshe",
+            "Federal Medical Center, Nguru",
+            "General Hospital Obagaji (Agatu LGA)",
+            "General Hospital, Ogbomoso",
+            "General Hospital Okeho",
+            "\"Primary Health Care Center, Ojodu",
+            "General Hospital Obarike Ito",
+            "Our Lady of Apostles",
+            "Onikan Women\'s Hospital",
+            "General Hospital Orile Odo ",
+            "The Patriots",
+            "Positive Action Committee ",
+            "Pankshin General Hospital",
+            "Plateau State Specialist Hospital, Jos",
+            "Panyam Maternity Hospital",
+            "General Hospital Quan Pan",
+            "Seventh Day Adventist Hospital, Jengre",
+            "General Hospital, Shendam",
+            "Seventh Day Adventist Ile-Ife",
+            "Solat Women Hospital",
+            "State Specialist Hospital, Maiduguri",
+            "General Hospital Shani",
+            "St. Kizito Catholic Clinic Surulere",
+            "Society for Women & AIDS in Africa, Nigeria",
+            "General Hospital, Tunkus",
+            "University College Hospital",
+            "General Hospital Ugba (Logo LGA)",
+            "University of Maiduguri Teaching Hospital",
+            "University of Nigeria Teaching Hospital",
+            "St. Virgilus Clinic",
+            "Vom Christian Hospital",
+            "JUTH, Comprehensive Health Centre, Zamko"});
             this.txtSiteName.Location = new System.Drawing.Point(182, 50);
             this.txtSiteName.Name = "txtSiteName";
             this.txtSiteName.Size = new System.Drawing.Size(628, 31);
@@ -535,6 +630,17 @@
             this.btnCapture.UseVisualStyleBackColor = false;
             this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
+            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 76;
+            this.pictureBox1.TabStop = false;
+            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -564,6 +670,18 @@
             this.txtStateOfOrigin.Size = new System.Drawing.Size(227, 31);
             this.txtStateOfOrigin.Sorted = true;
             this.txtStateOfOrigin.TabIndex = 96;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.ForeColor = System.Drawing.Color.SteelBlue;
+            this.checkBox1.Location = new System.Drawing.Point(798, 11);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(146, 17);
+            this.checkBox1.TabIndex = 130;
+            this.checkBox1.Text = "Show Print Dialog on Save";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // txtHeight
             // 
@@ -666,6 +784,47 @@
             this.gradientPanel1.TabIndex = 83;
             this.gradientPanel1.Click += new System.EventHandler(this.PatientInfo_Click);
             // 
+            // btnDataFinger2
+            // 
+            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
+            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger2.Location = new System.Drawing.Point(145, 28);
+            this.btnDataFinger2.Name = "btnDataFinger2";
+            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger2.TabIndex = 135;
+            this.btnDataFinger2.UseVisualStyleBackColor = false;
+            this.btnDataFinger2.Click += new System.EventHandler(this.btnDataFinger2_Click);
+            // 
+            // btnDataFinger1
+            // 
+            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
+            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
+            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
+            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataFinger1.Location = new System.Drawing.Point(91, 28);
+            this.btnDataFinger1.Name = "btnDataFinger1";
+            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
+            this.btnDataFinger1.TabIndex = 134;
+            this.btnDataFinger1.UseVisualStyleBackColor = false;
+            this.btnDataFinger1.Click += new System.EventHandler(this.btnDataFinger1_Click);
+            // 
+            // btnDataCard
+            // 
+            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
+            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
+            this.btnDataCard.FlatAppearance.BorderSize = 0;
+            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDataCard.Location = new System.Drawing.Point(145, 108);
+            this.btnDataCard.Name = "btnDataCard";
+            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
+            this.btnDataCard.TabIndex = 136;
+            this.btnDataCard.UseVisualStyleBackColor = false;
+            // 
             // label17
             // 
             this.label17.BackColor = System.Drawing.Color.SteelBlue;
@@ -767,7 +926,6 @@
             this.txtDateOfBirth.Border3DStyle = System.Windows.Forms.Border3DStyle.Flat;
             this.txtDateOfBirth.BorderColor = System.Drawing.Color.Empty;
             this.txtDateOfBirth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtDateOfBirth.CalendarFont = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDateOfBirth.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
             this.txtDateOfBirth.CalendarSize = new System.Drawing.Size(189, 176);
             this.txtDateOfBirth.CalendarTitleBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(221)))), ((int)(((byte)(238)))));
@@ -785,6 +943,17 @@
             this.txtDateOfBirth.Style = Syncfusion.Windows.Forms.VisualStyle.Office2010;
             this.txtDateOfBirth.TabIndex = 75;
             this.txtDateOfBirth.Value = new System.DateTime(2017, 10, 19, 16, 46, 46, 851);
+            // 
+            // txtPassport
+            // 
+            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
+            this.txtPassport.Location = new System.Drawing.Point(816, 50);
+            this.txtPassport.Name = "txtPassport";
+            this.txtPassport.Size = new System.Drawing.Size(128, 187);
+            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.txtPassport.TabIndex = 71;
+            this.txtPassport.TabStop = false;
             // 
             // monthCalendarAdv1
             // 
@@ -900,94 +1069,6 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(346, 41);
             this.flowLayoutPanel2.TabIndex = 129;
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.ForeColor = System.Drawing.Color.SteelBlue;
-            this.checkBox1.Location = new System.Drawing.Point(798, 11);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(146, 17);
-            this.checkBox1.TabIndex = 130;
-            this.checkBox1.Text = "Show Print Dialog on Save";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 76;
-            this.pictureBox1.TabStop = false;
-            // 
-            // btnDataFinger2
-            // 
-            this.btnDataFinger2.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger2.BackgroundImage")));
-            this.btnDataFinger2.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger2.Location = new System.Drawing.Point(145, 28);
-            this.btnDataFinger2.Name = "btnDataFinger2";
-            this.btnDataFinger2.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger2.TabIndex = 135;
-            this.btnDataFinger2.UseVisualStyleBackColor = false;
-            this.btnDataFinger2.Click += new System.EventHandler(this.btnDataFinger2_Click);
-            // 
-            // btnDataFinger1
-            // 
-            this.btnDataFinger1.BackColor = System.Drawing.Color.Gray;
-            this.btnDataFinger1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDataFinger1.BackgroundImage")));
-            this.btnDataFinger1.FlatAppearance.BorderSize = 0;
-            this.btnDataFinger1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataFinger1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataFinger1.Location = new System.Drawing.Point(91, 28);
-            this.btnDataFinger1.Name = "btnDataFinger1";
-            this.btnDataFinger1.Size = new System.Drawing.Size(48, 48);
-            this.btnDataFinger1.TabIndex = 134;
-            this.btnDataFinger1.UseVisualStyleBackColor = false;
-            this.btnDataFinger1.Click += new System.EventHandler(this.btnDataFinger1_Click);
-            // 
-            // btnDataCard
-            // 
-            this.btnDataCard.BackColor = System.Drawing.Color.Gray;
-            this.btnDataCard.BackgroundImage = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_NFC_48px;
-            this.btnDataCard.FlatAppearance.BorderSize = 0;
-            this.btnDataCard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDataCard.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDataCard.Location = new System.Drawing.Point(145, 108);
-            this.btnDataCard.Name = "btnDataCard";
-            this.btnDataCard.Size = new System.Drawing.Size(48, 48);
-            this.btnDataCard.TabIndex = 136;
-            this.btnDataCard.UseVisualStyleBackColor = false;
-            // 
-            // txtPassport
-            // 
-            this.txtPassport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPassport.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Image_File_48px;
-            this.txtPassport.Location = new System.Drawing.Point(816, 50);
-            this.txtPassport.Name = "txtPassport";
-            this.txtPassport.Size = new System.Drawing.Size(128, 187);
-            this.txtPassport.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.txtPassport.TabIndex = 71;
-            this.txtPassport.TabStop = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.SteelBlue;
-            this.button2.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(688, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(104, 23);
-            this.button2.TabIndex = 131;
-            this.button2.Text = "Print";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
-            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
@@ -1020,6 +1101,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).EndInit();
             this.gradientPanel2.ResumeLayout(false);
             this.gradientPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtHeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtWeight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).EndInit();
@@ -1029,11 +1111,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtPatientHospitalNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFacilityNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPassport)).EndInit();
             this.ResumeLayout(false);
 
         }
