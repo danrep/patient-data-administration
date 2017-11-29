@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Syncfusion.Windows.Forms;
 using Syncfusion.Windows.Forms.Tools;
@@ -21,7 +16,7 @@ namespace PatientDataAdministration.DemoClient
 {
     public partial class PatientInfo : MetroForm
     {
-        private readonly DemoDbEntities _demoDb = new DemoDbEntities();
+        //private readonly DemoDbEntities _demoDb = new DemoDbEntities(); 
 
         private string _bioFinger1;
         private string _bioFinger2;
@@ -30,7 +25,8 @@ namespace PatientDataAdministration.DemoClient
         private string _cardChip;
         private string _passportImage;
 
-        private List<PatientData> _patientDataStore = new List<PatientData>(); 
+        private List<PatientData> _patientDataStore = new List<PatientData>();
+        DemoDbContext _demoDb = new DemoDbContext();
 
         private SGFingerPrintManager _mFpm;
         private SGFPMDeviceInfoParam _pInfo;
@@ -96,6 +92,7 @@ namespace PatientDataAdministration.DemoClient
 
                 if (_patientData.Id == 0)
                 {
+
                     var patientInfo =
                         _demoDb.PatientDatas.FirstOrDefault(
                             x => x.PhoneHumber == txtPhoneNumber.Text.Trim() && !x.IsDeleted);
@@ -465,21 +462,28 @@ namespace PatientDataAdministration.DemoClient
 
             foreach (var pds in _patientDataStore)
             {
-                _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerPrimary), capturedBioData,
-                    SGFPMSecurityLevel.HIGH, ref matched);
-
-                if (!matched)
-                    _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerSecondary), capturedBioData,
+                try
+                {
+                    _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerPrimary), capturedBioData,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
-                if (!matched)
-                    continue;
+                    if (!matched)
+                        _mFpm.MatchTemplate(Convert.FromBase64String(pds.BioDataFingerSecondary), capturedBioData,
+                            SGFPMSecurityLevel.HIGH, ref matched);
 
-                MessageBox.Show("Patient Found");
+                    if (!matched)
+                        continue;
 
-                _patientData = pds;
-                gradientPanel2.Visible = false;
-                break;
+                    MessageBox.Show("Patient Found");
+
+                    _patientData = pds;
+                    gradientPanel2.Visible = false;
+                    break;
+                }
+                catch
+                {
+                    // ignored
+                }
             }
 
             if (matched)

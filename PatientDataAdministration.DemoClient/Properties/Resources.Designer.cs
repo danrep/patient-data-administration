@@ -211,6 +211,15 @@ namespace PatientDataAdministration.DemoClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Patient Found.
+        /// </summary>
+        internal static string PatientInfo_LoadPatientByFingerprint_Patient_Found {
+            get {
+                return ResourceManager.GetString("PatientInfo_LoadPatientByFingerprint_Patient_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap wallpaper_blue {
