@@ -57,6 +57,7 @@
             this.toolStripTabItem1 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
             this.toolStripEx1 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
             this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTabItem2 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
@@ -403,11 +404,12 @@
             this.toolStripEx1.Image = null;
             this.toolStripEx1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton14,
+            this.toolStripButton20,
             this.toolStripButton21});
             this.toolStripEx1.Location = new System.Drawing.Point(0, 1);
             this.toolStripEx1.Name = "toolStripEx1";
             this.toolStripEx1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.toolStripEx1.Size = new System.Drawing.Size(129, 103);
+            this.toolStripEx1.Size = new System.Drawing.Size(180, 103);
             this.toolStripEx1.TabIndex = 0;
             // 
             // toolStripButton14
@@ -424,15 +426,28 @@
             this.toolStripButton14.ToolTipText = "Register";
             this.toolStripButton14.Click += new System.EventHandler(this.toolStripButton14_Click);
             // 
+            // toolStripButton20
+            // 
+            this.toolStripButton20.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_Scan_48px;
+            this.toolStripButton20.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton20.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton20.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton20.Name = "toolStripButton20";
+            this.toolStripButton20.Size = new System.Drawing.Size(54, 77);
+            this.toolStripButton20.Text = "Bio-Pass";
+            this.toolStripButton20.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton20.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton20.Click += new System.EventHandler(this.toolStripButton20_Click);
+            // 
             // toolStripButton21
             // 
-            this.toolStripButton21.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_Scan_48px;
+            this.toolStripButton21.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Contact_48px;
             this.toolStripButton21.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.toolStripButton21.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolStripButton21.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton21.Name = "toolStripButton21";
-            this.toolStripButton21.Size = new System.Drawing.Size(54, 77);
-            this.toolStripButton21.Text = "Bio-Pass";
+            this.toolStripButton21.Size = new System.Drawing.Size(52, 77);
+            this.toolStripButton21.Text = "e-Tag";
             this.toolStripButton21.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripButton21.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.toolStripButton21.Click += new System.EventHandler(this.toolStripButton21_Click);
@@ -616,11 +631,12 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.apin;
-            this.pictureBox1.Location = new System.Drawing.Point(603, 171);
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.VOnwNgeg;
+            this.pictureBox1.Location = new System.Drawing.Point(824, 59);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(324, 161);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.Size = new System.Drawing.Size(103, 103);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 128;
             this.pictureBox1.TabStop = false;
             // 
@@ -702,7 +718,6 @@
             this.gradientPanelExt2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -754,6 +769,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripButton toolStripButton21;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ToolStripButton toolStripButton20;
     }
 }
 

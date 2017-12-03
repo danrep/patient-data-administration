@@ -173,10 +173,21 @@ namespace PatientDataAdministration.DemoClient
                 if (checkBox1.Checked)
                     LaunchPrintDialog();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // ignored
+                ShowBalloon(ex.Message, ToolTipIcon.Error);
             }
+        }
+
+        private void ShowBalloon(string message, ToolTipIcon icon)
+        {
+            notifyIcon1.BalloonTipIcon = icon;
+            notifyIcon1.BalloonTipText = message;
+            notifyIcon1.BalloonTipTitle = icon.ToString();
+            notifyIcon1.ShowBalloonTip(3500);
+
+            Application.DoEvents();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -473,8 +484,8 @@ namespace PatientDataAdministration.DemoClient
 
                     if (!matched)
                         continue;
-
-                    MessageBox.Show("Patient Found");
+                    
+                    ShowBalloon($"Patient with PEP ID {pds.PepId} is a Match.", ToolTipIcon.Info);
 
                     _patientData = pds;
                     gradientPanel2.Visible = false;

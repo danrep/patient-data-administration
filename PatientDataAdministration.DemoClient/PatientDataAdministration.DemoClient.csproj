@@ -127,6 +127,12 @@
     <Compile Include="LogOn.Designer.cs">
       <DependentUpon>LogOn.cs</DependentUpon>
     </Compile>
+    <Compile Include="PatientTagging.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PatientTagging.Designer.cs">
+      <DependentUpon>PatientTagging.cs</DependentUpon>
+    </Compile>
     <Compile Include="PatientInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LogOn.resx">
       <DependentUpon>LogOn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PatientTagging.resx">
+      <DependentUpon>PatientTagging.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PatientInfo.resx">
       <DependentUpon>PatientInfo.cs</DependentUpon>
@@ -190,6 +199,8 @@
       <LastGenOutput>DemoDbContext.cs</LastGenOutput>
     </Content>
     <Content Include="icons8_Facial_Recognition.ico" />
+    <None Include="Resources\VOnwNgeg.jpg" />
+    <None Include="Resources\icons8_Contact_48px.png" />
     <None Include="Resources\1D-bar-code.jpeg" />
     <None Include="Resources\apin.png" />
     <None Include="Resources\wallpaper_blue.jpg" />
@@ -221,6 +232,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Documents\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj">
+      <Project>{d363637b-0ce4-4150-a6bf-15676285754d}</Project>
+      <Name>Codesistance.NFC</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

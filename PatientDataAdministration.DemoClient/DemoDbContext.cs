@@ -469,6 +469,7 @@ namespace PatientDataAdministration.DemoClient
         public string CardDataUid { get; set; } // CardDataUid (length: 536870911)
         public string CardDataChip { get; set; } // CardDataChip (length: 536870911)
         public bool IsDeleted { get; set; } // IsDeleted
+        public string TagData { get; set; } // TagData (length: 100)
     }
 
     // SiteData
@@ -521,6 +522,7 @@ namespace PatientDataAdministration.DemoClient
             Property(x => x.CardDataUid).HasColumnName(@"CardDataUid").HasColumnType("ntext").IsOptional().IsMaxLength();
             Property(x => x.CardDataChip).HasColumnName(@"CardDataChip").HasColumnType("ntext").IsOptional().IsMaxLength();
             Property(x => x.IsDeleted).HasColumnName(@"IsDeleted").HasColumnType("bit").IsRequired();
+            Property(x => x.TagData).HasColumnName(@"TagData").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
         }
     }
 

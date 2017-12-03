@@ -45,13 +45,19 @@ namespace PatientDataAdministration.DemoClient
             this.Close();
         }
 
-        private void toolStripButton21_Click(object sender, EventArgs e)
+        private void toolStripButton20_Click(object sender, EventArgs e)
         {
             var patientInfo = new PatientInfo(true)
             {
                 Tag = Guid.NewGuid().ToString()
             };
             patientInfo.ShowDialog();
+        }
+
+        private void toolStripButton21_Click(object sender, EventArgs e)
+        {
+            var patientTagging = new PatientTagging();
+            patientTagging.ShowDialog();
         }
     }
 }

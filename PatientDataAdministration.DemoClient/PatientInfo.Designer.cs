@@ -94,6 +94,7 @@
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnFind = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.txtPepId)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSurname)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtOthername)).BeginInit();
@@ -392,13 +393,13 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(8, 6);
+            this.label12.Location = new System.Drawing.Point(6, 6);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(182, 13);
+            this.label12.Size = new System.Drawing.Size(189, 13);
             this.label12.TabIndex = 137;
-            this.label12.Text = "Click to dd or replace Fingerprints";
+            this.label12.Text = "Click to Add or replace Fingerprints";
             this.label12.Click += new System.EventHandler(this.label12_Click);
             // 
             // label13
@@ -1069,6 +1070,10 @@
             this.flowLayoutPanel2.Size = new System.Drawing.Size(346, 41);
             this.flowLayoutPanel2.TabIndex = 129;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Visible = true;
+            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
@@ -1184,5 +1189,6 @@
         private System.Windows.Forms.Button btnFind;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }

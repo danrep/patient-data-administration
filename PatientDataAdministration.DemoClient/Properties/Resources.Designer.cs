@@ -103,6 +103,16 @@ namespace PatientDataAdministration.DemoClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_Contact_48px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Contact_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_Counselor_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Counselor_48px", resourceCulture);
@@ -216,6 +226,16 @@ namespace PatientDataAdministration.DemoClient.Properties {
         internal static string PatientInfo_LoadPatientByFingerprint_Patient_Found {
             get {
                 return ResourceManager.GetString("PatientInfo_LoadPatientByFingerprint_Patient_Found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap VOnwNgeg {
+            get {
+                object obj = ResourceManager.GetObject("VOnwNgeg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
