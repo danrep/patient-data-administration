@@ -10,6 +10,7 @@ using Syncfusion.Windows.Forms;
 using Syncfusion.Windows.Forms.Tools;
 using SecuGen.FDxSDKPro.Windows;
 using System.Threading;
+using System.Windows.Documents;
 using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.DemoClient
@@ -61,9 +62,6 @@ namespace PatientDataAdministration.DemoClient
         {
             try
             {
-                if (string.IsNullOrEmpty(txtEmail.Text))
-                    txtEmail.Text = @"NA";
-
                 var gradientPanel1TextBoxes = gradientPanel11.Controls.OfType<TextBoxExt>().ToList();
                 if (gradientPanel1TextBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
@@ -111,9 +109,9 @@ namespace PatientDataAdministration.DemoClient
                         BioDataFingerSecondary = _bioFinger2, 
                         CardDataChip = _cardChip, 
                         CardDataUid = _cardUid,
-                        ClientNumber = txtPatientHospitalNumber.Text.Trim(), 
+                        //ClientNumber = txtPatientHospitalNumber.Text.Trim(), 
                         DateOfBirth = txtDateOfBirth.Value, 
-                        Email = txtEmail.Text.Trim(),
+                        Email = "N/A",
                         FacilityNumber = txtFacilityNumber.Text.Trim(), 
                         HospitalNumber = txtHospitalNumber.Text.Trim(), 
                         HouseAddress = txtHouseAddress.Text.Trim(), 
@@ -123,8 +121,8 @@ namespace PatientDataAdministration.DemoClient
                         SiteName = txtSiteName.Text, 
                         StateOfOrigin = txtStateOfOrigin.Text.Trim(),
                         Surname = txtSurname.Text.Trim(), 
-                        VitalsHeight = Convert.ToInt32(txtHeight.Text.Trim()), 
-                        VitalsWeight = Convert.ToInt32(txtWeight.Text.Trim()),
+                        VitalsHeight = Convert.ToInt32(0), 
+                        VitalsWeight = Convert.ToInt32(0),
                         PassportImage = _passportImage,
                         MaritalStatus = txtMaritalStatus.Text
                     };
@@ -147,9 +145,9 @@ namespace PatientDataAdministration.DemoClient
                     patientInfo.BioDataFingerSecondary = _bioFinger2;
                     patientInfo.CardDataChip = _cardChip;
                     patientInfo.CardDataUid = _cardUid;
-                    patientInfo.ClientNumber = txtPatientHospitalNumber.Text.Trim();
+                    //patientInfo.ClientNumber = txtPatientHospitalNumber.Text.Trim();
                     patientInfo.DateOfBirth = txtDateOfBirth.Value;
-                    patientInfo.Email = txtEmail.Text.Trim();
+                    patientInfo.Email = "N/A";
                     patientInfo.FacilityNumber = txtFacilityNumber.Text.Trim();
                     patientInfo.HospitalNumber = txtHospitalNumber.Text.Trim();
                     patientInfo.HouseAddress = txtHouseAddress.Text.Trim();
@@ -157,8 +155,8 @@ namespace PatientDataAdministration.DemoClient
                     patientInfo.Sex = txtSex.Text;
                     patientInfo.StateOfOrigin = txtStateOfOrigin.Text.Trim();
                     patientInfo.Surname = txtSurname.Text.Trim();
-                    patientInfo.VitalsHeight = Convert.ToInt32(txtHeight.Text.Trim());
-                    patientInfo.VitalsWeight = Convert.ToInt32(txtWeight.Text.Trim());
+                    patientInfo.VitalsHeight = Convert.ToInt32(0);
+                    patientInfo.VitalsWeight = Convert.ToInt32(0);
                     patientInfo.PassportImage = _passportImage;
                     patientInfo.MaritalStatus = txtMaritalStatus.Text;
                     patientInfo.SiteName = txtSiteName.Text;
@@ -167,7 +165,7 @@ namespace PatientDataAdministration.DemoClient
                 }
 
                 _demoDb.SaveChanges();
-                MessageBox.Show("Patient Configuration Successful");
+                MessageBox.Show(@"Patient Configuration Successful");
                 btnClear_Click(this, e);
 
                 if (checkBox1.Checked)
@@ -424,7 +422,8 @@ namespace PatientDataAdministration.DemoClient
 
         private void PatientInfo_Click(object sender, EventArgs e)
         {
-            gradientPanel2.Visible = true;
+            gradientPanel2.Visible = false;
+            listBox1.Visible = false;
         }
 
         private void checkBioData_Tick(object sender, EventArgs e)
@@ -499,36 +498,38 @@ namespace PatientDataAdministration.DemoClient
 
             if (matched)
             {
-                txtEmail.Text = _patientData.Email;
-                txtDateOfBirth.Value = _patientData.DateOfBirth.Date;
-                txtFacilityNumber.Text = _patientData.FacilityNumber;
-                txtHeight.Text = _patientData.VitalsHeight?.ToString("0.00") ?? "0.00";
-                txtWeight.Text = _patientData.VitalsWeight?.ToString("0.00") ?? "0.00";
-                txtHospitalNumber.Text = _patientData.HospitalNumber;
-                txtHouseAddress.Text = _patientData.HouseAddress;
-                txtMaritalStatus.Text = _patientData.MaritalStatus;
-
-                txtPassport.Image = ByteToImage(Convert.FromBase64String(_patientData.PassportImage));
-
-                txtPatientHospitalNumber.Text = _patientData.ClientNumber;
-                txtPepId.Text = _patientData.PepId;
-                txtOthername.Text = _patientData.Othernames;
-                txtPhoneNumber.Text = _patientData.PhoneHumber;
-                txtSex.Text = _patientData.Sex;
-                txtSiteName.Text = _patientData.SiteName;
-                txtSurname.Text = _patientData.Surname;
-                txtStateOfOrigin.Text = _patientData.StateOfOrigin;
-
-                _bioFinger1 = _patientData.BioDataFingerPrimary;
-                _bioFinger2 = _patientData.BioDataFingerSecondary;
-
-                if (txtPassport.Image.Height > txtPassport.Height || txtPassport.Image.Width > txtPassport.Width)
-                    txtPassport.SizeMode = PictureBoxSizeMode.Zoom;
-                else
-                    txtPassport.SizeMode = PictureBoxSizeMode.CenterImage;
+                LoadPatient();
             }
             else
                 MessageBox.Show("No Match Found");
+        }
+
+        private void LoadPatient()
+        {
+            txtDateOfBirth.Value = _patientData.DateOfBirth.Date;
+            txtFacilityNumber.Text = _patientData.FacilityNumber;
+            txtHospitalNumber.Text = _patientData.HospitalNumber;
+            txtHouseAddress.Text = _patientData.HouseAddress;
+            txtMaritalStatus.Text = _patientData.MaritalStatus;
+
+            txtPassport.Image = ByteToImage(Convert.FromBase64String(_patientData.PassportImage));
+
+            //txtPatientHospitalNumber.Text = _patientData.ClientNumber;
+            txtPepId.Text = _patientData.PepId;
+            txtOthername.Text = _patientData.Othernames;
+            txtPhoneNumber.Text = _patientData.PhoneHumber;
+            txtSex.Text = _patientData.Sex;
+            txtSiteName.Text = _patientData.SiteName;
+            txtSurname.Text = _patientData.Surname;
+            txtStateOfOrigin.Text = _patientData.StateOfOrigin;
+
+            _bioFinger1 = _patientData.BioDataFingerPrimary;
+            _bioFinger2 = _patientData.BioDataFingerSecondary;
+
+            if (txtPassport.Image.Height > txtPassport.Height || txtPassport.Image.Width > txtPassport.Width)
+                txtPassport.SizeMode = PictureBoxSizeMode.Zoom;
+            else
+                txtPassport.SizeMode = PictureBoxSizeMode.CenterImage;
         }
 
         private static Bitmap ByteToImage(byte[] blob)
@@ -560,6 +561,58 @@ namespace PatientDataAdministration.DemoClient
         private void label12_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                listBox1.Visible = true;
+
+                listBox1.Items.Clear();
+
+                var query = textBox1.Text.Trim();
+                var results =
+                    _demoDb.PatientDatas.Where(
+                        x =>
+                            (x.PepId.Contains(query) ||
+                             x.Surname.Contains(query) ||
+                             x.PhoneHumber.Contains(query) ||
+                             x.Othernames.Contains(query)) &&
+                            !x.IsDeleted).Select(s => new{s.PepId, s.Surname, s.Othernames});
+
+                if (results.Any())
+                    listBox1.Items.Add($"No Match");
+                else
+                    foreach (var result in results)
+                        listBox1.Items.Add($"{result.PepId.ToUpper()}| {result.Surname} {result.Othernames}");
+
+                if (string.IsNullOrEmpty(query))
+                    listBox1.Visible = false;
+            }
+            catch (Exception)
+            {
+                //
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var pepId = listBox1.SelectedItem.ToString().Split('|')[0].Trim();
+                var patientData =_demoDb.PatientDatas.FirstOrDefault(x => !x.IsDeleted && x.PepId == pepId);
+
+                if (patientData == null)
+                    return;
+
+                _patientData = patientData;
+                LoadPatient();
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
     }
 }

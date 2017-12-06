@@ -199,6 +199,7 @@
       <LastGenOutput>DemoDbContext.cs</LastGenOutput>
     </Content>
     <Content Include="icons8_Facial_Recognition.ico" />
+    <None Include="Resources\apin-weblogo.png" />
     <None Include="Resources\VOnwNgeg.jpg" />
     <None Include="Resources\icons8_Contact_48px.png" />
     <None Include="Resources\1D-bar-code.jpeg" />

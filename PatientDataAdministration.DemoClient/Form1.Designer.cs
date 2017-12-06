@@ -59,6 +59,9 @@
             this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripTabItem3 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
+            this.toolStripEx4 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
+            this.toolStripButton26 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton12 = new System.Windows.Forms.ToolStripButton();
             this.toolStripTabItem2 = new Syncfusion.Windows.Forms.Tools.ToolStripTabItem();
             this.toolStripEx3 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
@@ -76,11 +79,17 @@
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton17 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripEx2 = new Syncfusion.Windows.Forms.Tools.ToolStripEx();
+            this.toolStripButton22 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton24 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton25 = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv2)).BeginInit();
             this.ribbonControlAdv2.SuspendLayout();
             this.toolStripTabItem1.Panel.SuspendLayout();
             this.toolStripEx1.SuspendLayout();
+            this.toolStripTabItem3.Panel.SuspendLayout();
+            this.toolStripEx4.SuspendLayout();
             this.toolStripTabItem2.Panel.SuspendLayout();
             this.toolStripEx3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.backStage1)).BeginInit();
@@ -89,6 +98,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelExt2)).BeginInit();
             this.gradientPanelExt2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.toolStripEx2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ribbonControlAdv1
@@ -344,6 +354,7 @@
             this.ribbonControlAdv2.CaptionFont = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ribbonControlAdv2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.ribbonControlAdv2.Header.AddMainItem(toolStripTabItem1);
+            this.ribbonControlAdv2.Header.AddMainItem(toolStripTabItem3);
             this.ribbonControlAdv2.LauncherStyle = Syncfusion.Windows.Forms.Tools.LauncherStyle.Metro;
             this.ribbonControlAdv2.Location = new System.Drawing.Point(1, 0);
             this.ribbonControlAdv2.MenuButtonAutoSize = true;
@@ -451,6 +462,51 @@
             this.toolStripButton21.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripButton21.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.toolStripButton21.Click += new System.EventHandler(this.toolStripButton21_Click);
+            // 
+            // toolStripTabItem3
+            // 
+            this.toolStripTabItem3.Name = "toolStripTabItem3";
+            // 
+            // ribbonControlAdv2.ribbonPanel2
+            // 
+            this.toolStripTabItem3.Panel.Controls.Add(this.toolStripEx4);
+            this.toolStripTabItem3.Panel.Name = "ribbonPanel2";
+            this.toolStripTabItem3.Panel.ScrollPosition = 0;
+            this.toolStripTabItem3.Panel.TabIndex = 3;
+            this.toolStripTabItem3.Panel.Text = "Reports";
+            this.toolStripTabItem3.Position = 1;
+            this.toolStripTabItem3.Size = new System.Drawing.Size(53, 19);
+            this.toolStripTabItem3.Tag = "3";
+            this.toolStripTabItem3.Text = "Reports";
+            // 
+            // toolStripEx4
+            // 
+            this.toolStripEx4.AutoSize = false;
+            this.toolStripEx4.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripEx4.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.toolStripEx4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.toolStripEx4.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripEx4.Image = null;
+            this.toolStripEx4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton26});
+            this.toolStripEx4.Location = new System.Drawing.Point(0, 1);
+            this.toolStripEx4.Name = "toolStripEx4";
+            this.toolStripEx4.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.toolStripEx4.Size = new System.Drawing.Size(86, 103);
+            this.toolStripEx4.TabIndex = 1;
+            // 
+            // toolStripButton26
+            // 
+            this.toolStripButton26.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
+            this.toolStripButton26.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton26.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton26.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton26.Name = "toolStripButton26";
+            this.toolStripButton26.Size = new System.Drawing.Size(64, 77);
+            this.toolStripButton26.Text = "Biometrics";
+            this.toolStripButton26.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton26.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton26.ToolTipText = "Biometrics";
             // 
             // toolStripButton12
             // 
@@ -631,12 +687,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.VOnwNgeg;
-            this.pictureBox1.Location = new System.Drawing.Point(824, 59);
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.apin_weblogo;
+            this.pictureBox1.Location = new System.Drawing.Point(800, 168);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(103, 103);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.Size = new System.Drawing.Size(127, 161);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 128;
             this.pictureBox1.TabStop = false;
             // 
@@ -677,6 +732,61 @@
             this.toolStripButton17.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             this.toolStripButton17.ToolTipText = "Add New Patients";
             // 
+            // toolStripEx2
+            // 
+            this.toolStripEx2.AutoSize = false;
+            this.toolStripEx2.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolStripEx2.Font = new System.Drawing.Font("Segoe UI", 8.25F);
+            this.toolStripEx2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(59)))), ((int)(((byte)(59)))), ((int)(((byte)(59)))));
+            this.toolStripEx2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStripEx2.Image = null;
+            this.toolStripEx2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton22,
+            this.toolStripButton24,
+            this.toolStripButton25});
+            this.toolStripEx2.Location = new System.Drawing.Point(0, 1);
+            this.toolStripEx2.Name = "toolStripEx2";
+            this.toolStripEx2.Padding = new System.Windows.Forms.Padding(0, 5, 0, 0);
+            this.toolStripEx2.Size = new System.Drawing.Size(180, 103);
+            this.toolStripEx2.TabIndex = 0;
+            // 
+            // toolStripButton22
+            // 
+            this.toolStripButton22.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Counselor_48px;
+            this.toolStripButton22.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton22.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton22.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton22.Name = "toolStripButton22";
+            this.toolStripButton22.Size = new System.Drawing.Size(53, 95);
+            this.toolStripButton22.Text = "Register";
+            this.toolStripButton22.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton22.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            this.toolStripButton22.ToolTipText = "Register";
+            // 
+            // toolStripButton24
+            // 
+            this.toolStripButton24.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_Scan_48px;
+            this.toolStripButton24.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton24.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton24.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton24.Name = "toolStripButton24";
+            this.toolStripButton24.Size = new System.Drawing.Size(54, 95);
+            this.toolStripButton24.Text = "Bio-Pass";
+            this.toolStripButton24.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton24.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
+            // toolStripButton25
+            // 
+            this.toolStripButton25.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Contact_48px;
+            this.toolStripButton25.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.toolStripButton25.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton25.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton25.Name = "toolStripButton25";
+            this.toolStripButton25.Size = new System.Drawing.Size(52, 95);
+            this.toolStripButton25.Text = "e-Tag";
+            this.toolStripButton25.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.toolStripButton25.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -708,6 +818,9 @@
             this.toolStripTabItem1.Panel.ResumeLayout(false);
             this.toolStripEx1.ResumeLayout(false);
             this.toolStripEx1.PerformLayout();
+            this.toolStripTabItem3.Panel.ResumeLayout(false);
+            this.toolStripEx4.ResumeLayout(false);
+            this.toolStripEx4.PerformLayout();
             this.toolStripTabItem2.Panel.ResumeLayout(false);
             this.toolStripEx3.ResumeLayout(false);
             this.toolStripEx3.PerformLayout();
@@ -717,6 +830,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanelExt2)).EndInit();
             this.gradientPanelExt2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.toolStripEx2.ResumeLayout(false);
+            this.toolStripEx2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -770,6 +885,13 @@
         private System.Windows.Forms.ToolStripButton toolStripButton21;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripButton toolStripButton20;
+        private Syncfusion.Windows.Forms.Tools.ToolStripTabItem toolStripTabItem3;
+        private Syncfusion.Windows.Forms.Tools.ToolStripEx toolStripEx4;
+        private System.Windows.Forms.ToolStripButton toolStripButton26;
+        private Syncfusion.Windows.Forms.Tools.ToolStripEx toolStripEx2;
+        private System.Windows.Forms.ToolStripButton toolStripButton22;
+        private System.Windows.Forms.ToolStripButton toolStripButton24;
+        private System.Windows.Forms.ToolStripButton toolStripButton25;
     }
 }
 

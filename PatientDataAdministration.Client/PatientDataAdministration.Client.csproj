@@ -154,13 +154,6 @@
       <DependentUpon>PatientDataAdministrationModel.edmx</DependentUpon>
       <LastGenOutput>PatientDataAdministrationModel.cs</LastGenOutput>
     </Content>
-    <Content Include="pda.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="pda_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>pda.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

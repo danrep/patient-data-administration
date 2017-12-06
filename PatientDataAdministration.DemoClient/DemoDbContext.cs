@@ -32,6 +32,7 @@ namespace PatientDataAdministration.DemoClient
 
     public interface IDemoDbContext : System.IDisposable
     {
+        System.Data.Entity.DbSet<BioRegLog> BioRegLogs { get; set; } // BioRegLog
         System.Data.Entity.DbSet<PatientData> PatientDatas { get; set; } // PatientData
         System.Data.Entity.DbSet<SiteData> SiteDatas { get; set; } // SiteData
 
@@ -56,6 +57,7 @@ namespace PatientDataAdministration.DemoClient
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
     public class DemoDbContext : System.Data.Entity.DbContext, IDemoDbContext
     {
+        public System.Data.Entity.DbSet<BioRegLog> BioRegLogs { get; set; } // BioRegLog
         public System.Data.Entity.DbSet<PatientData> PatientDatas { get; set; } // PatientData
         public System.Data.Entity.DbSet<SiteData> SiteDatas { get; set; } // SiteData
 
@@ -98,12 +100,14 @@ namespace PatientDataAdministration.DemoClient
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Configurations.Add(new BioRegLogConfiguration());
             modelBuilder.Configurations.Add(new PatientDataConfiguration());
             modelBuilder.Configurations.Add(new SiteDataConfiguration());
         }
 
         public static System.Data.Entity.DbModelBuilder CreateModel(System.Data.Entity.DbModelBuilder modelBuilder, string schema)
         {
+            modelBuilder.Configurations.Add(new BioRegLogConfiguration(schema));
             modelBuilder.Configurations.Add(new PatientDataConfiguration(schema));
             modelBuilder.Configurations.Add(new SiteDataConfiguration(schema));
             return modelBuilder;
@@ -116,11 +120,13 @@ namespace PatientDataAdministration.DemoClient
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
     public class FakeDemoDbContext : IDemoDbContext
     {
+        public System.Data.Entity.DbSet<BioRegLog> BioRegLogs { get; set; }
         public System.Data.Entity.DbSet<PatientData> PatientDatas { get; set; }
         public System.Data.Entity.DbSet<SiteData> SiteDatas { get; set; }
 
         public FakeDemoDbContext()
         {
+            BioRegLogs = new FakeDbSet<BioRegLog>("Id");
             PatientDatas = new FakeDbSet<PatientData>("Id");
             SiteDatas = new FakeDbSet<SiteData>("Id");
         }
@@ -442,6 +448,21 @@ namespace PatientDataAdministration.DemoClient
 
     #region POCO classes
 
+    // BioRegLog
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
+    public class BioRegLog
+    {
+        public int Id { get; set; } // Id (Primary key)
+        public System.DateTime? DateRegistered { get; set; } // DateRegistered
+        public string PepId { get; set; } // PepId (length: 100)
+        public bool? IsDeleted { get; set; } // IsDeleted
+
+        public BioRegLog()
+        {
+            DateRegistered = System.DateTime.Now;
+        }
+    }
+
     // PatientData
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
     public class PatientData
@@ -478,12 +499,44 @@ namespace PatientDataAdministration.DemoClient
     {
         public int Id { get; set; } // Id (Primary key)
         public string SiteName { get; set; } // SiteName (length: 100)
-        public int IsDeleted { get; set; } // IsDeleted
+        public string SiteCode { get; set; } // SiteCode (length: 100)
+        public string SiteCodeExposedInfants { get; set; } // SiteCodeExposedInfants (length: 100)
+        public string SiteCodePediatric { get; set; } // SiteCodePediatric (length: 100)
+        public string SiteCodePmtct { get; set; } // SiteCodePMTCT (length: 100)
+        public string SiteCodeVct { get; set; } // SiteCodeVCT (length: 100)
+        public string SiteNameInformal { get; set; } // SiteNameInformal (length: 100)
+        public bool IsDeleted { get; set; } // IsDeleted
+
+        public SiteData()
+        {
+            IsDeleted = false;
+        }
     }
 
     #endregion
 
     #region POCO Configuration
+
+    // BioRegLog
+    [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
+    public class BioRegLogConfiguration : System.Data.Entity.ModelConfiguration.EntityTypeConfiguration<BioRegLog>
+    {
+        public BioRegLogConfiguration()
+            : this("")
+        {
+        }
+
+        public BioRegLogConfiguration(string schema)
+        {
+            ToTable("BioRegLog");
+            HasKey(x => x.Id);
+
+            Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
+            Property(x => x.DateRegistered).HasColumnName(@"DateRegistered").HasColumnType("datetime").IsOptional();
+            Property(x => x.PepId).HasColumnName(@"PepId").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.IsDeleted).HasColumnName(@"IsDeleted").HasColumnType("bit").IsOptional();
+        }
+    }
 
     // PatientData
     [System.CodeDom.Compiler.GeneratedCode("EF.Reverse.POCO.Generator", "2.32.0.0")]
@@ -542,7 +595,13 @@ namespace PatientDataAdministration.DemoClient
 
             Property(x => x.Id).HasColumnName(@"Id").HasColumnType("int").IsRequired().HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.Identity);
             Property(x => x.SiteName).HasColumnName(@"SiteName").HasColumnType("nvarchar").IsRequired().HasMaxLength(100);
-            Property(x => x.IsDeleted).HasColumnName(@"IsDeleted").HasColumnType("int").IsRequired();
+            Property(x => x.SiteCode).HasColumnName(@"SiteCode").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.SiteCodeExposedInfants).HasColumnName(@"SiteCodeExposedInfants").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.SiteCodePediatric).HasColumnName(@"SiteCodePediatric").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.SiteCodePmtct).HasColumnName(@"SiteCodePMTCT").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.SiteCodeVct).HasColumnName(@"SiteCodeVCT").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.SiteNameInformal).HasColumnName(@"SiteNameInformal").HasColumnType("nvarchar").IsOptional().HasMaxLength(100);
+            Property(x => x.IsDeleted).HasColumnName(@"IsDeleted").HasColumnType("bit").IsRequired();
         }
     }
 
