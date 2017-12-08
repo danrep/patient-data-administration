@@ -50,18 +50,22 @@
             this.btnPassport = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.gradientPanel11 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.txtSiteName = new System.Windows.Forms.ComboBox();
             this.gradientPanel2 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
             this.label21 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnCapture = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label20 = new System.Windows.Forms.Label();
+            this.gradientPanel3 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.txtSiteName = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.gradientLabel2 = new Syncfusion.Windows.Forms.Tools.GradientLabel();
             this.gradientPanel1 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
@@ -74,6 +78,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.txtDateOfBirth = new Syncfusion.Windows.Forms.Tools.DateTimePickerAdv();
             this.txtPassport = new System.Windows.Forms.PictureBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtMaritalStatus = new System.Windows.Forms.ComboBox();
             this.monthCalendarAdv1 = new Syncfusion.Windows.Forms.Tools.MonthCalendarAdv();
             this.btnClear = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -84,17 +90,13 @@
             this.btnFind = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.txtMaritalStatus = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.gradientPanel3 = new Syncfusion.Windows.Forms.Tools.GradientPanel();
-            this.label13 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel11)).BeginInit();
             this.gradientPanel11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel2)).BeginInit();
             this.gradientPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel3)).BeginInit();
+            this.gradientPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).BeginInit();
             this.gradientPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDateOfBirth)).BeginInit();
@@ -102,8 +104,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel3)).BeginInit();
-            this.gradientPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnSave
@@ -358,12 +358,163 @@
             this.gradientPanel11.Click += new System.EventHandler(this.PatientInfo_Click);
             this.gradientPanel11.Paint += new System.Windows.Forms.PaintEventHandler(this.gradientPanel11_Paint);
             // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel2.Controls.Add(this.label21);
+            this.gradientPanel2.Controls.Add(this.button1);
+            this.gradientPanel2.Controls.Add(this.btnCapture);
+            this.gradientPanel2.Controls.Add(this.pictureBox1);
+            this.gradientPanel2.Location = new System.Drawing.Point(374, 50);
+            this.gradientPanel2.Name = "gradientPanel2";
+            this.gradientPanel2.Size = new System.Drawing.Size(173, 256);
+            this.gradientPanel2.TabIndex = 98;
+            this.gradientPanel2.Visible = false;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(3, 235);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(16, 14);
+            this.label21.TabIndex = 79;
+            this.label21.Text = "...";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Maroon;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(139, 3);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(27, 30);
+            this.button1.TabIndex = 78;
+            this.button1.Text = "X";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnCapture
+            // 
+            this.btnCapture.BackColor = System.Drawing.Color.DarkOliveGreen;
+            this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCapture.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCapture.ForeColor = System.Drawing.Color.White;
+            this.btnCapture.Location = new System.Drawing.Point(4, 3);
+            this.btnCapture.Name = "btnCapture";
+            this.btnCapture.Size = new System.Drawing.Size(136, 30);
+            this.btnCapture.TabIndex = 77;
+            this.btnCapture.Text = "Capture Fingerprint";
+            this.btnCapture.UseVisualStyleBackColor = false;
+            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
+            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 76;
+            this.pictureBox1.TabStop = false;
+            // 
+            // gradientPanel3
+            // 
+            this.gradientPanel3.BackColor = System.Drawing.Color.DimGray;
+            this.gradientPanel3.BorderColor = System.Drawing.Color.DarkGray;
+            this.gradientPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.gradientPanel3.Controls.Add(this.label13);
+            this.gradientPanel3.Controls.Add(this.txtHouseAddress);
+            this.gradientPanel3.Controls.Add(this.label5);
+            this.gradientPanel3.Controls.Add(this.label6);
+            this.gradientPanel3.Controls.Add(this.txtStateOfOrigin);
+            this.gradientPanel3.Controls.Add(this.comboBox1);
+            this.gradientPanel3.Controls.Add(this.label20);
+            this.gradientPanel3.Location = new System.Drawing.Point(11, 247);
+            this.gradientPanel3.Name = "gradientPanel3";
+            this.gradientPanel3.Size = new System.Drawing.Size(767, 78);
+            this.gradientPanel3.TabIndex = 138;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(4, 5);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(97, 15);
+            this.label13.TabIndex = 137;
+            this.label13.Text = "House Address";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.White;
+            this.label6.Location = new System.Drawing.Point(590, 24);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(27, 15);
+            this.label6.TabIndex = 136;
+            this.label6.Text = "LGA";
+            // 
+            // txtStateOfOrigin
+            // 
+            this.txtStateOfOrigin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtStateOfOrigin.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStateOfOrigin.FormattingEnabled = true;
+            this.txtStateOfOrigin.Items.AddRange(new object[] {
+            "Abuja",
+            "Anambra",
+            "Ebonyi",
+            "Kaduna",
+            "Kwara",
+            "Lagos",
+            "Osun",
+            "Zamfara"});
+            this.txtStateOfOrigin.Location = new System.Drawing.Point(459, 42);
+            this.txtStateOfOrigin.Name = "txtStateOfOrigin";
+            this.txtStateOfOrigin.Size = new System.Drawing.Size(128, 31);
+            this.txtStateOfOrigin.Sorted = true;
+            this.txtStateOfOrigin.TabIndex = 96;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Abuja",
+            "Anambra",
+            "Ebonyi",
+            "Kaduna",
+            "Kwara",
+            "Lagos",
+            "Osun",
+            "Zamfara"});
+            this.comboBox1.Location = new System.Drawing.Point(593, 42);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(169, 31);
+            this.comboBox1.Sorted = true;
+            this.comboBox1.TabIndex = 135;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.ForeColor = System.Drawing.Color.White;
+            this.label20.Location = new System.Drawing.Point(459, 24);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(33, 15);
+            this.label20.TabIndex = 97;
+            this.label20.Text = "State";
+            // 
             // listBox1
             // 
             this.listBox1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(244, 36);
+            this.listBox1.Location = new System.Drawing.Point(315, 36);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(290, 94);
             this.listBox1.TabIndex = 134;
@@ -388,7 +539,7 @@
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBox1.Font = new System.Drawing.Font("Calibri Light", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.ForeColor = System.Drawing.Color.White;
-            this.textBox1.Location = new System.Drawing.Point(244, 6);
+            this.textBox1.Location = new System.Drawing.Point(315, 6);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(290, 27);
             this.textBox1.TabIndex = 132;
@@ -503,98 +654,6 @@
             this.txtSiteName.Name = "txtSiteName";
             this.txtSiteName.Size = new System.Drawing.Size(534, 31);
             this.txtSiteName.TabIndex = 99;
-            // 
-            // gradientPanel2
-            // 
-            this.gradientPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.gradientPanel2.Controls.Add(this.label21);
-            this.gradientPanel2.Controls.Add(this.button1);
-            this.gradientPanel2.Controls.Add(this.btnCapture);
-            this.gradientPanel2.Controls.Add(this.pictureBox1);
-            this.gradientPanel2.Location = new System.Drawing.Point(374, 50);
-            this.gradientPanel2.Name = "gradientPanel2";
-            this.gradientPanel2.Size = new System.Drawing.Size(173, 256);
-            this.gradientPanel2.TabIndex = 98;
-            this.gradientPanel2.Visible = false;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(3, 235);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(16, 14);
-            this.label21.TabIndex = 79;
-            this.label21.Text = "...";
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Maroon;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(139, 3);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 30);
-            this.button1.TabIndex = 78;
-            this.button1.Text = "X";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // btnCapture
-            // 
-            this.btnCapture.BackColor = System.Drawing.Color.DarkOliveGreen;
-            this.btnCapture.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCapture.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCapture.ForeColor = System.Drawing.Color.White;
-            this.btnCapture.Location = new System.Drawing.Point(4, 3);
-            this.btnCapture.Name = "btnCapture";
-            this.btnCapture.Size = new System.Drawing.Size(136, 30);
-            this.btnCapture.TabIndex = 77;
-            this.btnCapture.Text = "Capture Fingerprint";
-            this.btnCapture.UseVisualStyleBackColor = false;
-            this.btnCapture.Click += new System.EventHandler(this.btnCapture_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = global::PatientDataAdministration.DemoClient.Properties.Resources.icons8_Fingerprint_48px;
-            this.pictureBox1.Location = new System.Drawing.Point(5, 37);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(161, 195);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 76;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.ForeColor = System.Drawing.Color.White;
-            this.label20.Location = new System.Drawing.Point(459, 24);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(33, 15);
-            this.label20.TabIndex = 97;
-            this.label20.Text = "State";
-            // 
-            // txtStateOfOrigin
-            // 
-            this.txtStateOfOrigin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtStateOfOrigin.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStateOfOrigin.FormattingEnabled = true;
-            this.txtStateOfOrigin.Items.AddRange(new object[] {
-            "Abuja",
-            "Anambra",
-            "Ebonyi",
-            "Kaduna",
-            "Kwara",
-            "Lagos",
-            "Osun",
-            "Zamfara"});
-            this.txtStateOfOrigin.Location = new System.Drawing.Point(459, 42);
-            this.txtStateOfOrigin.Name = "txtStateOfOrigin";
-            this.txtStateOfOrigin.Size = new System.Drawing.Size(128, 31);
-            this.txtStateOfOrigin.Sorted = true;
-            this.txtStateOfOrigin.TabIndex = 96;
             // 
             // checkBox1
             // 
@@ -750,6 +809,31 @@
             this.txtPassport.TabIndex = 71;
             this.txtPassport.TabStop = false;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(11, 192);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(79, 15);
+            this.label9.TabIndex = 70;
+            this.label9.Text = "Marital Status";
+            // 
+            // txtMaritalStatus
+            // 
+            this.txtMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtMaritalStatus.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaritalStatus.FormattingEnabled = true;
+            this.txtMaritalStatus.Items.AddRange(new object[] {
+            "Single",
+            "Married",
+            "Divorced",
+            "Widowed"});
+            this.txtMaritalStatus.Location = new System.Drawing.Point(11, 210);
+            this.txtMaritalStatus.Name = "txtMaritalStatus";
+            this.txtMaritalStatus.Size = new System.Drawing.Size(227, 31);
+            this.txtMaritalStatus.TabIndex = 69;
+            // 
             // monthCalendarAdv1
             // 
             this.monthCalendarAdv1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(209)))), ((int)(((byte)(211)))), ((int)(((byte)(212)))));
@@ -868,90 +952,6 @@
             // 
             this.notifyIcon1.Visible = true;
             // 
-            // txtMaritalStatus
-            // 
-            this.txtMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtMaritalStatus.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMaritalStatus.FormattingEnabled = true;
-            this.txtMaritalStatus.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed"});
-            this.txtMaritalStatus.Location = new System.Drawing.Point(11, 210);
-            this.txtMaritalStatus.Name = "txtMaritalStatus";
-            this.txtMaritalStatus.Size = new System.Drawing.Size(227, 31);
-            this.txtMaritalStatus.TabIndex = 69;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(11, 192);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 15);
-            this.label9.TabIndex = 70;
-            this.label9.Text = "Marital Status";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(590, 24);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(27, 15);
-            this.label6.TabIndex = 136;
-            this.label6.Text = "LGA";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Abuja",
-            "Anambra",
-            "Ebonyi",
-            "Kaduna",
-            "Kwara",
-            "Lagos",
-            "Osun",
-            "Zamfara"});
-            this.comboBox1.Location = new System.Drawing.Point(593, 42);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(169, 31);
-            this.comboBox1.Sorted = true;
-            this.comboBox1.TabIndex = 135;
-            // 
-            // gradientPanel3
-            // 
-            this.gradientPanel3.BackColor = System.Drawing.Color.DimGray;
-            this.gradientPanel3.BorderColor = System.Drawing.Color.DarkGray;
-            this.gradientPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.gradientPanel3.Controls.Add(this.label13);
-            this.gradientPanel3.Controls.Add(this.txtHouseAddress);
-            this.gradientPanel3.Controls.Add(this.label5);
-            this.gradientPanel3.Controls.Add(this.label6);
-            this.gradientPanel3.Controls.Add(this.txtStateOfOrigin);
-            this.gradientPanel3.Controls.Add(this.comboBox1);
-            this.gradientPanel3.Controls.Add(this.label20);
-            this.gradientPanel3.Location = new System.Drawing.Point(11, 247);
-            this.gradientPanel3.Name = "gradientPanel3";
-            this.gradientPanel3.Size = new System.Drawing.Size(767, 78);
-            this.gradientPanel3.TabIndex = 138;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Calibri Light", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(4, 5);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(97, 15);
-            this.label13.TabIndex = 137;
-            this.label13.Text = "House Address";
-            // 
             // PatientInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 18F);
@@ -979,6 +979,9 @@
             this.gradientPanel2.ResumeLayout(false);
             this.gradientPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel3)).EndInit();
+            this.gradientPanel3.ResumeLayout(false);
+            this.gradientPanel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gradientPanel1)).EndInit();
             this.gradientPanel1.ResumeLayout(false);
             this.gradientPanel1.PerformLayout();
@@ -987,9 +990,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.monthCalendarAdv1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gradientPanel3)).EndInit();
-            this.gradientPanel3.ResumeLayout(false);
-            this.gradientPanel3.PerformLayout();
             this.ResumeLayout(false);
 
         }

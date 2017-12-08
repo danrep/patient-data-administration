@@ -8,7 +8,7 @@ using PatientDataAdministration.Data;
 
 namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {
-    public class PatentController : BaseController
+    public class PatientController : BaseClientCommController
     {
         readonly Entities _entities = new Entities();
         public JsonResult RegisterPatient(Patient_PatientInformation patientInformation)

@@ -64,14 +64,14 @@
     <None Include="PatientDataAdministration.Database.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Patient_PatientTransferHistory_1.sql" />
-    <Build Include="dbo\Tables\Patient_PatientNearFieldCommunicationData_1.sql" />
-    <Build Include="dbo\Tables\Patient_PatientInformation_1.sql" />
-    <Build Include="dbo\Tables\Patient_PatientBiometricData_1.sql" />
-    <Build Include="dbo\Tables\Administration_StaffInformation_1.sql" />
-    <Build Include="dbo\Tables\Administration_SiteInformation_1.sql" />
-    <Build Include="dbo\Tables\Administration_ClientRegistry_1.sql" />
-    <Build Include="dbo\Tables\Administration_ClientMap_1.sql" />
-    <Build Include="dbo\Tables\Administration_ClientLog_1.sql" />
+    <Build Include="dbo\Tables\Administration_ClientLog.sql" />
+    <Build Include="dbo\Tables\Administration_ClientMap.sql" />
+    <Build Include="dbo\Tables\Administration_ClientRegistry.sql" />
+    <Build Include="dbo\Tables\Administration_SiteInformation.sql" />
+    <Build Include="dbo\Tables\Administration_StaffInformation.sql" />
+    <Build Include="dbo\Tables\Patient_PatientBiometricData.sql" />
+    <Build Include="dbo\Tables\Patient_PatientInformation.sql" />
+    <Build Include="dbo\Tables\Patient_PatientNearFieldCommunicationData.sql" />
+    <Build Include="dbo\Tables\Patient_PatientTransferHistory.sql" />
   </ItemGroup>
 </Project>

@@ -185,9 +185,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\ClientCommunication\ClientCommunicationAreaRegistration.cs" />
-    <Compile Include="Areas\ClientCommunication\Controllers\BaseController.cs" />
-    <Compile Include="Areas\ClientCommunication\Controllers\PatentController.cs" />
+    <Compile Include="Areas\ClientCommunication\Controllers\BaseClientCommController.cs" />
+    <Compile Include="Areas\ClientCommunication\Controllers\PatientController.cs" />
+    <Compile Include="Areas\ClientCommunication\Controllers\SyncController.cs" />
+    <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -197,9 +201,13 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\ClientCommunication\Models\" />
     <Folder Include="Areas\ClientCommunication\Views\Base\" />
-    <Folder Include="Areas\ClientCommunication\Views\Patent\" />
+    <Folder Include="Areas\ClientCommunication\Views\Patient\" />
     <Folder Include="Areas\ClientCommunication\Views\Shared\" />
+    <Folder Include="Areas\ClientCommunication\Views\Sync\" />
+    <Folder Include="Areas\ClientCommunication\Views\User\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Base\" />
+    <Folder Include="Views\UserManagement\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

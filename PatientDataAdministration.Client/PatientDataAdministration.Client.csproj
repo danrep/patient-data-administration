@@ -11,6 +11,7 @@
     <AssemblyName>PatientDataAdministration.Client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -23,7 +24,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -83,32 +83,38 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormTemplate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTemplate.Designer.cs">
+      <DependentUpon>FormTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataCentral.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DataCentral.Designer.cs">
       <DependentUpon>DataCentral.cs</DependentUpon>
     </Compile>
-    <Compile Include="PatientDataAdministrationModel.Context.cs">
+    <Compile Include="LocalPDA.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientDataAdministrationModel.Context.tt</DependentUpon>
+      <DependentUpon>LocalPDA.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="PatientDataAdministrationModel.cs">
+    <Compile Include="LocalPDA.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientDataAdministrationModel.tt</DependentUpon>
+      <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>
-    <Compile Include="PatientDataAdministrationModel.Designer.cs">
+    <Compile Include="LocalPDA.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PatientDataAdministrationModel.edmx</DependentUpon>
+      <DependentUpon>LocalPDA.edmx</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemSetting.cs">
-      <DependentUpon>PatientDataAdministrationModel.tt</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="FormTemplate.resx">
+      <DependentUpon>FormTemplate.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DataCentral.resx">
       <DependentUpon>DataCentral.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,15 +126,16 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="packages.config" />
-    <EntityDeploy Include="PatientDataAdministrationModel.edmx">
+    <EntityDeploy Include="LocalPDA.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>PatientDataAdministrationModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>LocalPDA.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="PatientDataAdministrationModel.edmx.diagram">
-      <DependentUpon>PatientDataAdministrationModel.edmx</DependentUpon>
+    <None Include="LocalPDA.edmx.diagram">
+      <DependentUpon>LocalPDA.edmx</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -143,17 +150,50 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="LocalPDA.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LocalPDA.edmx</DependentUpon>
+      <LastGenOutput>LocalPDA.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="LocalPDA.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LocalPDA.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>LocalPDA.edmx</DependentUpon>
+      <LastGenOutput>LocalPDA.cs</LastGenOutput>
+    </Content>
+    <Content Include="LocalPDA_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>LocalPDA.mdf</DependentUpon>
+    </Content>
     <Content Include="MetroFramework.txt" />
-    <Content Include="PatientDataAdministrationModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PatientDataAdministrationModel.Context.cs</LastGenOutput>
-      <DependentUpon>PatientDataAdministrationModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="PatientDataAdministrationModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>PatientDataAdministrationModel.edmx</DependentUpon>
-      <LastGenOutput>PatientDataAdministrationModel.cs</LastGenOutput>
-    </Content>
+    <None Include="Resources\icons8_Info_16px.png" />
+    <None Include="Resources\icons8_Envelope_96px.png" />
+    <None Include="Resources\icons8_Calendar_96px.png" />
+    <None Include="Resources\icons8_Pill_Bottle_96px.png" />
+    <None Include="Resources\icons8_Counselor_96px.png" />
+    <None Include="Resources\W6Fuk.png" />
+    <None Include="Resources\icons8_Person_24px.png" />
+    <None Include="Resources\icons8_Close_Window_24px.png" />
+    <None Include="Resources\icons8_Administrative_Tools_24px.png" />
+    <None Include="Resources\VOnwNgeg.jpg" />
+    <None Include="Resources\icons8_Shutdown_48px.png" />
+    <None Include="Resources\icons8_Settings_48px.png" />
+    <None Include="Resources\icons8_Save_48px.png" />
+    <None Include="Resources\icons8_Safety_Collection_Place_48px.png" />
+    <None Include="Resources\icons8_NFC_48px.png" />
+    <None Include="Resources\icons8_Image_File_48px.png" />
+    <None Include="Resources\icons8_Horn_48px.png" />
+    <None Include="Resources\icons8_Gears_48px.png" />
+    <None Include="Resources\icons8_Fingerprint_Scan_48px.png" />
+    <None Include="Resources\icons8_Fingerprint_48px.png" />
+    <None Include="Resources\icons8_Counselor_48px.png" />
+    <None Include="Resources\icons8_Contact_48px.png" />
+    <None Include="Resources\icons8_Close_Window_48px.png" />
+    <None Include="Resources\icons8_Cancel_48px.png" />
+    <None Include="Resources\apin-weblogo.png" />
+    <None Include="Resources\1D-bar-code.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

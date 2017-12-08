@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\Arigbede\Documents\Visual Studio 2015\Projects\XplorerSoftware\PatientDataAdministration\PatientDataAdministration.Client\PatientDataAdministrationModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\Arigbede\Source\Repos\patient-data-administration\PatientDataAdministration.Client\LocalPDA.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

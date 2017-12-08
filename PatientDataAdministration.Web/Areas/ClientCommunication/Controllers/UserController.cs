@@ -6,8 +6,12 @@ using System.Web.Mvc;
 
 namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {
-    public class BaseController : Controller
+    public class UserController : BaseClientCommController
     {
-
+        // GET: ClientCommunication/User
+        public ActionResult Index()
+        {
+            return View();
+        }
     }
 }

@@ -13,10 +13,10 @@ namespace PatientDataAdministration.Client
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class pdaEntities : DbContext
+    public partial class LocalPDAEntities : DbContext
     {
-        public pdaEntities()
-            : base("name=pdaEntities")
+        public LocalPDAEntities()
+            : base("name=LocalPDAEntities")
         {
         }
     
@@ -25,6 +25,5 @@ namespace PatientDataAdministration.Client
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<SystemSetting> SystemSettings { get; set; }
     }
 }
