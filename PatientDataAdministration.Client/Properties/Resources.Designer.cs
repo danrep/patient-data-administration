@@ -163,6 +163,26 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_Download_20px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Download_20px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Empty_Trash_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Empty_Trash_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_Envelope_96px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Envelope_96px", resourceCulture);
@@ -186,6 +206,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static System.Drawing.Bitmap icons8_Fingerprint_Scan_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Fingerprint_Scan_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Flow_Chart_96px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Flow_Chart_96px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -233,6 +263,36 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_Key_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Key_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Life_Cycle_96px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Life_Cycle_96px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Lock_16px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Lock_16px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_NFC_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_NFC_48px", resourceCulture);
@@ -273,9 +333,29 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_Save_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Save_24px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_Save_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Save_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Server_20px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Server_20px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -296,6 +376,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static System.Drawing.Bitmap icons8_Shutdown_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Shutdown_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Sync_20px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Sync_20px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

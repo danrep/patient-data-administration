@@ -16,16 +16,20 @@ namespace PatientDataAdministration.Data
     {
         public int Id { get; set; }
         public string PepId { get; set; }
+        public string PreviousId { get; set; }
+        public int SiteId { get; set; }
         public string Title { get; set; }
         public string Surname { get; set; }
         public string Othername { get; set; }
         public string Sex { get; set; }
+        public string PhoneNumber { get; set; }
+        public string MaritalStatus { get; set; }
         public System.DateTime DateOfBirth { get; set; }
-        public Nullable<decimal> PatientPhysicalDataHeight { get; set; }
-        public Nullable<decimal> PatientPhysicalDataWeight { get; set; }
         public int StateOfOrigin { get; set; }
-        public int SiteId { get; set; }
-        public int HospitalId { get; set; }
+        public string HouseAddress { get; set; }
+        public int HouseAddressState { get; set; }
+        public int HouseAddresLga { get; set; }
+        public string HospitalNumber { get; set; }
         public int BioDataId { get; set; }
         public byte[] PassportData { get; set; }
         public bool IsDeleted { get; set; }

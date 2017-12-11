@@ -66,6 +66,9 @@
     <Compile Include="Administration_StaffInformation.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="InterchangeModels\PatientInformation.cs" />
+    <Compile Include="InterchangeModels\ResponseData.cs" />
+    <Compile Include="InterchangeModels\UserCredential.cs" />
     <Compile Include="PatientDataAdministrationDataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -94,6 +97,15 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System_LocalGovermentArea.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_State.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_Update.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="PatientDataAdministrationDataModel.edmx">

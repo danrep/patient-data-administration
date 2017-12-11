@@ -15,10 +15,14 @@ namespace PatientDataAdministration.Data
     public partial class Administration_SiteInformation
     {
         public int Id { get; set; }
-        public string SiteName { get; set; }
-        public string SiteAddress { get; set; }
-        public int SiteStateId { get; set; }
-        public System.DateTime DateConfigured { get; set; }
+        public int StateId { get; set; }
+        public string SiteCode { get; set; }
+        public string SiteCodeExposedInfants { get; set; }
+        public string SiteCodePediatric { get; set; }
+        public string SiteCodePMTCT { get; set; }
+        public string SiteCodeVCT { get; set; }
+        public string SiteNameInformal { get; set; }
+        public string SiteNameOfficial { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

@@ -365,7 +365,7 @@
             this.gradientPanel2.Controls.Add(this.button1);
             this.gradientPanel2.Controls.Add(this.btnCapture);
             this.gradientPanel2.Controls.Add(this.pictureBox1);
-            this.gradientPanel2.Location = new System.Drawing.Point(374, 50);
+            this.gradientPanel2.Location = new System.Drawing.Point(679, 50);
             this.gradientPanel2.Name = "gradientPanel2";
             this.gradientPanel2.Size = new System.Drawing.Size(173, 256);
             this.gradientPanel2.TabIndex = 98;

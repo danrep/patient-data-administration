@@ -11,7 +11,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication
             context.MapRoute(
                 "ClientCommunication_default",
                 "ClientCommunication/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional },
+                new[] { "PatientDataAdministration.Web.Areas.ClientCommunication.Controllers" }
             );
         }
     }

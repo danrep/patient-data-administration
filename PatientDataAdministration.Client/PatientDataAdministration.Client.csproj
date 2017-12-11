@@ -46,6 +46,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icons8_Facial_Recognition.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.dll</HintPath>
@@ -67,9 +73,16 @@
       <HintPath>..\packages\MetroFramework.Fonts.1.2.0.3\lib\net40\MetroFramework.Fonts.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SecuGen.FDxSDKPro.Windows">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\SecuGen\FDx SDK Pro for Windows\DotNET\Bin\i386\SecuGen.FDxSDKPro.Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +96,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Authentication.Designer.cs">
+      <DependentUpon>Authentication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubSettings.Designer.cs">
+      <DependentUpon>SubSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LocalPDADataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalPDADataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SubInformationManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubInformationManagement.Designer.cs">
+      <DependentUpon>SubInformationManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormTemplate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -95,6 +131,7 @@
     <Compile Include="DataCentral.Designer.cs">
       <DependentUpon>DataCentral.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalCore.cs" />
     <Compile Include="LocalPDA.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -110,8 +147,35 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalPDA.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Local_StaffInformation.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System_BioDataStore.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_ErrorLog.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_LocalGovermentArea.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_Setting.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_State.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Authentication.resx">
+      <DependentUpon>Authentication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubSettings.resx">
+      <DependentUpon>SubSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubInformationManagement.resx">
+      <DependentUpon>SubInformationManagement.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormTemplate.resx">
       <DependentUpon>FormTemplate.cs</DependentUpon>
     </EmbeddedResource>
@@ -132,8 +196,20 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>LocalPDA.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <None Include="app.manifest" />
     <None Include="LocalPDA.edmx.diagram">
       <DependentUpon>LocalPDA.edmx</DependentUpon>
+    </None>
+    <None Include="LocalPDADataSet.xsc">
+      <DependentUpon>LocalPDADataSet.xsd</DependentUpon>
+    </None>
+    <None Include="LocalPDADataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>LocalPDADataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="LocalPDADataSet.xss">
+      <DependentUpon>LocalPDADataSet.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -147,9 +223,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="icons8_Facial_Recognition.ico" />
     <Content Include="LocalPDA.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LocalPDA.edmx</DependentUpon>
@@ -168,6 +247,15 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Download_20px.png" />
+    <None Include="Resources\icons8_Sync_20px.png" />
+    <None Include="Resources\icons8_Server_20px.png" />
+    <None Include="Resources\icons8_Flow_Chart_96px.png" />
+    <None Include="Resources\icons8_Save_24px.png" />
+    <None Include="Resources\icons8_Empty_Trash_24px.png" />
+    <None Include="Resources\icons8_Lock_16px.png" />
+    <None Include="Resources\icons8_Key_24px.png" />
+    <None Include="Resources\icons8_Life_Cycle_96px.png" />
     <None Include="Resources\icons8_Info_16px.png" />
     <None Include="Resources\icons8_Envelope_96px.png" />
     <None Include="Resources\icons8_Calendar_96px.png" />
@@ -208,6 +296,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Documents\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj">
+      <Project>{D363637B-0CE4-4150-A6BF-15676285754D}</Project>
+      <Name>Codesistance.NFC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PatientDataAdministration.Core\PatientDataAdministration.Core.csproj">
       <Project>{9b1a1cf1-1bd1-4ef1-9281-07b07d0b3a43}</Project>
       <Name>PatientDataAdministration.Core</Name>

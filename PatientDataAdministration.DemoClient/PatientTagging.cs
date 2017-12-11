@@ -18,6 +18,7 @@ namespace PatientDataAdministration.DemoClient
 {
     public partial class PatientTagging : MetroForm
     {
+        #region Variables
         //private readonly DemoDbEntities _demoDb = new DemoDbEntities(); 
 
         private string _bioFinger1;
@@ -54,6 +55,7 @@ namespace PatientDataAdministration.DemoClient
         private int _deviceId = 0;
         private int _iError = 0;
 
+        #endregion
 
         public PatientTagging()
         { 
@@ -701,7 +703,7 @@ namespace PatientDataAdministration.DemoClient
 
                 btnClear_Click(this, e);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //
             }
@@ -728,7 +730,7 @@ namespace PatientDataAdministration.DemoClient
                 _cardthread = new Thread(new ParameterizedThreadStart(card_write_proc));
                 _cardthread.Start(_tag);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 //
             }

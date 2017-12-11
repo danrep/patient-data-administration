@@ -28,18 +28,18 @@ namespace PatientDataAdministration.Core
                     Directory.CreateDirectory(location);
                 }
 
-                if (!File.Exists(location + "PDA_Client_Logs.txt"))
+                if (!File.Exists(location + "PDA_Web_Logs.txt"))
                 {
-                    using (var sw = File.CreateText(location + "PDA_Client_Logs.txt"))
+                    using (var sw = File.CreateText(location + "PDA_Web_Logs.txt"))
                     {
                         sw.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
                         sw.Close();
                     }
                 }
                 else
-                    using (var sw = File.AppendText(location + "PDA_Client_Logs.txt"))
+                    using (var sw = File.AppendText(location + "PDA_Web_Logs.txt"))
                     {
-                        var fI = new FileInfo(location + "PDA_Client_Logs.txt");
+                        var fI = new FileInfo(location + "PDA_Web_Logs.txt");
                         if (fI.Length <= Setting.LogRollOver)
                         {
                             sw.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
@@ -48,9 +48,9 @@ namespace PatientDataAdministration.Core
                         else
                         {
                             sw.Close();
-                            File.Move(location + "PDA_Client_Logs.txt", location + "PDA_Client_Logs_" + DateTime.Now.ToString("yyyymmddhhMMsstt"));
+                            File.Move(location + "PDA_Web_Logs.txt", location + "PDA_Web_Logs_" + DateTime.Now.ToString("yyyymmddhhMMsstt"));
 
-                            using (var sw3 = File.CreateText(location + "PDA_Client_Logs.txt"))
+                            using (var sw3 = File.CreateText(location + "PDA_Web_Logs.txt"))
                             {
                                 sw3.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
                                 sw3.Close();
