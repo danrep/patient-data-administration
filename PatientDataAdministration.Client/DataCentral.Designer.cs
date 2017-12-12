@@ -33,12 +33,12 @@ namespace PatientDataAdministration.Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCentral));
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnPatientManagement = new System.Windows.Forms.Button();
             this.btnDispensationHistory = new System.Windows.Forms.Button();
             this.btnSchedule = new System.Windows.Forms.Button();
             this.btnMessage = new System.Windows.Forms.Button();
             this.btnOperations = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnProfile = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
@@ -77,16 +77,6 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(694, 195);
             this.flowLayoutPanel1.TabIndex = 15;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::PatientDataAdministration.Client.Properties.Resources.VOnwNgeg;
-            this.pictureBox1.Location = new System.Drawing.Point(584, 63);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(218, 195);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
             // 
             // btnPatientManagement
             // 
@@ -189,6 +179,16 @@ namespace PatientDataAdministration.Client
             this.btnOperations.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnOperations.UseVisualStyleBackColor = true;
             this.btnOperations.Click += new System.EventHandler(this.btnOperations_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::PatientDataAdministration.Client.Properties.Resources.VOnwNgeg;
+            this.pictureBox1.Location = new System.Drawing.Point(584, 63);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(218, 195);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
@@ -293,6 +293,7 @@ namespace PatientDataAdministration.Client
             // lblUserInformation
             // 
             this.lblUserInformation.AutoSize = true;
+            this.lblUserInformation.BackColor = System.Drawing.Color.Transparent;
             this.lblUserInformation.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserInformation.ForeColor = System.Drawing.Color.White;
             this.lblUserInformation.Location = new System.Drawing.Point(3, 13);

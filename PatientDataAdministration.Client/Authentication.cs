@@ -88,10 +88,10 @@ namespace PatientDataAdministration.Client
                     {
                         IsDeleted = false, 
                         Id = 0, 
-                        DateConfigured = DateTime.Now, 
-                        SiteAddress = "Local", 
-                        SiteName = "Local", 
-                        SiteStateId = 0
+                        SiteNameOfficial = "Local Administration", 
+                        SiteCode ="LADMIN",
+                        SiteNameInformal = "LADMIN", 
+                        StateId = 0
                     }
                 });
                 dataCentral.ShowDialog();

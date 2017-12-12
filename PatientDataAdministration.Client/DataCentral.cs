@@ -36,8 +36,8 @@ namespace PatientDataAdministration.Client
         {
             lblUserInformation.Text = @"Welcome, " +
                                       _userCredential.AdministrationStaffInformation.Surname + @" " +
-                                      _userCredential.AdministrationStaffInformation.FirstName + @". You are working from " + 
-                                      _userCredential.AdministrationSiteInformation.SiteName;
+                                      _userCredential.AdministrationStaffInformation.FirstName + @". You are attached to " + 
+                                      _userCredential.AdministrationSiteInformation.SiteNameOfficial;
         }
 
         private void btnPatientManagement_Click(object sender, EventArgs e)
@@ -55,7 +55,7 @@ namespace PatientDataAdministration.Client
 
         private void btnOperations_Click(object sender, EventArgs e)
         {
-
+            //
         }
     }
 }

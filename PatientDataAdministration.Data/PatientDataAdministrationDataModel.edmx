@@ -64,7 +64,7 @@
           <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PasswordData" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PasswordData" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="PasswordSalt" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
@@ -186,6 +186,7 @@
           <EntitySet Name="Administration_ClientLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" />
           <EntitySet Name="Administration_ClientMap" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientMap" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientRegistry" />
+          <EntitySet Name="Administration_SiteInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" />
           <EntitySet Name="Administration_StaffInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" />
           <EntitySet Name="Patient_PatientInformation" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformation" />
@@ -194,7 +195,6 @@
           <EntitySet Name="System_LocalGovermentArea" EntityType="PatientDataAdministration.DatabaseModel.System_LocalGovermentArea" />
           <EntitySet Name="System_State" EntityType="PatientDataAdministration.DatabaseModel.System_State" />
           <EntitySet Name="System_Update" EntityType="PatientDataAdministration.DatabaseModel.System_Update" />
-          <EntitySet Name="Administration_SiteInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" />
         </EntityContainer>
         <EntityType Name="Administration_ClientLog">
           <Key>
@@ -230,6 +230,21 @@
           <Property Name="DateConfigured" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="Administration_SiteInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <Property Name="SiteCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodeExposedInfants" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodePediatric" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodePMTCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodeVCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteNameInformal" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteNameOfficial" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="Administration_StaffInformation">
           <Key>
             <PropertyRef Name="Id" />
@@ -240,7 +255,7 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
           <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SiteId" Type="Int32" Nullable="false" />
@@ -340,21 +355,6 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="Administration_SiteInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StateId" Type="Int32" Nullable="false" />
-          <Property Name="SiteCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteCodeExposedInfants" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteCodePediatric" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteCodePMTCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteCodeVCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteNameInformal" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="SiteNameOfficial" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -394,6 +394,22 @@
                 <ScalarProperty Name="ClientState" ColumnName="ClientState" />
                 <ScalarProperty Name="ClientMAC" ColumnName="ClientMAC" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Administration_SiteInformation">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_SiteInformation">
+              <MappingFragment StoreEntitySet="Administration_SiteInformation">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
+                <ScalarProperty Name="SiteNameInformal" ColumnName="SiteNameInformal" />
+                <ScalarProperty Name="SiteCodeVCT" ColumnName="SiteCodeVCT" />
+                <ScalarProperty Name="SiteCodePMTCT" ColumnName="SiteCodePMTCT" />
+                <ScalarProperty Name="SiteCodePediatric" ColumnName="SiteCodePediatric" />
+                <ScalarProperty Name="SiteCodeExposedInfants" ColumnName="SiteCodeExposedInfants" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -512,22 +528,6 @@
                 <ScalarProperty Name="IsNew" ColumnName="IsNew" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Administration_SiteInformation">
-            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_SiteInformation">
-              <MappingFragment StoreEntitySet="Administration_SiteInformation">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
-                <ScalarProperty Name="SiteNameInformal" ColumnName="SiteNameInformal" />
-                <ScalarProperty Name="SiteCodeVCT" ColumnName="SiteCodeVCT" />
-                <ScalarProperty Name="SiteCodePMTCT" ColumnName="SiteCodePMTCT" />
-                <ScalarProperty Name="SiteCodePediatric" ColumnName="SiteCodePediatric" />
-                <ScalarProperty Name="SiteCodeExposedInfants" ColumnName="SiteCodeExposedInfants" />
-                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
-                <ScalarProperty Name="StateId" ColumnName="StateId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

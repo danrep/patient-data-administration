@@ -3,7 +3,7 @@
  */
 var pdaWeb = angular.module("pdaWeb", []);
 function getNgScope() {
-    return angular.element(document.getElementById("page-container")).scope();
+    return angular.element(document.getElementById("content")).scope();
 };
 
 /*
@@ -50,25 +50,17 @@ function gritterSuccess() {
  */
 function api(apiConnectType, url, data, asyncMode, callback) {
 
-    if (data === null) {
-        data = { auth: $("#auth_key").val() }
-    } else {
-        $.extend(data, {
-            auth: $("#auth_key").val()
-        });
-    }
-
     $.ajax({
         type: apiConnectType,
-        url: $("#apiUrl").val() + url,
+        url: url,
         async: asyncMode,
         data: data,
         dataType: "json"
     })
     .success(function (remoteData) {
-        if (remoteData.status === true) {
+        if (remoteData.Status === true) {
             if (callback != null && typeof callback === "function")
-                callback(remoteData.data);
+                callback(remoteData.Data);
         } else {
             window.gritterDisplay(remoteData.status_message, "warning");
         }

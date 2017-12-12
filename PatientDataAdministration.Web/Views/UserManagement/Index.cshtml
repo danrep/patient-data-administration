@@ -1,8 +1,11 @@
-﻿
+﻿@using PatientDataAdministration.Data
+
 @{
     ViewBag.Title = "User Management Central";
     ViewBag.TitleDesc = "Manage Users and User Elements";
     Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+
+    var db = new Entities();
 }
 
 <div class="row">
@@ -11,7 +14,7 @@
             <div class="stats-icon"><i class="fa fa-users"></i></div>
             <div class="stats-info">
                 <h4>TOTAL USERS</h4>
-                <p>7,291,922</p>
+                <p>00</p>
             </div>
             <div class="stats-link">
                 <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
@@ -24,7 +27,7 @@
             <div class="stats-icon"><i class="fa fa-desktop"></i></div>
             <div class="stats-info">
                 <h4>CURRENTLY CONNECTED</h4>
-                <p>90.54</p>
+                <p>00</p>
             </div>
             <div class="stats-link">
                 <a href="javascript:;">View Detail <i class="fa fa-arrow-circle-o-right"></i></a>
@@ -64,7 +67,7 @@
         <div class="panel panel-inverse">
             <div class="panel-heading">
                 <div class="panel-heading-btn">
-                    <a href="#modal-dialog" data-toggle="modal" class="btn btn-xs btn-success"><i class="fa fa-user-circle-o"></i>&nbsp;Add New User</a>
+                    <a href="#modal-alert" data-toggle="modal" class="btn btn-xs btn-success"><i class="fa fa-user-circle-o"></i>&nbsp;Add New User</a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
                        data-click="panel-expand"><i class="fa fa-expand"></i></a>
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
@@ -87,88 +90,148 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="odd gradeX">
-                        <td>Trident</td>
-                        <td>Internet Explorer 4.0</td>
-                        <td>Win 95+</td>
-                        <td>4</td>
-                        <td>X</td>
-                        <td>X</td>
-                    </tr>
-                    <tr class="even gradeC">
-                        <td>Trident</td>
-                        <td>Internet Explorer 5.0</td>
-                        <td>Win 95+</td>
-                        <td>5</td>
-                        <td>C</td>
-                        <td>X</td>
-                    </tr>
-                    <tr class="odd gradeA">
-                        <td>Trident</td>
-                        <td>Internet Explorer 5.5</td>
-                        <td>Win 95+</td>
-                        <td>5.5</td>
-                        <td>A</td>
-                        <td>X</td>
-                    </tr>
-                    <tr class="even gradeA">
-                        <td>Trident</td>
-                        <td>Internet Explorer 6</td>
-                        <td>Win 98+</td>
-                        <td>6</td>
-                        <td>A</td>
-                        <td>X</td>
-                    </tr>
-                    <tr class="odd gradeA">
-                        <td>Trident</td>
-                        <td>Internet Explorer 7</td>
-                        <td>Win XP SP2+</td>
-                        <td>7</td>
-                        <td>A</td>
-                        <td>X</td>
-                    </tr>
                     </tbody>
                 </table>
-                <div class="modal fade" id="modal-alert">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    ×
-                                </button>
-                                <h4 class="modal-title">Alert Header</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="alert alert-danger m-b-0">
-                                    <h4><i class="fa fa-info-circle"></i> Alert Header</h4>
-                                    <p>
-                                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque
-                                        ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at,
-                                        tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate
-                                        fringilla. Donec lacinia congue felis in faucibus.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="javascript:;" class="btn btn-sm btn-white"
-                                   data-dismiss="modal">Close</a>
-                                <a href="javascript:;" class="btn btn-sm btn-danger"
-                                   data-dismiss="modal">Action</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="modal-alert">
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <input type="hidden" id="id" value="0"/>
+                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" action="javascript:saveUser();">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4 class="modal-title">Add New Patient</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6">
+                                <label class="control-label" for="surname">Surname * :</label>
+                                <input class="form-control" type="text" id="surname" name="surname"
+                                       placeholder="Required" data-parsley-required="true"/>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label class="control-label" for="firstName">First Name * :</label>
+                                <input class="form-control" type="text" id="firstName" name="firstName"
+                                       placeholder="Required" data-parsley-required="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="email">Email * :</label>
+                                <input class="form-control" type="text" id="email" name="email"
+                                       data-parsley-type="email" placeholder="Email" data-parsley-required="true"/>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="data-phone">Phone * :</label>
+                                <input class="form-control" type="text" id="data-phone" data-parsley-type="number"
+                                       placeholder="(XXX) XXXX XXX" data-parsley-required="true"/>
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                                <label class="control-label" for="staffId">Staff Id * :</label>
+                                <input class="form-control" type="text" id="staffId" name="staffId"
+                                       placeholder="Required" data-parsley-required="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6">
+                                <label class="control-label" for="select-required">Site :</label>
+                                <select class="form-control" id="select-required" name="selectBox"
+                                        data-parsley-required="true">
+                                    <option value="">Please choose</option>
+                                    @foreach (var site in db.Administration_SiteInformation.Where(x => !x.IsDeleted).OrderBy(x => x.SiteNameOfficial))
+                                    {
+                                        <option value="@site.Id">@site.SiteNameOfficial</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="javascript:;" class="btn btn-sm btn-white"
+                           data-dismiss="modal">Close</a>
+                        <button type="submit" class="btn btn-sm btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section scripts
 {
     <script>
         $(document).ready(function() {
-            reInitializeTable($('#data-table'));
+            pageLoad();
         });
+
+        pdaWeb.controller('pdaWebCtrlr', function($scope) {
+                $scope.saveUserForm = function() {
+                    var userInformation = {
+                        Id: $('#id').val(),
+                        StaffId: $('#staffId').val(),
+                        FirstName: $('#firstName').val(),
+                        Surname: $('#surname').val(),
+                        Email: $('#email').val(),
+                        PhoneNumber: $('#data-phone').val(),
+                        SiteId: $('#select-required').val()
+                    };
+
+                    window.api("POST",
+                        "@Url.Action("SaveUser", "UserManagement", new {area = "ServerCommunication"})",
+                        userInformation,
+                        true,
+                        postSaveUser);
+                };
+            });
+
+        function saveUser() {
+            window.getNgScope().saveUserForm();
+        };
+
+        function postSaveUser(data) {
+            alert('Success');
+            pageLoad();
+        };
+
+        function pageLoad() {
+            window.api("GET",
+                "@Url.Action("GetUser", "UserManagement", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadTable);
+        };
+
+        function loadTable(data) {
+            $.each(data,
+                function(i, datum) {
+                    var rowData = '<tr><td>' + datum.UserInformation.Surname + '</td>';
+                    rowData += '<td>' + datum.UserInformation.FirstName + '</td>';
+                    rowData += '<td>' + datum.UserInformation.Email + '</td>';
+                    rowData += '<td>' + datum.UserInformation.PhoneNumber + '</td>';
+                    rowData += '<td>' + datum.SiteInformation.SiteCode + '</td>';
+                    rowData += '<td><div class="btn-group">';
+
+                    rowData += '<button onclick="manageFacilitatorCredential(\'' +
+                        datum.UserInformation.Id +
+                        '\')" class="btn btn-primary btn-condensed btn-xs"><span class="fa fa-edit"></span></button>';
+                    rowData += '<button onclick="sendUserCredential(\'' +
+                        datum.UserInformation.Id +
+                        '\')" class="btn btn-info btn-condensed btn-xs"><span class="fa fa-envelope"></span></button>';
+                    rowData += '<button onclick="deleteUserCredential(\'' +
+                        datum.UserInformation.Id +
+                        '\')" class="btn btn-danger btn-condensed btn-xs"><span class="fa fa-trash"></span></button>';
+
+                    rowData += '</div></td>';
+                    rowData += '</tr>';
+
+                    $("#data-table tbody").append(rowData);
+                });
+
+            reInitializeTable($('#data-table'));
+        }
     </script>
 }

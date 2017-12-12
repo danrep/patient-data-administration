@@ -66,15 +66,11 @@ namespace PatientDataAdministration.Client
             this.systemStateBindingSourceResidence = new System.Windows.Forms.BindingSource(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
-            this.label18 = new System.Windows.Forms.Label();
-            this.txtStateOfOrigin = new System.Windows.Forms.ComboBox();
             this.systemStateBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label17 = new System.Windows.Forms.Label();
             this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txtDateOfBirth = new System.Windows.Forms.DateTimePicker();
-            this.label13 = new System.Windows.Forms.Label();
-            this.txtMaritalStatus = new System.Windows.Forms.ComboBox();
             this.txtSex = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -233,8 +229,8 @@ namespace PatientDataAdministration.Client
             // 
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.btnSave);
-            this.groupBox2.Controls.Add(this.btnClear);
             this.groupBox2.Controls.Add(this.pnlDataControl);
+            this.groupBox2.Controls.Add(this.btnClear);
             this.groupBox2.Controls.Add(this.pnlPersonalInformation);
             this.groupBox2.Controls.Add(this.pnlOfficialInformation);
             this.groupBox2.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -249,7 +245,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(524, 369);
+            this.label10.Location = new System.Drawing.Point(524, 263);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(190, 13);
             this.label10.TabIndex = 135;
@@ -262,7 +258,7 @@ namespace PatientDataAdministration.Client
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(554, 315);
+            this.btnSave.Location = new System.Drawing.Point(554, 296);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(160, 40);
             this.btnSave.TabIndex = 129;
@@ -278,9 +274,9 @@ namespace PatientDataAdministration.Client
             this.btnClear.ForeColor = System.Drawing.Color.White;
             this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
             this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClear.Location = new System.Drawing.Point(246, 315);
+            this.btnClear.Location = new System.Drawing.Point(554, 342);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(80, 40);
+            this.btnClear.Size = new System.Drawing.Size(160, 40);
             this.btnClear.TabIndex = 131;
             this.btnClear.Text = "Clear ";
             this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -421,14 +417,10 @@ namespace PatientDataAdministration.Client
             this.pnlPersonalInformation.Controls.Add(this.txtStateOfResidence);
             this.pnlPersonalInformation.Controls.Add(this.label5);
             this.pnlPersonalInformation.Controls.Add(this.txtAddress);
-            this.pnlPersonalInformation.Controls.Add(this.label18);
-            this.pnlPersonalInformation.Controls.Add(this.txtStateOfOrigin);
             this.pnlPersonalInformation.Controls.Add(this.label17);
             this.pnlPersonalInformation.Controls.Add(this.txtPhoneNumber);
             this.pnlPersonalInformation.Controls.Add(this.label12);
             this.pnlPersonalInformation.Controls.Add(this.txtDateOfBirth);
-            this.pnlPersonalInformation.Controls.Add(this.label13);
-            this.pnlPersonalInformation.Controls.Add(this.txtMaritalStatus);
             this.pnlPersonalInformation.Controls.Add(this.txtSex);
             this.pnlPersonalInformation.Controls.Add(this.label14);
             this.pnlPersonalInformation.Controls.Add(this.label11);
@@ -438,14 +430,14 @@ namespace PatientDataAdministration.Client
             this.pnlPersonalInformation.Controls.Add(this.label16);
             this.pnlPersonalInformation.Location = new System.Drawing.Point(246, 22);
             this.pnlPersonalInformation.Name = "pnlPersonalInformation";
-            this.pnlPersonalInformation.Size = new System.Drawing.Size(468, 287);
+            this.pnlPersonalInformation.Size = new System.Drawing.Size(468, 236);
             this.pnlPersonalInformation.TabIndex = 75;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(233, 232);
+            this.label7.Location = new System.Drawing.Point(233, 183);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(94, 13);
             this.label7.TabIndex = 105;
@@ -459,7 +451,7 @@ namespace PatientDataAdministration.Client
             this.txtLgaOfResidence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.txtLgaOfResidence.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLgaOfResidence.FormattingEnabled = true;
-            this.txtLgaOfResidence.Location = new System.Drawing.Point(236, 248);
+            this.txtLgaOfResidence.Location = new System.Drawing.Point(236, 199);
             this.txtLgaOfResidence.Name = "txtLgaOfResidence";
             this.txtLgaOfResidence.Size = new System.Drawing.Size(227, 31);
             this.txtLgaOfResidence.TabIndex = 104;
@@ -479,7 +471,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(4, 232);
+            this.label6.Location = new System.Drawing.Point(4, 183);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(98, 13);
             this.label6.TabIndex = 103;
@@ -493,7 +485,7 @@ namespace PatientDataAdministration.Client
             this.txtStateOfResidence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.txtStateOfResidence.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtStateOfResidence.FormattingEnabled = true;
-            this.txtStateOfResidence.Location = new System.Drawing.Point(4, 248);
+            this.txtStateOfResidence.Location = new System.Drawing.Point(4, 199);
             this.txtStateOfResidence.Name = "txtStateOfResidence";
             this.txtStateOfResidence.Size = new System.Drawing.Size(227, 31);
             this.txtStateOfResidence.TabIndex = 102;
@@ -509,7 +501,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(4, 183);
+            this.label5.Location = new System.Drawing.Point(4, 134);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(46, 13);
             this.label5.TabIndex = 100;
@@ -520,34 +512,10 @@ namespace PatientDataAdministration.Client
             this.txtAddress.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAddress.Font = new System.Drawing.Font("Lato", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAddress.Location = new System.Drawing.Point(4, 199);
+            this.txtAddress.Location = new System.Drawing.Point(4, 150);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(459, 30);
             this.txtAddress.TabIndex = 101;
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(233, 134);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(79, 13);
-            this.label18.TabIndex = 99;
-            this.label18.Text = "State of Origin";
-            // 
-            // txtStateOfOrigin
-            // 
-            this.txtStateOfOrigin.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtStateOfOrigin.DataSource = this.systemStateBindingSource;
-            this.txtStateOfOrigin.DisplayMember = "StateName";
-            this.txtStateOfOrigin.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtStateOfOrigin.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtStateOfOrigin.FormattingEnabled = true;
-            this.txtStateOfOrigin.Location = new System.Drawing.Point(236, 150);
-            this.txtStateOfOrigin.Name = "txtStateOfOrigin";
-            this.txtStateOfOrigin.Size = new System.Drawing.Size(227, 31);
-            this.txtStateOfOrigin.TabIndex = 98;
-            this.txtStateOfOrigin.ValueMember = "Id";
             // 
             // systemStateBindingSource
             // 
@@ -558,7 +526,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(4, 134);
+            this.label17.Location = new System.Drawing.Point(105, 84);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(80, 13);
             this.label17.TabIndex = 62;
@@ -569,9 +537,9 @@ namespace PatientDataAdministration.Client
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPhoneNumber.Font = new System.Drawing.Font("Lato", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhoneNumber.Location = new System.Drawing.Point(4, 150);
+            this.txtPhoneNumber.Location = new System.Drawing.Point(105, 100);
             this.txtPhoneNumber.Name = "txtPhoneNumber";
-            this.txtPhoneNumber.Size = new System.Drawing.Size(227, 30);
+            this.txtPhoneNumber.Size = new System.Drawing.Size(200, 30);
             this.txtPhoneNumber.TabIndex = 63;
             // 
             // label12
@@ -592,33 +560,6 @@ namespace PatientDataAdministration.Client
             this.txtDateOfBirth.ShowCheckBox = true;
             this.txtDateOfBirth.Size = new System.Drawing.Size(152, 23);
             this.txtDateOfBirth.TabIndex = 73;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(102, 84);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(74, 13);
-            this.label13.TabIndex = 72;
-            this.label13.Text = "Marital Status";
-            // 
-            // txtMaritalStatus
-            // 
-            this.txtMaritalStatus.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.txtMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtMaritalStatus.Font = new System.Drawing.Font("Calibri Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMaritalStatus.FormattingEnabled = true;
-            this.txtMaritalStatus.Items.AddRange(new object[] {
-            "Single",
-            "Married",
-            "Divorced",
-            "Widowed",
-            "Unknown"});
-            this.txtMaritalStatus.Location = new System.Drawing.Point(105, 100);
-            this.txtMaritalStatus.Name = "txtMaritalStatus";
-            this.txtMaritalStatus.Size = new System.Drawing.Size(200, 31);
-            this.txtMaritalStatus.TabIndex = 71;
             // 
             // txtSex
             // 
@@ -954,8 +895,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.TextBox txtPhoneNumber;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.DateTimePicker txtDateOfBirth;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox txtMaritalStatus;
         private System.Windows.Forms.ComboBox txtSex;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label11;
@@ -963,8 +902,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.TextBox txtSurname;
         private System.Windows.Forms.TextBox txtOtherNames;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.ComboBox txtStateOfOrigin;
         private System.Windows.Forms.Panel pnlDataControl;
         private System.Windows.Forms.CheckBox chkNfc;
         private System.Windows.Forms.CheckBox chkSecFin;

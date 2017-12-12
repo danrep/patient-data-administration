@@ -229,7 +229,7 @@ namespace PatientDataAdministration.Client
                         HouseAddress = txtAddress.Text,
                         HouseAddressState = (int) txtStateOfResidence.SelectedValue,
                         IsDeleted = false,
-                        MaritalStatus = txtMaritalStatus.Text,
+                        MaritalStatus = string.Empty,
                         Othername = txtOtherNames.Text,
                         PassportData = null,
                         PreviousId = txtPreviousNumber.Text,
@@ -237,7 +237,7 @@ namespace PatientDataAdministration.Client
                         Title = string.Empty,
                         SiteId = _userCredential.AdministrationSiteInformation.Id,
                         Surname = txtSurname.Text,
-                        StateOfOrigin = (int) txtStateOfOrigin.SelectedValue,
+                        StateOfOrigin = 0,
                         PhoneNumber = txtPhoneNumber.Text
                     }
                 };
@@ -432,8 +432,6 @@ namespace PatientDataAdministration.Client
                 ctl.Text = "";
 
             txtSex.SelectedIndex =
-                txtMaritalStatus.SelectedIndex =
-                    txtStateOfOrigin.SelectedIndex =
                         txtStateOfResidence.SelectedIndex = txtLgaOfResidence.SelectedIndex = -1;
 
             txtDateOfBirth.Value = DateTime.Now;
@@ -842,7 +840,7 @@ namespace PatientDataAdministration.Client
             txtAddress.Text = patientDataResolved.Patient_PatientInformation.HouseAddress;
             txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth;
             txtHospitalNumber.Text = patientDataResolved.Patient_PatientInformation.HospitalNumber;
-            txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
+            //txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
             txtOtherNames.Text = patientDataResolved.Patient_PatientInformation.Othername;
             txtPepId.Text = patientDataResolved.Patient_PatientInformation.PepId;
             txtPhoneNumber.Text = patientDataResolved.Patient_PatientInformation.PhoneNumber;
@@ -853,7 +851,7 @@ namespace PatientDataAdministration.Client
             txtStateOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddressState;
             txtStateOfResidence_SelectedValueChanged(this, EventArgs.Empty);
             txtLgaOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddresLga;
-            txtStateOfOrigin.SelectedValue = patientDataResolved.Patient_PatientInformation.StateOfOrigin;
+            //txtStateOfOrigin.SelectedValue = patientDataResolved.Patient_PatientInformation.StateOfOrigin;
 
             if (patientDataResolved.Patient_PatientBiometricData != null)
             {

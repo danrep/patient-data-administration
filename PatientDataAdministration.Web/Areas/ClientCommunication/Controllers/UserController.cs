@@ -11,7 +11,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {
     public class UserController : BaseClientCommController
     {
-        readonly Entities _entities = new Entities();
+        private readonly Entities _entities = new Entities();
 
         public JsonResult Authenticate(string authData)
         {

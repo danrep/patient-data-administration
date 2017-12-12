@@ -28,6 +28,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
         public virtual DbSet<Administration_ClientMap> Administration_ClientMap { get; set; }
         public virtual DbSet<Administration_ClientRegistry> Administration_ClientRegistry { get; set; }
+        public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
         public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
         public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
         public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
@@ -36,6 +37,5 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
-        public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
     }
 }

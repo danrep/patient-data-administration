@@ -73,5 +73,8 @@
     <Build Include="dbo\Tables\Patient_PatientInformation.sql" />
     <Build Include="dbo\Tables\Patient_PatientNearFieldCommunicationData.sql" />
     <Build Include="dbo\Tables\Patient_PatientTransferHistory.sql" />
+    <Build Include="dbo\Tables\System_Update_1.sql" />
+    <Build Include="dbo\Tables\System_State_1.sql" />
+    <Build Include="dbo\Tables\System_LocalGovermentArea_1.sql" />
   </ItemGroup>
 </Project>
