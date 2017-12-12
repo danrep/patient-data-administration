@@ -1058,6 +1058,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\ClientCommunication\ClientCommunicationAreaRegistration.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\BaseClientCommController.cs" />
+    <Compile Include="Areas\ClientCommunication\Controllers\PatientController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\SyncController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />

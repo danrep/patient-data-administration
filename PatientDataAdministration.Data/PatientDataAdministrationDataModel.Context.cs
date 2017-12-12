@@ -28,6 +28,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
         public virtual DbSet<Administration_ClientMap> Administration_ClientMap { get; set; }
         public virtual DbSet<Administration_ClientRegistry> Administration_ClientRegistry { get; set; }
+        public virtual DbSet<Administration_PatientRegistrationLog> Administration_PatientRegistrationLog { get; set; }
         public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
         public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
         public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }

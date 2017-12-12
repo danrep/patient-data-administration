@@ -45,7 +45,6 @@ namespace PatientDataAdministration.Client
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
-            this.btnClear = new System.Windows.Forms.Button();
             this.pnlDataControl = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnDataFinger1 = new System.Windows.Forms.Button();
@@ -56,6 +55,7 @@ namespace PatientDataAdministration.Client
             this.chkSecFin = new System.Windows.Forms.CheckBox();
             this.chkPriFin = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.btnClear = new System.Windows.Forms.Button();
             this.pnlPersonalInformation = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
             this.txtLgaOfResidence = new System.Windows.Forms.ComboBox();
@@ -66,7 +66,6 @@ namespace PatientDataAdministration.Client
             this.systemStateBindingSourceResidence = new System.Windows.Forms.BindingSource(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.txtAddress = new System.Windows.Forms.TextBox();
-            this.systemStateBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label17 = new System.Windows.Forms.Label();
             this.txtPhoneNumber = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -87,6 +86,7 @@ namespace PatientDataAdministration.Client
             this.txtPepId = new System.Windows.Forms.TextBox();
             this.txtPreviousNumber = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.systemStateBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblInformation = new System.Windows.Forms.Label();
             this.btnRefreshNfcDevice = new System.Windows.Forms.Button();
             this.btnRefreshBioDevice = new System.Windows.Forms.Button();
@@ -107,9 +107,9 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSourceResidence)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).BeginInit();
             this.pnlOfficialInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -267,22 +267,6 @@ namespace PatientDataAdministration.Client
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnClear
-            // 
-            this.btnClear.BackColor = System.Drawing.Color.Black;
-            this.btnClear.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.ForeColor = System.Drawing.Color.White;
-            this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
-            this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClear.Location = new System.Drawing.Point(554, 342);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(160, 40);
-            this.btnClear.TabIndex = 131;
-            this.btnClear.Text = "Clear ";
-            this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
             // pnlDataControl
             // 
             this.pnlDataControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -408,6 +392,22 @@ namespace PatientDataAdministration.Client
             this.label8.TabIndex = 60;
             this.label8.Text = "Data Control";
             // 
+            // btnClear
+            // 
+            this.btnClear.BackColor = System.Drawing.Color.Black;
+            this.btnClear.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.ForeColor = System.Drawing.Color.White;
+            this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
+            this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClear.Location = new System.Drawing.Point(554, 342);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(160, 40);
+            this.btnClear.TabIndex = 131;
+            this.btnClear.Text = "Clear ";
+            this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // pnlPersonalInformation
             // 
             this.pnlPersonalInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -516,11 +516,6 @@ namespace PatientDataAdministration.Client
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(459, 30);
             this.txtAddress.TabIndex = 101;
-            // 
-            // systemStateBindingSource
-            // 
-            this.systemStateBindingSource.DataMember = "System_State";
-            this.systemStateBindingSource.DataSource = this.localPDADataSet;
             // 
             // label17
             // 
@@ -735,6 +730,11 @@ namespace PatientDataAdministration.Client
             this.label1.TabIndex = 56;
             this.label1.Text = "Previous Number";
             // 
+            // systemStateBindingSource
+            // 
+            this.systemStateBindingSource.DataMember = "System_State";
+            this.systemStateBindingSource.DataSource = this.localPDADataSet;
+            // 
             // lblInformation
             // 
             this.lblInformation.AutoSize = true;
@@ -861,10 +861,10 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSourceResidence)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).EndInit();
             this.pnlOfficialInformation.ResumeLayout(false);
             this.pnlOfficialInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

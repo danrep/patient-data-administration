@@ -16,6 +16,7 @@
           <Property Name="LocationLat" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="LocationLong" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="ChipData" Type="varchar(max)" Nullable="false" />
+          <Property Name="ClientIpAddress" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_ClientMap">
@@ -37,6 +38,18 @@
           <Property Name="ClientMAC" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="ClientState" Type="int" Nullable="false" />
           <Property Name="DateConfigured" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Administration_PatientRegistrationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateLogged" Type="datetime" Nullable="false" />
+          <Property Name="PepId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="IsBioDataCaptured" Type="bit" Nullable="false" />
+          <Property Name="IsNfcDataCaptured" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_SiteInformation">
@@ -103,7 +116,6 @@
           <Property Name="HouseAddressState" Type="int" Nullable="false" />
           <Property Name="HouseAddresLga" Type="int" Nullable="false" />
           <Property Name="HospitalNumber" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="BioDataId" Type="int" Nullable="false" />
           <Property Name="PassportData" Type="image" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -168,6 +180,7 @@
           <EntitySet Name="Administration_ClientLog" EntityType="Self.Administration_ClientLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientMap" EntityType="Self.Administration_ClientMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="Self.Administration_ClientRegistry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Administration_PatientRegistrationLog" EntityType="Self.Administration_PatientRegistrationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_SiteInformation" EntityType="Self.Administration_SiteInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_StaffInformation" EntityType="Self.Administration_StaffInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
@@ -186,6 +199,7 @@
           <EntitySet Name="Administration_ClientLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" />
           <EntitySet Name="Administration_ClientMap" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientMap" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientRegistry" />
+          <EntitySet Name="Administration_PatientRegistrationLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog" />
           <EntitySet Name="Administration_SiteInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" />
           <EntitySet Name="Administration_StaffInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" />
@@ -207,6 +221,7 @@
           <Property Name="LocationLat" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="LocationLong" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ChipData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClientIpAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_ClientMap">
@@ -228,6 +243,18 @@
           <Property Name="ClientMAC" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ClientState" Type="Int32" Nullable="false" />
           <Property Name="DateConfigured" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Administration_PatientRegistrationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateLogged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="IsBioDataCaptured" Type="Boolean" Nullable="false" />
+          <Property Name="IsNfcDataCaptured" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_SiteInformation">
@@ -294,7 +321,6 @@
           <Property Name="HouseAddressState" Type="Int32" Nullable="false" />
           <Property Name="HouseAddresLga" Type="Int32" Nullable="false" />
           <Property Name="HospitalNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="BioDataId" Type="Int32" Nullable="false" />
           <Property Name="PassportData" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
@@ -365,6 +391,7 @@
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_ClientLog">
               <MappingFragment StoreEntitySet="Administration_ClientLog">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ClientIpAddress" ColumnName="ClientIpAddress" />
                 <ScalarProperty Name="ChipData" ColumnName="ChipData" />
                 <ScalarProperty Name="LocationLong" ColumnName="LocationLong" />
                 <ScalarProperty Name="LocationLat" ColumnName="LocationLat" />
@@ -394,6 +421,19 @@
                 <ScalarProperty Name="ClientState" ColumnName="ClientState" />
                 <ScalarProperty Name="ClientMAC" ColumnName="ClientMAC" />
                 <ScalarProperty Name="ClientName" ColumnName="ClientName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Administration_PatientRegistrationLog">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog">
+              <MappingFragment StoreEntitySet="Administration_PatientRegistrationLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsNfcDataCaptured" ColumnName="IsNfcDataCaptured" />
+                <ScalarProperty Name="IsBioDataCaptured" ColumnName="IsBioDataCaptured" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="DateLogged" ColumnName="DateLogged" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -450,7 +490,6 @@
               <MappingFragment StoreEntitySet="Patient_PatientInformation">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="PassportData" ColumnName="PassportData" />
-                <ScalarProperty Name="BioDataId" ColumnName="BioDataId" />
                 <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
                 <ScalarProperty Name="HouseAddresLga" ColumnName="HouseAddresLga" />
                 <ScalarProperty Name="HouseAddressState" ColumnName="HouseAddressState" />

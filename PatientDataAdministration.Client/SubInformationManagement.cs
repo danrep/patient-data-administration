@@ -71,8 +71,6 @@ namespace PatientDataAdministration.Client
             persistLoad.Enabled = true;
             persistLoad.Start();
 
-            txtPepId.Text = @"Loading...";
-            AssignNextPepId();
             LoadReaderList();
         }
 
@@ -222,7 +220,6 @@ namespace PatientDataAdministration.Client
                     Patient_PatientInformation = new Patient_PatientInformation
                     {
                         PepId = txtPepId.Text,
-                        BioDataId = 0,
                         DateOfBirth = txtDateOfBirth.Value,
                         HospitalNumber = txtHospitalNumber.Text,
                         HouseAddresLga = (int) txtLgaOfResidence.SelectedValue,
@@ -238,7 +235,8 @@ namespace PatientDataAdministration.Client
                         SiteId = _userCredential.AdministrationSiteInformation.Id,
                         Surname = txtSurname.Text,
                         StateOfOrigin = 0,
-                        PhoneNumber = txtPhoneNumber.Text
+                        PhoneNumber = txtPhoneNumber.Text, 
+                        Id = 0
                     }
                 };
 
@@ -274,7 +272,11 @@ namespace PatientDataAdministration.Client
                     patientData.Patient_PatientNearFieldCommunicationData.IsValid = true;
                 }
 
+                patientData.Administration_StaffInformation = _userCredential.AdministrationStaffInformation;
+
                 #endregion Patient Data Composition
+
+                LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
 
                 if (_systemBioDataStore.Id == 0)
                 {
@@ -435,25 +437,9 @@ namespace PatientDataAdministration.Client
                         txtStateOfResidence.SelectedIndex = txtLgaOfResidence.SelectedIndex = -1;
 
             txtDateOfBirth.Value = DateTime.Now;
-            AssignNextPepId();
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
-        }
-
-        private void AssignNextPepId()
-        {
-            try
-            {
-                txtPepId.Text =
-                DateTime.Now.ToString("yy") + @"-" +
-                _userCredential.AdministrationSiteInformation.SiteNameOfficial + @"-" +
-                (_localPdaEntities.System_BioDataStore.Count() + 1).ToString("0000");
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
-            }
         }
 
         private bool CheckForDevice()

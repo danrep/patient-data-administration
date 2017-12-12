@@ -30,7 +30,6 @@ namespace PatientDataAdministration.Data
         public int HouseAddressState { get; set; }
         public int HouseAddresLga { get; set; }
         public string HospitalNumber { get; set; }
-        public int BioDataId { get; set; }
         public byte[] PassportData { get; set; }
         public bool IsDeleted { get; set; }
     }

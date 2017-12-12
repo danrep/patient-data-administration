@@ -21,6 +21,7 @@ namespace PatientDataAdministration.Data
         public string LocationLat { get; set; }
         public string LocationLong { get; set; }
         public string ChipData { get; set; }
+        public string ClientIpAddress { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
