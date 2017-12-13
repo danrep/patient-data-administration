@@ -84,7 +84,7 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        public static string Post(string url, string payload)
+        public static ResponseData Post(string url, string payload)
         {
             try
             {
@@ -108,14 +108,17 @@ namespace PatientDataAdministration.Client
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-
-                return responseFromServer; 
+                
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseData>(responseFromServer);
             }
-
-            catch (Exception ex)
+            catch (Exception e)
             {
-                LocalCore.TreatError(ex);
-                return string.Empty;
+                TreatError(e);
+                return new ResponseData
+                {
+                    Message = e.Message,
+                    Status = false
+                };
             }
         }
     }

@@ -17,16 +17,23 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
         {
             try
             {
+                var returnPatient = new Patient_PatientInformation();
                 var pepId = "";
+
                 if (patientInformation == null)
-                    return Json(new ResponseData { Status = false, Message = "No Query Received" }, JsonRequestBehavior.AllowGet);
+                    return Json(new ResponseData {Status = false, Message = "No Query Received"},
+                        JsonRequestBehavior.AllowGet);
 
                 if (string.IsNullOrEmpty(patientInformation.Patient_PatientInformation.PepId))
                 {
                     pepId = GetPepId(patientInformation.Patient_PatientInformation.SiteId);
                     patientInformation.Patient_PatientInformation.PepId = pepId;
+                    patientInformation.Patient_PatientInformation.Title =
+                        patientInformation.Patient_PatientInformation.MaritalStatus = "";
                     _entities.Patient_PatientInformation.Add(patientInformation.Patient_PatientInformation);
                     _entities.SaveChanges();
+
+                    returnPatient = patientInformation.Patient_PatientInformation;
                 }
                 else
                 {
@@ -34,8 +41,14 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     var existingPatient = _entities.Patient_PatientInformation.FirstOrDefault(x => x.PepId == pepId);
 
                     if (existingPatient == null)
-                        return Json(new ResponseData {Status = false, Message = "Patient Record not Found. Please contact the Administrator"},
-                            JsonRequestBehavior.AllowGet);
+                        return
+                            Json(
+                                new ResponseData
+                                {
+                                    Status = false,
+                                    Message = "Patient Record not Found. Please contact the Administrator"
+                                },
+                                JsonRequestBehavior.AllowGet);
 
                     existingPatient.DateOfBirth = patientInformation.Patient_PatientInformation.DateOfBirth;
                     existingPatient.HospitalNumber = patientInformation.Patient_PatientInformation.HospitalNumber;
@@ -51,13 +64,16 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     existingPatient.StateOfOrigin = patientInformation.Patient_PatientInformation.StateOfOrigin;
                     existingPatient.Surname = patientInformation.Patient_PatientInformation.Surname;
                     existingPatient.Title = patientInformation.Patient_PatientInformation.Title;
+
+                    returnPatient = existingPatient;
                 }
 
                 if (patientInformation.Patient_PatientBiometricData != null)
                 {
-                    _entities.Patient_PatientBiometricData.Remove(
-                        _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == pepId) ??
-                        new Patient_PatientBiometricData());
+                    if (_entities.Patient_PatientBiometricData.Any(x => x.PepId == pepId))
+                        _entities.Patient_PatientBiometricData.Remove(
+                            _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == pepId) ??
+                            new Patient_PatientBiometricData());
 
                     patientInformation.Patient_PatientBiometricData.PepId = pepId;
                     _entities.Patient_PatientBiometricData.Add(patientInformation.Patient_PatientBiometricData);
@@ -65,12 +81,14 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
                 if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
                 {
-                    _entities.Patient_PatientNearFieldCommunicationData.Remove(
+                    if (_entities.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == pepId))
+                        _entities.Patient_PatientNearFieldCommunicationData.Remove(
                         _entities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x => x.PepId == pepId) ??
                         new Patient_PatientNearFieldCommunicationData());
 
                     patientInformation.Patient_PatientNearFieldCommunicationData.PepId = pepId;
-                    _entities.Patient_PatientNearFieldCommunicationData.Add(patientInformation.Patient_PatientNearFieldCommunicationData);
+                    _entities.Patient_PatientNearFieldCommunicationData.Add(
+                        patientInformation.Patient_PatientNearFieldCommunicationData);
                 }
 
                 _entities.Administration_PatientRegistrationLog.Add(new Administration_PatientRegistrationLog()
@@ -79,24 +97,31 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     ClientId = patientInformation.Administration_StaffInformation.Id,
                     DateLogged = DateTime.Now,
                     IsBioDataCaptured = patientInformation.Patient_PatientBiometricData == null,
-                    IsNfcDataCaptured = patientInformation.Patient_PatientNearFieldCommunicationData == null, 
+                    IsNfcDataCaptured = patientInformation.Patient_PatientNearFieldCommunicationData == null,
                     IsDeleted = false
                 });
 
                 _entities.SaveChanges();
-                return Json(new ResponseData { Status = true, Message = "Patient Record Saved Succesfully" }, JsonRequestBehavior.AllowGet);
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Patient Record Saved Succesfully",
+                            Data = returnPatient
+                        }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
         private string GetPepId(int siteId)
         {
             var count = _entities.Patient_PatientInformation.Count(x => x.SiteId == siteId);
-            var siteCode = _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteCode.ToUpper() + "NA";
+            var siteCode = _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteCode.ToUpper() ?? "NA";
             return $@"{siteCode}-{DateTime.Now.Date:yy}-{(++count):0000}";
         }
     }

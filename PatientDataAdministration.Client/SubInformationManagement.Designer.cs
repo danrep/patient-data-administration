@@ -97,6 +97,7 @@ namespace PatientDataAdministration.Client
             this.persistNfcState = new System.Windows.Forms.Timer(this.components);
             this.system_BioDataStoreTableAdapter = new PatientDataAdministration.Client.LocalPDADataSetTableAdapters.System_BioDataStoreTableAdapter();
             this.btnClose = new System.Windows.Forms.Button();
+            this.timerUpdateInformation = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
@@ -650,6 +651,7 @@ namespace PatientDataAdministration.Client
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Gray;
             this.pictureBox1.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Lock_16px;
             this.pictureBox1.Location = new System.Drawing.Point(210, 59);
             this.pictureBox1.Name = "pictureBox1";
@@ -701,10 +703,11 @@ namespace PatientDataAdministration.Client
             // 
             // txtPepId
             // 
-            this.txtPepId.BackColor = System.Drawing.Color.White;
+            this.txtPepId.BackColor = System.Drawing.Color.Gray;
             this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPepId.Enabled = false;
             this.txtPepId.Font = new System.Drawing.Font("Lato", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPepId.ForeColor = System.Drawing.Color.White;
             this.txtPepId.Location = new System.Drawing.Point(3, 52);
             this.txtPepId.Name = "txtPepId";
             this.txtPepId.Size = new System.Drawing.Size(227, 30);
@@ -823,6 +826,12 @@ namespace PatientDataAdministration.Client
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
+            // timerUpdateInformation
+            // 
+            this.timerUpdateInformation.Enabled = true;
+            this.timerUpdateInformation.Interval = 500;
+            this.timerUpdateInformation.Tick += new System.EventHandler(this.timerUpdateInformation_Tick);
+            // 
             // SubInformationManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -843,6 +852,7 @@ namespace PatientDataAdministration.Client
             this.Name = "SubInformationManagement";
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
             this.Resizable = false;
+            this.ShowIcon = false;
             this.Text = "Information Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SubInformationManagement_FormClosing);
             this.Load += new System.EventHandler(this.SubInformationManagement_Load);
@@ -937,5 +947,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Timer persistNfcState;
         private LocalPDADataSetTableAdapters.System_BioDataStoreTableAdapter system_BioDataStoreTableAdapter;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Timer timerUpdateInformation;
     }
 }

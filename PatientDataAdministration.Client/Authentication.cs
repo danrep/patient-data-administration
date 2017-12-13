@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using System.Windows.Threading;
+using System.Windows;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PatientDataAdministration.Client
 {
@@ -26,7 +29,8 @@ namespace PatientDataAdministration.Client
             try
             {
                 btnLogIn.Enabled = false;
-                Application.DoEvents();
+                picLoader.Visible = true;
+                System.Windows.Forms.Application.DoEvents();
 
                 var credential =
                     _localPdaEntities.Local_StaffInformation.FirstOrDefault(
@@ -50,6 +54,7 @@ namespace PatientDataAdministration.Client
                 }
                 
                 btnLogIn.Enabled = true;
+                picLoader.Visible = false;
                 ClearInputs();
             }
             catch(Exception exception)
@@ -116,7 +121,11 @@ namespace PatientDataAdministration.Client
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            picLoader.Visible = true;
+            System.Windows.Forms.Application.DoEvents();
+
+            GC.Collect();
+            Environment.Exit(0);
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
@@ -168,6 +177,21 @@ namespace PatientDataAdministration.Client
             {
                 MessageBox.Show(result.Result.Message);
                 return false;
+            }
+        }
+
+        private void Authentication_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                Dispatcher.CurrentDispatcher.Thread.Abort();
+                System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                System.Windows.Application.Current.Shutdown();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+                GC.Collect();
             }
         }
     }

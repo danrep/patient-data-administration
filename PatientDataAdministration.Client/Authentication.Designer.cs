@@ -36,9 +36,10 @@ namespace PatientDataAdministration.Client
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.btnSetting = new System.Windows.Forms.Button();
             this.btnLogIn = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.btnSetting = new System.Windows.Forms.Button();
+            this.picLoader = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
             // txtUserName
@@ -89,11 +90,27 @@ namespace PatientDataAdministration.Client
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.ForeColor = System.Drawing.Color.Gray;
-            this.label3.Location = new System.Drawing.Point(237, 30);
+            this.label3.Location = new System.Drawing.Point(237, 31);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(243, 13);
             this.label3.TabIndex = 15;
             this.label3.Text = "Property of AIDS Prevention Initiative in Nigeria";
+            // 
+            // btnSetting
+            // 
+            this.btnSetting.BackColor = System.Drawing.Color.White;
+            this.btnSetting.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSetting.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnSetting.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSetting.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Administrative_Tools_24px;
+            this.btnSetting.Location = new System.Drawing.Point(34, 197);
+            this.btnSetting.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSetting.Name = "btnSetting";
+            this.btnSetting.Size = new System.Drawing.Size(34, 32);
+            this.btnSetting.TabIndex = 17;
+            this.btnSetting.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSetting.UseVisualStyleBackColor = false;
+            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
             // 
             // btnLogIn
             // 
@@ -103,7 +120,7 @@ namespace PatientDataAdministration.Client
             this.btnLogIn.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogIn.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Key_24px;
             this.btnLogIn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLogIn.Location = new System.Drawing.Point(34, 197);
+            this.btnLogIn.Location = new System.Drawing.Point(366, 197);
             this.btnLogIn.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogIn.Name = "btnLogIn";
             this.btnLogIn.Size = new System.Drawing.Size(113, 32);
@@ -120,7 +137,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnClose.Location = new System.Drawing.Point(445, 197);
+            this.btnClose.Location = new System.Drawing.Point(324, 197);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(34, 32);
@@ -129,21 +146,14 @@ namespace PatientDataAdministration.Client
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnSetting
+            // picLoader
             // 
-            this.btnSetting.BackColor = System.Drawing.Color.White;
-            this.btnSetting.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSetting.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
-            this.btnSetting.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSetting.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Administrative_Tools_24px;
-            this.btnSetting.Location = new System.Drawing.Point(410, 197);
-            this.btnSetting.Margin = new System.Windows.Forms.Padding(4);
-            this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(34, 32);
-            this.btnSetting.TabIndex = 17;
-            this.btnSetting.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSetting.UseVisualStyleBackColor = false;
-            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            this.picLoader.Location = new System.Drawing.Point(76, 197);
+            this.picLoader.Name = "picLoader";
+            this.picLoader.Size = new System.Drawing.Size(241, 32);
+            this.picLoader.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.picLoader.TabIndex = 18;
+            this.picLoader.Visible = false;
             // 
             // Authentication
             // 
@@ -151,6 +161,7 @@ namespace PatientDataAdministration.Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(513, 239);
             this.ControlBox = false;
+            this.Controls.Add(this.picLoader);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnLogIn);
             this.Controls.Add(this.label3);
@@ -169,6 +180,7 @@ namespace PatientDataAdministration.Client
             this.Padding = new System.Windows.Forms.Padding(30, 88, 30, 29);
             this.Resizable = false;
             this.Text = "Authentication";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Authentication_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Authentication_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -185,5 +197,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnLogIn;
         private System.Windows.Forms.Button btnSetting;
+        private System.Windows.Forms.ProgressBar picLoader;
     }
 }

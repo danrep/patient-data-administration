@@ -16,6 +16,7 @@ namespace PatientDataAdministration.Client
     {
         public int Id { get; set; }
         public string PepId { get; set; }
+        public int SiteId { get; set; }
         public string FullName { get; set; }
         public string PrimaryFinger { get; set; }
         public string SecondaryFinger { get; set; }
@@ -25,6 +26,5 @@ namespace PatientDataAdministration.Client
         public System.DateTime LastSync { get; set; }
         public bool IsSync { get; set; }
         public bool IsDeleted { get; set; }
-        public int SiteId { get; set; }
     }
 }

@@ -31,10 +31,10 @@
           <Property Name="PepId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
           <Property Name="FullName" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PrimaryFinger" Type="varchar(max)" Nullable="false" />
-          <Property Name="SecondaryFinger" Type="varchar(max)" Nullable="false" />
-          <Property Name="NfcUid" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PatientData" Type="varchar(max)" Nullable="false" />
+          <Property Name="PrimaryFinger" Type="varchar(max)" />
+          <Property Name="SecondaryFinger" Type="varchar(max)" />
+          <Property Name="NfcUid" Type="varchar" MaxLength="100" />
+          <Property Name="PatientData" Type="varchar(max)" />
           <Property Name="LastUpdate" Type="datetime" Nullable="false" />
           <Property Name="LastSync" Type="datetime" Nullable="false" />
           <Property Name="IsSync" Type="bit" Nullable="false" />
@@ -81,6 +81,23 @@
           <Property Name="StateCode" Type="varchar" MaxLength="4" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_UpdateLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateProvided" Type="datetime" Nullable="false" />
+          <Property Name="DateDownloaded" Type="datetime" Nullable="false" />
+          <Property Name="IsDownloaded" Type="bit" Nullable="false" />
+          <Property Name="IsApplied" Type="bit" Nullable="false" />
+          <Property Name="IsVerified" Type="bit" Nullable="false" />
+          <Property Name="VersionNumber" Type="bit" Nullable="false" />
+          <Property Name="ServerLocation" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ServerUsername" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ServerPassword" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FolderLocation" Type="varchar(max)" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="LocalPDAModelStoreContainer">
           <EntitySet Name="Local_StaffInformation" EntityType="Self.Local_StaffInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_BioDataStore" EntityType="Self.System_BioDataStore" Schema="dbo" store:Type="Tables" />
@@ -88,6 +105,7 @@
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Setting" EntityType="Self.System_Setting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_State" EntityType="Self.System_State" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_UpdateLog" EntityType="Self.System_UpdateLog" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -100,6 +118,7 @@
           <EntitySet Name="System_LocalGovermentArea" EntityType="LocalPDAModel.System_LocalGovermentArea" />
           <EntitySet Name="System_Setting" EntityType="LocalPDAModel.System_Setting" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
+          <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
         </EntityContainer>
         <EntityType Name="Local_StaffInformation">
           <Key>
@@ -125,16 +144,16 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PepId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
           <Property Name="FullName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PrimaryFinger" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="SecondaryFinger" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="NfcUid" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PatientData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SecondaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NfcUid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PatientData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastSync" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsSync" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="SiteId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ErrorLog">
           <Key>
@@ -177,7 +196,24 @@
           <Property Name="StateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
-      </Schema>
+        <EntityType Name="System_UpdateLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateProvided" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateDownloaded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDownloaded" Type="Boolean" Nullable="false" />
+          <Property Name="IsApplied" Type="Boolean" Nullable="false" />
+          <Property Name="IsVerified" Type="Boolean" Nullable="false" />
+          <Property Name="VersionNumber" Type="Boolean" Nullable="false" />
+          <Property Name="ServerLocation" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ServerUsername" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ServerPassword" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -205,7 +241,6 @@
           <EntitySetMapping Name="System_BioDataStore">
             <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore">
               <MappingFragment StoreEntitySet="System_BioDataStore">
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsSync" ColumnName="IsSync" />
                 <ScalarProperty Name="LastSync" ColumnName="LastSync" />
@@ -215,6 +250,7 @@
                 <ScalarProperty Name="SecondaryFinger" ColumnName="SecondaryFinger" />
                 <ScalarProperty Name="PrimaryFinger" ColumnName="PrimaryFinger" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
@@ -261,6 +297,24 @@
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
                 <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_UpdateLog">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_UpdateLog">
+              <MappingFragment StoreEntitySet="System_UpdateLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FolderLocation" ColumnName="FolderLocation" />
+                <ScalarProperty Name="ServerPassword" ColumnName="ServerPassword" />
+                <ScalarProperty Name="ServerUsername" ColumnName="ServerUsername" />
+                <ScalarProperty Name="ServerLocation" ColumnName="ServerLocation" />
+                <ScalarProperty Name="VersionNumber" ColumnName="VersionNumber" />
+                <ScalarProperty Name="IsVerified" ColumnName="IsVerified" />
+                <ScalarProperty Name="IsApplied" ColumnName="IsApplied" />
+                <ScalarProperty Name="IsDownloaded" ColumnName="IsDownloaded" />
+                <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
+                <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

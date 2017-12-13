@@ -29,8 +29,11 @@ namespace PatientDataAdministration.Client
         private SGFingerPrintManager _fingerPrintManager;
         private SGFPMDeviceInfoParam _deviceInfoParam;
         private SGFPMDeviceList _device;
+        private Thread _bioReaderThread;
         private string _deviceName;
         private int _deviceId;
+        private Color _lblBioDeviceInfoForeColor;
+        private string _lblBioDeviceInfoText;
 
         private System_BioDataStore _systemBioDataStore;
         private readonly UserCredential _userCredential;
@@ -49,6 +52,7 @@ namespace PatientDataAdministration.Client
         {
             this._userCredential = userCredential;
             InitializeComponent();
+            _fingerPrintManager = new SGFingerPrintManager();
         }
 
         private void SubInformationManagement_Load(object sender, EventArgs e)
@@ -64,6 +68,7 @@ namespace PatientDataAdministration.Client
             this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
 
             _systemBioDataStore = new System_BioDataStore();
+            _bioReaderThread = new Thread(() => {});
         }
 
         private void SubInformationManagement_Shown(object sender, EventArgs e)
@@ -76,7 +81,20 @@ namespace PatientDataAdministration.Client
 
         private void SubInformationManagement_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _fingerPrintManager.CloseDevice();
+            try
+            {
+                _bioReaderThread.Abort();
+                _cardthread.Abort();
+                _fingerPrintManager.CloseDevice();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+            }
+            finally
+            {
+                GC.Collect();
+            }
         }
 
         #endregion
@@ -175,7 +193,9 @@ namespace PatientDataAdministration.Client
 
         private void btnRefreshBioDevice_Click(object sender, EventArgs e)
         {
-            AquireBioDevice();
+            _deviceName = "";
+            persistLoad.Enabled = true;
+            persistLoad.Start();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -183,7 +203,7 @@ namespace PatientDataAdministration.Client
             try
             {
                 var textBoxes = pnlOfficialInformation.Controls.OfType<TextBox>().ToList();
-                if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
+                if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text) && x.Name != txtPepId.Name))
                 {
                     textBoxes.FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
                     MessageBox.Show(@"Please ensure that all input fields have been filled");
@@ -276,69 +296,74 @@ namespace PatientDataAdministration.Client
 
                 #endregion Patient Data Composition
 
-                LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
+                var result = LocalCore.Post("/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
 
-                if (_systemBioDataStore.Id == 0)
+                if (result.Status)
                 {
-                    _systemBioDataStore =
-                        _localPdaEntities.System_BioDataStore.FirstOrDefault(
-                            x => x.PatientData.Contains(txtPhoneNumber.Text.Trim()) && !x.IsDeleted);
-
-                    if (_systemBioDataStore != null)
+                    if (_systemBioDataStore.Id == 0)
                     {
-                        MessageBox.Show(@"There is a Patient with the same Phone Number. Please confirm");
-                        return;
+                        var postInfo =
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<Patient_PatientInformation>(
+                                Newtonsoft.Json.JsonConvert.SerializeObject(result.Data));
+
+                        _systemBioDataStore = new System_BioDataStore()
+                        {
+                            IsDeleted = false,
+                            PepId = postInfo.PepId,
+                            PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData),
+                            FullName = txtSurname.Text + @" " + txtOtherNames.Text,
+                            IsSync = true,
+                            LastSync = DateTime.Now,
+                            LastUpdate = DateTime.Now,
+                            NfcUid = _nfcUid ?? "",
+                            PrimaryFinger = _bioDataPrimary ?? "",
+                            SecondaryFinger = _bioDataSecondary ?? "",
+                            SiteId = _userCredential.AdministrationSiteInformation.Id
+                        };
+                        _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
+                    }
+                    else
+                    {
+                        _systemBioDataStore =
+                            _localPdaEntities.System_BioDataStore.FirstOrDefault(
+                                x => x.PepId == txtPepId.Text && !x.IsDeleted);
+
+                        if (_systemBioDataStore == null)
+                        {
+                            MessageBox.Show(@"This Patient does not exist. Please try again");
+                            return;
+                        }
+
+                        _systemBioDataStore.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData);
+                        _systemBioDataStore.FullName = txtSurname.Text = @" " + txtOtherNames.Text;
+                        _systemBioDataStore.IsSync = true;
+                        _systemBioDataStore.LastUpdate = DateTime.Now;
+                        _systemBioDataStore.NfcUid = _nfcUid ?? "";
+                        _systemBioDataStore.PrimaryFinger = _bioDataPrimary ?? "";
+                        _systemBioDataStore.SecondaryFinger = _bioDataSecondary ?? "";
+
+                        _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
                     }
 
-                    _systemBioDataStore = new System_BioDataStore()
-                    {
-                        IsDeleted = false,
-                        PepId = txtPepId.Text.Trim(),
-                        PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData),
-                        FullName = txtSurname.Text = @" " + txtOtherNames.Text,
-                        IsSync = false,
-                        LastSync = DateTime.Now, 
-                        LastUpdate = DateTime.Now, 
-                        NfcUid = _nfcUid,
-                        PrimaryFinger = _bioDataPrimary, 
-                        SecondaryFinger = _bioDataSecondary,
-                        SiteId = _userCredential.AdministrationSiteInformation.Id
-                    };
+                    _localPdaEntities.SaveChanges();
 
-                    _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
+                    lblInformation.Text = @"Operation was Completed Successfully";
+                    lblInformation.ForeColor = Color.DarkGreen;
+                    System.Media.SystemSounds.Exclamation.Play();
+                    btnClear_Click(this, e);
                 }
                 else
                 {
-                    _systemBioDataStore =
-                        _localPdaEntities.System_BioDataStore.FirstOrDefault(
-                            x => x.PatientData.Contains(txtPhoneNumber.Text.Trim()) && !x.IsDeleted);
-
-                    if (_systemBioDataStore == null)
-                    {
-                        MessageBox.Show(@"This Patient does not exist. Please try again");
-                        return;
-                    }
-                    
-                    _systemBioDataStore.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData);
-                    _systemBioDataStore.FullName = txtSurname.Text = @" " + txtOtherNames.Text;
-                    _systemBioDataStore.IsSync = false;
-                    _systemBioDataStore.LastUpdate = DateTime.Now;
-                    _systemBioDataStore.NfcUid = _nfcUid;
-                    _systemBioDataStore.PrimaryFinger = _bioDataPrimary;
-                    _systemBioDataStore.SecondaryFinger = _bioDataSecondary;
-
-                    _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
+                    lblInformation.Text = result.Message;
+                    lblInformation.ForeColor = Color.DarkRed;
+                    System.Media.SystemSounds.Beep.Play();
                 }
-
-                _localPdaEntities.SaveChanges();
-
-                lblInformation.Text = @"Operation was Completed Successfully";
-                System.Media.SystemSounds.Exclamation.Play();
-                btnClear_Click(this, e);
             }
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                lblInformation.Text = @"An unexpected error has occured. Please contact the Administrator";
+                lblInformation.ForeColor = Color.DarkRed;
             }
         }
 
@@ -359,7 +384,23 @@ namespace PatientDataAdministration.Client
 
         private void persistLoad_Tick(object sender, EventArgs e)
         {
-            AquireBioDevice();
+            if (string.IsNullOrEmpty(_deviceName))
+            {
+                if (_bioReaderThread.ThreadState == ThreadState.Running)
+                {
+                    _bioReaderThread.Abort();
+                    _bioReaderThread = null;
+                }
+
+                _bioReaderThread = new Thread(AquireBioDevice);
+                _bioReaderThread.Start();
+            }
+            else
+            {
+                persistLoad.Stop();
+                persistLoad.Enabled = false;
+                picBoxFingerPrint.Image = Resources.icons8_Fingerprint_48px;
+            }
         }
 
         private void btnRefreshNfcDevice_Click(object sender, EventArgs e)
@@ -412,12 +453,23 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void timerUpdateInformation_Tick(object sender, EventArgs e)
+        {
+            lblBioDeviceInfo.ForeColor = _lblBioDeviceInfoForeColor;
+            lblBioDeviceInfo.Text = _lblBioDeviceInfoText;
+        }
+
         #endregion
 
         #region Methods
 
         private void ClearContents()
         {
+            new Thread(() =>
+            {
+                this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
+            }).Start();
+
             _systemBioDataStore = new System_BioDataStore();
 
             chkNfc.Checked = chkPriFin.Checked = chkSecFin.Checked = false;
@@ -445,8 +497,10 @@ namespace PatientDataAdministration.Client
         private bool CheckForDevice()
         {
             var deviceFound = false;
-            _fingerPrintManager = new SGFingerPrintManager();
             if (_fingerPrintManager.EnumerateDevice() != (int)SGFPMError.ERROR_NONE)
+                return false;
+
+            if (_fingerPrintManager.NumberOfDevice == 0)
                 return false;
 
             // Get enumeration info into SGFPMDeviceList
@@ -828,7 +882,7 @@ namespace PatientDataAdministration.Client
             txtHospitalNumber.Text = patientDataResolved.Patient_PatientInformation.HospitalNumber;
             //txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
             txtOtherNames.Text = patientDataResolved.Patient_PatientInformation.Othername;
-            txtPepId.Text = patientDataResolved.Patient_PatientInformation.PepId;
+            txtPepId.Text = patientData.PepId;
             txtPhoneNumber.Text = patientDataResolved.Patient_PatientInformation.PhoneNumber;
             txtPreviousNumber.Text = patientDataResolved.Patient_PatientInformation.PreviousId;
             txtSex.Text = patientDataResolved.Patient_PatientInformation.Sex;
@@ -876,32 +930,25 @@ namespace PatientDataAdministration.Client
         {
             if (!CheckForDevice())
             {
-                lblBioDeviceInfo.ForeColor = Color.DarkRed;
-                lblBioDeviceInfo.Text = @"No Device Found. Please Re-attach";
-                Application.DoEvents();
+                _lblBioDeviceInfoForeColor = Color.DarkRed;
+                _lblBioDeviceInfoText = @"No Device Found. Please Re-attach";
 
                 return;
             }
 
-            lblBioDeviceInfo.ForeColor = Color.Green;
-            lblBioDeviceInfo.Text = @"Device Connected";
-            Application.DoEvents();
+            _lblBioDeviceInfoForeColor = Color.Green;
+            _lblBioDeviceInfoText = @"Device Connected";
 
             if (!InitializeBioDevice())
             {
-                lblBioDeviceInfo.ForeColor = Color.Orange;
-                lblBioDeviceInfo.Text = @"Device is Not Ready. Please Re-attach";
-                Application.DoEvents();
+                _lblBioDeviceInfoForeColor = Color.Orange;
+                _lblBioDeviceInfoText = @"Device is Not Ready. Please Re-attach";
 
                 return;
             }
 
-            lblBioDeviceInfo.ForeColor = Color.Green;
-            lblBioDeviceInfo.Text = @"Fingerprint Device Ready for Capture";
-            Application.DoEvents();
-
-            persistLoad.Stop();
-            persistLoad.Enabled = false;
+            _lblBioDeviceInfoForeColor = Color.Green;
+            _lblBioDeviceInfoText = @"Fingerprint Device Ready for Capture";
         }
 
         private string GetBioData()
@@ -923,11 +970,15 @@ namespace PatientDataAdministration.Client
                     else
                     {
                         picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
+                        _lblBioDeviceInfoForeColor = Color.DarkRed;
+                        _lblBioDeviceInfoText = @"Cant Read Bio-Data";
                         return string.Empty;
                     }
                 }
                 else
                 {
+                    _lblBioDeviceInfoForeColor = Color.DarkRed;
+                    _lblBioDeviceInfoText = @"Device Unreachable";
                     picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
                     return string.Empty;
                 }

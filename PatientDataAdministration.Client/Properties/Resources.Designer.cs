@@ -73,9 +73,29 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ajax_loader {
+            get {
+                object obj = ResourceManager.GetObject("ajax-loader", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap apin_weblogo {
             get {
                 object obj = ResourceManager.GetObject("apin-weblogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HelpResource {
+            get {
+                object obj = ResourceManager.GetObject("HelpResource", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

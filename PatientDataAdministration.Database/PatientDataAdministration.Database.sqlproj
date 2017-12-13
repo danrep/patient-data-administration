@@ -76,5 +76,6 @@
     <Build Include="dbo\Tables\System_Update_1.sql" />
     <Build Include="dbo\Tables\System_State_1.sql" />
     <Build Include="dbo\Tables\System_LocalGovermentArea_1.sql" />
+    <Build Include="dbo\Tables\Administration_PatientRegistrationLog.sql" />
   </ItemGroup>
 </Project>
