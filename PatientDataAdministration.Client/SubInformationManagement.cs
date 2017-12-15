@@ -32,8 +32,8 @@ namespace PatientDataAdministration.Client
         private Thread _bioReaderThread;
         private string _deviceName;
         private int _deviceId;
-        private Color _lblBioDeviceInfoForeColor;
-        private string _lblBioDeviceInfoText;
+        private Color _lblBioDeviceInfoForeColor, _lblInformationForeColor;
+        private string _lblBioDeviceInfoText, _lblInformationText;
 
         private System_BioDataStore _systemBioDataStore;
         private readonly UserCredential _userCredential;
@@ -170,7 +170,10 @@ namespace PatientDataAdministration.Client
                     LoadPatientData(patientData);
                 }
                 else
+                {
                     lblInformation.Text = @"No Match Found";
+                    ClearContents();
+                }
             }
             catch (Exception exception)
             {
@@ -347,8 +350,8 @@ namespace PatientDataAdministration.Client
 
                     _localPdaEntities.SaveChanges();
 
-                    lblInformation.Text = @"Operation was Completed Successfully";
-                    lblInformation.ForeColor = Color.DarkGreen;
+                    _lblInformationText = @"Operation was Completed Successfully";
+                    _lblInformationForeColor = Color.DarkGreen;
                     System.Media.SystemSounds.Exclamation.Play();
                     btnClear_Click(this, e);
                 }
@@ -457,6 +460,9 @@ namespace PatientDataAdministration.Client
         {
             lblBioDeviceInfo.ForeColor = _lblBioDeviceInfoForeColor;
             lblBioDeviceInfo.Text = _lblBioDeviceInfoText;
+
+            lblInformation.Text = _lblInformationText;
+
         }
 
         #endregion

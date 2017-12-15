@@ -17,6 +17,8 @@ namespace PatientDataAdministration.Client
     {
         private static readonly LocalPDAEntities PdaEntities = new LocalPDAEntities();
         private static int _userCredentialId = 0;
+        private static string _baseUrl;
+
 
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool silent = false)
         {
@@ -45,9 +47,16 @@ namespace PatientDataAdministration.Client
         }
 
         public static string BaseUrl
-            =>
-                PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?
-                    .SettingValue;
+        {
+            get
+            {
+                _baseUrl = PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
+                       .SettingValue;
+
+                return _baseUrl;
+            }
+            set { _baseUrl = value; }
+        }
 
         public static async Task<ResponseData> Get(string url)
         {
@@ -82,6 +91,12 @@ namespace PatientDataAdministration.Client
                     Status = false
                 };
             }
+        }
+
+        public static void RefreshBaseUrl()
+        {
+            BaseUrl = PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
+                    .SettingValue;
         }
 
         public static ResponseData Post(string url, string payload)

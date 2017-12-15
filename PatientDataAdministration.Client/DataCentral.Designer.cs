@@ -30,6 +30,7 @@ namespace PatientDataAdministration.Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCentral));
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -46,15 +47,16 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.picConnectionAvailable = new System.Windows.Forms.PictureBox();
             this.picSyncInProcess = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picIndUpdate = new System.Windows.Forms.PictureBox();
             this.lblUserInformation = new System.Windows.Forms.Label();
+            this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -253,7 +255,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel2.BackColor = System.Drawing.Color.Transparent;
             this.flowLayoutPanel2.Controls.Add(this.picConnectionAvailable);
             this.flowLayoutPanel2.Controls.Add(this.picSyncInProcess);
-            this.flowLayoutPanel2.Controls.Add(this.pictureBox2);
+            this.flowLayoutPanel2.Controls.Add(this.picIndUpdate);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel2.Location = new System.Drawing.Point(645, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -269,6 +271,7 @@ namespace PatientDataAdministration.Client
             this.picConnectionAvailable.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picConnectionAvailable.TabIndex = 11;
             this.picConnectionAvailable.TabStop = false;
+            this.picConnectionAvailable.Visible = false;
             // 
             // picSyncInProcess
             // 
@@ -279,16 +282,18 @@ namespace PatientDataAdministration.Client
             this.picSyncInProcess.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picSyncInProcess.TabIndex = 12;
             this.picSyncInProcess.TabStop = false;
+            this.picSyncInProcess.Visible = false;
             // 
-            // pictureBox2
+            // picIndUpdate
             // 
-            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Download_20px;
-            this.pictureBox2.Location = new System.Drawing.Point(47, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(24, 24);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox2.TabIndex = 13;
-            this.pictureBox2.TabStop = false;
+            this.picIndUpdate.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Download_20px;
+            this.picIndUpdate.Location = new System.Drawing.Point(47, 3);
+            this.picIndUpdate.Name = "picIndUpdate";
+            this.picIndUpdate.Size = new System.Drawing.Size(24, 24);
+            this.picIndUpdate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picIndUpdate.TabIndex = 13;
+            this.picIndUpdate.TabStop = false;
+            this.picIndUpdate.Visible = false;
             // 
             // lblUserInformation
             // 
@@ -300,6 +305,12 @@ namespace PatientDataAdministration.Client
             this.lblUserInformation.Name = "lblUserInformation";
             this.lblUserInformation.Size = new System.Drawing.Size(0, 15);
             this.lblUserInformation.TabIndex = 9;
+            // 
+            // tmrRefresh
+            // 
+            this.tmrRefresh.Enabled = true;
+            this.tmrRefresh.Interval = 1000;
+            this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
             // 
             // DataCentral
             // 
@@ -331,7 +342,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -353,6 +364,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.PictureBox picConnectionAvailable;
         private System.Windows.Forms.PictureBox picSyncInProcess;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox picIndUpdate;
+        private System.Windows.Forms.Timer tmrRefresh;
     }
 }

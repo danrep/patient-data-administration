@@ -413,6 +413,16 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap loadingBackground {
+            get {
+                object obj = ResourceManager.GetObject("loadingBackground", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap VOnwNgeg {
             get {
                 object obj = ResourceManager.GetObject("VOnwNgeg", resourceCulture);

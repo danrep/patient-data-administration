@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,24 +18,74 @@ namespace PatientDataAdministration.ClientUpdater
     class Program
     {
         static int _retries = 0;
-        private static System_Update systemUpdate = new System_Update();
+        private static System_Update _systemUpdate = new System_Update();
+        private static string _storeLocation;
+        private static string _url = "";
 
         static void Main(string[] args)
         {
+            _storeLocation = string.Empty;
+
             if (args.Length == 0)
                 return;
 
-            Console.WriteLine("PDA Client Update is Running");
-            Console.WriteLine("You dont need to do anything. I will let you know when I am done.");
+            _url = args[0];
 
-            while (!CheckConnection(args[0]))
+            _storeLocation = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DownloadedUpdate");
+
+            if (_url == "U")
             {
-                CheckPersistence();
+                var updateInfo = $@"{_storeLocation}\data.txt";
+                if (!File.Exists(updateInfo))
+                    return;
+
+                var updateData = File.ReadAllText(updateInfo);
+                var updateDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(updateData);
+
+                Console.WriteLine(
+                    $@"Hello there. This is an automated process. Please do not interrupt or interfere. APIN PDA will resume shortly.");
+                Console.WriteLine($@"Applying Update Version {updateDataResolved.VersionNumber}.");
+
+                var files = Directory.EnumerateFiles(_storeLocation).ToList();
+                var i = 1;
+                foreach (var file in files)
+                {
+                    Console.WriteLine($@"Installing {file} ...");
+                    File.Move(Path.Combine(_storeLocation, file),
+                        Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, file));
+                    Console.WriteLine($@"{((i / files.Count) * 100):00}%");
+                    i++;
+                }
+
+                Console.WriteLine($@"100%");
+                Console.WriteLine($@"Press any key to continue. APIN PDA will be started shortly%");
+                Console.ReadLine();
+
+                Process.Start("PatientDataAdministration.Client.exe");
+
+                Environment.Exit(0);
             }
-
-            while (!ExecutePull())
+            else
             {
-                CheckPersistence();
+                while (!ConfirmStoreLocation())
+                {
+                    CheckPersistence();
+                }
+
+                _retries = 0;
+                while (!CheckUpdateDetails(_url))
+                {
+                    CheckPersistence();
+                }
+
+                _retries = 0;
+                while (!ExecutePull())
+                {
+                    CheckPersistence();
+                }
+
+                File.WriteAllText($@"{_storeLocation}/data.txt",
+                    Newtonsoft.Json.JsonConvert.SerializeObject(_systemUpdate));
             }
         }
 
@@ -40,17 +93,30 @@ namespace PatientDataAdministration.ClientUpdater
         {
             if (_retries < 5)
             {
-                Console.WriteLine("Retrying Last Activity");
                 _retries++;
                 return;
             }
 
-            Console.WriteLine("Maximum amout of Retries Reached.");
-            Console.WriteLine("The Update will be retried Later.");
             Environment.Exit(0);
         }
 
-        static bool CheckConnection(string url)
+        static bool ConfirmStoreLocation()
+        {
+            try
+            {
+                if (!Directory.Exists(_storeLocation))
+                    Directory.CreateDirectory(_storeLocation);
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return false;
+            }
+        }
+
+        static bool CheckUpdateDetails(string url)
         {
             try
             {
@@ -58,7 +124,7 @@ namespace PatientDataAdministration.ClientUpdater
                 {
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                    var response = client.GetAsync(url).Result;
+                    var response = client.GetAsync(url + $@"/ClientCommunication/Misc/GetUpdateData").Result;
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -70,20 +136,25 @@ namespace PatientDataAdministration.ClientUpdater
                             Console.WriteLine(responseData.Message);
                             return false;
                         }
-
-                        systemUpdate =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
-                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                        if (systemUpdate == null)
+                        else
                         {
-                            Console.WriteLine("No Updates Found");
-                            Environment.Exit(0);
-                        }
+                            if (responseData.Data == null)
+                            {
+                                Console.WriteLine("No Updates Found");
+                                Environment.Exit(0);
+                            }
+                            else
+                            {
+                                _systemUpdate =
+                                    Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
+                                        Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
-                        Console.WriteLine("Found New Update");
-                        Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-                        return true;
+                                Console.WriteLine($"Found New Update >> {_systemUpdate.VersionNumber}");
+                                return true;
+                            }
+
+                            return false;
+                        }
                     }
                     else
                         return false;
@@ -109,37 +180,41 @@ namespace PatientDataAdministration.ClientUpdater
         {
             try
             {
-                var request =
-                    (FtpWebRequest) WebRequest.Create(systemUpdate.ServerLocation + "//" + systemUpdate.FolderLocation);
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                request.KeepAlive = true;
-                request.UsePassive = false;
-                request.UseBinary = true;
+                var remoteLocation = $@"{_systemUpdate.ServerLocation}/{_systemUpdate.FolderLocation}/{_systemUpdate.VersionNumber}";
+                var ftpRequest =
+                    (FtpWebRequest)WebRequest.Create(remoteLocation);
+                ftpRequest.Credentials = new NetworkCredential(_systemUpdate.ServerUsername, _systemUpdate.ServerPassword);
+                ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
+                ftpRequest.EnableSsl = true;
+                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateServerCertificate);
 
-                request.Credentials = new NetworkCredential(systemUpdate.ServerUsername, systemUpdate.ServerPassword);
+                var response = (FtpWebResponse)ftpRequest.GetResponse();
+                var streamReader = new StreamReader(response.GetResponseStream());
+                var files = new List<string>();
 
-                var response = (FtpWebResponse)request.GetResponse();
-
-                var responseStream = response.GetResponseStream();
-                var reader = new StreamReader(responseStream);
-
-                using (var writer = new FileStream(systemUpdate.VersionNumber, FileMode.Create))
+                var line = streamReader.ReadLine();
+                while (!string.IsNullOrEmpty(line))
                 {
-                    var length = response.ContentLength;
-                    var bufferSize = 2048;
-                    int readCount;
-                    var buffer = new byte[2048];
+                    files.Add(line);
+                    line = streamReader.ReadLine();
+                }
+                streamReader.Close();
 
-                    readCount = responseStream.Read(buffer, 0, bufferSize);
-                    while (readCount > 0)
+
+                using (var ftpClient = new WebClient())
+                {
+                    ftpClient.Credentials = new System.Net.NetworkCredential(_systemUpdate.ServerUsername, _systemUpdate.ServerPassword);
+                    ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateServerCertificate);
+
+                    foreach (var file in files)
                     {
-                        writer.Write(buffer, 0, readCount);
-                        readCount = responseStream.Read(buffer, 0, bufferSize);
+                        var path = $@"{remoteLocation}/{file}";
+                        string trnsfrpth = $@"{_storeLocation}\\{file}";
+
+                        ftpClient.DownloadFile(path, trnsfrpth);
                     }
                 }
 
-                reader.Close();
-                response.Close();
                 return true;
             }
             catch (Exception e)
@@ -147,6 +222,11 @@ namespace PatientDataAdministration.ClientUpdater
                 WriteException(e);
                 return false;
             }
+        }
+
+        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
         }
     }
 }

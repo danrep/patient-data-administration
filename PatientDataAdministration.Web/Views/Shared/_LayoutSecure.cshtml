@@ -32,9 +32,9 @@
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
 </head>
 <body>
-<div id="page-loader" class="fade in">
-    <span class="spinner"></span>
-</div>
+    <div id="page-loader" class="fade in">
+        <span class="spinner"></span>
+    </div>
     <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
         <div id="header" class="header navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
@@ -117,11 +117,16 @@
                     </li>
                 </ul>
                 <ul class="nav">
-                    <li class="nav-header">Navigation</li>
-                    <li class="has-sub active">
+                    <li class="has-sub">
+                        <a href="@Url.Action("Index", "Home", new {area = ""})">
+                            <i class="fa fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
-                            <i class="fa fa-laptop"></i>
+                            <i class="fa fa-users"></i>
                             <span>User Management</span>
                         </a>
                         <ul class="sub-menu">
@@ -157,7 +162,7 @@
     <script src="/assets/plugins/jquery/jquery-migrate-1.1.0.min.js"></script>
     <script src="/assets/plugins/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    
+
     <script src="/Scripts/angular.min.js"></script>
     <script src="/Scripts/angular-mocks.js"></script>
     <script src="/Scripts/angular-sanitize.min.js"></script>
@@ -184,19 +189,19 @@
     <script src="/assets/plugins/jquery-jvectormap/jquery-jvectormap-world-mill-en.js"></script>
     <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script src="/assets/plugins/morris/raphael.min.js"></script>
-<script src="/assets/plugins/morris/morris.js"></script>
+    <script src="/assets/plugins/morris/morris.js"></script>
     <script src="/assets/plugins/parsley/dist/parsley.js"></script>
 
     <script src="/assets/js/app.js"></script>
     <script src="/Scripts/global.js"></script>
 
-<script>
+    <script>
     $(document).ready(function () {
         App.init();
         Notification.init();
     });
-</script>
-    
+    </script>
+
     @RenderSection("scripts", false);
 </body>
 </html>

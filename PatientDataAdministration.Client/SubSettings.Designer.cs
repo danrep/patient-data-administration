@@ -110,7 +110,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(512, 18);
+            this.btnClose.Location = new System.Drawing.Point(505, 18);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(106, 41);
             this.btnClose.TabIndex = 7;
@@ -124,7 +124,7 @@ namespace PatientDataAdministration.Client
             this.lblInformation.AutoSize = true;
             this.lblInformation.BackColor = System.Drawing.Color.Transparent;
             this.lblInformation.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInformation.Location = new System.Drawing.Point(37, 330);
+            this.lblInformation.Location = new System.Drawing.Point(115, 32);
             this.lblInformation.Name = "lblInformation";
             this.lblInformation.Size = new System.Drawing.Size(16, 13);
             this.lblInformation.TabIndex = 57;
@@ -134,7 +134,7 @@ namespace PatientDataAdministration.Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(648, 355);
+            this.ClientSize = new System.Drawing.Size(648, 333);
             this.ControlBox = false;
             this.Controls.Add(this.lblInformation);
             this.Controls.Add(this.btnClose);

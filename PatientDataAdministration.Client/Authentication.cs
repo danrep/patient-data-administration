@@ -124,14 +124,15 @@ namespace PatientDataAdministration.Client
             picLoader.Visible = true;
             System.Windows.Forms.Application.DoEvents();
 
-            GC.Collect();
-            Environment.Exit(0);
+            this.Close();
         }
 
         private void btnSetting_Click(object sender, EventArgs e)
         {
             var setting = new SubSettings();
             setting.ShowDialog();
+
+            LocalCore.RefreshBaseUrl();
         }
 
         private bool CheckCredentialServer(out UserCredential userCredential)
@@ -182,17 +183,7 @@ namespace PatientDataAdministration.Client
 
         private void Authentication_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try
-            {
-                Dispatcher.CurrentDispatcher.Thread.Abort();
-                System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-                System.Windows.Application.Current.Shutdown();
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, 0);
-                GC.Collect();
-            }
+            //
         }
     }
 }

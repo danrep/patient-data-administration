@@ -120,7 +120,7 @@ namespace PatientDataAdministration.Client
             this.btnLogIn.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogIn.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Key_24px;
             this.btnLogIn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLogIn.Location = new System.Drawing.Point(366, 197);
+            this.btnLogIn.Location = new System.Drawing.Point(367, 197);
             this.btnLogIn.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogIn.Name = "btnLogIn";
             this.btnLogIn.Size = new System.Drawing.Size(113, 32);
@@ -148,9 +148,9 @@ namespace PatientDataAdministration.Client
             // 
             // picLoader
             // 
-            this.picLoader.Location = new System.Drawing.Point(76, 197);
+            this.picLoader.Location = new System.Drawing.Point(75, 212);
             this.picLoader.Name = "picLoader";
-            this.picLoader.Size = new System.Drawing.Size(241, 32);
+            this.picLoader.Size = new System.Drawing.Size(242, 3);
             this.picLoader.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.picLoader.TabIndex = 18;
             this.picLoader.Visible = false;

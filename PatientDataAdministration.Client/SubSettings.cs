@@ -14,6 +14,7 @@ namespace PatientDataAdministration.Client
     public partial class SubSettings : MetroFramework.Forms.MetroForm
     {
         private readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
+
         public SubSettings()
         {
             InitializeComponent();
@@ -50,6 +51,7 @@ namespace PatientDataAdministration.Client
                 currentRemoteApiSetting.SettingValue = txtRemoteApi.Text;
                 _localPdaEntities.Entry(currentRemoteApiSetting).State = EntityState.Modified;
                 _localPdaEntities.SaveChanges();
+
                 lblInformation.Text = @"Connection Settings Update Successful";
 
                 #endregion
@@ -65,9 +67,15 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                lblInformation.Text = @"Loading Settings. Please Wait.";
+                Application.DoEvents();
+
                 txtRemoteApi.Text =
                     _localPdaEntities.System_Setting.FirstOrDefault(
                         x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue;
+
+                lblInformation.Text = @"Done Loading Settings";
+                Application.DoEvents();
             }
             catch (Exception exception)
             {
