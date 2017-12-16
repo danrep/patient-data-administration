@@ -741,10 +741,10 @@ namespace PatientDataAdministration.Client
             // lblInformation
             // 
             this.lblInformation.AutoSize = true;
-            this.lblInformation.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInformation.Location = new System.Drawing.Point(30, 454);
+            this.lblInformation.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInformation.Location = new System.Drawing.Point(30, 455);
             this.lblInformation.Name = "lblInformation";
-            this.lblInformation.Size = new System.Drawing.Size(16, 13);
+            this.lblInformation.Size = new System.Drawing.Size(16, 15);
             this.lblInformation.TabIndex = 132;
             this.lblInformation.Text = "...";
             // 
@@ -755,11 +755,11 @@ namespace PatientDataAdministration.Client
             this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
             this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(599, 11);
+            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(523, 11);
             this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
-            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(110, 41);
+            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(149, 41);
             this.btnRefreshNfcDevice.TabIndex = 133;
-            this.btnRefreshNfcDevice.Text = "Refreah NFC Device";
+            this.btnRefreshNfcDevice.Text = "Refreah NFC Tag\r\nDevice";
             this.btnRefreshNfcDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRefreshNfcDevice.UseVisualStyleBackColor = false;
             this.btnRefreshNfcDevice.Click += new System.EventHandler(this.btnRefreshNfcDevice_Click);
@@ -771,11 +771,11 @@ namespace PatientDataAdministration.Client
             this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
             this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshBioDevice.Location = new System.Drawing.Point(715, 11);
+            this.btnRefreshBioDevice.Location = new System.Drawing.Point(678, 11);
             this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
-            this.btnRefreshBioDevice.Size = new System.Drawing.Size(112, 41);
+            this.btnRefreshBioDevice.Size = new System.Drawing.Size(149, 41);
             this.btnRefreshBioDevice.TabIndex = 134;
-            this.btnRefreshBioDevice.Text = "Refresh Finger Print Device";
+            this.btnRefreshBioDevice.Text = "Refresh Fingerprint \r\nDevice";
             this.btnRefreshBioDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnRefreshBioDevice.UseVisualStyleBackColor = false;
             this.btnRefreshBioDevice.Click += new System.EventHandler(this.btnRefreshBioDevice_Click);

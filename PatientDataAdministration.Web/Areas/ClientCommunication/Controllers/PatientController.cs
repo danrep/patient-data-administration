@@ -17,7 +17,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
         {
             try
             {
-                var returnPatient = new Patient_PatientInformation();
+                Patient_PatientInformation returnPatient;
                 var pepId = "";
 
                 if (patientInformation == null)
@@ -30,6 +30,9 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     patientInformation.Patient_PatientInformation.PepId = pepId;
                     patientInformation.Patient_PatientInformation.Title =
                         patientInformation.Patient_PatientInformation.MaritalStatus = "";
+                    patientInformation.Patient_PatientInformation.LastUpdated =
+                        patientInformation.Patient_PatientInformation.WhenCreated = DateTime.Now;
+
                     _entities.Patient_PatientInformation.Add(patientInformation.Patient_PatientInformation);
                     _entities.SaveChanges();
 
@@ -64,6 +67,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     existingPatient.StateOfOrigin = patientInformation.Patient_PatientInformation.StateOfOrigin;
                     existingPatient.Surname = patientInformation.Patient_PatientInformation.Surname;
                     existingPatient.Title = patientInformation.Patient_PatientInformation.Title;
+                    existingPatient.LastUpdated = DateTime.Now;
 
                     returnPatient = existingPatient;
                 }
@@ -120,8 +124,11 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
         private string GetPepId(int siteId)
         {
-            var count = _entities.Patient_PatientInformation.Count(x => x.SiteId == siteId);
-            var siteCode = _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteCode.ToUpper() ?? "NA";
+            var count =
+                _entities.Patient_PatientInformation.Count(
+                    x => x.SiteId == siteId && x.PepId.Contains($"-{DateTime.Now.Date:yy}-"));
+            var siteCode =
+                _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteCode.ToUpper() ?? "NA";
             return $@"{siteCode}-{DateTime.Now.Date:yy}-{(++count):0000}";
         }
     }

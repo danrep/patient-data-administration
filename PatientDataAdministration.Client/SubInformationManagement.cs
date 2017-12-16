@@ -20,13 +20,15 @@ namespace PatientDataAdministration.Client
 {
     public partial class SubInformationManagement : MetroFramework.Forms.MetroForm
     {
+        #region Variables
+
         readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
 
         private string _bioDataPrimary;
         private string _bioDataSecondary;
         private string _nfcUid;
 
-        private SGFingerPrintManager _fingerPrintManager;
+        private readonly SGFingerPrintManager _fingerPrintManager;
         private SGFPMDeviceInfoParam _deviceInfoParam;
         private SGFPMDeviceList _device;
         private Thread _bioReaderThread;
@@ -45,6 +47,8 @@ namespace PatientDataAdministration.Client
         private NfcTag _tag = null;
         private Thread _cardthread;
         private bool _inLoop = false;
+
+        #endregion
 
         #region Form Events
 
@@ -259,7 +263,7 @@ namespace PatientDataAdministration.Client
                         Surname = txtSurname.Text,
                         StateOfOrigin = 0,
                         PhoneNumber = txtPhoneNumber.Text, 
-                        Id = 0
+                        Id = 0,  
                     }
                 };
 
@@ -299,7 +303,7 @@ namespace PatientDataAdministration.Client
 
                 #endregion Patient Data Composition
 
-                var result = LocalCore.Post("/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
+                var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
 
                 if (result.Status)
                 {
@@ -387,22 +391,29 @@ namespace PatientDataAdministration.Client
 
         private void persistLoad_Tick(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_deviceName))
+            try
             {
-                if (_bioReaderThread.ThreadState == ThreadState.Running)
+                if (string.IsNullOrEmpty(_deviceName))
                 {
-                    _bioReaderThread.Abort();
-                    _bioReaderThread = null;
-                }
+                    if (_bioReaderThread.ThreadState == ThreadState.Running)
+                    {
+                        _bioReaderThread.Abort();
+                        _bioReaderThread = null;
+                    }
 
-                _bioReaderThread = new Thread(AquireBioDevice);
-                _bioReaderThread.Start();
+                    _bioReaderThread = new Thread(AquireBioDevice);
+                    _bioReaderThread.Start();
+                }
+                else
+                {
+                    persistLoad.Stop();
+                    persistLoad.Enabled = false;
+                    picBoxFingerPrint.Image = Resources.icons8_Fingerprint_48px;
+                }
             }
-            else
+            catch (Exception exception)
             {
-                persistLoad.Stop();
-                persistLoad.Enabled = false;
-                picBoxFingerPrint.Image = Resources.icons8_Fingerprint_48px;
+                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
             }
         }
 
@@ -462,42 +473,66 @@ namespace PatientDataAdministration.Client
             lblBioDeviceInfo.Text = _lblBioDeviceInfoText;
 
             lblInformation.Text = _lblInformationText;
-
+            lblInformation.ForeColor = _lblInformationForeColor;
         }
 
         #endregion
 
         #region Methods
 
+        public void UpdatePersistedData()
+        {
+            try
+            {
+                new Thread(() =>
+                {
+                    this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
+                    _lblInformationText = "Quick Search has been Updated";
+                    _lblInformationForeColor = Color.DarkGreen;
+                }).Start();
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+            }
+        }
+
         private void ClearContents()
         {
-            new Thread(() =>
+            try
             {
-                this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
-            }).Start();
+                new Thread(() =>
+                {
+                    this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
+                }).Start();
 
-            _systemBioDataStore = new System_BioDataStore();
+                _systemBioDataStore = new System_BioDataStore();
 
-            chkNfc.Checked = chkPriFin.Checked = chkSecFin.Checked = false;
+                chkNfc.Checked = chkPriFin.Checked = chkSecFin.Checked = false;
 
-            picBoxFingerPrint.Image = Resources.icons8_Fingerprint_48px;
+                picBoxFingerPrint.Image = Resources.icons8_Fingerprint_48px;
 
-            _bioDataPrimary = _bioDataSecondary = "";
+                _bioDataPrimary = _bioDataSecondary = "";
 
-            foreach (var ctl in pnlOfficialInformation.Controls.OfType<TextBox>().ToList())
-                ctl.Text = "";
-            foreach (var ctl in pnlPersonalInformation.Controls.OfType<TextBox>().ToList())
-                ctl.Text = "";
-            foreach (var ctl in pnlPersonalInformation.Controls.OfType<ComboBox>().ToList())
-                ctl.Text = "";
+                foreach (var ctl in pnlOfficialInformation.Controls.OfType<TextBox>().ToList())
+                    ctl.Text = "";
+                foreach (var ctl in pnlPersonalInformation.Controls.OfType<TextBox>().ToList())
+                    ctl.Text = "";
+                foreach (var ctl in pnlPersonalInformation.Controls.OfType<ComboBox>().ToList())
+                    ctl.Text = "";
 
-            txtSex.SelectedIndex =
-                        txtStateOfResidence.SelectedIndex = txtLgaOfResidence.SelectedIndex = -1;
+                txtSex.SelectedIndex =
+                            txtStateOfResidence.SelectedIndex = txtLgaOfResidence.SelectedIndex = -1;
 
-            txtDateOfBirth.Value = DateTime.Now;
+                txtDateOfBirth.Value = DateTime.Now;
 
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+            }
         }
 
         private bool CheckForDevice()
@@ -997,19 +1032,26 @@ namespace PatientDataAdministration.Client
 
         private void DrawImage(byte[] imgData)
         {
-            var bmp = new Bitmap(_deviceInfoParam.ImageWidth, _deviceInfoParam.ImageHeight);
-            picBoxFingerPrint.Image = (Image)bmp;
-
-            for (var i = 0; i < bmp.Width; i++)
+            try
             {
-                for (var j = 0; j < bmp.Height; j++)
+                var bmp = new Bitmap(_deviceInfoParam.ImageWidth, _deviceInfoParam.ImageHeight);
+                picBoxFingerPrint.Image = (Image)bmp;
+
+                for (var i = 0; i < bmp.Width; i++)
                 {
-                    var colorval = (int)imgData[(j * _deviceInfoParam.ImageWidth) + i];
-                    bmp.SetPixel(i, j, Color.FromArgb(colorval, colorval, colorval));
+                    for (var j = 0; j < bmp.Height; j++)
+                    {
+                        var colorval = (int)imgData[(j * _deviceInfoParam.ImageWidth) + i];
+                        bmp.SetPixel(i, j, Color.FromArgb(colorval, colorval, colorval));
+                    }
                 }
+                picBoxFingerPrint.Refresh();
+                bmp.Dispose();
             }
-            picBoxFingerPrint.Refresh();
-            bmp.Dispose();
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+            }
         }
 
         #endregion

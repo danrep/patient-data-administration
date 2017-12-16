@@ -266,6 +266,8 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Checked_Checkbox_24px.png" />
+    <None Include="Resources\Downloading Updates_96px.png" />
     <None Include="Resources\loadingBackground.jpg" />
     <None Include="Resources\ajax-loader.gif" />
     <None Include="Resources\HelpResource.jpeg" />

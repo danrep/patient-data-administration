@@ -69,8 +69,10 @@
     <Compile Include="Administration_StaffInformation.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="InterchangeModels\PatientMatching.cs" />
     <Compile Include="InterchangeModels\PatientInformation.cs" />
     <Compile Include="InterchangeModels\ResponseData.cs" />
+    <Compile Include="InterchangeModels\OperationQueue.cs" />
     <Compile Include="InterchangeModels\UserCredential.cs" />
     <Compile Include="PatientDataAdministrationDataModel.Context.cs">
       <AutoGen>True</AutoGen>

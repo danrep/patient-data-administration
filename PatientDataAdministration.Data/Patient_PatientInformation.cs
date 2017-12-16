@@ -32,5 +32,7 @@ namespace PatientDataAdministration.Data
         public string HospitalNumber { get; set; }
         public byte[] PassportData { get; set; }
         public bool IsDeleted { get; set; }
+        public Nullable<System.DateTime> WhenCreated { get; set; }
+        public Nullable<System.DateTime> LastUpdated { get; set; }
     }
 }

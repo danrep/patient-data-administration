@@ -17,8 +17,12 @@
     [HospitalNumber]    VARCHAR (100) NOT NULL,
     [PassportData]      IMAGE         NULL,
     [IsDeleted]         BIT           NOT NULL,
+    [WhenCreated]       DATETIME      DEFAULT (getdate()) NULL,
+    [LastUpdated]       DATETIME      DEFAULT (getdate()) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

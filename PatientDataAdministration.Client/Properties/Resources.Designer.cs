@@ -93,6 +93,16 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Downloading_Updates_96px {
+            get {
+                object obj = ResourceManager.GetObject("Downloading Updates_96px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap HelpResource {
             get {
                 object obj = ResourceManager.GetObject("HelpResource", resourceCulture);
@@ -126,6 +136,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static System.Drawing.Bitmap icons8_Cancel_48px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Cancel_48px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Checked_Checkbox_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Checked_Checkbox_24px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

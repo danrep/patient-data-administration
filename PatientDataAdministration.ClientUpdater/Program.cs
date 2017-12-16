@@ -47,20 +47,31 @@ namespace PatientDataAdministration.ClientUpdater
                 Console.WriteLine($@"Applying Update Version {updateDataResolved.VersionNumber}.");
 
                 var files = Directory.EnumerateFiles(_storeLocation).ToList();
-                var i = 1;
+                var i = 1.0;
                 foreach (var file in files)
                 {
-                    Console.WriteLine($@"Installing {file} ...");
-                    File.Move(Path.Combine(_storeLocation, file),
-                        Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, file));
+                    var fileInfo = new FileInfo(file);
+                    Console.WriteLine($@"Installing {fileInfo.Name} {fileInfo.Length} bytes ...");
+                    var destination = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, fileInfo.Name);
+
+                    try
+                    {
+                        if (File.Exists(destination))
+                            File.Delete(destination);
+
+                        File.Move(file, destination);
+                    }
+                    catch
+                    {
+                        //
+                    }
+
                     Console.WriteLine($@"{((i / files.Count) * 100):00}%");
                     i++;
                 }
 
                 Console.WriteLine($@"100%");
-                Console.WriteLine($@"Press any key to continue. APIN PDA will be started shortly%");
-                Console.ReadLine();
-
+                Console.WriteLine($@"APIN PDA will be started shortly%");
                 Process.Start("PatientDataAdministration.Client.exe");
 
                 Environment.Exit(0);

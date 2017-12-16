@@ -118,6 +118,8 @@
           <Property Name="HospitalNumber" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PassportData" Type="image" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="WhenCreated" Type="datetime" />
+          <Property Name="LastUpdated" Type="datetime" />
         </EntityType>
         <EntityType Name="Patient_PatientNearFieldCommunicationData">
           <Key>
@@ -323,6 +325,8 @@
           <Property Name="HospitalNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PassportData" Type="Binary" MaxLength="Max" FixedLength="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="WhenCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Patient_PatientNearFieldCommunicationData">
           <Key>
@@ -488,6 +492,8 @@
           <EntitySetMapping Name="Patient_PatientInformation">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientInformation">
               <MappingFragment StoreEntitySet="Patient_PatientInformation">
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="PassportData" ColumnName="PassportData" />
                 <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />

@@ -19,7 +19,6 @@ namespace PatientDataAdministration.Client
         private static int _userCredentialId = 0;
         private static string _baseUrl;
 
-
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool silent = false)
         {
             LocalCore._userCredentialId = userCredentialId;
