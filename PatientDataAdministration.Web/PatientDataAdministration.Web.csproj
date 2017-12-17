@@ -1070,6 +1070,7 @@
     <Compile Include="Areas\ClientCommunication\Controllers\SyncController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\IndicatorsController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\ServerCommunicationAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1092,6 +1093,7 @@
     <Folder Include="Areas\ClientCommunication\Views\Sync\" />
     <Folder Include="Areas\ClientCommunication\Views\User\" />
     <Folder Include="Areas\ServerCommunication\Models\" />
+    <Folder Include="Areas\ServerCommunication\Views\Indicators\" />
     <Folder Include="Areas\ServerCommunication\Views\Shared\" />
     <Folder Include="Areas\ServerCommunication\Views\UserManagement\" />
     <Folder Include="Models\" />

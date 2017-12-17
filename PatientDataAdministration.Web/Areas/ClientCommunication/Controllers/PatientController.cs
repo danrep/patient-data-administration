@@ -127,9 +127,10 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
         private string GetPepId(int siteId)
         {
-            var count =
+            var wildString = $"-{DateTime.Now.Date:yy}-";
+            var count = 
                 _entities.Patient_PatientInformation.Count(
-                    x => x.SiteId == siteId && x.PepId.Contains($"-{DateTime.Now.Date:yy}-"));
+                    x => x.SiteId == siteId && x.PepId.Contains(wildString));
             var siteCode =
                 _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteCode.ToUpper() ?? "NA";
             return $@"{siteCode}-{DateTime.Now.Date:yy}-{(++count):0000}";

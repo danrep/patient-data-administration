@@ -113,5 +113,51 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult AuthenticateUser(string username, string password)
+        {
+            try
+            {
+                var staffInformation =
+                    _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted && x.Email == username);
+
+                if (staffInformation == null)
+                    return
+                        Json(
+                            new ResponseData
+                            {
+                                Status = false,
+                                Message = "This User does not Exist"
+                            },
+                            JsonRequestBehavior.AllowGet);
+                else
+                {
+                    if (Encryption.IsSaltEncryptValid(password, staffInformation.PasswordData,
+                        staffInformation.PasswordSalt))
+                        return
+                            Json(
+                                new ResponseData
+                                {
+                                    Status = true,
+                                    Message = "Successful Log On"
+                                },
+                                JsonRequestBehavior.AllowGet);
+                    else
+                        return
+                            Json(
+                                new ResponseData
+                                {
+                                    Status = false,
+                                    Message = "Invalid Password"
+                                },
+                                JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

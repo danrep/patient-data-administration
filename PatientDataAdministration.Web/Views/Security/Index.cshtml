@@ -23,11 +23,11 @@
             <div class="login-header">
                 <div class="brand">
                     <img src="/assets/img/PDA_Assets.png" alt="logo" height="80">
-                    <small>an innovation of AIDS Prevention Initiative in Nigeria</small>
+                    <small>built for APIN Public Health Initiatives Limited</small>
                 </div>
             </div>
             <div class="login-content">
-                <form action="#" method="POST" class="margin-bottom-0">
+                <form action="@Url.Action("Index", "Home", new {authGuid = Guid.NewGuid().ToString().Reverse()})" method="POST" class="margin-bottom-0">
                     <div class="form-group m-b-15">
                         <input type="text" class="form-control input-lg" placeholder="Email Address" required />
                     </div>
@@ -39,7 +39,7 @@
                     </div>
                     <hr />
                     <p class="text-center">
-                        &copy; APIN All Right Reserved @DateTime.Now.Year
+                        &copy; APIN All Rights Reserved @DateTime.Now.Year
                     </p>
                 </form>
             </div>
