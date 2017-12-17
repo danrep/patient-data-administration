@@ -47,9 +47,12 @@ namespace PatientDataAdministration.Client
                     _localPdaEntities.SaveChanges();
                     currentRemoteApiSetting = _localPdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi);
                 }
+                else
+                {
+                    currentRemoteApiSetting.SettingValue = txtRemoteApi.Text;
+                    _localPdaEntities.Entry(currentRemoteApiSetting).State = EntityState.Modified;
+                }
 
-                currentRemoteApiSetting.SettingValue = txtRemoteApi.Text;
-                _localPdaEntities.Entry(currentRemoteApiSetting).State = EntityState.Modified;
                 _localPdaEntities.SaveChanges();
 
                 lblInformation.Text = @"Connection Settings Update Successful";

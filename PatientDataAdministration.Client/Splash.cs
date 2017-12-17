@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
@@ -61,13 +62,20 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                var processes =
+                    Process.GetProcesses().Where(x => x.ProcessName.Contains("PatientDataAdministration")).ToList();
+
+                foreach (var proc in processes)
+                    proc.Kill();
+            }
+            catch
+            {
+                //
+            }
+            finally
+            {
                 System.Windows.Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
                 System.Windows.Application.Current.Shutdown();
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, 0);
-                GC.Collect();
             }
         }
 

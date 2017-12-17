@@ -18,6 +18,7 @@ namespace PatientDataAdministration.Client
     public partial class Authentication : MetroFramework.Forms.MetroForm
     {
         private readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
+        private bool _status = true;
 
         public Authentication()
         {
@@ -28,8 +29,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                btnLogIn.Enabled = false;
-                picLoader.Visible = true;
+                _status = false;
+
                 System.Windows.Forms.Application.DoEvents();
 
                 var credential =
@@ -38,6 +39,7 @@ namespace PatientDataAdministration.Client
 
                 if (credential == null)
                 {
+
                     if (CheckCredentialServer(out UserCredential userData))
                         GainAccess(userData);
                 }
@@ -52,10 +54,10 @@ namespace PatientDataAdministration.Client
                         txtPassword.Text = "";
                     }
                 }
-                
-                btnLogIn.Enabled = true;
-                picLoader.Visible = false;
+
                 ClearInputs();
+
+                _status = true;
             }
             catch(Exception exception)
             {
@@ -131,8 +133,6 @@ namespace PatientDataAdministration.Client
         {
             var setting = new SubSettings();
             setting.ShowDialog();
-
-            LocalCore.RefreshBaseUrl();
         }
 
         private bool CheckCredentialServer(out UserCredential userCredential)
@@ -184,6 +184,12 @@ namespace PatientDataAdministration.Client
         private void Authentication_FormClosing(object sender, FormClosingEventArgs e)
         {
             //
+        }
+
+        private void tmrFeedBack_Tick(object sender, EventArgs e)
+        {
+            btnLogIn.Enabled = _status;
+            picLoader.Visible = !_status;
         }
     }
 }

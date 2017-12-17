@@ -53,6 +53,7 @@ namespace PatientDataAdministration.Client
             this.lblUserInformation = new System.Windows.Forms.Label();
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.tmrCheckConnection = new System.Windows.Forms.Timer(this.components);
+            this.tmrLaunchUpdate = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -324,6 +325,12 @@ namespace PatientDataAdministration.Client
             this.tmrCheckConnection.Tag = "";
             this.tmrCheckConnection.Tick += new System.EventHandler(this.tmrCheckConnection_Tick);
             // 
+            // tmrLaunchUpdate
+            // 
+            this.tmrLaunchUpdate.Interval = 5000;
+            this.tmrLaunchUpdate.Tag = "";
+            this.tmrLaunchUpdate.Tick += new System.EventHandler(this.tmrLaunchUpdate_Tick);
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -347,6 +354,7 @@ namespace PatientDataAdministration.Client
             this.Text = "APIN Data Manager";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataCentral_FormClosing);
             this.Load += new System.EventHandler(this.DataCentral_Load);
+            this.Shown += new System.EventHandler(this.DataCentral_Shown);
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
@@ -381,5 +389,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Timer tmrSync;
         private MetroFramework.Components.MetroToolTip metroToolTip1;
         private System.Windows.Forms.Timer tmrCheckConnection;
+        private System.Windows.Forms.Timer tmrLaunchUpdate;
     }
 }

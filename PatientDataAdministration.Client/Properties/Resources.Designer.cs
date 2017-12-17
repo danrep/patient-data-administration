@@ -323,6 +323,16 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_Load_96px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Load_96px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_Lock_16px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Lock_16px", resourceCulture);
@@ -426,6 +436,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static System.Drawing.Bitmap icons8_Sync_20px {
             get {
                 object obj = ResourceManager.GetObject("icons8_Sync_20px", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Waiting_Room_96px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Waiting_Room_96px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PatientDataAdministration.Client.Properties;
 using PatientDataAdministration.Data;
@@ -22,11 +18,12 @@ namespace PatientDataAdministration.Client
     {
         #region Variables
 
-        readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
+        private readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
 
         private string _bioDataPrimary;
         private string _bioDataSecondary;
         private string _nfcUid;
+        private bool _doneLoading = true;
 
         private readonly SGFingerPrintManager _fingerPrintManager;
         private SGFPMDeviceInfoParam _deviceInfoParam;
@@ -39,6 +36,7 @@ namespace PatientDataAdministration.Client
 
         private System_BioDataStore _systemBioDataStore;
         private readonly UserCredential _userCredential;
+        private List<System_BioDataStore> _systemBioDataStores;
 
         private string _selectedReader;
         private string _tagAtr;
@@ -61,18 +59,20 @@ namespace PatientDataAdministration.Client
 
         private void SubInformationManagement_Load(object sender, EventArgs e)
         {
-            new Thread(() =>
+            try
             {
-                this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
-            }).Start();
+                // TODO: This line of code loads data into the 'localPDADataSet.System_LocalGovermentArea' table. You can move, or remove it, as needed.
+                this.system_LocalGovermentAreaTableAdapter.Fill(this.localPDADataSet.System_LocalGovermentArea);
+                // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
+                this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
 
-            // TODO: This line of code loads data into the 'localPDADataSet.System_LocalGovermentArea' table. You can move, or remove it, as needed.
-            this.system_LocalGovermentAreaTableAdapter.Fill(this.localPDADataSet.System_LocalGovermentArea);
-            // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
-            this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
-
-            _systemBioDataStore = new System_BioDataStore();
-            _bioReaderThread = new Thread(() => {});
+                _systemBioDataStore = new System_BioDataStore();
+                _bioReaderThread = new Thread(() => { });
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+            }
         }
 
         private void SubInformationManagement_Shown(object sender, EventArgs e)
@@ -87,9 +87,7 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                _bioReaderThread.Abort();
-                _cardthread.Abort();
-                _fingerPrintManager.CloseDevice();
+                btnClear_Click(this, e);
             }
             catch (Exception ex)
             {
@@ -97,7 +95,8 @@ namespace PatientDataAdministration.Client
             }
             finally
             {
-                GC.Collect();
+                e.Cancel = true;
+                this.Hide();
             }
         }
 
@@ -113,13 +112,13 @@ namespace PatientDataAdministration.Client
 
                 lstBoxSearchResult.Items.Clear();
 
-                var query = txtSearch.Text.Trim();
+                var query = txtSearch.Text.Trim().ToLower();
                 var results =
-                    localPDADataSet.System_BioDataStore.Where(
+                    _systemBioDataStores.Where(
                         x =>
-                            (x.PepId.Contains(query) ||
-                             x.PatientData.Contains(query) ) &&
-                            !x.IsDeleted).Select(s => new { s.PepId, s.FullName }).ToList();
+                            (x.PepId.ToLower().Contains(query) ||
+                             x.PatientData.ToLower().Contains(query) ) &&
+                            !x.IsDeleted).Take(10).Select(s => new { s.PepId, s.FullName }).ToList();
 
                 if (!results.Any())
                     lstBoxSearchResult.Items.Add($"No Match");
@@ -142,9 +141,9 @@ namespace PatientDataAdministration.Client
             {
                 var capturedBioData = Convert.FromBase64String(GetBioData());
                 var matched = false;
-                LocalPDADataSet.System_BioDataStoreRow patientData = null;
+                System_BioDataStore patientData = null;
 
-                foreach (var pds in this.localPDADataSet.System_BioDataStore.ToList())
+                foreach (var pds in _systemBioDataStores)
                 {
                     try
                     {
@@ -188,14 +187,12 @@ namespace PatientDataAdministration.Client
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearContents();
+            txtSearch.Text = "";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            this.Close();
+            this.Hide();
         }
 
         private void btnRefreshBioDevice_Click(object sender, EventArgs e)
@@ -269,6 +266,13 @@ namespace PatientDataAdministration.Client
 
                 if (!string.IsNullOrEmpty(_bioDataPrimary) && !string.IsNullOrEmpty(_bioDataSecondary))
                 {
+                    if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
+                    {
+                        MessageBox.Show(@"The Captured Biodata have a match and thats not proper. Please confirm");
+                        pnlWaiting.Visible = false;
+                        return;
+                    }
+
                     patientData.Patient_PatientBiometricData = new Patient_PatientBiometricData
                     {
                         PepId = txtPepId.Text,
@@ -303,7 +307,9 @@ namespace PatientDataAdministration.Client
 
                 #endregion Patient Data Composition
 
+                pnlWaiting.Visible = true;
                 var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
+                pnlWaiting.Visible = false;
 
                 if (result.Status)
                 {
@@ -371,6 +377,7 @@ namespace PatientDataAdministration.Client
                 LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
                 lblInformation.Text = @"An unexpected error has occured. Please contact the Administrator";
                 lblInformation.ForeColor = Color.DarkRed;
+                pnlWaiting.Visible = false;
             }
         }
 
@@ -386,7 +393,7 @@ namespace PatientDataAdministration.Client
 
         private void btnNfcData_Click(object sender, EventArgs e)
         {
-
+            //
         }
 
         private void persistLoad_Tick(object sender, EventArgs e)
@@ -433,10 +440,14 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var o = (System.Convert.ChangeType(txtStateOfResidence.SelectedValue, typeof(int)));
-                if (o != null)
+                if (txtStateOfResidence.SelectedValue == null)
+                    return;
+
+                var selectedValue = (System.Convert.ChangeType(txtStateOfResidence.SelectedValue, typeof(int)));
+
+                if (selectedValue != null)
                     this.system_LocalGovermentAreaTableAdapter.FillBy(this.localPDADataSet.System_LocalGovermentArea,
-                        ((int)o));
+                        ((int)selectedValue));
             }
             catch (Exception exception)
             {
@@ -452,14 +463,13 @@ namespace PatientDataAdministration.Client
 
         private void lstBoxSearchResult_Click(object sender, EventArgs e)
         {
-
             try
             {
                 if (lstBoxSearchResult.SelectedIndex <= -1)
                     return;
 
                 var pepId = lstBoxSearchResult.SelectedItem.ToString().Split('|')[0];
-                LoadPatientData(this.localPDADataSet.System_BioDataStore.FirstOrDefault(x => x.PepId == pepId));
+                LoadPatientData(_systemBioDataStores.FirstOrDefault(x => x.PepId == pepId));
             }
             catch (Exception exception)
             {
@@ -480,16 +490,78 @@ namespace PatientDataAdministration.Client
 
         #region Methods
 
+        public bool ValidateBioData(string bioDataPrimary, string bioDataSecondary)
+        {
+            try
+            {
+                pnlWaiting.Visible = true;
+
+                var capturedBioDataPrimary = Convert.FromBase64String(bioDataPrimary);
+                var capturedBioDataSecondary = Convert.FromBase64String(bioDataSecondary);
+
+                var matched = false;
+
+                foreach (var pds in _systemBioDataStores.Where(x => x.PepId != txtPepId.Text.Trim()))
+                {
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                        capturedBioDataPrimary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                        capturedBioDataPrimary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                        capturedBioDataSecondary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                        capturedBioDataSecondary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+                }
+
+                pnlWaiting.Visible = false;
+
+                return matched;
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+                return false;
+            }
+        }
+
         public void UpdatePersistedData()
         {
             try
             {
-                new Thread(() =>
-                {
-                    this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
-                    _lblInformationText = "Quick Search has been Updated";
-                    _lblInformationForeColor = Color.DarkGreen;
-                }).Start();
+                if (_doneLoading)
+                    new Thread(() =>
+                    {
+                        _doneLoading = true;
+
+                        _systemBioDataStores =
+                            _localPdaEntities.System_BioDataStore.Where(
+                                x => x.SiteId == _userCredential.AdministrationSiteInformation.Id).ToList();
+
+
+                        _lblInformationText = "Quick Search has been Updated";
+                        _lblInformationForeColor = Color.DarkGreen;
+
+                        _doneLoading = true;
+                    }).Start();
             }
             catch (Exception e)
             {
@@ -501,11 +573,6 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                new Thread(() =>
-                {
-                    this.system_BioDataStoreTableAdapter.Fill(this.localPDADataSet.System_BioDataStore);
-                }).Start();
-
                 _systemBioDataStore = new System_BioDataStore();
 
                 chkNfc.Checked = chkPriFin.Checked = chkSecFin.Checked = false;
@@ -886,7 +953,8 @@ namespace PatientDataAdministration.Client
                         lblInformation.Text = smart.Family_name + @" " + smart.First_name;
                     }
 
-                    var patientData = this.localPDADataSet.System_BioDataStore.FirstOrDefault(x => x.NfcUid == _nfcUid);
+                    var patientData = _systemBioDataStores.FirstOrDefault(x => x.NfcUid == _nfcUid);
+                    
                     if (patientData != null)
                         LoadPatientData(patientData);
                     else
@@ -906,58 +974,67 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void LoadPatientData(LocalPDADataSet.System_BioDataStoreRow patientData)
+        private void LoadPatientData(System_BioDataStore patientData)
         {
-            if (patientData == null)
+            try
             {
-                System.Media.SystemSounds.Hand.Play();
-                btnClear_Click(this, EventArgs.Empty);
-                lblInformation.Text = @"No Information Found about this Patient";
-                return;
+                ClearContents();
+
+                if (patientData == null)
+                {
+                    System.Media.SystemSounds.Hand.Play();
+                    lblInformation.Text = @"No Information Found about this Patient";
+                    return;
+                }
+
+                var patientDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformation>(patientData.PatientData);
+
+                txtAddress.Text = patientDataResolved.Patient_PatientInformation.HouseAddress;
+                txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth;
+                txtHospitalNumber.Text = patientDataResolved.Patient_PatientInformation.HospitalNumber;
+                //txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
+                txtOtherNames.Text = patientDataResolved.Patient_PatientInformation.Othername;
+                txtPepId.Text = patientData.PepId;
+                txtPhoneNumber.Text = patientDataResolved.Patient_PatientInformation.PhoneNumber;
+                txtPreviousNumber.Text = patientDataResolved.Patient_PatientInformation.PreviousId;
+                txtSex.Text = patientDataResolved.Patient_PatientInformation.Sex;
+                txtSurname.Text = patientDataResolved.Patient_PatientInformation.Surname;
+
+                txtStateOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddressState;
+                txtStateOfResidence_SelectedValueChanged(this, EventArgs.Empty);
+                txtLgaOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddresLga;
+                //txtStateOfOrigin.SelectedValue = patientDataResolved.Patient_PatientInformation.StateOfOrigin;
+
+                if (patientDataResolved.Patient_PatientBiometricData != null)
+                {
+                    _bioDataPrimary = patientDataResolved.Patient_PatientBiometricData.FingerPrimary;
+                    _bioDataSecondary = patientDataResolved.Patient_PatientBiometricData.FingerSecondary;
+
+                    if (!string.IsNullOrEmpty(_bioDataPrimary))
+                        chkPriFin.Checked = true;
+                    if (!string.IsNullOrEmpty(_bioDataSecondary))
+                        chkSecFin.Checked = true;
+                }
+
+                if (patientDataResolved.Patient_PatientNearFieldCommunicationData != null)
+                {
+                    _nfcUid = patientDataResolved.Patient_PatientNearFieldCommunicationData.CardId;
+
+                    if (!string.IsNullOrEmpty(_nfcUid))
+                        chkNfc.Checked = true;
+                }
+
+                Application.DoEvents();
+
+                _systemBioDataStore =
+                    _localPdaEntities.System_BioDataStore.FirstOrDefault(
+                        x => x.PepId == patientDataResolved.Patient_PatientInformation.PepId) ?? new System_BioDataStore();
             }
-            
-            var patientDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformation>(patientData.PatientData);
-
-            txtAddress.Text = patientDataResolved.Patient_PatientInformation.HouseAddress;
-            txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth;
-            txtHospitalNumber.Text = patientDataResolved.Patient_PatientInformation.HospitalNumber;
-            //txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
-            txtOtherNames.Text = patientDataResolved.Patient_PatientInformation.Othername;
-            txtPepId.Text = patientData.PepId;
-            txtPhoneNumber.Text = patientDataResolved.Patient_PatientInformation.PhoneNumber;
-            txtPreviousNumber.Text = patientDataResolved.Patient_PatientInformation.PreviousId;
-            txtSex.Text = patientDataResolved.Patient_PatientInformation.Sex;
-            txtSurname.Text = patientDataResolved.Patient_PatientInformation.Surname;
-
-            txtStateOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddressState;
-            txtStateOfResidence_SelectedValueChanged(this, EventArgs.Empty);
-            txtLgaOfResidence.SelectedValue = patientDataResolved.Patient_PatientInformation.HouseAddresLga;
-            //txtStateOfOrigin.SelectedValue = patientDataResolved.Patient_PatientInformation.StateOfOrigin;
-
-            if (patientDataResolved.Patient_PatientBiometricData != null)
+            catch (Exception e)
             {
-                _bioDataPrimary = patientDataResolved.Patient_PatientBiometricData.FingerPrimary;
-                _bioDataSecondary = patientDataResolved.Patient_PatientBiometricData.FingerSecondary;
-
-                if (!string.IsNullOrEmpty(_bioDataPrimary))
-                    chkPriFin.Checked = true;
-                if (!string.IsNullOrEmpty(_bioDataSecondary))
-                    chkSecFin.Checked = true;
+                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                ClearContents();
             }
-
-            if (patientDataResolved.Patient_PatientNearFieldCommunicationData != null)
-            {
-                _nfcUid = patientDataResolved.Patient_PatientNearFieldCommunicationData.CardId;
-
-                if (!string.IsNullOrEmpty(_nfcUid))
-                    chkNfc.Checked = true;
-            }
-
-            Application.DoEvents();
-
-            _systemBioDataStore =
-                _localPdaEntities.System_BioDataStore.FirstOrDefault(
-                    x => x.PepId == patientDataResolved.Patient_PatientInformation.PepId) ?? new System_BioDataStore();
         }
 
         delegate void OnErrorInvoker(string text, string caption);
@@ -996,6 +1073,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                lstBoxSearchResult.Visible = false;
+
                 var mDataMin = new byte[400];
 
                 var fpImage = new byte[_deviceInfoParam.ImageWidth * _deviceInfoParam.ImageHeight];

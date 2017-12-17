@@ -30,6 +30,7 @@ namespace PatientDataAdministration.Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Authentication));
             this.txtUserName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,6 +41,7 @@ namespace PatientDataAdministration.Client
             this.btnLogIn = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.picLoader = new System.Windows.Forms.ProgressBar();
+            this.tmrFeedBack = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // txtUserName
@@ -155,6 +157,12 @@ namespace PatientDataAdministration.Client
             this.picLoader.TabIndex = 18;
             this.picLoader.Visible = false;
             // 
+            // tmrFeedBack
+            // 
+            this.tmrFeedBack.Enabled = true;
+            this.tmrFeedBack.Interval = 500;
+            this.tmrFeedBack.Tick += new System.EventHandler(this.tmrFeedBack_Tick);
+            // 
             // Authentication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -198,5 +206,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Button btnLogIn;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.ProgressBar picLoader;
+        private System.Windows.Forms.Timer tmrFeedBack;
     }
 }

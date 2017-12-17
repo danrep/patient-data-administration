@@ -98,6 +98,9 @@ namespace PatientDataAdministration.Client
             this.system_BioDataStoreTableAdapter = new PatientDataAdministration.Client.LocalPDADataSetTableAdapters.System_BioDataStoreTableAdapter();
             this.btnClose = new System.Windows.Forms.Button();
             this.timerUpdateInformation = new System.Windows.Forms.Timer(this.components);
+            this.pnlWaiting = new System.Windows.Forms.Panel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
@@ -111,6 +114,8 @@ namespace PatientDataAdministration.Client
             this.pnlOfficialInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).BeginInit();
+            this.pnlWaiting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -169,7 +174,7 @@ namespace PatientDataAdministration.Client
             this.lstBoxSearchResult.ItemHeight = 15;
             this.lstBoxSearchResult.Location = new System.Drawing.Point(3, 52);
             this.lstBoxSearchResult.Name = "lstBoxSearchResult";
-            this.lstBoxSearchResult.Size = new System.Drawing.Size(161, 139);
+            this.lstBoxSearchResult.Size = new System.Drawing.Size(161, 169);
             this.lstBoxSearchResult.TabIndex = 136;
             this.lstBoxSearchResult.Visible = false;
             this.lstBoxSearchResult.Click += new System.EventHandler(this.lstBoxSearchResult_Click);
@@ -259,11 +264,11 @@ namespace PatientDataAdministration.Client
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(554, 296);
+            this.btnSave.Location = new System.Drawing.Point(583, 296);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(160, 40);
+            this.btnSave.Size = new System.Drawing.Size(132, 40);
             this.btnSave.TabIndex = 129;
-            this.btnSave.Text = "Save Patient Information";
+            this.btnSave.Text = "Save Information";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -400,11 +405,11 @@ namespace PatientDataAdministration.Client
             this.btnClear.ForeColor = System.Drawing.Color.White;
             this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
             this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClear.Location = new System.Drawing.Point(554, 342);
+            this.btnClear.Location = new System.Drawing.Point(582, 342);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(160, 40);
+            this.btnClear.Size = new System.Drawing.Size(132, 40);
             this.btnClear.TabIndex = 131;
-            this.btnClear.Text = "Clear ";
+            this.btnClear.Text = "Clear all Inputs";
             this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClear.UseVisualStyleBackColor = false;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -750,14 +755,14 @@ namespace PatientDataAdministration.Client
             // 
             // btnRefreshNfcDevice
             // 
-            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.Maroon;
+            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.DimGray;
             this.btnRefreshNfcDevice.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
             this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(523, 11);
+            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(547, 11);
             this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
-            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(149, 41);
+            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshNfcDevice.TabIndex = 133;
             this.btnRefreshNfcDevice.Text = "Refreah NFC Tag\r\nDevice";
             this.btnRefreshNfcDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -766,14 +771,14 @@ namespace PatientDataAdministration.Client
             // 
             // btnRefreshBioDevice
             // 
-            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.Maroon;
+            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.DimGray;
             this.btnRefreshBioDevice.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
             this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshBioDevice.Location = new System.Drawing.Point(678, 11);
+            this.btnRefreshBioDevice.Location = new System.Drawing.Point(690, 11);
             this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
-            this.btnRefreshBioDevice.Size = new System.Drawing.Size(149, 41);
+            this.btnRefreshBioDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshBioDevice.TabIndex = 134;
             this.btnRefreshBioDevice.Text = "Refresh Fingerprint \r\nDevice";
             this.btnRefreshBioDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -832,12 +837,47 @@ namespace PatientDataAdministration.Client
             this.timerUpdateInformation.Interval = 500;
             this.timerUpdateInformation.Tick += new System.EventHandler(this.timerUpdateInformation_Tick);
             // 
+            // pnlWaiting
+            // 
+            this.pnlWaiting.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.pnlWaiting.Controls.Add(this.label13);
+            this.pnlWaiting.Controls.Add(this.pictureBox2);
+            this.pnlWaiting.Location = new System.Drawing.Point(-19, 210);
+            this.pnlWaiting.Name = "pnlWaiting";
+            this.pnlWaiting.Size = new System.Drawing.Size(1007, 75);
+            this.pnlWaiting.TabIndex = 136;
+            this.pnlWaiting.Visible = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
+            this.pictureBox2.Location = new System.Drawing.Point(479, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 63;
+            this.pictureBox2.TabStop = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(408, 54);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(190, 15);
+            this.label13.TabIndex = 106;
+            this.label13.Text = "Operation In Progress. Please Wait";
+            // 
             // SubInformationManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 485);
             this.ControlBox = false;
+            this.Controls.Add(this.pnlWaiting);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblInformation);
             this.Controls.Add(this.btnRefreshNfcDevice);
@@ -875,6 +915,9 @@ namespace PatientDataAdministration.Client
             this.pnlOfficialInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).EndInit();
+            this.pnlWaiting.ResumeLayout(false);
+            this.pnlWaiting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -948,5 +991,8 @@ namespace PatientDataAdministration.Client
         private LocalPDADataSetTableAdapters.System_BioDataStoreTableAdapter system_BioDataStoreTableAdapter;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Timer timerUpdateInformation;
+        private System.Windows.Forms.Panel pnlWaiting;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label13;
     }
 }

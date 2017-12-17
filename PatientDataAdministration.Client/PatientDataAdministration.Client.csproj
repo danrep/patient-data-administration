@@ -36,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -266,6 +267,8 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Load_96px.png" />
+    <None Include="Resources\icons8_Waiting_Room_96px.png" />
     <None Include="Resources\icons8_Checked_Checkbox_24px.png" />
     <None Include="Resources\Downloading Updates_96px.png" />
     <None Include="Resources\loadingBackground.jpg" />

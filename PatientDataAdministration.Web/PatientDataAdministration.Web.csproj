@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <ApplicationInsightsResourceId>/subscriptions/8077d858-8d71-4294-8fbb-b1300851bce0/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/PatientDataAdministration.Web</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/8077d858-8d71-4294-8fbb-b1300851bce0/resourceGroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/PatientDataAdministration.Web</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

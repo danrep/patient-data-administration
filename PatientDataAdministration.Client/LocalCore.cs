@@ -15,9 +15,8 @@ namespace PatientDataAdministration.Client
 {
     public static class LocalCore
     {
-        private static readonly LocalPDAEntities PdaEntities = new LocalPDAEntities();
+        private static LocalPDAEntities PdaEntities = new LocalPDAEntities();
         private static int _userCredentialId = 0;
-        private static string _baseUrl;
 
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool silent = false)
         {
@@ -45,17 +44,8 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        public static string BaseUrl
-        {
-            get
-            {
-                _baseUrl = PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
+        public static string BaseUrl => PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
                        .SettingValue;
-
-                return _baseUrl;
-            }
-            set { _baseUrl = value; }
-        }
 
         public static async Task<ResponseData> Get(string url)
         {
@@ -63,7 +53,13 @@ namespace PatientDataAdministration.Client
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri(BaseUrl);
+                    PdaEntities = new LocalPDAEntities();
+
+                    client.BaseAddress =
+                        new Uri(
+                            PdaEntities.System_Setting.FirstOrDefault(
+                                x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "");
+
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                     var response = client.GetAsync(url).Result;
@@ -91,18 +87,14 @@ namespace PatientDataAdministration.Client
                 };
             }
         }
-
-        public static void RefreshBaseUrl()
-        {
-            BaseUrl = PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
-                    .SettingValue;
-        }
-
+        
         public static ResponseData Post(string url, string payload)
         {
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(BaseUrl + url);
+                PdaEntities = new LocalPDAEntities();
+                var request = (HttpWebRequest)WebRequest.Create((PdaEntities.System_Setting.FirstOrDefault(
+                            x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "") + url);
 
                 request.Method = "POST";
                 request.Credentials = CredentialCache.DefaultCredentials;

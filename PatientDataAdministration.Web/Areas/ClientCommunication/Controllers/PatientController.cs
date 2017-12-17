@@ -58,7 +58,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     existingPatient.HouseAddresLga = patientInformation.Patient_PatientInformation.HouseAddresLga;
                     existingPatient.HouseAddress = patientInformation.Patient_PatientInformation.HouseAddress;
                     existingPatient.HouseAddressState = patientInformation.Patient_PatientInformation.HouseAddressState;
-                    existingPatient.MaritalStatus = patientInformation.Patient_PatientInformation.MaritalStatus;
+                    existingPatient.MaritalStatus = patientInformation.Patient_PatientInformation.MaritalStatus ??
+                                                    string.Empty;
                     existingPatient.Othername = patientInformation.Patient_PatientInformation.Othername;
                     existingPatient.PassportData = patientInformation.Patient_PatientInformation.PassportData;
                     existingPatient.PhoneNumber = patientInformation.Patient_PatientInformation.PhoneNumber;
@@ -66,7 +67,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     existingPatient.Sex = patientInformation.Patient_PatientInformation.Sex;
                     existingPatient.StateOfOrigin = patientInformation.Patient_PatientInformation.StateOfOrigin;
                     existingPatient.Surname = patientInformation.Patient_PatientInformation.Surname;
-                    existingPatient.Title = patientInformation.Patient_PatientInformation.Title;
+                    existingPatient.Title = patientInformation.Patient_PatientInformation.Title ?? string.Empty;
                     existingPatient.LastUpdated = DateTime.Now;
 
                     returnPatient = existingPatient;
@@ -80,6 +81,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                             new Patient_PatientBiometricData());
 
                     patientInformation.Patient_PatientBiometricData.PepId = pepId;
+                    patientInformation.Patient_PatientBiometricData.DateRegistered = DateTime.Now;
                     _entities.Patient_PatientBiometricData.Add(patientInformation.Patient_PatientBiometricData);
                 }
 
@@ -91,6 +93,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         new Patient_PatientNearFieldCommunicationData());
 
                     patientInformation.Patient_PatientNearFieldCommunicationData.PepId = pepId;
+                    patientInformation.Patient_PatientNearFieldCommunicationData.DateRegistered = DateTime.Now;
                     _entities.Patient_PatientNearFieldCommunicationData.Add(
                         patientInformation.Patient_PatientNearFieldCommunicationData);
                 }
