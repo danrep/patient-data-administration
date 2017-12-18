@@ -34,13 +34,13 @@
         "Entry"
         {
         "MsmKey" = "8:_280E5A6E1C56AC65DB5009EDF33D9A7D"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_294CBAA73D2AB60CBC39CF8B93393B4A"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -51,26 +51,32 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_38BA5D471EE9472992B38BCAB0B90D30"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_38E8A13C282C11184736E02D8D68BBC2"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3D2598FBEE0FF97852DFFCF01DA775EF"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_42EBC64EBECE283C57305E0E24993863"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_494F268AB029D2580E135BCE3C5D0D70"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,7 +88,13 @@
         "Entry"
         {
         "MsmKey" = "8:_5F64FAEFB3E4EC3BA96A8A02B1E0841C"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5F64FAEFB3E4EC3BA96A8A02B1E0841C"
+        "OwnerKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -124,7 +136,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7AF643119281864B3E650DE29B19D5EA"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -142,7 +154,13 @@
         "Entry"
         {
         "MsmKey" = "8:_82E0135C056CEF6F2762FCB48C403A49"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_82E0135C056CEF6F2762FCB48C403A49"
+        "OwnerKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -154,7 +172,19 @@
         "Entry"
         {
         "MsmKey" = "8:_8439354B56ACDA29F3A829DECFF47CB3"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8439354B56ACDA29F3A829DECFF47CB3"
+        "OwnerKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -178,7 +208,19 @@
         "Entry"
         {
         "MsmKey" = "8:_A7C50CD02CD28B0D12FDA6C7349A5B7E"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A7C50CD02CD28B0D12FDA6C7349A5B7E"
+        "OwnerKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B2972ADD684D453A919CD97A42F88909"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -202,18 +244,12 @@
         "Entry"
         {
         "MsmKey" = "8:_C29915BEDA40F111E094F5CCE16A386C"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_C36EB5FB450240DA9B08A7533D136D8C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -225,8 +261,32 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D87B1C1066064404A4788843BEEE9F96"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "OwnerKey" = "8:_A7C50CD02CD28B0D12FDA6C7349A5B7E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_D87B1C1066064404A4788843BEEE9F96"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_90828764DD0F42049CB12F599BDC0E0D"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B2972ADD684D453A919CD97A42F88909"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -295,12 +355,6 @@
         "OwnerKey" = "8:_38E8A13C282C11184736E02D8D68BBC2"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A7C50CD02CD28B0D12FDA6C7349A5B7E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -321,9 +375,9 @@
         "InstallerBootstrapper" = "3:2"
             "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
             {
-            "Enabled" = "11:TRUE"
+            "Enabled" = "11:FALSE"
             "PromptEnabled" = "11:TRUE"
-            "PrerequisitesLocation" = "2:2"
+            "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
                 "Items"
@@ -363,6 +417,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
     }
@@ -370,59 +432,59 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_2F1F8F950A2E49C9BD5F0003F64D06E9"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_23CA369DFD904B55B7AE9DED3877B7C2"
             {
             "Name" = "8:Primary output from PatientDataAdministration.Client (Active)"
             "Condition" = "8:"
-            "Object" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_DEE8C69A_ACC6_4C45_A036_E1AFCF454954"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_7DEFA9BAC0F24FFE95D1165B84B15180"
-            {
-            "Name" = "8:Primary output from PatientDataAdministration.Client (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+            "Object" = "8:_B2972ADD684D453A919CD97A42F88909"
             "FileType" = "3:2"
             "InstallAction" = "3:4"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_92C72C84_53E7_4780_A123_76E75D28B860"
+            "Identifier" = "8:_7E2AF45C_4DB4_42E9_907E_9953445D95BB"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_873474B8B159430DBEF8D7E804506E0F"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_A3E5CB9330114473B8E9D2C2D8E62912"
             {
             "Name" = "8:Primary output from PatientDataAdministration.Client (Active)"
             "Condition" = "8:"
-            "Object" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+            "Object" = "8:_B2972ADD684D453A919CD97A42F88909"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_55C9137C_E535_4681_90FD_27417389555F"
+            "InstallerClass" = "11:TRUE"
+            "CustomActionData" = "8:"
+            }
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_DB57B1DD284F4A62829702CE1A62C8B0"
+            {
+            "Name" = "8:Primary output from PatientDataAdministration.Client (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_B2972ADD684D453A919CD97A42F88909"
             "FileType" = "3:2"
             "InstallAction" = "3:2"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_4AB3DAC1_C0E8_4192_96D8_1AD1F7E645AE"
+            "Identifier" = "8:_AB323C07_79D6_482B_BF92_B69E96DD5863"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_F8195C9D4E364B9C971D26B03EB7F7A5"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_F9B71421BEF440738A2B0499E21974CB"
             {
             "Name" = "8:Primary output from PatientDataAdministration.Client (Active)"
             "Condition" = "8:"
-            "Object" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+            "Object" = "8:_B2972ADD684D453A919CD97A42F88909"
             "FileType" = "3:2"
             "InstallAction" = "3:3"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_D79702DE_7F5F_4372_8D60_318F8227F70C"
+            "Identifier" = "8:_8FDA81EE_D1F7_4E5A_989A_0F024EFA63A7"
             "InstallerClass" = "11:TRUE"
             "CustomActionData" = "8:"
             }
@@ -587,6 +649,26 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:5"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_38BA5D471EE9472992B38BCAB0B90D30"
+            {
+            "SourcePath" = "8:..\\PatientDataAdministration.Client\\bin\\Debug\\server.pem"
+            "TargetName" = "8:server.pem"
+            "Tag" = "8:"
+            "Folder" = "8:_04B24550DED942DA9A7F115F231D7057"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
@@ -1181,6 +1263,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D87B1C1066064404A4788843BEEE9F96"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_D87B1C1066064404A4788843BEEE9F96"
+                    {
+                    "Name" = "8:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:..\\PatientDataAdministration.Client\\bin\\Debug\\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_04B24550DED942DA9A7F115F231D7057"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -1277,7 +1390,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+        "ARPPRODUCTICON" = "8:_B2972ADD684D453A919CD97A42F88909"
         "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -1380,7 +1493,7 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_7F54CB3E65664BEFA1763F860A07F0EC"
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_C274FCFDA6E148AC828A73BD49975DA5"
             {
             "Name" = "8:PDA Client"
             "Arguments" = "8:"
@@ -1388,24 +1501,24 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:32512"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
-            "Folder" = "8:_7BAE124962D8461D94F17FF22DF0E5F5"
-            "WorkingFolder" = "8:_04B24550DED942DA9A7F115F231D7057"
-            "Icon" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
-            "Feature" = "8:"
-            }
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D9E538B3083F4711AF870ED93144771F"
-            {
-            "Name" = "8:PDA Client"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:32512"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+            "Target" = "8:_B2972ADD684D453A919CD97A42F88909"
             "Folder" = "8:_57DADFD868A248B38DD75D1E418D3425"
             "WorkingFolder" = "8:_04B24550DED942DA9A7F115F231D7057"
-            "Icon" = "8:_C46D5C56077446D09B1BADBEF7BEE009"
+            "Icon" = "8:_B2972ADD684D453A919CD97A42F88909"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_EAAA1EFE1BF34ED781341B1A0875608F"
+            {
+            "Name" = "8:PDA Client"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:32512"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_B2972ADD684D453A919CD97A42F88909"
+            "Folder" = "8:_7BAE124962D8461D94F17FF22DF0E5F5"
+            "WorkingFolder" = "8:_04B24550DED942DA9A7F115F231D7057"
+            "Icon" = "8:_B2972ADD684D453A919CD97A42F88909"
             "Feature" = "8:"
             }
         }
@@ -1807,7 +1920,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9AF6580CF23D47A8BDD3DA0F1DBBF7D5"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_5AC8E10500A248A7991669E6176C0046"
             {
             "SourcePath" = "8:"
             "TargetName" = "8:"
@@ -1835,7 +1948,35 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C46D5C56077446D09B1BADBEF7BEE009"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_90828764DD0F42049CB12F599BDC0E0D"
+            {
+            "SourcePath" = "8:..\\PatientDataAdministration.ClientUpdater\\obj\\Debug\\PatientDataAdministration.ClientUpdater.exe"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_04B24550DED942DA9A7F115F231D7057"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{818804D1-D1DC-4639-903A-6A0B137BA9EF}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B2972ADD684D453A919CD97A42F88909"
             {
             "SourcePath" = "8:..\\PatientDataAdministration.Client\\obj\\Debug\\PatientDataAdministration.Client.exe"
             "TargetName" = "8:"
