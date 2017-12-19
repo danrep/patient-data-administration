@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Data.Entity;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PatientDataAdministration.Client
@@ -14,10 +9,12 @@ namespace PatientDataAdministration.Client
     public partial class SubSettings : MetroFramework.Forms.MetroForm
     {
         private readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
+        private List<System_Setting> _systemSettings;
 
         public SubSettings()
         {
             InitializeComponent();
+            _systemSettings = LocalCache.Get<List<System_Setting>>("System_Setting");
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -33,8 +30,10 @@ namespace PatientDataAdministration.Client
             try
             {
                 #region Connection Setting
+                
+                var currentRemoteApiSetting =
+                    _systemSettings.FirstOrDefault(x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi);
 
-                var currentRemoteApiSetting = _localPdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi);
                 if (currentRemoteApiSetting == null)
                 {
                     _localPdaEntities.System_Setting.Add(new System_Setting()
@@ -44,18 +43,35 @@ namespace PatientDataAdministration.Client
                         DateReceived = DateTime.Now,
                         SettingValue = string.Empty
                     });
-                    _localPdaEntities.SaveChanges();
-                    currentRemoteApiSetting = _localPdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi);
                 }
                 else
                 {
                     currentRemoteApiSetting.SettingValue = txtRemoteApi.Text;
                     _localPdaEntities.Entry(currentRemoteApiSetting).State = EntityState.Modified;
                 }
-
                 _localPdaEntities.SaveChanges();
 
+                var currentOnDemandSync = _systemSettings.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.OnDemandSync);
+                if (currentOnDemandSync == null)
+                {
+                    _localPdaEntities.System_Setting.Add(new System_Setting()
+                    {
+                        IsDeleted = false,
+                        SettingKey = (int)EnumLibrary.SettingKey.RemoteApi,
+                        DateReceived = DateTime.Now,
+                        SettingValue = chkCurrentOnDemandSync.Checked.ToString()
+                    });
+                }
+                else
+                {
+                    currentOnDemandSync.SettingValue = chkCurrentOnDemandSync.Checked.ToString();
+                    _localPdaEntities.Entry(currentOnDemandSync).State = EntityState.Modified;
+                }
+                _localPdaEntities.SaveChanges();
+                LocalCache.RefreshCache("System_Setting");
+
                 lblInformation.Text = @"Connection Settings Update Successful";
+                System.Media.SystemSounds.Exclamation.Play();
 
                 #endregion
             }
@@ -71,11 +87,17 @@ namespace PatientDataAdministration.Client
             try
             {
                 lblInformation.Text = @"Loading Settings. Please Wait.";
+
                 Application.DoEvents();
 
                 txtRemoteApi.Text =
-                    _localPdaEntities.System_Setting.FirstOrDefault(
-                        x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue;
+                    _systemSettings.FirstOrDefault(
+                        x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue;
+
+                chkCurrentOnDemandSync.Checked = Convert.ToBoolean(_systemSettings.FirstOrDefault(
+                                                                           x => x.SettingKey ==
+                                                                               (int) EnumLibrary.SettingKey.OnDemandSync)
+                                                                       ?.SettingValue ?? "false");
 
                 lblInformation.Text = @"Done Loading Settings";
                 Application.DoEvents();
@@ -83,7 +105,13 @@ namespace PatientDataAdministration.Client
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, 0);
+                lblInformation.Text = @"An Error Occured. Please Close this Window and Start Again";
             }
+        }
+
+        private void SubSettings_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            _systemSettings = _localPdaEntities.System_Setting.Where(x => !x.IsDeleted).ToListAsync().Result;
         }
     }
 }

@@ -21,20 +21,6 @@ namespace PatientDataAdministration.Client
         private void Splash_Load(object sender, EventArgs e)
         {
             label1.Text = ConfigurationManager.AppSettings["appVersion"].ToString();
-            ShowInfo("Starting Up");
-            var process = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "cmd.exe",
-                    Arguments = "/c sqllocaldb start mssqllocaldb",
-                    CreateNoWindow = true, 
-                    WindowStyle = ProcessWindowStyle.Hidden
-                }
-            };
-            process.Start();
-            while (!process.HasExited) { }
-            ShowInfo("Initialization Complete");
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -55,7 +41,26 @@ namespace PatientDataAdministration.Client
 
         private void Splash_Shown(object sender, EventArgs e)
         {
-            //
+            ShowInfo("Starting Up");
+
+            var process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "cmd.exe",
+                    Arguments = "/c sqllocaldb start mssqllocaldb",
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                }
+            };
+            process.Start();
+
+            while (!process.HasExited)
+            {
+                //
+            }
+
+            ShowInfo("Initialization Complete");
         }
 
         private void Splash_FormClosed(object sender, FormClosedEventArgs e)
@@ -133,6 +138,8 @@ namespace PatientDataAdministration.Client
         private void OpenApp()
         {
             pnlUpdate.Visible = false;
+            
+            LocalCache.RefreshCache("System_Setting");
 
             this.Hide();
             var auth = new Authentication();

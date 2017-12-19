@@ -99,8 +99,9 @@ namespace PatientDataAdministration.Client
             this.btnClose = new System.Windows.Forms.Button();
             this.timerUpdateInformation = new System.Windows.Forms.Timer(this.components);
             this.pnlWaiting = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.tmrSecureWindow = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
@@ -848,17 +849,6 @@ namespace PatientDataAdministration.Client
             this.pnlWaiting.TabIndex = 136;
             this.pnlWaiting.Visible = false;
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
-            this.pictureBox2.Location = new System.Drawing.Point(479, 6);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 63;
-            this.pictureBox2.TabStop = false;
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -870,6 +860,22 @@ namespace PatientDataAdministration.Client
             this.label13.Size = new System.Drawing.Size(190, 15);
             this.label13.TabIndex = 106;
             this.label13.Text = "Operation In Progress. Please Wait";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
+            this.pictureBox2.Location = new System.Drawing.Point(479, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 63;
+            this.pictureBox2.TabStop = false;
+            // 
+            // tmrSecureWindow
+            // 
+            this.tmrSecureWindow.Interval = 1000;
+            this.tmrSecureWindow.Tick += new System.EventHandler(this.tmrSecureWindow_Tick);
             // 
             // SubInformationManagement
             // 
@@ -994,5 +1000,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Panel pnlWaiting;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Timer tmrSecureWindow;
     }
 }

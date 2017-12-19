@@ -67,10 +67,19 @@ namespace PatientDataAdministration.Client
 
         private void GainAccess(UserCredential userCredential)
         {
-            this.Hide();
-            var dataCentral = new DataCentral(userCredential);
-            dataCentral.ShowDialog();
-            this.Show();
+            try
+            {
+                this.Hide();
+                var dataCentral = new DataCentral(userCredential);
+                dataCentral.ShowDialog();
+                this.Show();
+
+                dataCentral.Dispose();
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, userCredential.AdministrationStaffInformation.Id);
+            }
         }
 
         private void Authentication_KeyDown(object sender, KeyEventArgs e)
@@ -93,11 +102,11 @@ namespace PatientDataAdministration.Client
                     },
                     AdministrationSiteInformation = new Administration_SiteInformation()
                     {
-                        IsDeleted = false, 
-                        Id = 0, 
-                        SiteNameOfficial = "Local Administration", 
-                        SiteCode ="LADMIN",
-                        SiteNameInformal = "LADMIN", 
+                        IsDeleted = false,
+                        Id = 0,
+                        SiteNameOfficial = "Local Administration",
+                        SiteCode = "LADMIN",
+                        SiteNameInformal = "LADMIN",
                         StateId = 0
                     }
                 });

@@ -38,6 +38,7 @@ namespace PatientDataAdministration.Client
             this.btnDispensationHistory = new System.Windows.Forms.Button();
             this.btnSchedule = new System.Windows.Forms.Button();
             this.btnOperations = new System.Windows.Forms.Button();
+            this.btnSync = new System.Windows.Forms.Button();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.tmrPostInfoLogs = new System.Windows.Forms.Timer(this.components);
             this.tmrSync = new System.Windows.Forms.Timer(this.components);
@@ -54,6 +55,8 @@ namespace PatientDataAdministration.Client
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.tmrCheckConnection = new System.Windows.Forms.Timer(this.components);
             this.tmrLaunchUpdate = new System.Windows.Forms.Timer(this.components);
+            this.bgwUpdatePatient = new System.ComponentModel.BackgroundWorker();
+            this.bgwNewPatient = new System.ComponentModel.BackgroundWorker();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -80,6 +83,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.Controls.Add(this.btnDispensationHistory);
             this.flowLayoutPanel1.Controls.Add(this.btnSchedule);
             this.flowLayoutPanel1.Controls.Add(this.btnOperations);
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 63);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(782, 195);
@@ -166,6 +170,23 @@ namespace PatientDataAdministration.Client
             this.btnOperations.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnOperations.UseVisualStyleBackColor = true;
             this.btnOperations.Click += new System.EventHandler(this.btnOperations_Click);
+            // 
+            // btnSync
+            // 
+            this.btnSync.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnSync.BackColor = System.Drawing.Color.White;
+            this.btnSync.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSync.ForeColor = System.Drawing.Color.White;
+            this.btnSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
+            this.btnSync.Location = new System.Drawing.Point(537, 16);
+            this.btnSync.Name = "btnSync";
+            this.btnSync.Size = new System.Drawing.Size(41, 41);
+            this.btnSync.TabIndex = 16;
+            this.btnSync.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSync.UseVisualStyleBackColor = false;
+            this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
             // 
             // tmrRefresh
             // 
@@ -331,6 +352,18 @@ namespace PatientDataAdministration.Client
             this.tmrLaunchUpdate.Tag = "";
             this.tmrLaunchUpdate.Tick += new System.EventHandler(this.tmrLaunchUpdate_Tick);
             // 
+            // bgwUpdatePatient
+            // 
+            this.bgwUpdatePatient.WorkerReportsProgress = true;
+            this.bgwUpdatePatient.WorkerSupportsCancellation = true;
+            this.bgwUpdatePatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwUpdatePatient_DoWork);
+            // 
+            // bgwNewPatient
+            // 
+            this.bgwNewPatient.WorkerReportsProgress = true;
+            this.bgwNewPatient.WorkerSupportsCancellation = true;
+            this.bgwNewPatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNewPatient_DoWork);
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -341,6 +374,7 @@ namespace PatientDataAdministration.Client
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.btnProfile);
+            this.Controls.Add(this.btnSync);
             this.Controls.Add(this.lstBoxInfoLog);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.panel2);
@@ -390,5 +424,8 @@ namespace PatientDataAdministration.Client
         private MetroFramework.Components.MetroToolTip metroToolTip1;
         private System.Windows.Forms.Timer tmrCheckConnection;
         private System.Windows.Forms.Timer tmrLaunchUpdate;
+        private System.Windows.Forms.Button btnSync;
+        private System.ComponentModel.BackgroundWorker bgwUpdatePatient;
+        private System.ComponentModel.BackgroundWorker bgwNewPatient;
     }
 }

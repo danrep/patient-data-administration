@@ -23,7 +23,7 @@ namespace PatientDataAdministration.Client
         private string _bioDataPrimary;
         private string _bioDataSecondary;
         private string _nfcUid;
-        private bool _doneLoading = true;
+        private bool _isBusy;
 
         private readonly SGFingerPrintManager _fingerPrintManager;
         private SGFPMDeviceInfoParam _deviceInfoParam;
@@ -61,10 +61,12 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                // TODO: This line of code loads data into the 'localPDADataSet.System_LocalGovermentArea' table. You can move, or remove it, as needed.
-                this.system_LocalGovermentAreaTableAdapter.Fill(this.localPDADataSet.System_LocalGovermentArea);
-                // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
-                this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
+                new Thread(() => {
+                    // TODO: This line of code loads data into the 'localPDADataSet.System_LocalGovermentArea' table. You can move, or remove it, as needed.
+                    this.system_LocalGovermentAreaTableAdapter.Fill(this.localPDADataSet.System_LocalGovermentArea);
+                    // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
+                    this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
+                }).Start();
 
                 _systemBioDataStore = new System_BioDataStore();
                 _bioReaderThread = new Thread(() => { });
@@ -547,20 +549,27 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                if (_doneLoading)
+                if (!_isBusy)
                     new Thread(() =>
                     {
-                        _doneLoading = true;
+                        _isBusy = true;
+                        _systemBioDataStores = new List<System_BioDataStore>();
 
-                        _systemBioDataStores =
-                            _localPdaEntities.System_BioDataStore.Where(
-                                x => x.SiteId == _userCredential.AdministrationSiteInformation.Id).ToList();
+                        _lblInformationText = "Data is Updating";
+                        _lblInformationForeColor = Color.DarkOrange;
 
-
+                        var totalPatients = _localPdaEntities.System_BioDataStore.Count();
+                        for (var i = 0; i < totalPatients; i+= 100)
+                        {
+                            _systemBioDataStores.AddRange(
+                                _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Where(
+                                    x => x.SiteId == _userCredential.AdministrationSiteInformation.Id).ToList());
+                        }
+                        
                         _lblInformationText = "Quick Search has been Updated";
                         _lblInformationForeColor = Color.DarkGreen;
 
-                        _doneLoading = true;
+                        _isBusy = false;
                     }).Start();
             }
             catch (Exception e)
@@ -1067,6 +1076,12 @@ namespace PatientDataAdministration.Client
 
             _lblBioDeviceInfoForeColor = Color.Green;
             _lblBioDeviceInfoText = @"Fingerprint Device Ready for Capture";
+        }
+
+        private void tmrSecureWindow_Tick(object sender, EventArgs e)
+        {
+            groupBox1.Enabled = groupBox2.Enabled = _isBusy;
+            pnlWaiting.Visible = !_isBusy;
         }
 
         private string GetBioData()

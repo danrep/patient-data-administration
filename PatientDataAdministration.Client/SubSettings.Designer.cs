@@ -33,13 +33,18 @@ namespace PatientDataAdministration.Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SubSettings));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSaveConnections = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.chkCurrentOnDemandSync = new MetroFramework.Controls.MetroCheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.txtRemoteApi = new System.Windows.Forms.TextBox();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblInformation = new System.Windows.Forms.Label();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroTabControl1
@@ -53,7 +58,12 @@ namespace PatientDataAdministration.Client
             // 
             // metroTabPage1
             // 
-            this.metroTabPage1.Controls.Add(this.btnSaveConnections);
+            this.metroTabPage1.BackColor = System.Drawing.Color.Gray;
+            this.metroTabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.metroTabPage1.Controls.Add(this.groupBox1);
+            this.metroTabPage1.Controls.Add(this.label2);
+            this.metroTabPage1.Controls.Add(this.label1);
+            this.metroTabPage1.Controls.Add(this.chkCurrentOnDemandSync);
             this.metroTabPage1.Controls.Add(this.label11);
             this.metroTabPage1.Controls.Add(this.txtRemoteApi);
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
@@ -61,8 +71,18 @@ namespace PatientDataAdministration.Client
             this.metroTabPage1.Name = "metroTabPage1";
             this.metroTabPage1.Size = new System.Drawing.Size(580, 211);
             this.metroTabPage1.TabIndex = 0;
-            this.metroTabPage1.Text = "Connections";
+            this.metroTabPage1.Text = "Connections && Synchronization";
             this.metroTabPage1.VerticalScrollbarBarColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.btnSaveConnections);
+            this.groupBox1.Location = new System.Drawing.Point(6, 148);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(569, 58);
+            this.groupBox1.TabIndex = 62;
+            this.groupBox1.TabStop = false;
             // 
             // btnSaveConnections
             // 
@@ -72,14 +92,49 @@ namespace PatientDataAdministration.Client
             this.btnSaveConnections.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveConnections.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSaveConnections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveConnections.Location = new System.Drawing.Point(471, 167);
+            this.btnSaveConnections.Location = new System.Drawing.Point(457, 17);
             this.btnSaveConnections.Name = "btnSaveConnections";
-            this.btnSaveConnections.Size = new System.Drawing.Size(106, 41);
+            this.btnSaveConnections.Size = new System.Drawing.Size(106, 32);
             this.btnSaveConnections.TabIndex = 58;
             this.btnSaveConnections.Text = "Save";
             this.btnSaveConnections.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveConnections.UseVisualStyleBackColor = false;
             this.btnSaveConnections.Click += new System.EventHandler(this.btnSaveConnections_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.DarkRed;
+            this.label2.Location = new System.Drawing.Point(14, 53);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(276, 13);
+            this.label2.TabIndex = 61;
+            this.label2.Text = "Please confirm the actual URI of the Server in Question\r\n";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.DarkRed;
+            this.label1.Location = new System.Drawing.Point(14, 113);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(223, 26);
+            this.label1.TabIndex = 60;
+            this.label1.Text = "Minimum Requirements for this Feature are:\r\nRAM of 8Gb and CPU speed of over 2.5G" +
+    "Hz";
+            // 
+            // chkCurrentOnDemandSync
+            // 
+            this.chkCurrentOnDemandSync.AutoSize = true;
+            this.chkCurrentOnDemandSync.Location = new System.Drawing.Point(14, 95);
+            this.chkCurrentOnDemandSync.Name = "chkCurrentOnDemandSync";
+            this.chkCurrentOnDemandSync.Size = new System.Drawing.Size(213, 15);
+            this.chkCurrentOnDemandSync.TabIndex = 59;
+            this.chkCurrentOnDemandSync.Text = "Enable On Demand Synchronization";
+            this.chkCurrentOnDemandSync.UseVisualStyleBackColor = true;
             // 
             // label11
             // 
@@ -88,18 +143,18 @@ namespace PatientDataAdministration.Client
             this.label11.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(3, 4);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 13);
+            this.label11.Size = new System.Drawing.Size(80, 13);
             this.label11.TabIndex = 56;
-            this.label11.Text = "Remote API";
+            this.label11.Text = "Remote Server";
             // 
             // txtRemoteApi
             // 
             this.txtRemoteApi.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtRemoteApi.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtRemoteApi.Font = new System.Drawing.Font("Lato", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtRemoteApi.Location = new System.Drawing.Point(3, 20);
+            this.txtRemoteApi.Location = new System.Drawing.Point(17, 20);
             this.txtRemoteApi.Name = "txtRemoteApi";
-            this.txtRemoteApi.Size = new System.Drawing.Size(574, 30);
+            this.txtRemoteApi.Size = new System.Drawing.Size(558, 30);
             this.txtRemoteApi.TabIndex = 57;
             // 
             // btnClose
@@ -110,7 +165,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(505, 18);
+            this.btnClose.Location = new System.Drawing.Point(512, 18);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(106, 41);
             this.btnClose.TabIndex = 7;
@@ -148,10 +203,12 @@ namespace PatientDataAdministration.Client
             this.Padding = new System.Windows.Forms.Padding(27, 74, 27, 25);
             this.Resizable = false;
             this.Text = "Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SubSettings_FormClosing);
             this.Shown += new System.EventHandler(this.SubSettings_Shown);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
             this.metroTabPage1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,5 +223,9 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.TextBox txtRemoteApi;
         private System.Windows.Forms.Button btnSaveConnections;
         private System.Windows.Forms.Label lblInformation;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private MetroCheckBox chkCurrentOnDemandSync;
     }
 }

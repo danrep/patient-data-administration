@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
-using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
-using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Client
 {
@@ -22,12 +17,14 @@ namespace PatientDataAdministration.Client
         readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
         
         private bool _isSyncInProgress;
+        private bool _onDemandSyncEnabled;
+        private bool _killCommandReceived;
+
         private readonly UserCredential _userCredential;
-        private readonly Process _process = new Process();
-        private static List<OperationQueue> _operationQueue = new List<OperationQueue>();
         private readonly SubInformationManagement _subInfoMan;
 
-        private Thread _syncMonitorThread;
+        private readonly Process _process = new Process();
+        private static List<OperationQueue> _operationQueue = new List<OperationQueue>();
 
         private static int GenerateVersionCode(string version)
         {
@@ -41,20 +38,23 @@ namespace PatientDataAdministration.Client
 
         public DataCentral(UserCredential userCredential)
         {
+            _onDemandSyncEnabled = false;
             InitializeComponent();
-            this._userCredential = userCredential;
-            _subInfoMan = new SubInformationManagement(_userCredential);
 
             try
             {
-                new Thread(() =>
-                {
-                    _subInfoMan.UpdatePersistedData();
-                    _operationQueue.Add(new OperationQueue()
-                    {
-                         Param = "Loading System Data for Verification"
-                    });
-                }).Start();
+                this._userCredential = userCredential;
+                _subInfoMan = new SubInformationManagement(_userCredential);
+
+                _onDemandSyncEnabled = Convert.ToBoolean(
+                    LocalCache.Get<List<System_Setting>>("System_Setting")
+                        .FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.OnDemandSync)?
+                        .SettingValue ?? "false");
+
+                btnSync.Visible = !_onDemandSyncEnabled;
+
+                _subInfoMan.UpdatePersistedData();
+
                 new Thread(() =>
                 {
                     var responseData = LocalCore.Get($@"/ClientCommunication/Misc/GetUpdateData").Result;
@@ -68,11 +68,11 @@ namespace PatientDataAdministration.Client
                         Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
                             Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
-                    _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
-
                     if (GenerateVersionCode(update.VersionNumber) <=
                         GenerateVersionCode(ConfigurationManager.AppSettings["appVersion"]))
                         return;
+
+                    _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
 
                     var startInfo = new ProcessStartInfo
                     {
@@ -91,6 +91,7 @@ namespace PatientDataAdministration.Client
 
                     tmrLaunchUpdate.Enabled = true;
                     tmrLaunchUpdate.Start();
+
                     _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
                 }).Start();
             }
@@ -104,6 +105,12 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                _onDemandSyncEnabled = false;
+                _killCommandReceived = true;
+
+                bgwNewPatient.CancelAsync();
+                bgwUpdatePatient.CancelAsync();
+
                 this.Close();
             }
             catch (Exception exception)
@@ -121,7 +128,8 @@ namespace PatientDataAdministration.Client
         {
             lblUserInformation.Text = @"Welcome, " +
                                       _userCredential.AdministrationStaffInformation.Surname + @" " +
-                                      _userCredential.AdministrationStaffInformation.FirstName + @". You are attached to " + 
+                                      _userCredential.AdministrationStaffInformation.FirstName +
+                                      @". You are attached to " +
                                       _userCredential.AdministrationSiteInformation.SiteNameOfficial;
         }
 
@@ -182,8 +190,11 @@ namespace PatientDataAdministration.Client
                     Param = "Initiating Synchronization Tasks"
                 });
 
-                new Thread(PatientNewSync).Start();
-                new Thread(PatientUpdateSync).Start();
+                if(!bgwNewPatient.IsBusy)
+                    bgwNewPatient.RunWorkerAsync();
+
+                if(!bgwUpdatePatient.IsBusy)
+                    bgwUpdatePatient.RunWorkerAsync();
             }
             catch (Exception e)
             {
@@ -191,120 +202,17 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void PatientNewSync()
+        private void ExecuteSync()
         {
-            try
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Initiating Synchronization Task: New Entries from Other Sites"
-                });
+            if (!_onDemandSyncEnabled)
+                return;
 
-                var patientInformation = _localPdaEntities.System_BioDataStore.Select(x => x.PepId).ToList();
-
-                var listOfPepId = "";
-
-                if (patientInformation.Any())
-                {
-                    listOfPepId = patientInformation.Aggregate("", (current, patientInfo) => current + $"{patientInfo},");
-                    listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
-                }
-                var data = Encoding.ASCII.GetBytes(listOfPepId);
-
-                var payLoad = new 
-                {
-                    encodedListOfAvailablePepId = Convert.ToBase64String(data), 
-                    siteId = _userCredential.AdministrationSiteInformation.Id
-                };
-
-                var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
-                    Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
-
-                if (responseData.Status)
-                {
-                    _isSyncInProgress = true;
-
-                    _operationQueue.Add(new OperationQueue()
-                    {
-                        Param =responseData.Message
-                    });
-
-                    var returnedPatients =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                    foreach (var patient in returnedPatients)
-                    {
-                        SaveUpdate(patient);
-                    }
-
-                    _subInfoMan.UpdatePersistedData();
-                    _isSyncInProgress = false;
-                }
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Completing Synchronization Task: New Entries from Other Sites"
-                });
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
-            }
-        }
-
-        private void PatientUpdateSync()
-        {
-            try
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Initiating Synchronization Task: Modified Entries from Other Sites"
-                });
-
-                var patientsMatching =
-                    _localPdaEntities.System_BioDataStore.Select(
-                        x => new PatientMatching() {PepId = x.PepId, LastUpdate = x.LastUpdate}).ToList();
-
-                var responseData = LocalCore.Post($@"/ClientCommunication/Sync/CheckIfUpdated",
-                    Newtonsoft.Json.JsonConvert.SerializeObject(patientsMatching ?? new List<PatientMatching>()));
-
-                if (responseData.Status)
-                {
-                    _isSyncInProgress = true;
-
-                    _operationQueue.Add(new OperationQueue()
-                    {
-                        Param = responseData.Message
-                    });
-
-                    var returnedPatients =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                    foreach (var patient in returnedPatients)
-                    {
-                        SaveUpdate(patient);
-                    }
-
-                    _subInfoMan.UpdatePersistedData();
-                    _isSyncInProgress = false;
-                }
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Completing  Synchronization Task: Modified Entries from Other Sites"
-                });
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
-            }
+            InitiateSync();
         }
 
         private void tmrSync_Tick(object sender, EventArgs e)
         {
-            new Thread(InitiateSync).Start();
+            ExecuteSync();
         }
 
         private void SaveUpdate(PatientInformation patientInformation)
@@ -372,6 +280,7 @@ namespace PatientDataAdministration.Client
 
                 localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
                 localPdaEntitiesPatientUpdateSync.SaveChanges();
+
                 _operationQueue.Add(new OperationQueue()
                 {
                     Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
@@ -409,8 +318,170 @@ namespace PatientDataAdministration.Client
 
         private void DataCentral_Shown(object sender, EventArgs e)
         {
-            _syncMonitorThread = new Thread(InitiateSync);
-            _syncMonitorThread.Start();
+            ExecuteSync();
+        }
+
+        private void btnSync_Click(object sender, EventArgs e)
+        {
+            InitiateSync();
+        }
+
+        private void bgwNewPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {
+                if (_isSyncInProgress)
+                    return;
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Initiating Synchronization Task: New Entries from Partner Sites"
+                });
+
+                var pulled = 0;
+                while (true)
+                {
+                    if (_killCommandReceived)
+                        break;
+
+                    var patientInformation = _localPdaEntities.System_BioDataStore.Select(x => x.PepId).ToList();
+
+                    var listOfPepId = "";
+
+                    if (patientInformation.Any())
+                    {
+                        listOfPepId = patientInformation.Aggregate("",
+                            (current, patientInfo) => current + $"{patientInfo},");
+                        listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
+                    }
+                    var data = Encoding.ASCII.GetBytes(listOfPepId);
+
+                    var payLoad = new
+                    {
+                        encodedListOfAvailablePepId = Convert.ToBase64String(data),
+                        siteId = _userCredential.AdministrationSiteInformation.Id
+                    };
+
+                    var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
+                        Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
+
+                    if (responseData.Status)
+                    {
+                        _isSyncInProgress = true;
+
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = responseData.Message
+                        });
+
+                        var returnedPatients =
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
+                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+
+                        if (returnedPatients.Count == 0)
+                            break;
+
+                        pulled += returnedPatients.Count;
+
+                        foreach (var patient in returnedPatients)
+                        {
+                            if (_killCommandReceived)
+                                break;
+
+                            SaveUpdate(patient);
+                        }
+
+                        if (_onDemandSyncEnabled)
+                            _subInfoMan.UpdatePersistedData();
+                        else _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
+                        });
+
+                        _isSyncInProgress = false;
+                    }
+
+                    if (!_onDemandSyncEnabled)
+                        _subInfoMan.UpdatePersistedData();
+                }
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Completing Synchronization Task: New Entries from Partner Sites"
+                });
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+            }
+        }
+
+        private void bgwUpdatePatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Initiating Synchronization Task: Modified Entries from Partner Sites"
+                });
+
+                var totalCount = _localPdaEntities.System_BioDataStore.Count();
+
+                for (var i = 0; i > totalCount; i += 100)
+                {
+                    if (_killCommandReceived)
+                        break;
+
+                    var patientsMatching =
+                        _localPdaEntities.System_BioDataStore.Take(100).Skip(i).Select(
+                            x => new PatientMatching() { PepId = x.PepId, LastUpdate = x.LastUpdate }).ToList();
+
+                    var responseData = LocalCore.Post($@"/ClientCommunication/Sync/CheckIfUpdated",
+                        Newtonsoft.Json.JsonConvert.SerializeObject(patientsMatching ?? new List<PatientMatching>()));
+
+                    if (!responseData.Status)
+                        continue;
+
+                    _isSyncInProgress = true;
+                    _operationQueue.Add(new OperationQueue()
+                    {
+                        Param = responseData.Message
+                    });
+
+                    var returnedPatients =
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
+                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+
+                    foreach (var patient in returnedPatients)
+                    {
+                        if (_killCommandReceived)
+                            break;
+
+                        SaveUpdate(patient);
+                    }
+
+                    if (_onDemandSyncEnabled)
+                        _subInfoMan.UpdatePersistedData();
+                    else _operationQueue.Add(new OperationQueue()
+                    {
+                        Param = $"Existing Patient Pull in Progress ... Completed {i} of {totalCount}"
+                    });
+
+                    _isSyncInProgress = false;
+                }
+
+                if (!_onDemandSyncEnabled)
+                    _subInfoMan.UpdatePersistedData();
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Completing Synchronization Task: Modified Entries from Partner Sites"
+                });
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+            }
         }
     }
 }
