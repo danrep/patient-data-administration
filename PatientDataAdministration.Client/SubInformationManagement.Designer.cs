@@ -152,9 +152,9 @@ namespace PatientDataAdministration.Client
             this.label2.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 13);
+            this.label2.Size = new System.Drawing.Size(143, 13);
             this.label2.TabIndex = 136;
-            this.label2.Text = "Search by Text";
+            this.label2.Text = "Search by Text (Press Enter)";
             // 
             // txtSearch
             // 
@@ -167,6 +167,8 @@ namespace PatientDataAdministration.Client
             this.txtSearch.Size = new System.Drawing.Size(161, 30);
             this.txtSearch.TabIndex = 135;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.txtSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtSearch_KeyPress);
             // 
             // lstBoxSearchResult
             // 
@@ -261,6 +263,7 @@ namespace PatientDataAdministration.Client
             // btnSave
             // 
             this.btnSave.BackColor = System.Drawing.Color.Black;
+            this.btnSave.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSave.BackgroundImage")));
             this.btnSave.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.White;
             this.btnSave.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
@@ -402,6 +405,7 @@ namespace PatientDataAdministration.Client
             // btnClear
             // 
             this.btnClear.BackColor = System.Drawing.Color.Black;
+            this.btnClear.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClear.BackgroundImage")));
             this.btnClear.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClear.ForeColor = System.Drawing.Color.White;
             this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
@@ -693,9 +697,9 @@ namespace PatientDataAdministration.Client
             this.label40.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label40.Location = new System.Drawing.Point(3, 36);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(39, 13);
+            this.label40.Size = new System.Drawing.Size(41, 13);
             this.label40.TabIndex = 54;
-            this.label40.Text = "PEP Id";
+            this.label40.Text = "PeP ID";
             // 
             // label3
             // 
@@ -735,9 +739,9 @@ namespace PatientDataAdministration.Client
             this.label1.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 85);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 13);
+            this.label1.Size = new System.Drawing.Size(64, 13);
             this.label1.TabIndex = 56;
-            this.label1.Text = "Previous Number";
+            this.label1.Text = "Previous ID";
             // 
             // systemStateBindingSource
             // 

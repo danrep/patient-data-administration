@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Input;
 using PatientDataAdministration.Client.Properties;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -108,33 +109,7 @@ namespace PatientDataAdministration.Client
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            try
-            {
-                lstBoxSearchResult.Visible = true;
-
-                lstBoxSearchResult.Items.Clear();
-
-                var query = txtSearch.Text.Trim().ToLower();
-                var results =
-                    _systemBioDataStores.Where(
-                        x =>
-                            (x.PepId.ToLower().Contains(query) ||
-                             x.PatientData.ToLower().Contains(query) ) &&
-                            !x.IsDeleted).Take(10).Select(s => new { s.PepId, s.FullName }).ToList();
-
-                if (!results.Any())
-                    lstBoxSearchResult.Items.Add($"No Match");
-                else
-                    foreach (var result in results)
-                        lstBoxSearchResult.Items.Add($"{result.PepId.ToUpper()}| {result.FullName}");
-
-                if (string.IsNullOrEmpty(query))
-                    lstBoxSearchResult.Visible = false;
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
-            }
+            //
         }
 
         private void btnSearchBiometrics_Click(object sender, EventArgs e)
@@ -1082,6 +1057,45 @@ namespace PatientDataAdministration.Client
         {
             groupBox1.Enabled = groupBox2.Enabled = _isBusy;
             pnlWaiting.Visible = !_isBusy;
+        }
+
+        private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //
+        }
+
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode != Keys.Enter)
+                    return;
+
+                lstBoxSearchResult.Visible = true;
+
+                lstBoxSearchResult.Items.Clear();
+
+                var query = txtSearch.Text.Trim().ToLower();
+                var results =
+                    _systemBioDataStores.Where(
+                        x =>
+                            (x.PepId.ToLower().Contains(query) ||
+                             x.PatientData.ToLower().Contains(query)) &&
+                            !x.IsDeleted).Take(10).Select(s => new { s.PepId, s.FullName }).ToList();
+
+                if (!results.Any())
+                    lstBoxSearchResult.Items.Add($"No Match");
+                else
+                    foreach (var result in results)
+                        lstBoxSearchResult.Items.Add($"{result.PepId.ToUpper()}| {result.FullName}");
+
+                if (string.IsNullOrEmpty(query))
+                    lstBoxSearchResult.Visible = false;
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+            }
         }
 
         private string GetBioData()

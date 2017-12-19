@@ -88,8 +88,10 @@ namespace PatientDataAdministration.Client
             // 
             this.btnSaveConnections.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSaveConnections.BackColor = System.Drawing.Color.White;
+            this.btnSaveConnections.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
             this.btnSaveConnections.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSaveConnections.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveConnections.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveConnections.ForeColor = System.Drawing.Color.White;
             this.btnSaveConnections.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSaveConnections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSaveConnections.Location = new System.Drawing.Point(457, 17);
@@ -131,9 +133,9 @@ namespace PatientDataAdministration.Client
             this.chkCurrentOnDemandSync.AutoSize = true;
             this.chkCurrentOnDemandSync.Location = new System.Drawing.Point(14, 95);
             this.chkCurrentOnDemandSync.Name = "chkCurrentOnDemandSync";
-            this.chkCurrentOnDemandSync.Size = new System.Drawing.Size(213, 15);
+            this.chkCurrentOnDemandSync.Size = new System.Drawing.Size(195, 15);
             this.chkCurrentOnDemandSync.TabIndex = 59;
-            this.chkCurrentOnDemandSync.Text = "Enable On Demand Synchronization";
+            this.chkCurrentOnDemandSync.Text = "Enable Realtime Synchronization";
             this.chkCurrentOnDemandSync.UseVisualStyleBackColor = true;
             // 
             // label11

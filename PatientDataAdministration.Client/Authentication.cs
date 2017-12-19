@@ -39,7 +39,6 @@ namespace PatientDataAdministration.Client
 
                 if (credential == null)
                 {
-
                     if (CheckCredentialServer(out UserCredential userData))
                         GainAccess(userData);
                 }
@@ -175,6 +174,8 @@ namespace PatientDataAdministration.Client
                          SiteId = data.AdministrationStaffInformation.SiteId,
                          StaffId = data.AdministrationStaffInformation.StaffId
                     });
+
+                    _localPdaEntities.SaveChanges();
                     return true;
                 }
                 else
