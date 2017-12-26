@@ -12,6 +12,8 @@ namespace PatientDataAdministration.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Entities : DbContext
     {
@@ -38,5 +40,24 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
+    
+        public virtual ObjectResult<Sp_Administration_GetInActiveUsers_Result> Sp_Administration_GetInActiveUsers(Nullable<int> inactiveBar)
+        {
+            var inactiveBarParameter = inactiveBar.HasValue ?
+                new ObjectParameter("inactiveBar", inactiveBar) :
+                new ObjectParameter("inactiveBar", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetInActiveUsers_Result>("Sp_Administration_GetInActiveUsers", inactiveBarParameter);
+        }
+    
+        public virtual ObjectResult<string> Sp_Administration_GetPatientCompliance()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("Sp_Administration_GetPatientCompliance");
+        }
+    
+        public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetAgeDistro_Result>("Sp_Administration_GetAgeDistro");
+        }
     }
 }

@@ -26,6 +26,7 @@
     </NuGetPackageImportStamp>
     <ApplicationInsightsResourceId>/subscriptions/8077d858-8d71-4294-8fbb-b1300851bce0/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/PatientDataAdministration.Web</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/8077d858-8d71-4294-8fbb-b1300851bce0/resourceGroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/PatientDataAdministration.Web</ApplicationInsightsAnnotationResourceId>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,20 +56,20 @@
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.4.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.4.1\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.4.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.4.1\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.4.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AI.Web, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.4.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+    <Reference Include="Microsoft.AI.Web, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.4.1\lib\net45\Microsoft.AI.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AI.WindowsServer, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.4.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.4.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.4.1\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.4.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
@@ -271,6 +272,7 @@
     <Content Include="Assets\plugins\bootstrap-social\bootstrap-social.css" />
     <Content Include="Assets\plugins\bootstrap-sweetalert\sweetalert.css" />
     <Content Include="Assets\plugins\bootstrap-sweetalert\sweetalert.min.js" />
+    <Content Include="Assets\plugins\bootstrap-sweetalert\sweetalert2.all.js" />
     <Content Include="Assets\plugins\bootstrap-tagsinput\bootstrap-tagsinput-typeahead.js" />
     <Content Include="Assets\plugins\bootstrap-tagsinput\bootstrap-tagsinput.css" />
     <Content Include="Assets\plugins\bootstrap-tagsinput\bootstrap-tagsinput.min.js" />
@@ -311,6 +313,21 @@
     <Content Include="Assets\plugins\chart-js\Chart.min.js" />
     <Content Include="Assets\plugins\ckeditor\ckeditor.js" />
     <Content Include="Assets\plugins\clipboard\clipboard.min.js" />
+    <Content Include="Assets\plugins\country\nigeria\images\down.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\in.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\left.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\out.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\reset.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\right.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\up.png" />
+    <Content Include="Assets\plugins\country\nigeria\images\view.png" />
+    <Content Include="Assets\plugins\country\nigeria\index.html" />
+    <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps-libs.js" />
+    <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps-panzoom.js" />
+    <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps.css" />
+    <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps.js" />
+    <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps.min.js" />
+    <Content Include="Assets\plugins\country\nigeria\maps\nigeria.js" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\css\autoFill.bootstrap.min.css" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\js\autoFill.bootstrap.min.js" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\js\dataTables.autoFill.min.js" />
@@ -1028,10 +1045,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\UserManagement\Index.cshtml" />
     <Content Include="Areas\ServerCommunication\Views\web.config" />
+    <Content Include="Assets\plugins\country\nigeria\images\Thumbs.db" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Views\Security\Index.cshtml" />
+    <Content Include="Views\SiteManagement\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1070,13 +1089,17 @@
     <Compile Include="Areas\ClientCommunication\Controllers\SyncController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\IndicatorsController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\SiteManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\ServerCommunicationAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportManagementController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
+    <Compile Include="Controllers\SiteManagementController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -1093,12 +1116,14 @@
     <Folder Include="Areas\ClientCommunication\Views\Sync\" />
     <Folder Include="Areas\ClientCommunication\Views\User\" />
     <Folder Include="Areas\ServerCommunication\Models\" />
+    <Folder Include="Areas\ServerCommunication\Views\Data\" />
     <Folder Include="Areas\ServerCommunication\Views\Indicators\" />
     <Folder Include="Areas\ServerCommunication\Views\Shared\" />
     <Folder Include="Areas\ServerCommunication\Views\UserManagement\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common\" />
+    <Folder Include="Views\ReportManagement\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

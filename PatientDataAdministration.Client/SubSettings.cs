@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace PatientDataAdministration.Client
 {
     public partial class SubSettings : MetroFramework.Forms.MetroForm
     {
-        private readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
+        private LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
         private List<System_Setting> _systemSettings;
 
         public SubSettings()
@@ -68,8 +69,8 @@ namespace PatientDataAdministration.Client
                     _localPdaEntities.Entry(currentOnDemandSync).State = EntityState.Modified;
                 }
                 _localPdaEntities.SaveChanges();
-                LocalCache.RefreshCache("System_Setting");
 
+                LocalCache.RefreshCache("System_Setting");
                 lblInformation.Text = @"Connection Settings Update Successful";
                 System.Media.SystemSounds.Exclamation.Play();
 
@@ -92,7 +93,7 @@ namespace PatientDataAdministration.Client
 
                 txtRemoteApi.Text =
                     _systemSettings.FirstOrDefault(
-                        x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue;
+                        x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "No URL Set";
 
                 chkCurrentOnDemandSync.Checked = Convert.ToBoolean(_systemSettings.FirstOrDefault(
                                                                            x => x.SettingKey ==
@@ -111,7 +112,24 @@ namespace PatientDataAdministration.Client
 
         private void SubSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _systemSettings = _localPdaEntities.System_Setting.Where(x => !x.IsDeleted).ToListAsync().Result;
+            new Thread(() =>
+            {
+                LocalCache.RefreshCache("System_Setting");
+            }).Start();
+        }
+
+        private void SubSettings_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // TODO: This line of code loads data into the 'localPDADataSet.System_SiteData' table. You can move, or remove it, as needed.
+                this.system_SiteDataTableAdapter.Fill(this.localPDADataSet.System_SiteData);
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+                lblInformation.Text = @"An Error Occured. Please Close this Window and Start Again";
+            }
         }
     }
 }

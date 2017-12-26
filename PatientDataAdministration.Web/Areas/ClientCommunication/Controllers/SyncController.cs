@@ -120,5 +120,71 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult GetStates()
+        {
+            try
+            {
+                var states = _entities.System_State.Where(x => !x.IsDeleted).OrderBy(x => x.StateName).ToList();
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = $"Found {states.Count} States",
+                            Data = states
+                        }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetLocalGovermentArea()
+        {
+            try
+            {
+                var lga = _entities.System_LocalGovermentArea.Where(x => !x.IsDeleted).OrderBy(x => x.LocalGovermentAreaName).ToList();
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = $"Found {lga.Count} LGAs",
+                            Data = lga
+                        }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSiteData()
+        {
+            try
+            {
+                var sites = _entities.Administration_SiteInformation.Where(x => !x.IsDeleted).OrderBy(x => x.SiteNameOfficial).ToList();
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = $"Found {sites.Count} LGAs",
+                            Data = sites
+                        }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

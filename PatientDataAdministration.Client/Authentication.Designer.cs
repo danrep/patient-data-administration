@@ -40,8 +40,12 @@ namespace PatientDataAdministration.Client
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnLogIn = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.picLoader = new System.Windows.Forms.ProgressBar();
             this.tmrFeedBack = new System.Windows.Forms.Timer(this.components);
+            this.picLoader = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.picLoader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // txtUserName
@@ -148,20 +152,45 @@ namespace PatientDataAdministration.Client
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // picLoader
-            // 
-            this.picLoader.Location = new System.Drawing.Point(75, 212);
-            this.picLoader.Name = "picLoader";
-            this.picLoader.Size = new System.Drawing.Size(242, 3);
-            this.picLoader.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.picLoader.TabIndex = 18;
-            this.picLoader.Visible = false;
-            // 
             // tmrFeedBack
             // 
             this.tmrFeedBack.Enabled = true;
             this.tmrFeedBack.Interval = 500;
             this.tmrFeedBack.Tick += new System.EventHandler(this.tmrFeedBack_Tick);
+            // 
+            // picLoader
+            // 
+            this.picLoader.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.picLoader.Controls.Add(this.label13);
+            this.picLoader.Controls.Add(this.pictureBox2);
+            this.picLoader.Location = new System.Drawing.Point(-15, 82);
+            this.picLoader.Name = "picLoader";
+            this.picLoader.Size = new System.Drawing.Size(542, 75);
+            this.picLoader.TabIndex = 137;
+            this.picLoader.Visible = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(176, 54);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(190, 15);
+            this.label13.TabIndex = 106;
+            this.label13.Text = "Operation In Progress. Please Wait";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
+            this.pictureBox2.Location = new System.Drawing.Point(247, 6);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 63;
+            this.pictureBox2.TabStop = false;
             // 
             // Authentication
             // 
@@ -190,6 +219,9 @@ namespace PatientDataAdministration.Client
             this.Text = "Authentication";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Authentication_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Authentication_KeyDown);
+            this.picLoader.ResumeLayout(false);
+            this.picLoader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -205,7 +237,9 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnLogIn;
         private System.Windows.Forms.Button btnSetting;
-        private System.Windows.Forms.ProgressBar picLoader;
         private System.Windows.Forms.Timer tmrFeedBack;
+        private System.Windows.Forms.Panel picLoader;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

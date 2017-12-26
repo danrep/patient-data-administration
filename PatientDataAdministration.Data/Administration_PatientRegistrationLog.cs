@@ -21,5 +21,6 @@ namespace PatientDataAdministration.Data
         public bool IsBioDataCaptured { get; set; }
         public bool IsNfcDataCaptured { get; set; }
         public bool IsDeleted { get; set; }
+        public int ReasonForVisit { get; set; }
     }
 }

@@ -137,18 +137,26 @@ namespace PatientDataAdministration.Client
 
         private void OpenApp()
         {
-            pnlUpdate.Visible = false;
-            
-            LocalCache.RefreshCache("System_Setting");
+            try
+            {
+                pnlUpdate.Visible = false;
 
-            this.Hide();
-            var auth = new Authentication();
-            auth.ShowDialog();
-            _finalControl = true;
-            this.Show();
+                LocalCache.RefreshCache("System_Setting");
 
-            timer1.Enabled = true;
-            ShowInfo("Shutting Down...");
+                this.Hide();
+                var auth = new Authentication();
+                auth.ShowDialog();
+                _finalControl = true;
+                this.Show();
+
+                timer1.Enabled = true;
+                ShowInfo("Shutting Down...");
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, 0, true);
+               this.Close();
+            }
         }
     }
 }

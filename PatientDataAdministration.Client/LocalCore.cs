@@ -18,10 +18,10 @@ namespace PatientDataAdministration.Client
         private static LocalPDAEntities PdaEntities = new LocalPDAEntities();
         private static int _userCredentialId = 0;
 
-        public static DialogResult TreatError(Exception exception, int userCredentialId, bool silent = false)
+        public static DialogResult TreatError(Exception exception, int userCredentialId, bool isSilent = false)
         {
             LocalCore._userCredentialId = userCredentialId;
-            return silent ? MessageBox.Show(exception.Message + @"\n" + exception.InnerException?.Message) : DialogResult.OK;
+            return isSilent ? MessageBox.Show(exception.Message + @"\n" + exception.InnerException?.Message) : DialogResult.OK;
         }
 
         private static void TreatError(Exception exception)

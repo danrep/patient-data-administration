@@ -260,7 +260,7 @@
       <LastGenOutput>LocalPDA.Context.cs</LastGenOutput>
     </Content>
     <Content Include="LocalPDA.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="LocalPDA.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -268,10 +268,11 @@
       <LastGenOutput>LocalPDA.cs</LastGenOutput>
     </Content>
     <Content Include="LocalPDA_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\800px_COLOURBOX18331728.jpg" />
     <None Include="Resources\icons8_Load_96px.png" />
     <None Include="Resources\icons8_Waiting_Room_96px.png" />
     <None Include="Resources\icons8_Checked_Checkbox_24px.png" />

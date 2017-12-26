@@ -57,6 +57,8 @@ namespace PatientDataAdministration.Client
             this.tmrLaunchUpdate = new System.Windows.Forms.Timer(this.components);
             this.bgwUpdatePatient = new System.ComponentModel.BackgroundWorker();
             this.bgwNewPatient = new System.ComponentModel.BackgroundWorker();
+            this.btnCancelSync = new System.Windows.Forms.Button();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -64,6 +66,7 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).BeginInit();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstBoxInfoLog
@@ -180,7 +183,7 @@ namespace PatientDataAdministration.Client
             this.btnSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.ForeColor = System.Drawing.Color.White;
             this.btnSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
-            this.btnSync.Location = new System.Drawing.Point(537, 16);
+            this.btnSync.Location = new System.Drawing.Point(287, 3);
             this.btnSync.Name = "btnSync";
             this.btnSync.Size = new System.Drawing.Size(41, 41);
             this.btnSync.TabIndex = 16;
@@ -238,7 +241,7 @@ namespace PatientDataAdministration.Client
             this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Person_24px;
             this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProfile.Location = new System.Drawing.Point(584, 16);
+            this.btnProfile.Location = new System.Drawing.Point(334, 3);
             this.btnProfile.Name = "btnProfile";
             this.btnProfile.Size = new System.Drawing.Size(106, 41);
             this.btnProfile.TabIndex = 7;
@@ -255,7 +258,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(696, 16);
+            this.btnClose.Location = new System.Drawing.Point(446, 3);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(106, 41);
             this.btnClose.TabIndex = 6;
@@ -364,19 +367,46 @@ namespace PatientDataAdministration.Client
             this.bgwNewPatient.WorkerSupportsCancellation = true;
             this.bgwNewPatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNewPatient_DoWork);
             // 
+            // btnCancelSync
+            // 
+            this.btnCancelSync.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnCancelSync.BackColor = System.Drawing.Color.Maroon;
+            this.btnCancelSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelSync.ForeColor = System.Drawing.Color.White;
+            this.btnCancelSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
+            this.btnCancelSync.Location = new System.Drawing.Point(240, 3);
+            this.btnCancelSync.Name = "btnCancelSync";
+            this.btnCancelSync.Size = new System.Drawing.Size(41, 41);
+            this.btnCancelSync.TabIndex = 17;
+            this.btnCancelSync.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCancelSync.UseVisualStyleBackColor = false;
+            this.btnCancelSync.Visible = false;
+            this.btnCancelSync.Click += new System.EventHandler(this.btnCancelSync_Click);
+            // 
+            // flowLayoutPanel3
+            // 
+            this.flowLayoutPanel3.Controls.Add(this.btnClose);
+            this.flowLayoutPanel3.Controls.Add(this.btnProfile);
+            this.flowLayoutPanel3.Controls.Add(this.btnSync);
+            this.flowLayoutPanel3.Controls.Add(this.btnCancelSync);
+            this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(247, 10);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(555, 47);
+            this.flowLayoutPanel3.TabIndex = 18;
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 467);
             this.ControlBox = false;
+            this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.btnProfile);
-            this.Controls.Add(this.btnSync);
             this.Controls.Add(this.lstBoxInfoLog);
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.panel2);
             this.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -397,6 +427,7 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).EndInit();
+            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -427,5 +458,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Button btnSync;
         private System.ComponentModel.BackgroundWorker bgwUpdatePatient;
         private System.ComponentModel.BackgroundWorker bgwNewPatient;
+        private System.Windows.Forms.Button btnCancelSync;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
     }
 }

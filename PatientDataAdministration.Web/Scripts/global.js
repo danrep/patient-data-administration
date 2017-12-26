@@ -7,48 +7,9 @@ function getNgScope() {
 };
 
 /*
- * Notification Declarations andn Initializations 
- */
-function gritterConfirmCallback(data, callback) {
-    /*
-    gritter({
-        text: 'Please confirm if you want to go ahead with the following operation?',
-        layout: 'topRight',
-        buttons: [
-            {
-                addClass: 'btn btn-success btn-sm',
-                text: 'Okay',
-                onClick: function($gritter) {
-                    callback(data);
-                    $gritter.close();
-                }
-            },
-            {
-                addClass: 'btn btn-danger btn-sm',
-                text: 'Cancel',
-                onClick: function($gritter) {
-                    gritterDisplay('Operation Canceled', 'info');
-                    $gritter.close();
-                }
-            }
-        ]
-    });
-    */
-};
-function gritterDisplay(message, type) {
-    //gritter({ text: message, layout: 'topRight', type: type, timeout: 3500 });
-};
-function gritterEx() {
-    //gritter({ text: 'Oops! Something is not right. Please try again or contact Support.', layout: 'topRight', type: 'error', timeout: 3500 });
-};
-function gritterSuccess() {
-    gritterDisplay("Great Job!", "success");
-};
-
-/*
  * API Abstraction
  */
-function api(apiConnectType, url, data, asyncMode, callback) {
+function api(apiConnectType, url, data, asyncMode, callback, feedBack = false) {
 
     $.ajax({
         type: apiConnectType,
@@ -59,14 +20,21 @@ function api(apiConnectType, url, data, asyncMode, callback) {
     })
     .success(function (remoteData) {
         if (remoteData.Status === true) {
-            if (callback != null && typeof callback === "function")
-                callback(remoteData.Data);
+            if (callback != null && typeof callback === "function") {
+                if (feedBack) {
+                    swalSuccess(remoteData.Message);
+                    setTimeout(function () {
+                        callback(remoteData.Data);
+                    }, 2000);
+                } else
+                    callback(remoteData.Data);
+            }
         } else {
-            window.gritterDisplay(remoteData.status_message, "warning");
+            swalWarning(remoteData.Message);
         }
     })
     .error(function () {
-        window.gritterEx();
+        swalEx();
     });
 };
 
@@ -97,7 +65,7 @@ function reInitializeTable(table) {
  */
 function emptyForm(form) {
     form.find("input:text").val("");
-
+    
     form.find(":input").each(function () {
         switch (this.type) {
             case "password":
@@ -135,3 +103,106 @@ function resetFormData(form) {
 function formatDate(date) {
     return moment(date).format("DD-MM-YYYY");
 }
+
+/*
+ *  Charting Functions
+ */
+function lineChartOneToOne(chartElementName, arrayData, label, hoverCallBack) {
+    var a = "#0D888B",
+        b = "#00ACAC",
+        c = "#3273B1",
+        d = "#348FE2",
+        e = "rgba(0,0,0,0.6)",
+        f = "rgba(255,255,255,0.4)";
+
+    Morris.Bar({
+        element: chartElementName,
+        data: arrayData,
+        xkey: "x",
+        ykeys: ["y"],
+        labels: [label],
+        lineColors: [a, c],
+        xLabelMargin: 10,
+        resize: !0,
+        hoverCallback: hoverCallBack,
+        gridTextFamily: "Open Sans",
+        gridTextColor: f,
+        gridTextWeight: "normal",
+        gridTextSize: "11px",
+        gridLineColor: "rgba(0,0,0,0.5)",
+        hideHover: "auto"
+    });
+};
+function donutChart(chartElementName, arrayData) {
+    Morris.Donut({
+        element: chartElementName,
+        data: arrayData,
+        labelFamily: "Open Sans",
+        labelColor: "rgba(255,255,255,0.4)",
+        labelTextSize: "11px",
+        backgroundColor: "#242a30"
+    });
+}
+
+/*
+ * SWAL
+ */
+function swalWarning(message) {
+    swalEngineNoCallBack("Wait a Minute...", message, "warning", "btn-warning");
+};
+function swalWarningConfirm(callBack) {
+    swalEngineCallBack("Wait a Minute...", "This is a Sensitive Operation. Are you sure you want to Proceed", "warning", "btn-warning", callBack);
+};
+function swalInfo(message) {
+    swalEngineNoCallBack("Just FYI", message, "info", "btn-default");
+};
+function swalError(message) {
+    swalEngineNoCallBack("Oops. There seems to be a Problem", message, "error", "btn-danger");
+};
+function swalEx() {
+    swalError("This is embarassing but something serious actually is wrong. Please check with Support");
+};
+function swalSuccess(message) {
+    swalEngineNoCallBack("Awesome", message, "success", "btn-success", false);
+};
+
+function swalEngineNoCallBack(title, message, type, buttonClass, showConfirmButton = true) {
+    if (showConfirmButton)
+        swal({
+            title: title,
+            text: message,
+            type: type,
+            showCancelButton: false,
+            confirmButtonClass: buttonClass,
+            confirmButtonText: "Okay"
+        });
+    else
+        swal({
+            title: title,
+            text: message,
+            type: type,
+            showCancelButton: false,
+            showConfirmButton: showConfirmButton,
+            timer: 2000
+        });
+};
+function swalEngineCallBack(title, message, type, buttonClass, callback) {
+    swal({
+        title: title,
+        text: message,
+        type: type,
+        showCancelButton: true,
+        confirmButtonClass: buttonClass,
+        confirmButtonText: "Okay"
+    }).then((result) => {
+        if (result.value) {
+            callback();
+        };
+    });
+};
+
+// ReSharper disable once NativeTypePrototypeExtending
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};

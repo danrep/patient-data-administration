@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -111,6 +109,74 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetUserSingle(int userId)
+        {
+            try
+            {
+                var user = _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
+
+                if (user == null)
+                    return Json(new ResponseData { Status = true, Message = "No User Found" },
+                        JsonRequestBehavior.AllowGet);
+                {
+                    var siteInfo = _db.Administration_SiteInformation.FirstOrDefault(x => x.Id == user.SiteId);
+                    var userData = new
+                    {
+                        UserInformation = user,
+                        SiteInformation = siteInfo ??
+                                          new Administration_SiteInformation()
+                    };
+
+                    return Json(new ResponseData { Status = true, Message = "Successful", Data = userData },
+                        JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult SendUserPassword(int userId)
+        {
+            try
+            {
+                return Json(new ResponseData { Status = true, Message = "Password Retrieval Successful"},
+                    JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult DeleteUser(int userId)
+        {
+            try
+            {
+                var user = _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted);
+
+                if (user == null)
+                    return Json(new ResponseData { Status = true, Message = "No User Found" },
+                        JsonRequestBehavior.AllowGet);
+                {
+                    user.IsDeleted = true;
+                    _db.Entry(user).State = EntityState.Modified;
+                    _db.SaveChanges();
+
+                    return Json(new ResponseData { Status = true, Message = "Successful" },
+                        JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

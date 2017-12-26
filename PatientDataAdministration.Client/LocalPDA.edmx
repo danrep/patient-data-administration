@@ -15,7 +15,7 @@
           <Property Name="Surname" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="PasswordData" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="PasswordData" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="PasswordSalt" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
@@ -112,32 +112,14 @@
     <edmx:ConceptualModels>
       <Schema Namespace="LocalPDAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="LocalPDAEntities" annotation:LazyLoadingEnabled="true" >
-          <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
           <EntitySet Name="System_BioDataStore" EntityType="LocalPDAModel.System_BioDataStore" />
           <EntitySet Name="System_ErrorLog" EntityType="LocalPDAModel.System_ErrorLog" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="LocalPDAModel.System_LocalGovermentArea" />
           <EntitySet Name="System_Setting" EntityType="LocalPDAModel.System_Setting" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
+          <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
         </EntityContainer>
-        <EntityType Name="Local_StaffInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RemoteId" Type="Int64" Nullable="false" />
-          <Property Name="StaffId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SiteId" Type="Int32" Nullable="false" />
-          <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="AuthPayLoad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="System_BioDataStore">
           <Key>
             <PropertyRef Name="Id" />
@@ -213,31 +195,30 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="Local_StaffInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RemoteId" Type="Int64" Nullable="false" />
+          <Property Name="StaffId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="AuthPayLoad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LocalPDAModelStoreContainer" CdmEntityContainer="LocalPDAEntities" >
-          <EntitySetMapping Name="Local_StaffInformation">
-            <EntityTypeMapping TypeName="LocalPDAModel.Local_StaffInformation">
-              <MappingFragment StoreEntitySet="Local_StaffInformation">
-                <ScalarProperty Name="AuthPayLoad" ColumnName="AuthPayLoad" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="PasswordData" ColumnName="PasswordData" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
-                <ScalarProperty Name="RemoteId" ColumnName="RemoteId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="System_BioDataStore">
             <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore">
               <MappingFragment StoreEntitySet="System_BioDataStore">
@@ -315,6 +296,25 @@
                 <ScalarProperty Name="IsDownloaded" ColumnName="IsDownloaded" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Local_StaffInformation">
+            <EntityTypeMapping TypeName="LocalPDAModel.Local_StaffInformation">
+              <MappingFragment StoreEntitySet="Local_StaffInformation">
+                <ScalarProperty Name="AuthPayLoad" ColumnName="AuthPayLoad" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordData" ColumnName="PasswordData" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="RemoteId" ColumnName="RemoteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

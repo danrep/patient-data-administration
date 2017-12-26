@@ -30,6 +30,8 @@
     <link href="/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
 
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+
+    @RenderSection("styles", false);
 </head>
 <body>
     <div id="page-loader" class="fade in">
@@ -133,6 +135,26 @@
                             <li class="active"><a href="@Url.Action("Index", "UserManagement", new {area = ""})">Overview</a></li>
                         </ul>
                     </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-building"></i>
+                            <span>Site Management</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("Index", "SiteManagement", new {area = ""})">Overview</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-clipboard"></i>
+                            <span>Report Engine</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("Index", "ReportManagement", new {area = ""})">Overview</a></li>
+                        </ul>
+                    </li>
                     <li>
                         <a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify">
                             <i class="fa fa-angle-double-left"></i>
@@ -177,7 +199,8 @@
     <script src="/assets/js/table_manage_default_demo.js"></script>
 
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
-    <script src="/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>
+    <!--<script src="/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>-->
+    <script src="/assets/plugins/bootstrap-sweetalert/sweetalert2.all.js"></script>
     <script src="/assets/js/ui_modal_notification_demo.js"></script>
 
     <script src="/assets/plugins/flot/jquery.flot.min.js"></script>
@@ -196,10 +219,9 @@
     <script src="/Scripts/global.js"></script>
 
     <script>
-    $(document).ready(function () {
-        App.init();
-        Notification.init();
-    });
+        $(document).ready(function () {
+            App.init();
+        });
     </script>
 
     @RenderSection("scripts", false);

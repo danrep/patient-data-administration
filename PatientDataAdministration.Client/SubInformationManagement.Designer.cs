@@ -239,6 +239,7 @@ namespace PatientDataAdministration.Client
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.btnSave);
             this.groupBox2.Controls.Add(this.pnlDataControl);
+            this.groupBox2.Controls.Add(this.pnlWaiting);
             this.groupBox2.Controls.Add(this.btnClear);
             this.groupBox2.Controls.Add(this.pnlPersonalInformation);
             this.groupBox2.Controls.Add(this.pnlOfficialInformation);
@@ -410,7 +411,7 @@ namespace PatientDataAdministration.Client
             this.btnClear.ForeColor = System.Drawing.Color.White;
             this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
             this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClear.Location = new System.Drawing.Point(582, 342);
+            this.btnClear.Location = new System.Drawing.Point(582, 343);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(132, 40);
             this.btnClear.TabIndex = 131;
@@ -715,11 +716,11 @@ namespace PatientDataAdministration.Client
             // 
             this.txtPepId.BackColor = System.Drawing.Color.Gray;
             this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPepId.Enabled = false;
             this.txtPepId.Font = new System.Drawing.Font("Lato", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPepId.ForeColor = System.Drawing.Color.White;
             this.txtPepId.Location = new System.Drawing.Point(3, 52);
             this.txtPepId.Name = "txtPepId";
+            this.txtPepId.ReadOnly = true;
             this.txtPepId.Size = new System.Drawing.Size(227, 30);
             this.txtPepId.TabIndex = 55;
             // 
@@ -765,7 +766,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
             this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(547, 11);
+            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(577, 11);
             this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
             this.btnRefreshNfcDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshNfcDevice.TabIndex = 133;
@@ -781,7 +782,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
             this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshBioDevice.Location = new System.Drawing.Point(690, 11);
+            this.btnRefreshBioDevice.Location = new System.Drawing.Point(720, 11);
             this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
             this.btnRefreshBioDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshBioDevice.TabIndex = 134;
@@ -827,9 +828,9 @@ namespace PatientDataAdministration.Client
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(833, 11);
+            this.btnClose.Location = new System.Drawing.Point(863, 11);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(106, 41);
+            this.btnClose.Size = new System.Drawing.Size(76, 41);
             this.btnClose.TabIndex = 135;
             this.btnClose.Text = "Close";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -847,9 +848,9 @@ namespace PatientDataAdministration.Client
             this.pnlWaiting.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
             this.pnlWaiting.Controls.Add(this.label13);
             this.pnlWaiting.Controls.Add(this.pictureBox2);
-            this.pnlWaiting.Location = new System.Drawing.Point(-19, 210);
+            this.pnlWaiting.Location = new System.Drawing.Point(246, 296);
             this.pnlWaiting.Name = "pnlWaiting";
-            this.pnlWaiting.Size = new System.Drawing.Size(1007, 75);
+            this.pnlWaiting.Size = new System.Drawing.Size(331, 86);
             this.pnlWaiting.TabIndex = 136;
             this.pnlWaiting.Visible = false;
             // 
@@ -859,7 +860,7 @@ namespace PatientDataAdministration.Client
             this.label13.BackColor = System.Drawing.Color.Transparent;
             this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(408, 54);
+            this.label13.Location = new System.Drawing.Point(80, 62);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(190, 15);
             this.label13.TabIndex = 106;
@@ -869,7 +870,7 @@ namespace PatientDataAdministration.Client
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
-            this.pictureBox2.Location = new System.Drawing.Point(479, 6);
+            this.pictureBox2.Location = new System.Drawing.Point(151, 12);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(48, 43);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -887,7 +888,6 @@ namespace PatientDataAdministration.Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 485);
             this.ControlBox = false;
-            this.Controls.Add(this.pnlWaiting);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblInformation);
             this.Controls.Add(this.btnRefreshNfcDevice);

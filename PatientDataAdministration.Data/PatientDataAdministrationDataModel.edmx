@@ -50,6 +50,7 @@
           <Property Name="ClientId" Type="int" Nullable="false" />
           <Property Name="IsBioDataCaptured" Type="bit" Nullable="false" />
           <Property Name="IsNfcDataCaptured" Type="bit" Nullable="false" />
+          <Property Name="ReasonForVisit" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_SiteInformation">
@@ -161,6 +162,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StateName" Type="varchar" MaxLength="50" />
           <Property Name="StateCode" Type="varchar" MaxLength="4" />
+          <Property Name="StateAbbreviation" Type="varchar" MaxLength="4" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="System_Update">
@@ -178,6 +180,11 @@
           <Property Name="FolderLocation" Type="varchar(max)" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <Function Name="Sp_Administration_GetAgeDistro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_Administration_GetInActiveUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="inactiveBar" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_Administration_GetPatientCompliance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="PatientDataAdministrationDatabaseModelStoreContainer">
           <EntitySet Name="Administration_ClientLog" EntityType="Self.Administration_ClientLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientMap" EntityType="Self.Administration_ClientMap" Schema="dbo" store:Type="Tables" />
@@ -211,6 +218,11 @@
           <EntitySet Name="System_LocalGovermentArea" EntityType="PatientDataAdministration.DatabaseModel.System_LocalGovermentArea" />
           <EntitySet Name="System_State" EntityType="PatientDataAdministration.DatabaseModel.System_State" />
           <EntitySet Name="System_Update" EntityType="PatientDataAdministration.DatabaseModel.System_Update" />
+          <FunctionImport Name="Sp_Administration_GetInActiveUsers" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetInActiveUsers_Result)">
+          <Parameter Name="inactiveBar" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_Administration_GetPatientCompliance" ReturnType="Collection(String)" />
+          <FunctionImport Name="Sp_Administration_GetAgeDistro" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetAgeDistro_Result)" />
         </EntityContainer>
         <EntityType Name="Administration_ClientLog">
           <Key>
@@ -258,6 +270,7 @@
           <Property Name="IsBioDataCaptured" Type="Boolean" Nullable="false" />
           <Property Name="IsNfcDataCaptured" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="ReasonForVisit" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_SiteInformation">
           <Key>
@@ -369,6 +382,7 @@
           <Property Name="StateName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="StateCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="StateAbbreviation" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="System_Update">
           <Key>
@@ -385,6 +399,14 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <ComplexType Name="Sp_Administration_GetInActiveUsers_Result">
+          <Property Type="Int32" Name="CurrentUserId" Nullable="false" />
+          <Property Type="DateTime" Name="DateLog" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="Sp_Administration_GetAgeDistro_Result">
+          <Property Type="String" Name="RangeOfValues" Nullable="false" MaxLength="8" />
+          <Property Type="Int32" Name="NumberOfOccurences" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -432,6 +454,7 @@
           <EntitySetMapping Name="Administration_PatientRegistrationLog">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog">
               <MappingFragment StoreEntitySet="Administration_PatientRegistrationLog">
+                <ScalarProperty Name="ReasonForVisit" ColumnName="ReasonForVisit" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsNfcDataCaptured" ColumnName="IsNfcDataCaptured" />
                 <ScalarProperty Name="IsBioDataCaptured" ColumnName="IsBioDataCaptured" />
@@ -554,6 +577,7 @@
           <EntitySetMapping Name="System_State">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_State">
               <MappingFragment StoreEntitySet="System_State">
+                <ScalarProperty Name="StateAbbreviation" ColumnName="StateAbbreviation" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="StateCode" ColumnName="StateCode" />
                 <ScalarProperty Name="StateName" ColumnName="StateName" />
@@ -577,6 +601,23 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetInActiveUsers" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetInActiveUsers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetInActiveUsers_Result">
+                <ScalarProperty Name="CurrentUserId" ColumnName="CurrentUserId" />
+                <ScalarProperty Name="DateLog" ColumnName="DateLog" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetPatientCompliance" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetPatientCompliance" />
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetAgeDistro" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetAgeDistro">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetAgeDistro_Result">
+                <ScalarProperty Name="RangeOfValues" ColumnName="RangeOfValues" />
+                <ScalarProperty Name="NumberOfOccurences" ColumnName="NumberOfOccurences" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

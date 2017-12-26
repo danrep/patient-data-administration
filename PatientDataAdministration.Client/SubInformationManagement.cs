@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Input;
 using PatientDataAdministration.Client.Properties;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -245,7 +244,7 @@ namespace PatientDataAdministration.Client
                 {
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
                     {
-                        MessageBox.Show(@"The Captured Biodata have a match and thats not proper. Please confirm");
+                        MessageBox.Show(@"The Captured Biodata have a match and that's not proper. Please confirm");
                         pnlWaiting.Visible = false;
                         return;
                     }
@@ -541,7 +540,7 @@ namespace PatientDataAdministration.Client
                                     x => x.SiteId == _userCredential.AdministrationSiteInformation.Id).ToList());
                         }
                         
-                        _lblInformationText = "Quick Search has been Updated";
+                        _lblInformationText = $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
                         _lblInformationForeColor = Color.DarkGreen;
 
                         _isBusy = false;

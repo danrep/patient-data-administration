@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
-using System.Windows.Threading;
-using System.Windows;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PatientDataAdministration.Client
@@ -27,6 +19,11 @@ namespace PatientDataAdministration.Client
 
         private void btnLogIn_Click(object sender, EventArgs e)
         {
+            PerformLogIn();   
+        }
+
+        private void PerformLogIn()
+        {
             try
             {
                 _status = false;
@@ -40,7 +37,10 @@ namespace PatientDataAdministration.Client
                 if (credential == null)
                 {
                     if (CheckCredentialServer(out UserCredential userData))
+                    {
                         GainAccess(userData);
+                        _status = true;
+                    }
                 }
                 else
                 {
@@ -58,7 +58,7 @@ namespace PatientDataAdministration.Client
 
                 _status = true;
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 LocalCore.TreatError(exception, 0);
             }
@@ -83,7 +83,11 @@ namespace PatientDataAdministration.Client
 
         private void Authentication_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.Alt && e.Shift && e.KeyCode == Keys.L && AuthCode())
+            if (e.KeyCode == Keys.Enter)
+            {
+                PerformLogIn();
+            }
+            else if (e.Control && e.Alt && e.Shift && e.KeyCode == Keys.L && AuthCode())
             {
                 this.Hide();
                 var dataCentral = new DataCentral(new UserCredential()
@@ -131,9 +135,6 @@ namespace PatientDataAdministration.Client
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            picLoader.Visible = true;
-            System.Windows.Forms.Application.DoEvents();
-
             this.Close();
         }
 
