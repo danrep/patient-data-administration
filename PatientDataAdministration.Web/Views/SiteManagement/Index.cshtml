@@ -40,8 +40,9 @@
                     <thead>
                         <tr>
                             <th>State</th>
+                            <th>Site Code</th>
                             <th>Site Name</th>
-                            <th>...</th>
+                            <th style="width: 15px">...</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -53,7 +54,7 @@
         <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <input type="hidden" id="id" value="0" />
-                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:saveUser();">
+                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:saveSite();">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             ×
@@ -67,28 +68,20 @@
                                 <input class="form-control" type="text" id="siteCode" name="siteCode"
                                        data-parsley-type="text" placeholder="Site Code" data-parsley-required="true" />
                             </div>
-                            <div class="col-md-8 col-sm-12">
-                                <label class="control-label" for="siteName">Site Name * :</label>
-                                <input class="form-control" type="text" id="siteName" name="siteName"
-                                       data-parsley-type="text" placeholder="Site Name" data-parsley-required="true" />
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <div class="col-md-4 col-sm-6">
                                 <label class="control-label" for="state">State :</label>
                                 <select class="form-control" id="state" name="state"
-                                        data-parsley-required="true" onchange="selectSites()">
+                                        data-parsley-required="true">
                                     <option value="0">Please Select a State</option>
                                     <option ng-repeat="option in allStates track by option.Id" value="{{option.Id}}">{{option.StateName}}</option>
                                 </select>
                             </div>
-                            <div class="col-md-8 col-sm-12">
-                                <label class="control-label" for="sites">Site :</label>
-                                <select class="form-control" id="sites" name="sites"
-                                        data-parsley-required="true">
-                                    <option value="0">Please Select a Site</option>
-                                    <option ng-repeat="option in sitesInStates track by option.Id" value="{{option.Id}}">{{option.SiteNameOfficial}}</option>
-                                </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12">
+                                <label class="control-label" for="siteName">Site Name * :</label>
+                                <input class="form-control" type="text" id="siteName" name="siteName"
+                                       data-parsley-type="text" placeholder="Site Name" data-parsley-required="true" />
                             </div>
                         </div>
                     </div>
@@ -103,3 +96,120 @@
         </div>
     </div>
 </div>
+
+@section scripts
+{
+<script type="text/javascript">
+        $(document).ready(function() {
+            pageLoad();
+        });
+
+        pdaWeb.controller('pdaWebCtrlr',
+            function($scope) {
+                $scope.allStates = [];
+
+                $scope.saveSiteForm = function () {
+                    if ($('#state').val() === "0") {
+                        window.swalWarning("A valid state must be selected!");
+                        return;
+                    }
+
+                    var siteInformation = {
+                        Id: $('#id').val(),
+                        StateId: $('#state').val(),
+                        SiteCode: $('#siteCode').val(),
+                        SiteNameOfficial: $('#siteName').val(),
+                        SiteNameInformal: $('#siteName').val()
+                    };
+
+                    window.api("POST",
+                        "@Url.Action("SaveSite", "SiteManagement", new {area = "ServerCommunication"})",
+                        siteInformation,
+                        true,
+                        postSaveSite,
+                        true);
+                };
+            });
+
+
+        function resetForm() {
+            window.emptyForm($('#demo-form'));
+            $('#id').val("0");
+            $('#demo-form').parsley().reset();
+        }
+
+        function saveSite() {
+            window.getNgScope().saveSiteForm();
+            window.emptyForm($("#demo-form"));
+        };
+
+        function postSaveSite(data) {
+            pageLoad();
+        };
+
+        function pageLoad() {
+            window.api("GET",
+                "@Url.Action("GetSites", "SiteManagement", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadTable);
+
+            window.api("GET",
+                "@Url.Action("GetSiteStats", "Indicators", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadTiles);
+
+            window.api("GET",
+                "@Url.Action("GetStates", "Data", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadStates);
+        };
+
+        function loadStates(data) {
+            window.getNgScope().allStates = data;
+            window.getNgScope().$apply();
+        };;
+
+        function loadTiles(data) {
+            $('#totalSites_p').text(data.TotalSites.format());
+        };
+
+        function loadTable(data) {
+            window.resetDataTable($("#data-table"));
+
+            $.each(data,
+                function(i, datum) {
+                    var rowData = '<tr><td>' + datum.StateInformation.StateName + '</td>';
+                    rowData += '<td>' + datum.SiteInformation.SiteCode + '</td>';
+                    rowData += '<td>' + datum.SiteInformation.SiteNameOfficial + '</td>';
+                    rowData += '<td><div class="btn-group">';
+
+                    rowData += '<a href="#modal-alert" data-toggle="modal" onclick="manageSite(\'' +
+                        datum.SiteInformation.Id +
+                        '\')" class="btn btn-primary btn-condensed btn-xs"><span class="fa fa-edit"></span></a>';
+
+                    rowData += '</div></td>';
+                    rowData += '</tr>';
+
+                    $("#data-table tbody").append(rowData);
+                });
+
+            window.reInitializeTable($('#data-table'));
+        }
+
+        function manageSite(siteId) {
+            window.api("GET",
+                "@Url.Action("GetSiteSingle", "SiteManagement", new {area = "ServerCommunication"})?siteId=" + siteId,
+                null,
+                true,
+                function (data) {
+                    $('#id').val(data.Id);
+                    $('#state').val(data.StateId);
+                    $('#siteCode').val(data.SiteCode);
+                    $('#siteName').val(data.SiteNameOfficial);
+                });
+        }
+</script>
+}

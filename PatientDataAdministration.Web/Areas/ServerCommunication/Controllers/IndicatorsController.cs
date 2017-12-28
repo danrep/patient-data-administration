@@ -190,5 +190,31 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult GetSiteStats()
+        {
+            try
+            {
+                var totalSites = _entities.Administration_SiteInformation.Count(x => !x.IsDeleted);
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = new
+                            {
+                                TotalSites = totalSites
+                            }
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

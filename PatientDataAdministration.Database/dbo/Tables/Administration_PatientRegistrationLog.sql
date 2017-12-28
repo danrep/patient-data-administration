@@ -5,6 +5,7 @@
     [ClientId]          INT          NOT NULL,
     [IsBioDataCaptured] BIT          NOT NULL,
     [IsNfcDataCaptured] BIT          NOT NULL,
+    [ReasonForVisit]    INT          DEFAULT ((0)) NOT NULL,
     [IsDeleted]         BIT          NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );

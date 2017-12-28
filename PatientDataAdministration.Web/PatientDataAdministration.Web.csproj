@@ -1051,6 +1051,7 @@
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Views\Security\Index.cshtml" />
     <Content Include="Views\SiteManagement\Index.cshtml" />
+    <Content Include="Views\PatientManagement\PatientData.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1091,13 +1092,14 @@
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\IndicatorsController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\PatientManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\SiteManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\ServerCommunicationAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReportManagementController.cs" />
+    <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\SiteManagementController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
@@ -1123,7 +1125,6 @@
     <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common\" />
-    <Folder Include="Views\ReportManagement\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

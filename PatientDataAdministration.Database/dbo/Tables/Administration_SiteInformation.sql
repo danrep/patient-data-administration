@@ -12,5 +12,3 @@
     CONSTRAINT [PK_Administration_SiteInformation] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
-
-

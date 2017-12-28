@@ -140,7 +140,7 @@
             $('#selected_state_name_span').text(data.State.StateName);
             $('#total_patients_span').text(data.PatientsInState.format());
             $('#state_sites_span').text(data.SitesInState.format());
-            $('#average_patient_span').text(data.Average.format());
+            $('#average_patient_span').text(data.Average.format(2));
         };
 
         $(document).ready(function() {

@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace PatientDataAdministration.Web.Controllers
 {
-    public class ReportManagementController : BaseController
+    public class PatientManagementController : BaseController
     {
         // GET: ReportManagement
-        public ActionResult Index()
+        public ActionResult PatientData()
         {
             return View();
         }
