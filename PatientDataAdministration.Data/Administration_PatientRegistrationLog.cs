@@ -20,7 +20,7 @@ namespace PatientDataAdministration.Data
         public int ClientId { get; set; }
         public bool IsBioDataCaptured { get; set; }
         public bool IsNfcDataCaptured { get; set; }
-        public bool IsDeleted { get; set; }
         public int ReasonForVisit { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

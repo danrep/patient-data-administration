@@ -34,9 +34,6 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 {
                     if (Encryption.IsSaltEncryptValid(password, userInformation.PasswordData, userInformation.PasswordSalt))
                     {
-                        var siteInfo =
-                            _entities.Administration_SiteInformation.FirstOrDefault(x => x.Id == userInformation.SiteId);
-
                         _entities.Administration_ClientLog.Add(new Administration_ClientLog()
                         {
                             ChipData = string.Empty, 
@@ -54,12 +51,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                             {
                                 Status = true,
                                 Message = "Successful",
-                                Data = new UserCredential()
-                                {
-                                    AdministrationStaffInformation = userInformation,
-                                    AdministrationSiteInformation = siteInfo
-                                }
-                            },
+                                Data = userInformation
+                        },
                             JsonRequestBehavior.AllowGet);
                     }
                     else

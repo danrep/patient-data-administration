@@ -15,12 +15,14 @@ namespace PatientDataAdministration.Client
     public partial class DataCentral : MetroFramework.Forms.MetroForm
     {
         readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
-        
-        private bool _isSyncInProgress;
+
+        private bool _isSyncNewInProgress;
+        private bool _isSyncUpdateInProgress;
         private bool _onDemandSyncEnabled;
         private bool _killCommandReceived;
 
-        private UserCredential _userCredential;
+        private Administration_StaffInformation _administrationStaffInformation;
+        private System_SiteData _systemSiteData;
         private SubInformationManagement _subInfoMan;
 
         private Process _process = new Process();
@@ -36,11 +38,13 @@ namespace PatientDataAdministration.Client
             _operationQueue.Add(operationQueue);
         }
 
-        public DataCentral(UserCredential userCredential)
+        public DataCentral(Administration_StaffInformation administrationStaffInformation)
         {
             InitializeComponent();
 
-            this._userCredential = userCredential;
+            this._administrationStaffInformation = administrationStaffInformation;
+
+            this._systemSiteData = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
 
             _onDemandSyncEnabled = Convert.ToBoolean(
                 LocalCache.Get<List<System_Setting>>("System_Setting")
@@ -62,7 +66,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -74,10 +78,10 @@ namespace PatientDataAdministration.Client
         private void DataCentral_Load(object sender, EventArgs e)
         {
             lblUserInformation.Text = @"Welcome, " +
-                                      _userCredential.AdministrationStaffInformation.Surname + @" " +
-                                      _userCredential.AdministrationStaffInformation.FirstName +
+                                      _administrationStaffInformation.Surname + @" " +
+                                      _administrationStaffInformation.FirstName +
                                       @". You are attached to " +
-                                      _userCredential.AdministrationSiteInformation.SiteNameOfficial;
+                                     _systemSiteData.SiteNameOfficial;
         }
 
         private void btnPatientManagement_Click(object sender, EventArgs e)
@@ -89,7 +93,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
         }
 
@@ -100,7 +104,7 @@ namespace PatientDataAdministration.Client
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
-            picSyncInProcess.Visible = _isSyncInProgress;
+            picSyncInProcess.Visible = _isSyncNewInProgress != _isSyncUpdateInProgress || _isSyncNewInProgress;
         }
 
         private void tmrPostInfoLogs_Tick(object sender, EventArgs e)
@@ -138,7 +142,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -159,7 +163,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
 
@@ -193,8 +197,8 @@ namespace PatientDataAdministration.Client
                 existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
                                            patientInformation.Patient_PatientInformation.Othername;
                 existingPatient.IsSync = true;
-                existingPatient.LastUpdate = patientInformation.Patient_PatientInformation.LastUpdated ?? DateTime.Now;
-                existingPatient.LastSync = patientInformation.Patient_PatientInformation.LastUpdated ?? DateTime.Now;
+                existingPatient.LastUpdate = DateTime.Now;
+                existingPatient.LastSync = DateTime.Now;
                 existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
 
                 if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
@@ -223,8 +227,8 @@ namespace PatientDataAdministration.Client
                     FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
                                patientInformation.Patient_PatientInformation.Othername,
                     IsSync = true,
-                    LastUpdate = patientInformation.Patient_PatientInformation.LastUpdated ?? DateTime.Now,
-                    LastSync = patientInformation.Patient_PatientInformation.LastUpdated ?? DateTime.Now, 
+                    LastUpdate = DateTime.Now,
+                    LastSync = DateTime.Now, 
                     SiteId = patientInformation.Patient_PatientInformation.SiteId
                 };
 
@@ -257,7 +261,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 picConnectionAvailable.Visible = false;
             }
         }
@@ -283,7 +287,7 @@ namespace PatientDataAdministration.Client
             {
                 ExecuteSync();
 
-                _subInfoMan = new SubInformationManagement(_userCredential);
+                _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
 
                 btnSync.Visible = !_onDemandSyncEnabled;
 
@@ -331,12 +335,13 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
         }
 
         private void btnSync_Click(object sender, EventArgs e)
         {
+            _killCommandReceived = false;
             InitiateSync();
         }
 
@@ -344,7 +349,7 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                if (_isSyncInProgress)
+                if (_isSyncNewInProgress)
                     return;
 
                 _operationQueue.Add(new OperationQueue()
@@ -380,7 +385,7 @@ namespace PatientDataAdministration.Client
                     var payLoad = new
                     {
                         encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        siteId = _userCredential.AdministrationSiteInformation.Id
+                        siteId = _administrationStaffInformation.SiteId
                     };
 
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
@@ -388,7 +393,7 @@ namespace PatientDataAdministration.Client
 
                     if (responseData.Status)
                     {
-                        _isSyncInProgress = true;
+                        _isSyncNewInProgress = true;
 
                         _operationQueue.Add(new OperationQueue()
                         {
@@ -404,7 +409,7 @@ namespace PatientDataAdministration.Client
                             if (!_onDemandSyncEnabled)
                                 _operationQueue.Add(new OperationQueue()
                                 {
-                                    Param = $"No Patients found this time. Please Try the Synchronization Later"
+                                    Param = $"No New Patients found this time. Please Try the Synchronization Later"
                                 });
 
                             break;
@@ -434,7 +439,7 @@ namespace PatientDataAdministration.Client
                                 Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
                             });
 
-                        _isSyncInProgress = false;
+                        _isSyncNewInProgress = false;
                     }
 
                     if (!_onDemandSyncEnabled)
@@ -455,12 +460,14 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 _operationQueue.Add(new OperationQueue()
                 {
                     Param = "ERROR >> Please retry the last action"
                 });
             }
+
+            _isSyncNewInProgress = false;
         }
 
         private void bgwUpdatePatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -474,7 +481,7 @@ namespace PatientDataAdministration.Client
 
                 var totalCount = _localPdaEntities.System_BioDataStore.Count();
 
-                for (var i = 0; i > totalCount; i += 100)
+                for (var i = 0; i < totalCount; i += 100)
                 {
                     if (_killCommandReceived)
                     {
@@ -486,7 +493,7 @@ namespace PatientDataAdministration.Client
                     }
 
                     var patientsMatching =
-                        _localPdaEntities.System_BioDataStore.Take(100).Skip(i).Select(
+                        _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Select(
                             x => new PatientMatching() { PepId = x.PepId, LastUpdate = x.LastUpdate }).ToList();
 
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/CheckIfUpdated",
@@ -495,7 +502,7 @@ namespace PatientDataAdministration.Client
                     if (!responseData.Status)
                         continue;
 
-                    _isSyncInProgress = true;
+                    _isSyncUpdateInProgress = true;
                     _operationQueue.Add(new OperationQueue()
                     {
                         Param = responseData.Message
@@ -523,10 +530,10 @@ namespace PatientDataAdministration.Client
                         _subInfoMan.UpdatePersistedData();
                     else _operationQueue.Add(new OperationQueue()
                     {
-                        Param = $"Existing Patient Pull in Progress ... Completed {i} of {totalCount}"
+                        Param = $"Existing Patient Pull in Progress ... Completed {i + patientsMatching.Count} of {totalCount}"
                     });
 
-                    _isSyncInProgress = false;
+                    _isSyncUpdateInProgress = false;
                 }
 
                 if (!_onDemandSyncEnabled)
@@ -546,12 +553,14 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 _operationQueue.Add(new OperationQueue()
                 {
                     Param = "ERROR >> Please retry the last action"
                 });
             }
+
+            _isSyncUpdateInProgress = false;
         }
 
         private void btnCancelSync_Click(object sender, EventArgs e)

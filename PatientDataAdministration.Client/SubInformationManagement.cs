@@ -35,7 +35,7 @@ namespace PatientDataAdministration.Client
         private string _lblBioDeviceInfoText, _lblInformationText;
 
         private System_BioDataStore _systemBioDataStore;
-        private readonly UserCredential _userCredential;
+        private readonly Administration_StaffInformation _administrationStaffInformation;
         private List<System_BioDataStore> _systemBioDataStores;
 
         private string _selectedReader;
@@ -50,9 +50,9 @@ namespace PatientDataAdministration.Client
 
         #region Form Events
 
-        public SubInformationManagement(UserCredential userCredential)
+        public SubInformationManagement(Administration_StaffInformation administrationStaffInformation)
         {
-            this._userCredential = userCredential;
+            this._administrationStaffInformation = administrationStaffInformation;
             InitializeComponent();
             _fingerPrintManager = new SGFingerPrintManager();
         }
@@ -61,19 +61,15 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                new Thread(() => {
-                    // TODO: This line of code loads data into the 'localPDADataSet.System_LocalGovermentArea' table. You can move, or remove it, as needed.
-                    this.system_LocalGovermentAreaTableAdapter.Fill(this.localPDADataSet.System_LocalGovermentArea);
-                    // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
-                    this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
-                }).Start();
+                // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
+                this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
 
                 _systemBioDataStore = new System_BioDataStore();
                 _bioReaderThread = new Thread(() => { });
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -93,7 +89,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
             finally
             {
@@ -140,7 +136,7 @@ namespace PatientDataAdministration.Client
                     }
                     catch(Exception exception)
                     {
-                        LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                        LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                     }
                 }
 
@@ -156,7 +152,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -232,7 +228,7 @@ namespace PatientDataAdministration.Client
                         PreviousId = txtPreviousNumber.Text,
                         Sex = txtSex.Text,
                         Title = string.Empty,
-                        SiteId = _userCredential.AdministrationSiteInformation.Id,
+                        SiteId = _administrationStaffInformation.SiteId,
                         Surname = txtSurname.Text,
                         StateOfOrigin = 0,
                         PhoneNumber = txtPhoneNumber.Text, 
@@ -279,12 +275,13 @@ namespace PatientDataAdministration.Client
                     patientData.Patient_PatientNearFieldCommunicationData.IsValid = true;
                 }
 
-                patientData.Administration_StaffInformation = _userCredential.AdministrationStaffInformation;
+                patientData.Administration_StaffInformation = _administrationStaffInformation;
 
                 #endregion Patient Data Composition
 
                 pnlWaiting.Visible = true;
-                var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
+                var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient",
+                    Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
                 pnlWaiting.Visible = false;
 
                 if (result.Status)
@@ -307,7 +304,7 @@ namespace PatientDataAdministration.Client
                             NfcUid = _nfcUid ?? "",
                             PrimaryFinger = _bioDataPrimary ?? "",
                             SecondaryFinger = _bioDataSecondary ?? "",
-                            SiteId = _userCredential.AdministrationSiteInformation.Id
+                            SiteId = _administrationStaffInformation.SiteId
                         };
                         _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
                     }
@@ -339,6 +336,8 @@ namespace PatientDataAdministration.Client
                     _lblInformationText = @"Operation was Completed Successfully";
                     _lblInformationForeColor = Color.DarkGreen;
                     System.Media.SystemSounds.Exclamation.Play();
+
+                    MessageBox.Show(_lblInformationText);
                     btnClear_Click(this, e);
                 }
                 else
@@ -350,7 +349,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 lblInformation.Text = @"An unexpected error has occured. Please contact the Administrator";
                 lblInformation.ForeColor = Color.DarkRed;
                 pnlWaiting.Visible = false;
@@ -396,7 +395,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -427,7 +426,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -449,7 +448,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -479,28 +478,32 @@ namespace PatientDataAdministration.Client
 
                 foreach (var pds in _systemBioDataStores.Where(x => x.PepId != txtPepId.Text.Trim()))
                 {
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                    if (pds.PrimaryFinger != null)
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                            capturedBioDataPrimary,
+                            SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+
+                    if (pds.SecondaryFinger != null)
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
                         capturedBioDataPrimary,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
                     if (matched)
                         break;
 
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
-                        capturedBioDataPrimary,
-                        SGFPMSecurityLevel.HIGH, ref matched);
-
-                    if (matched)
-                        break;
-
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                    if (pds.PrimaryFinger != null)
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
                         capturedBioDataSecondary,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
                     if (matched)
                         break;
 
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                    if (pds.SecondaryFinger != null)
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
                         capturedBioDataSecondary,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
@@ -514,7 +517,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                LocalCore.TreatError(ex, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
                 return false;
             }
         }
@@ -537,7 +540,7 @@ namespace PatientDataAdministration.Client
                         {
                             _systemBioDataStores.AddRange(
                                 _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Where(
-                                    x => x.SiteId == _userCredential.AdministrationSiteInformation.Id).ToList());
+                                    x => x.SiteId == _administrationStaffInformation.SiteId).ToList());
                         }
                         
                         _lblInformationText = $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
@@ -548,7 +551,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
 
@@ -581,7 +584,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
 
@@ -663,7 +666,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -730,7 +733,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -765,7 +768,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -780,7 +783,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -878,7 +881,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -892,7 +895,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -907,7 +910,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -953,7 +956,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -1015,7 +1018,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
                 ClearContents();
             }
         }
@@ -1093,7 +1096,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                LocalCore.TreatError(exception, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
         }
 
@@ -1157,7 +1160,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, _userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
 

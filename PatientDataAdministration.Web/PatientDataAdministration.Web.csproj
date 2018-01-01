@@ -178,6 +178,8 @@
     <Content Include="Assets\img\login-bg\bg-8.jpg" />
     <Content Include="Assets\img\login-bg\hiv_aids_history.jpg" />
     <Content Include="Assets\img\pattern-cover.png" />
+    <Content Include="Assets\img\pda\icons8_Fingerprint_Scan_96px.png" />
+    <Content Include="Assets\img\pda\icons8_NFC_96px.png" />
     <Content Include="Assets\img\PDA_Assets.png" />
     <Content Include="Assets\img\product.png" />
     <Content Include="Assets\img\profile-cover.jpg" />
@@ -1051,6 +1053,7 @@
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Views\Security\Index.cshtml" />
     <Content Include="Views\SiteManagement\Index.cshtml" />
+    <Content Include="Views\PatientManagement\PatientOverview.cshtml" />
     <Content Include="Views\PatientManagement\PatientData.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

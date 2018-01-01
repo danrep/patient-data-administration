@@ -72,6 +72,24 @@
           <Property Name="DateReceived" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_SiteData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RemoteSiteId" Type="int" Nullable="false" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+          <Property Name="SiteCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteCodeExposedInfants" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteCodePediatric" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteCodePMTCT" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteCodeVCT" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteNameInformal" Type="nvarchar" MaxLength="255" />
+          <Property Name="SiteNameOfficial" Type="nvarchar" MaxLength="255" />
+          <Property Name="IsCurrent" Type="bit" Nullable="false" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="System_State">
           <Key>
             <PropertyRef Name="Id" />
@@ -104,6 +122,7 @@
           <EntitySet Name="System_ErrorLog" EntityType="Self.System_ErrorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Setting" EntityType="Self.System_Setting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_SiteData" EntityType="Self.System_SiteData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_State" EntityType="Self.System_State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_UpdateLog" EntityType="Self.System_UpdateLog" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -112,14 +131,33 @@
     <edmx:ConceptualModels>
       <Schema Namespace="LocalPDAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="LocalPDAEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
           <EntitySet Name="System_BioDataStore" EntityType="LocalPDAModel.System_BioDataStore" />
           <EntitySet Name="System_ErrorLog" EntityType="LocalPDAModel.System_ErrorLog" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="LocalPDAModel.System_LocalGovermentArea" />
           <EntitySet Name="System_Setting" EntityType="LocalPDAModel.System_Setting" />
+          <EntitySet Name="System_SiteData" EntityType="LocalPDAModel.System_SiteData" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
-          <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
         </EntityContainer>
+        <EntityType Name="Local_StaffInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RemoteId" Type="Int64" Nullable="false" />
+          <Property Name="StaffId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="AuthPayLoad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="System_BioDataStore">
           <Key>
             <PropertyRef Name="Id" />
@@ -169,6 +207,24 @@
           <Property Name="DateReceived" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_SiteData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <Property Name="SiteCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodeExposedInfants" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodePediatric" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodePMTCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteCodeVCT" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteNameInformal" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SiteNameOfficial" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="RemoteSiteId" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="System_State">
           <Key>
             <PropertyRef Name="Id" />
@@ -195,30 +251,31 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="Local_StaffInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RemoteId" Type="Int64" Nullable="false" />
-          <Property Name="StaffId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordData" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="SiteId" Type="Int32" Nullable="false" />
-          <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="AuthPayLoad" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LocalPDAModelStoreContainer" CdmEntityContainer="LocalPDAEntities" >
+          <EntitySetMapping Name="Local_StaffInformation">
+            <EntityTypeMapping TypeName="LocalPDAModel.Local_StaffInformation">
+              <MappingFragment StoreEntitySet="Local_StaffInformation">
+                <ScalarProperty Name="AuthPayLoad" ColumnName="AuthPayLoad" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordData" ColumnName="PasswordData" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+                <ScalarProperty Name="RemoteId" ColumnName="RemoteId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="System_BioDataStore">
             <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore">
               <MappingFragment StoreEntitySet="System_BioDataStore">
@@ -272,6 +329,25 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="System_SiteData">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_SiteData">
+              <MappingFragment StoreEntitySet="System_SiteData">
+                <ScalarProperty Name="RemoteSiteId" ColumnName="RemoteSiteId" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
+                <ScalarProperty Name="SiteNameInformal" ColumnName="SiteNameInformal" />
+                <ScalarProperty Name="SiteCodeVCT" ColumnName="SiteCodeVCT" />
+                <ScalarProperty Name="SiteCodePMTCT" ColumnName="SiteCodePMTCT" />
+                <ScalarProperty Name="SiteCodePediatric" ColumnName="SiteCodePediatric" />
+                <ScalarProperty Name="SiteCodeExposedInfants" ColumnName="SiteCodeExposedInfants" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="System_State">
             <EntityTypeMapping TypeName="LocalPDAModel.System_State">
               <MappingFragment StoreEntitySet="System_State">
@@ -296,25 +372,6 @@
                 <ScalarProperty Name="IsDownloaded" ColumnName="IsDownloaded" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Local_StaffInformation">
-            <EntityTypeMapping TypeName="LocalPDAModel.Local_StaffInformation">
-              <MappingFragment StoreEntitySet="Local_StaffInformation">
-                <ScalarProperty Name="AuthPayLoad" ColumnName="AuthPayLoad" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="PasswordData" ColumnName="PasswordData" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="StaffId" ColumnName="StaffId" />
-                <ScalarProperty Name="RemoteId" ColumnName="RemoteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

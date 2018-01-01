@@ -71,6 +71,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     existing.SiteNameOfficial = administrationSiteInformation.SiteNameOfficial;
                     existing.SiteCode = administrationSiteInformation.SiteCode;
                     existing.StateId = administrationSiteInformation.StateId;
+                    existing.LastUpdate = DateTime.Now;
 
                     _db.Entry(existing).State = EntityState.Modified;
                 }

@@ -1,14 +1,14 @@
-var handleDataTableDefault = function (table) {
-        "use strict";
-        0 !== table.length && table.DataTable({
-            responsive: !0
-        })
+var handleDataTableDefault = function (table, scrollX = false) {
+        0 !== table.length &&
+            table.DataTable({
+                responsive: true,
+                scrollX: scrollX
+            });
     },
     TableManageDefault = function () {
-        "use strict";
         return {
-            init: function (table) {
-                handleDataTableDefault(table);
+            init: function (table, scrollX = false) {
+                handleDataTableDefault(table, scrollX);
             }
         }
     }();

@@ -25,12 +25,13 @@ namespace PatientDataAdministration.Client
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Local_StaffInformation> Local_StaffInformation { get; set; }
         public virtual DbSet<System_BioDataStore> System_BioDataStore { get; set; }
         public virtual DbSet<System_ErrorLog> System_ErrorLog { get; set; }
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }
         public virtual DbSet<System_Setting> System_Setting { get; set; }
+        public virtual DbSet<System_SiteData> System_SiteData { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_UpdateLog> System_UpdateLog { get; set; }
-        public virtual DbSet<Local_StaffInformation> Local_StaffInformation { get; set; }
     }
 }

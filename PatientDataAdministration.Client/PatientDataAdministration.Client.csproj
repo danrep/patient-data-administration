@@ -183,6 +183,9 @@
     <Compile Include="System_Setting.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>
+    <Compile Include="System_SiteData.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_State.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>

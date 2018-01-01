@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using PatientDataAdministration.Data.InterchangeModels;
 
@@ -15,7 +12,7 @@ namespace PatientDataAdministration.Client
 {
     public static class LocalCore
     {
-        private static LocalPDAEntities PdaEntities = new LocalPDAEntities();
+        private static LocalPDAEntities _pdaEntities = new LocalPDAEntities();
         private static int _userCredentialId = 0;
 
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool isSilent = false)
@@ -28,7 +25,7 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                PdaEntities.System_ErrorLog.Add(new System_ErrorLog()
+                _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
                 {
                     IsDeleted = false, 
                     ErrorDate = DateTime.Now, 
@@ -44,20 +41,17 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        public static string BaseUrl => PdaEntities.System_Setting.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?
-                       .SettingValue;
-
         public static async Task<ResponseData> Get(string url)
         {
             try
             {
                 using (var client = new HttpClient())
                 {
-                    PdaEntities = new LocalPDAEntities();
+                    _pdaEntities = new LocalPDAEntities();
 
                     client.BaseAddress =
                         new Uri(
-                            PdaEntities.System_Setting.FirstOrDefault(
+                            _pdaEntities.System_Setting.FirstOrDefault(
                                 x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "");
 
                     client.DefaultRequestHeaders.Accept.Clear();
@@ -92,8 +86,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                PdaEntities = new LocalPDAEntities();
-                var request = (HttpWebRequest)WebRequest.Create((PdaEntities.System_Setting.FirstOrDefault(
+                _pdaEntities = new LocalPDAEntities();
+                var request = (HttpWebRequest)WebRequest.Create((_pdaEntities.System_Setting.FirstOrDefault(
                             x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "") + url);
 
                 request.Method = "POST";

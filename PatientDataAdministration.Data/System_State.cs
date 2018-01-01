@@ -17,7 +17,7 @@ namespace PatientDataAdministration.Data
         public int Id { get; set; }
         public string StateName { get; set; }
         public string StateCode { get; set; }
-        public bool IsDeleted { get; set; }
         public string StateAbbreviation { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

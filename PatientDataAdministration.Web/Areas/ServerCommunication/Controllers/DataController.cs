@@ -64,6 +64,36 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
+        public JsonResult GetSingleSite(int siteId = 0)
+        {
+            try
+            {
+                var site =
+                    _entities.Administration_SiteInformation.FirstOrDefault(
+                        x => !x.IsDeleted && x.Id == siteId);
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data =
+                                new
+                                {
+                                    Site = site,
+                                    State = _entities.System_State.FirstOrDefault(x => x.Id == site.StateId)
+                                }
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult GetLocalGovermentArea(int stateId = 0)
         {
             try

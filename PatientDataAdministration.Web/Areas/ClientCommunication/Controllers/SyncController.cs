@@ -50,7 +50,6 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     }
 
                     returnUpdatedPatients.Add(patientInformation);
-                    patientInformation = new PatientInformation();
                 }
 
                 return

@@ -55,6 +55,9 @@ namespace PatientDataAdministration.Client
             this.chkSecFin = new System.Windows.Forms.CheckBox();
             this.chkPriFin = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.pnlWaiting = new System.Windows.Forms.Panel();
+            this.label13 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.btnClear = new System.Windows.Forms.Button();
             this.pnlPersonalInformation = new System.Windows.Forms.Panel();
             this.label7 = new System.Windows.Forms.Label();
@@ -98,9 +101,6 @@ namespace PatientDataAdministration.Client
             this.system_BioDataStoreTableAdapter = new PatientDataAdministration.Client.LocalPDADataSetTableAdapters.System_BioDataStoreTableAdapter();
             this.btnClose = new System.Windows.Forms.Button();
             this.timerUpdateInformation = new System.Windows.Forms.Timer(this.components);
-            this.pnlWaiting = new System.Windows.Forms.Panel();
-            this.label13 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tmrSecureWindow = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -108,6 +108,8 @@ namespace PatientDataAdministration.Client
             this.groupBox2.SuspendLayout();
             this.pnlDataControl.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.pnlWaiting.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.pnlPersonalInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).BeginInit();
@@ -115,8 +117,6 @@ namespace PatientDataAdministration.Client
             this.pnlOfficialInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).BeginInit();
-            this.pnlWaiting.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -402,6 +402,40 @@ namespace PatientDataAdministration.Client
             this.label8.Size = new System.Drawing.Size(75, 15);
             this.label8.TabIndex = 60;
             this.label8.Text = "Data Control";
+            // 
+            // pnlWaiting
+            // 
+            this.pnlWaiting.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.pnlWaiting.Controls.Add(this.label13);
+            this.pnlWaiting.Controls.Add(this.pictureBox2);
+            this.pnlWaiting.Location = new System.Drawing.Point(246, 296);
+            this.pnlWaiting.Name = "pnlWaiting";
+            this.pnlWaiting.Size = new System.Drawing.Size(331, 86);
+            this.pnlWaiting.TabIndex = 136;
+            this.pnlWaiting.Visible = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.Transparent;
+            this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(80, 62);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(190, 15);
+            this.label13.TabIndex = 106;
+            this.label13.Text = "Operation In Progress. Please Wait";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
+            this.pictureBox2.Location = new System.Drawing.Point(151, 12);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 63;
+            this.pictureBox2.TabStop = false;
             // 
             // btnClear
             // 
@@ -843,40 +877,6 @@ namespace PatientDataAdministration.Client
             this.timerUpdateInformation.Interval = 500;
             this.timerUpdateInformation.Tick += new System.EventHandler(this.timerUpdateInformation_Tick);
             // 
-            // pnlWaiting
-            // 
-            this.pnlWaiting.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
-            this.pnlWaiting.Controls.Add(this.label13);
-            this.pnlWaiting.Controls.Add(this.pictureBox2);
-            this.pnlWaiting.Location = new System.Drawing.Point(246, 296);
-            this.pnlWaiting.Name = "pnlWaiting";
-            this.pnlWaiting.Size = new System.Drawing.Size(331, 86);
-            this.pnlWaiting.TabIndex = 136;
-            this.pnlWaiting.Visible = false;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(80, 62);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(190, 15);
-            this.label13.TabIndex = 106;
-            this.label13.Text = "Operation In Progress. Please Wait";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
-            this.pictureBox2.Location = new System.Drawing.Point(151, 12);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 63;
-            this.pictureBox2.TabStop = false;
-            // 
             // tmrSecureWindow
             // 
             this.tmrSecureWindow.Interval = 1000;
@@ -916,6 +916,9 @@ namespace PatientDataAdministration.Client
             this.pnlDataControl.ResumeLayout(false);
             this.pnlDataControl.PerformLayout();
             this.groupBox3.ResumeLayout(false);
+            this.pnlWaiting.ResumeLayout(false);
+            this.pnlWaiting.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.pnlPersonalInformation.ResumeLayout(false);
             this.pnlPersonalInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).EndInit();
@@ -925,9 +928,6 @@ namespace PatientDataAdministration.Client
             this.pnlOfficialInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).EndInit();
-            this.pnlWaiting.ResumeLayout(false);
-            this.pnlWaiting.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

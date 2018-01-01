@@ -23,6 +23,7 @@ namespace PatientDataAdministration.Data
         public string SiteCodeVCT { get; set; }
         public string SiteNameInformal { get; set; }
         public string SiteNameOfficial { get; set; }
+        public System.DateTime LastUpdate { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

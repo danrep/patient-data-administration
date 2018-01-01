@@ -30,13 +30,20 @@ namespace PatientDataAdministration.Client
 
                 System.Windows.Forms.Application.DoEvents();
 
+                if (!_localPdaEntities.System_SiteData.Any(x => !x.IsDeleted && x.IsCurrent))
+                {
+                    MessageBox.Show(@"You will need to BIND this Client to a Site. Please do this Under Settings");
+                    _status = true;
+                    return;
+                }
+
                 var credential =
                     _localPdaEntities.Local_StaffInformation.FirstOrDefault(
                         x => x.Email == txtUserName.Text.Trim() && !x.IsDeleted);
 
                 if (credential == null)
                 {
-                    if (CheckCredentialServer(out UserCredential userData))
+                    if (CheckCredentialServer(out Administration_StaffInformation userData))
                     {
                         GainAccess(userData);
                         _status = true;
@@ -46,7 +53,7 @@ namespace PatientDataAdministration.Client
                 {
                     if (Core.Encryption.IsSaltEncryptValid(txtPassword.Text.Trim(), credential.PasswordData,
                         credential.PasswordSalt))
-                        GainAccess(Newtonsoft.Json.JsonConvert.DeserializeObject<UserCredential>(credential.AuthPayLoad));
+                        GainAccess(Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(credential.AuthPayLoad));
                     else
                     {
                         MessageBox.Show(@"Your Password is Incorrect");
@@ -64,12 +71,12 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void GainAccess(UserCredential userCredential)
+        private void GainAccess(Administration_StaffInformation administrationStaffInformation)
         {
             try
             {
                 this.Hide();
-                var dataCentral = new DataCentral(userCredential);
+                var dataCentral = new DataCentral(administrationStaffInformation);
                 dataCentral.ShowDialog();
                 this.Show();
 
@@ -77,7 +84,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception e)
             {
-                LocalCore.TreatError(e, userCredential.AdministrationStaffInformation.Id);
+                LocalCore.TreatError(e, administrationStaffInformation.Id);
             }
         }
 
@@ -90,28 +97,16 @@ namespace PatientDataAdministration.Client
             else if (e.Control && e.Alt && e.Shift && e.KeyCode == Keys.L && AuthCode())
             {
                 this.Hide();
-                var dataCentral = new DataCentral(new UserCredential()
+                var dataCentral = new DataCentral(new Administration_StaffInformation()
                 {
-                    AdministrationStaffInformation = new Administration_StaffInformation()
-                    {
-                        IsDeleted = false,
-                        StaffId = "0000000000",
-                        FirstName = "System Administrator",
-                        Surname = "Codesistance",
-                        PasswordData = string.Empty,
-                        Id = 0,
-                        Email = "sys_admin_apin_pda@codesistance.com",
-                        SiteId = 0
-                    },
-                    AdministrationSiteInformation = new Administration_SiteInformation()
-                    {
-                        IsDeleted = false,
-                        Id = 0,
-                        SiteNameOfficial = "Local Administration",
-                        SiteCode = "LADMIN",
-                        SiteNameInformal = "LADMIN",
-                        StateId = 0
-                    }
+                    IsDeleted = false,
+                    StaffId = "0000000000",
+                    FirstName = "System Administrator",
+                    Surname = "Codesistance",
+                    PasswordData = string.Empty,
+                    Id = 0,
+                    Email = "sys_admin_apin_pda@codesistance.com",
+                    SiteId = 0
                 });
                 dataCentral.ShowDialog();
                 this.Show();
@@ -144,36 +139,36 @@ namespace PatientDataAdministration.Client
             setting.ShowDialog();
         }
 
-        private bool CheckCredentialServer(out UserCredential userCredential)
+        private bool CheckCredentialServer(out Administration_StaffInformation administrationStaffInformation)
         {
             var authData = $@"{txtUserName.Text.Trim()}*{txtPassword.Text.Trim()}";
             var result = LocalCore.Get($@"/ClientCommunication/User/Authenticate?authData={authData}");
 
-            userCredential = new UserCredential();
+            administrationStaffInformation = new Administration_StaffInformation();
             if (result.Result.Status)
             {
                 if (result.Result.Data != null)
                 {
                     var data =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<UserCredential>(
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(
                             Newtonsoft.Json.JsonConvert.SerializeObject(result.Result.Data));
 
-                    userCredential = data;
+                    administrationStaffInformation = data;
 
                     _localPdaEntities.Local_StaffInformation.Add(new Local_StaffInformation()
                     {
-                         AuthenticationState = data.AdministrationStaffInformation.AuthenticationState,
+                         AuthenticationState = data.AuthenticationState,
                          IsDeleted = false, 
-                         Surname = data.AdministrationStaffInformation.Surname, 
+                         Surname = data.Surname, 
                          AuthPayLoad = Newtonsoft.Json.JsonConvert.SerializeObject(result.Result.Data),
-                         DateRegistered = data.AdministrationStaffInformation.DateRegistered,
-                         Email = data.AdministrationStaffInformation.Email,
-                         FirstName = data.AdministrationStaffInformation.FirstName, 
-                         PasswordData = data.AdministrationStaffInformation.PasswordData,
-                         PasswordSalt = data.AdministrationStaffInformation.PasswordSalt,
-                         RemoteId = data.AdministrationStaffInformation.Id,
-                         SiteId = data.AdministrationStaffInformation.SiteId,
-                         StaffId = data.AdministrationStaffInformation.StaffId
+                         DateRegistered = data.DateRegistered,
+                         Email = data.Email,
+                         FirstName = data.FirstName, 
+                         PasswordData = data.PasswordData,
+                         PasswordSalt = data.PasswordSalt,
+                         RemoteId = data.Id,
+                         SiteId = data.SiteId,
+                         StaffId = data.StaffId
                     });
 
                     _localPdaEntities.SaveChanges();

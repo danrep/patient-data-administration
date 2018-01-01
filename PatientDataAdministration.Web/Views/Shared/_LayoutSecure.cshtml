@@ -6,7 +6,7 @@
     <title>APIN PDA Administration</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
-    <meta content="" name="author" />
+    <meta content="Codesistance" name="author" />
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link href="/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
@@ -17,6 +17,9 @@
     <link href="/assets/css/style-responsive.css" rel="stylesheet" />
     <link href="/assets/css/theme/default.css" rel="stylesheet" id="theme" />
     <link href="/assets/css/essential.css" rel="stylesheet" />
+
+    <link href="/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
+    <link href="/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
 
     <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
@@ -152,7 +155,7 @@
                             <span>Patient Management</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("PatientData", "PatientManagement", new {area = ""})">Patient Data</a></li>
+                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
                         </ul>
                     </li>
                     <li>
@@ -197,6 +200,7 @@
     <script src="/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
     <script src="/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
     <script src="/assets/js/table_manage_default_demo.js"></script>
+    <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
     <!--<script src="/assets/plugins/bootstrap-sweetalert/sweetalert.min.js"></script>-->
@@ -221,6 +225,13 @@
     <script>
         $(document).ready(function () {
             App.init();
+
+            $(".datepicker-default").datepicker({
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+                endDate: '@DateTime.Now.ToString("dd/MM/yyyy")',
+                todayBtn: true
+            });
         });
     </script>
 

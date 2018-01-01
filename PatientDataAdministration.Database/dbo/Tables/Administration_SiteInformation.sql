@@ -8,7 +8,10 @@
     [SiteCodeVCT]            NVARCHAR (255) NULL,
     [SiteNameInformal]       NVARCHAR (255) NULL,
     [SiteNameOfficial]       NVARCHAR (255) NULL,
+    [LastUpdate]             DATETIME       DEFAULT (getdate()) NOT NULL,
     [IsDeleted]              BIT            CONSTRAINT [DF_Administration_SiteInformation_IsDeleted] DEFAULT ((0)) NOT NULL,
     CONSTRAINT [PK_Administration_SiteInformation] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 

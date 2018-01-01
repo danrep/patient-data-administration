@@ -53,11 +53,11 @@ function resetDataTable(table) {
     table.dataTable().fnClearTable();
     table.dataTable().fnDestroy();
 };
-function reInitializeTable(table) {
+function reInitializeTable(table, scrollX = false) {
     if ($.fn.DataTable.isDataTable(table)) {
         table.dataTable().fnDestroy();
     }
-    TableManageDefault.init(table);
+    TableManageDefault.init(table, scrollX);
 };
 
 /*
