@@ -111,14 +111,23 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var capturedBioData = Convert.FromBase64String(GetBioData());
+                var image = GetBioData();
+                if (string.IsNullOrEmpty(image))
+                    return;
+
+                var capturedBioData = Convert.FromBase64String(image);
                 var matched = false;
                 System_BioDataStore patientData = null;
+                pnlWaiting.Visible = true;
+                Application.DoEvents();
 
                 foreach (var pds in _systemBioDataStores)
                 {
                     try
                     {
+                        if (string.IsNullOrEmpty(pds.PrimaryFinger) || string.IsNullOrEmpty(pds.SecondaryFinger))
+                            continue;
+
                         _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger), capturedBioData,
                             SGFPMSecurityLevel.HIGH, ref matched);
 
@@ -147,8 +156,12 @@ namespace PatientDataAdministration.Client
                 else
                 {
                     lblInformation.Text = @"No Match Found";
+                    MessageBox.Show(lblInformation.Text);
                     ClearContents();
                 }
+
+                pnlWaiting.Visible = false;
+                Application.DoEvents();
             }
             catch (Exception exception)
             {
@@ -339,6 +352,7 @@ namespace PatientDataAdministration.Client
 
                     MessageBox.Show(_lblInformationText);
                     btnClear_Click(this, e);
+                    UpdatePersistedData();
                 }
                 else
                 {
@@ -478,34 +492,33 @@ namespace PatientDataAdministration.Client
 
                 foreach (var pds in _systemBioDataStores.Where(x => x.PepId != txtPepId.Text.Trim()))
                 {
-                    if (pds.PrimaryFinger != null)
-                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
-                            capturedBioDataPrimary,
-                            SGFPMSecurityLevel.HIGH, ref matched);
-
-                    if (matched)
-                        break;
-
-                    if (pds.SecondaryFinger != null)
-                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                    if (string.IsNullOrEmpty(pds.PrimaryFinger) || string.IsNullOrEmpty(pds.SecondaryFinger))
+                        continue;
+                    
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
                         capturedBioDataPrimary,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
                     if (matched)
                         break;
 
-                    if (pds.PrimaryFinger != null)
-                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
-                        capturedBioDataSecondary,
-                        SGFPMSecurityLevel.HIGH, ref matched);
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                    capturedBioDataPrimary,
+                    SGFPMSecurityLevel.HIGH, ref matched);
 
                     if (matched)
                         break;
 
-                    if (pds.SecondaryFinger != null)
-                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
-                        capturedBioDataSecondary,
-                        SGFPMSecurityLevel.HIGH, ref matched);
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                    capturedBioDataSecondary,
+                    SGFPMSecurityLevel.HIGH, ref matched);
+
+                    if (matched)
+                        break;
+
+                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                    capturedBioDataSecondary,
+                    SGFPMSecurityLevel.HIGH, ref matched);
 
                     if (matched)
                         break;
@@ -1128,10 +1141,21 @@ namespace PatientDataAdministration.Client
                 }
                 else
                 {
-                    _lblBioDeviceInfoForeColor = Color.DarkRed;
-                    _lblBioDeviceInfoText = @"Device Unreachable";
-                    picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
-                    return string.Empty;
+                    if (iError == (int) SGFPMError.ERROR_WRONG_IMAGE)
+                    {
+                        _lblBioDeviceInfoForeColor = Color.DarkOrange;
+                        _lblBioDeviceInfoText = @"No Image Captured";
+                        picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
+                        System.Media.SystemSounds.Question.Play();
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        _lblBioDeviceInfoForeColor = Color.DarkRed;
+                        _lblBioDeviceInfoText = @"Device Unreachable. Please Re-attach.";
+                        picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
+                        return string.Empty;
+                    }
                 }
             }
             catch (Exception)

@@ -13,5 +13,10 @@ namespace PatientDataAdministration.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult MailTemplate()
+        {
+            return View();
+        }
     }
 }

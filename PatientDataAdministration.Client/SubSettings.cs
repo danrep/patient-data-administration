@@ -124,6 +124,7 @@ namespace PatientDataAdministration.Client
             {
                 // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
                 this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
+                LoadCurrentSite();
             }
             catch (Exception exception)
             {
@@ -146,6 +147,11 @@ namespace PatientDataAdministration.Client
                     previous.IsCurrent = false;
                     _localPdaEntities.Entry(previous).State = EntityState.Modified;
                     _localPdaEntities.SaveChanges();
+
+                    if (previous.Id != (int)ddlSite.SelectedValue)
+                    {
+                        _localPdaEntities.Database.ExecuteSqlCommand("TRUNCATE TABLE [System_BioDataStore]");
+                    }
                 }
 
                 var current =
@@ -161,6 +167,7 @@ namespace PatientDataAdministration.Client
 
                 lblInformation.Text = @"Done Saving Settings";
                 Application.DoEvents();
+                LoadCurrentSite();
             }
             catch (Exception exception)
             {
@@ -269,6 +276,20 @@ namespace PatientDataAdministration.Client
             {
                 LocalCore.TreatError(exception, 0);
             }
+        }
+
+        private void LoadCurrentSite()
+        {
+            var current = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent);
+            if (current != null)
+            {
+                lblCurrentSite.Text = @"Current Site: " + current.SiteNameOfficial;
+            }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -34,7 +34,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 },
                                 JsonRequestBehavior.AllowGet);
 
-                    var password = administrationStaffInformation.PhoneNumber;
+                    var password = Encryption.GetUniqueKey(6);
                     administrationStaffInformation.PasswordSalt = Encryption.GetUniqueKey(10);
                     administrationStaffInformation.PasswordData = Encryption.SaltEncrypt(password,
                         administrationStaffInformation.PasswordSalt);
@@ -42,6 +42,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     administrationStaffInformation.AuthenticationState = (int) Status.Active;
 
                     _db.Administration_StaffInformation.Add(administrationStaffInformation);
+                    var msg = $"Dear {administrationStaffInformation.Surname} {administrationStaffInformation.FirstName},<br />";
+                    msg += $"You have been profiled as a Site Administrator. Your Credentials are Below:<br />";
+                    msg += $"<strong>Username</strong>: {administrationStaffInformation.Email}<br />";
+                    msg += $"<strong>Password</strong>: {password}<br />";
+                    Core.Messaging.SendMail(administrationStaffInformation.Email, null, null,
+                        "Authentication Credential", msg, null);
                 }
                 else
                 {
@@ -145,6 +151,21 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
+                var administrationStaffInformation =
+                    _db.Administration_StaffInformation.FirstOrDefault(x => x.Id == userId);
+
+                if (administrationStaffInformation == null)
+                    return Json(new ResponseData { Status = false, Message = "User not Found" },
+                        JsonRequestBehavior.AllowGet);
+
+                var msg = $"Dear {administrationStaffInformation.Surname} {administrationStaffInformation.FirstName},<br />";
+                msg += $"You Requested that you be reminded of your Credentials. Find below:<br />";
+                msg += $"<strong>Username</strong>: {administrationStaffInformation.Email}<br />";
+                msg += $"<strong>Password</strong>: {Encryption.SaltDecrypt(administrationStaffInformation.PasswordData, administrationStaffInformation.PasswordSalt)}<br />";
+                
+                Messaging.SendMail(administrationStaffInformation.Email, null, null,
+                    "Password Request", msg, null);
+
                 return Json(new ResponseData { Status = true, Message = "Password Retrieval Successful"},
                     JsonRequestBehavior.AllowGet);
             }

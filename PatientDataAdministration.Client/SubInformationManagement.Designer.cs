@@ -198,9 +198,9 @@ namespace PatientDataAdministration.Client
             this.btnSearchBiometrics.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchBiometrics.Location = new System.Drawing.Point(170, 213);
             this.btnSearchBiometrics.Name = "btnSearchBiometrics";
-            this.btnSearchBiometrics.Size = new System.Drawing.Size(161, 23);
+            this.btnSearchBiometrics.Size = new System.Drawing.Size(161, 38);
             this.btnSearchBiometrics.TabIndex = 137;
-            this.btnSearchBiometrics.Text = "Search by Biometrics";
+            this.btnSearchBiometrics.Text = "Capture and Search by Biometrics";
             this.btnSearchBiometrics.UseVisualStyleBackColor = true;
             this.btnSearchBiometrics.Click += new System.EventHandler(this.btnSearchBiometrics_Click);
             // 
@@ -208,7 +208,7 @@ namespace PatientDataAdministration.Client
             // 
             this.lblBioDeviceInfo.AutoSize = true;
             this.lblBioDeviceInfo.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBioDeviceInfo.Location = new System.Drawing.Point(170, 239);
+            this.lblBioDeviceInfo.Location = new System.Drawing.Point(170, 254);
             this.lblBioDeviceInfo.Name = "lblBioDeviceInfo";
             this.lblBioDeviceInfo.Size = new System.Drawing.Size(16, 15);
             this.lblBioDeviceInfo.TabIndex = 83;
@@ -218,7 +218,7 @@ namespace PatientDataAdministration.Client
             // 
             this.lblNfcStatus.AutoSize = true;
             this.lblNfcStatus.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNfcStatus.Location = new System.Drawing.Point(170, 254);
+            this.lblNfcStatus.Location = new System.Drawing.Point(170, 269);
             this.lblNfcStatus.Name = "lblNfcStatus";
             this.lblNfcStatus.Size = new System.Drawing.Size(16, 15);
             this.lblNfcStatus.TabIndex = 138;
@@ -228,7 +228,7 @@ namespace PatientDataAdministration.Client
             // 
             this.lblTagUid.AutoSize = true;
             this.lblTagUid.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTagUid.Location = new System.Drawing.Point(170, 269);
+            this.lblTagUid.Location = new System.Drawing.Point(170, 284);
             this.lblTagUid.Name = "lblTagUid";
             this.lblTagUid.Size = new System.Drawing.Size(16, 15);
             this.lblTagUid.TabIndex = 139;
@@ -408,7 +408,7 @@ namespace PatientDataAdministration.Client
             this.pnlWaiting.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
             this.pnlWaiting.Controls.Add(this.label13);
             this.pnlWaiting.Controls.Add(this.pictureBox2);
-            this.pnlWaiting.Location = new System.Drawing.Point(246, 296);
+            this.pnlWaiting.Location = new System.Drawing.Point(245, 297);
             this.pnlWaiting.Name = "pnlWaiting";
             this.pnlWaiting.Size = new System.Drawing.Size(331, 86);
             this.pnlWaiting.TabIndex = 136;
@@ -800,7 +800,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
             this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(577, 11);
+            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(563, 11);
             this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
             this.btnRefreshNfcDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshNfcDevice.TabIndex = 133;
@@ -816,7 +816,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
             this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshBioDevice.Location = new System.Drawing.Point(720, 11);
+            this.btnRefreshBioDevice.Location = new System.Drawing.Point(706, 11);
             this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
             this.btnRefreshBioDevice.Size = new System.Drawing.Size(137, 41);
             this.btnRefreshBioDevice.TabIndex = 134;
@@ -862,9 +862,9 @@ namespace PatientDataAdministration.Client
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(863, 11);
+            this.btnClose.Location = new System.Drawing.Point(849, 11);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(76, 41);
+            this.btnClose.Size = new System.Drawing.Size(90, 41);
             this.btnClose.TabIndex = 135;
             this.btnClose.Text = "Close";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

@@ -114,11 +114,16 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         },
                         JsonRequestBehavior.AllowGet);
 
-                var patientsInState =
-                    _entities.Patient_PatientInformation.Count(x => !x.IsDeleted && x.HouseAddressState == state.Id);
-
                 var sitesInState =
                     _entities.Administration_SiteInformation.Count(x => !x.IsDeleted && x.StateId == state.Id);
+
+                var siteIds =
+                    _entities.Administration_SiteInformation.Where(x => !x.IsDeleted && x.StateId == state.Id)
+                        .Select(x => x.Id);
+
+                var patientsInState =
+                    _entities.Patient_PatientInformation.Count(x => !x.IsDeleted && siteIds.Contains(x.SiteId));
+
 
                 var average = 0.0;
                 if (sitesInState != 0)

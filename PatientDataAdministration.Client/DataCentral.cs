@@ -356,7 +356,7 @@ namespace PatientDataAdministration.Client
                 {
                     Param = "Initiating Synchronization Task: New Entries from Partner Sites"
                 });
-
+                var innerEntity = new LocalPDAEntities();
                 var pulled = 0;
                 while (true)
                 {
@@ -371,9 +371,9 @@ namespace PatientDataAdministration.Client
 
                     var listOfPepId = "";
 
-                    if (_localPdaEntities.System_BioDataStore.Any())
+                    if (innerEntity.System_BioDataStore.Any())
                     {
-                        var patientInformation = _localPdaEntities.System_BioDataStore.Select(x => x.PepId).ToList();
+                        var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
 
                         listOfPepId = patientInformation.Aggregate("",
                             (current, patientInfo) => current + $"{patientInfo},");
@@ -479,7 +479,8 @@ namespace PatientDataAdministration.Client
                     Param = "Initiating Synchronization Task: Modified Entries from Partner Sites"
                 });
 
-                var totalCount = _localPdaEntities.System_BioDataStore.Count();
+                var innerEntity = new LocalPDAEntities();
+                var totalCount = innerEntity.System_BioDataStore.Count();
 
                 for (var i = 0; i < totalCount; i += 100)
                 {
@@ -493,7 +494,7 @@ namespace PatientDataAdministration.Client
                     }
 
                     var patientsMatching =
-                        _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Select(
+                        innerEntity.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Select(
                             x => new PatientMatching() { PepId = x.PepId, LastUpdate = x.LastUpdate }).ToList();
 
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/CheckIfUpdated",

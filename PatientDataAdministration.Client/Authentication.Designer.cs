@@ -109,11 +109,11 @@ namespace PatientDataAdministration.Client
             this.btnSetting.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.btnSetting.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetting.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Administrative_Tools_24px;
-            this.btnSetting.Location = new System.Drawing.Point(34, 197);
+            this.btnSetting.Location = new System.Drawing.Point(76, 197);
             this.btnSetting.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(34, 32);
-            this.btnSetting.TabIndex = 17;
+            this.btnSetting.TabIndex = 16;
             this.btnSetting.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSetting.UseVisualStyleBackColor = false;
             this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
@@ -130,7 +130,7 @@ namespace PatientDataAdministration.Client
             this.btnLogIn.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogIn.Name = "btnLogIn";
             this.btnLogIn.Size = new System.Drawing.Size(113, 32);
-            this.btnLogIn.TabIndex = 16;
+            this.btnLogIn.TabIndex = 17;
             this.btnLogIn.Text = "Log In";
             this.btnLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnLogIn.UseVisualStyleBackColor = false;
@@ -143,7 +143,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnClose.Location = new System.Drawing.Point(324, 197);
+            this.btnClose.Location = new System.Drawing.Point(34, 197);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(34, 32);

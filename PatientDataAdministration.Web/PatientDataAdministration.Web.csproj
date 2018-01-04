@@ -1055,6 +1055,7 @@
     <Content Include="Views\SiteManagement\Index.cshtml" />
     <Content Include="Views\PatientManagement\PatientOverview.cshtml" />
     <Content Include="Views\PatientManagement\PatientData.cshtml" />
+    <Content Include="Views\Security\MailTemplate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

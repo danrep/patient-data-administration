@@ -34,7 +34,6 @@ namespace PatientDataAdministration.Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SubSettings));
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnSyncSystemData = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnSaveConnections = new System.Windows.Forms.Button();
@@ -44,12 +43,15 @@ namespace PatientDataAdministration.Client
             this.label11 = new System.Windows.Forms.Label();
             this.txtRemoteApi = new System.Windows.Forms.TextBox();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblCurrentSite = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.ddlState = new System.Windows.Forms.ComboBox();
             this.systemStateBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.localPDADataSet = new PatientDataAdministration.Client.LocalPDADataSet();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnSaveSite = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.ddlSite = new System.Windows.Forms.ComboBox();
@@ -82,7 +84,6 @@ namespace PatientDataAdministration.Client
             // 
             this.metroTabPage1.BackColor = System.Drawing.Color.Gray;
             this.metroTabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.metroTabPage1.Controls.Add(this.label3);
             this.metroTabPage1.Controls.Add(this.btnSyncSystemData);
             this.metroTabPage1.Controls.Add(this.groupBox1);
             this.metroTabPage1.Controls.Add(this.label2);
@@ -98,18 +99,6 @@ namespace PatientDataAdministration.Client
             this.metroTabPage1.Text = "Connections && Synchronization";
             this.metroTabPage1.VerticalScrollbarBarColor = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.Color.Transparent;
-            this.label3.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.DarkRed;
-            this.label3.Location = new System.Drawing.Point(352, 126);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(208, 26);
-            this.label3.TabIndex = 63;
-            this.label3.Text = "Pull Settings and Local Data Required for \r\nOperations";
-            // 
             // btnSyncSystemData
             // 
             this.btnSyncSystemData.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -121,7 +110,7 @@ namespace PatientDataAdministration.Client
             this.btnSyncSystemData.ForeColor = System.Drawing.Color.White;
             this.btnSyncSystemData.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
             this.btnSyncSystemData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSyncSystemData.Location = new System.Drawing.Point(-424, -253);
+            this.btnSyncSystemData.Location = new System.Drawing.Point(-618, -339);
             this.btnSyncSystemData.Name = "btnSyncSystemData";
             this.btnSyncSystemData.Size = new System.Drawing.Size(218, 32);
             this.btnSyncSystemData.TabIndex = 59;
@@ -175,13 +164,14 @@ namespace PatientDataAdministration.Client
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.DarkRed;
+            this.label1.ForeColor = System.Drawing.Color.SteelBlue;
             this.label1.Location = new System.Drawing.Point(352, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(223, 26);
             this.label1.TabIndex = 60;
             this.label1.Text = "Minimum Requirements for this Feature are:\r\nRAM of 8Gb and CPU speed of over 2.5G" +
     "Hz";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // chkCurrentOnDemandSync
             // 
@@ -216,6 +206,8 @@ namespace PatientDataAdministration.Client
             // 
             // metroTabPage2
             // 
+            this.metroTabPage2.Controls.Add(this.label6);
+            this.metroTabPage2.Controls.Add(this.lblCurrentSite);
             this.metroTabPage2.Controls.Add(this.label5);
             this.metroTabPage2.Controls.Add(this.label4);
             this.metroTabPage2.Controls.Add(this.ddlState);
@@ -228,6 +220,31 @@ namespace PatientDataAdministration.Client
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Operational Site";
             this.metroTabPage2.VerticalScrollbarBarColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.Color.DarkRed;
+            this.label6.Location = new System.Drawing.Point(349, 119);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(218, 26);
+            this.label6.TabIndex = 65;
+            this.label6.Text = "A modification of this Setting will Clear the \r\nPatient Data held by this Unit";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // lblCurrentSite
+            // 
+            this.lblCurrentSite.AutoSize = true;
+            this.lblCurrentSite.BackColor = System.Drawing.Color.Transparent;
+            this.lblCurrentSite.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCurrentSite.ForeColor = System.Drawing.Color.DarkGreen;
+            this.lblCurrentSite.Location = new System.Drawing.Point(3, 119);
+            this.lblCurrentSite.Name = "lblCurrentSite";
+            this.lblCurrentSite.Size = new System.Drawing.Size(16, 13);
+            this.lblCurrentSite.TabIndex = 68;
+            this.lblCurrentSite.Text = "...";
             // 
             // label5
             // 
@@ -278,6 +295,7 @@ namespace PatientDataAdministration.Client
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.btnSaveSite);
             this.groupBox2.Controls.Add(this.btnRefresh);
             this.groupBox2.Location = new System.Drawing.Point(0, 171);
@@ -285,6 +303,18 @@ namespace PatientDataAdministration.Client
             this.groupBox2.Size = new System.Drawing.Size(577, 58);
             this.groupBox2.TabIndex = 63;
             this.groupBox2.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.label3.Location = new System.Drawing.Point(44, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(208, 26);
+            this.label3.TabIndex = 64;
+            this.label3.Text = "Pull Settings and Local Data Required for \r\nOperations";
             // 
             // btnSaveSite
             // 
@@ -406,6 +436,7 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemSiteDataBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -425,7 +456,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private MetroCheckBox chkCurrentOnDemandSync;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnSyncSystemData;
         private MetroTabPage metroTabPage2;
         private System.Windows.Forms.ComboBox ddlSite;
@@ -440,5 +470,8 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.BindingSource systemStateBindingSource;
         private LocalPDADataSetTableAdapters.System_StateTableAdapter system_StateTableAdapter;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblCurrentSite;
+        private System.Windows.Forms.Label label6;
     }
 }

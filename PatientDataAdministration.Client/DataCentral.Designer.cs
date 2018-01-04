@@ -37,7 +37,6 @@ namespace PatientDataAdministration.Client
             this.btnPatientManagement = new System.Windows.Forms.Button();
             this.btnDispensationHistory = new System.Windows.Forms.Button();
             this.btnSchedule = new System.Windows.Forms.Button();
-            this.btnOperations = new System.Windows.Forms.Button();
             this.btnSync = new System.Windows.Forms.Button();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.tmrPostInfoLogs = new System.Windows.Forms.Timer(this.components);
@@ -85,11 +84,10 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.Controls.Add(this.btnPatientManagement);
             this.flowLayoutPanel1.Controls.Add(this.btnDispensationHistory);
             this.flowLayoutPanel1.Controls.Add(this.btnSchedule);
-            this.flowLayoutPanel1.Controls.Add(this.btnOperations);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 63);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(782, 195);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(782, 211);
             this.flowLayoutPanel1.TabIndex = 15;
             // 
             // btnPatientManagement
@@ -129,7 +127,7 @@ namespace PatientDataAdministration.Client
             this.btnDispensationHistory.Name = "btnDispensationHistory";
             this.btnDispensationHistory.Size = new System.Drawing.Size(106, 195);
             this.btnDispensationHistory.TabIndex = 3;
-            this.btnDispensationHistory.Text = "Dispensation History\r\n\r\n";
+            this.btnDispensationHistory.Text = "Consultation and Dispensation Register\r\n\r\n";
             this.btnDispensationHistory.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDispensationHistory.UseVisualStyleBackColor = true;
             // 
@@ -149,30 +147,9 @@ namespace PatientDataAdministration.Client
             this.btnSchedule.Name = "btnSchedule";
             this.btnSchedule.Size = new System.Drawing.Size(106, 195);
             this.btnSchedule.TabIndex = 4;
-            this.btnSchedule.Text = "Appointments, Messaging and Schedules \r\n\r\n";
+            this.btnSchedule.Text = "Appointments and Messaging \r\n";
             this.btnSchedule.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnSchedule.UseVisualStyleBackColor = true;
-            // 
-            // btnOperations
-            // 
-            this.btnOperations.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
-            this.btnOperations.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnOperations.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOperations.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnOperations.FlatAppearance.BorderSize = 2;
-            this.btnOperations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnOperations.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOperations.ForeColor = System.Drawing.Color.White;
-            this.btnOperations.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Flow_Chart_96px;
-            this.btnOperations.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnOperations.Location = new System.Drawing.Point(339, 3);
-            this.btnOperations.Name = "btnOperations";
-            this.btnOperations.Size = new System.Drawing.Size(106, 195);
-            this.btnOperations.TabIndex = 14;
-            this.btnOperations.Text = "Queries and Operations\r\n\r\n";
-            this.btnOperations.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnOperations.UseVisualStyleBackColor = true;
-            this.btnOperations.Click += new System.EventHandler(this.btnOperations_Click);
             // 
             // btnSync
             // 
@@ -443,7 +420,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label lblUserInformation;
         private System.Windows.Forms.ListBox lstBoxInfoLog;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnOperations;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.PictureBox picConnectionAvailable;
