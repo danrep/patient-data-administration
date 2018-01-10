@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -42,6 +44,37 @@ namespace PatientDataAdministration.ClientUpdater
                 Console.WriteLine(
                     $@"Hello there. This is an automated process. Please do not interrupt or interfere. APIN PDA will resume shortly.");
                 Console.WriteLine($@"Applying Update Version {updateDataResolved.VersionNumber}.");
+
+                if (updateDataResolved.IsDbRefreshRequired)
+                {
+                    try
+                    {
+                        var dbName = "LocalPDA";
+                        var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                        using (var connection = new SqlConnection(connectionString))
+                        {
+                            connection.Open();
+                            var cmd = connection.CreateCommand();
+                            cmd.CommandText = $"exec sp_detach_db {dbName}";
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        var outputFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                        var mdfFilename = dbName + ".mdf";
+                        var dbFileName = Path.Combine(outputFolder, mdfFilename);
+                        var logFileName = Path.Combine(outputFolder, $"{dbName}_log.ldf");
+
+                        if (File.Exists(logFileName))
+                        {
+                            File.Delete(logFileName);
+                            File.Delete(dbFileName);
+                        }
+                    }
+                    catch
+                    {
+                        //
+                    }
+                }
 
                 var files = Directory.EnumerateFiles(_storeLocation).ToList();
                 var i = 1.0;

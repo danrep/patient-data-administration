@@ -31,7 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Splash));
             this.label1 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.tmrStartUp = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.pnlUpdate = new System.Windows.Forms.Panel();
             this.lblUpdateInfo = new System.Windows.Forms.Label();
@@ -50,33 +50,33 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Enabled = false;
-            this.label1.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(10, 13);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label1.Size = new System.Drawing.Size(11, 12);
+            this.label1.Size = new System.Drawing.Size(16, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "...";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // timer1
+            // tmrStartUp
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 3000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.tmrStartUp.Enabled = true;
+            this.tmrStartUp.Interval = 3000;
+            this.tmrStartUp.Tick += new System.EventHandler(this.tmrStartUp_Tick);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.BackColor = System.Drawing.Color.White;
             this.label2.Enabled = false;
-            this.label2.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Black;
             this.label2.Location = new System.Drawing.Point(10, 34);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(11, 12);
+            this.label2.Size = new System.Drawing.Size(16, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "...";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -98,7 +98,7 @@
             // 
             this.lblUpdateInfo.BackColor = System.Drawing.Color.White;
             this.lblUpdateInfo.Enabled = false;
-            this.lblUpdateInfo.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUpdateInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdateInfo.Location = new System.Drawing.Point(117, 37);
             this.lblUpdateInfo.Name = "lblUpdateInfo";
             this.lblUpdateInfo.Size = new System.Drawing.Size(218, 39);
@@ -110,7 +110,7 @@
             // 
             this.lblUpdateInfoHead.BackColor = System.Drawing.Color.White;
             this.lblUpdateInfoHead.Enabled = false;
-            this.lblUpdateInfoHead.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUpdateInfoHead.Font = new System.Drawing.Font("Lato", 9.749999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdateInfoHead.Location = new System.Drawing.Point(117, 14);
             this.lblUpdateInfoHead.Name = "lblUpdateInfoHead";
             this.lblUpdateInfoHead.Size = new System.Drawing.Size(218, 23);
@@ -123,7 +123,7 @@
             this.btnProfile.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnProfile.BackColor = System.Drawing.Color.White;
             this.btnProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnProfile.Location = new System.Drawing.Point(117, 79);
@@ -140,7 +140,7 @@
             this.btnYes.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnYes.BackColor = System.Drawing.Color.White;
             this.btnYes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnYes.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnYes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnYes.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
             this.btnYes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnYes.Location = new System.Drawing.Point(229, 79);
@@ -206,7 +206,7 @@
 
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer tmrStartUp;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel pnlUpdate;
         private System.Windows.Forms.PictureBox pictureBox2;

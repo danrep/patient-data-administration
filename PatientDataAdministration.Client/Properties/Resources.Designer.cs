@@ -19,7 +19,7 @@ namespace PatientDataAdministration.Client.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -97,6 +97,64 @@ namespace PatientDataAdministration.Client.Properties {
             get {
                 object obj = ResourceManager.GetObject("apin-weblogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [master]
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULL_DEFAULT OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULLS OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_PADDING OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_WARNINGS OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ARITHABORT OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_CLOSE ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_SHRINK ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_UPDATE_STATISTICS ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET CURSOR_CLOSE_ON_COMMIT OFF 
+        ///GO
+        ///A [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DatabaseInstallScript {
+            get {
+                return ResourceManager.GetString("DatabaseInstallScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [master]
+        ///GO
+        ///CREATE DATABASE [LOCALPDA]
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULL_DEFAULT OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULLS OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_PADDING OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ANSI_WARNINGS OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET ARITHABORT OFF 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_CLOSE ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_SHRINK ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET AUTO_UPDATE_STATISTICS ON 
+        ///GO
+        ///ALTER DATABASE [LOCALPDA] SET CU [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string DatabaseMigrateScript {
+            get {
+                return ResourceManager.GetString("DatabaseMigrateScript", resourceCulture);
             }
         }
         

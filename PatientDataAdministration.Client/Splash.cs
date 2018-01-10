@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PatientDataAdministration.Client
 {
@@ -21,22 +22,6 @@ namespace PatientDataAdministration.Client
         private void Splash_Load(object sender, EventArgs e)
         {
             label1.Text = ConfigurationManager.AppSettings["appVersion"].ToString();
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                timer1.Enabled = false;
-               
-                if (!_finalControl)
-                    CheckForDownloadedUpdates();
-                else this.Close();
-            }
-            catch 
-            {
-                // Safety Measure for Graceful Closure
-            }
         }
 
         private void Splash_Shown(object sender, EventArgs e)
@@ -84,6 +69,25 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void StartUp()
+        {
+            InitializeDataStore();
+            CheckForDownloadedUpdates();
+        }
+
+        private void InitializeDataStore()
+        {
+            try
+            {
+                LocalCore.GetLocalDb("LOCALPDA");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(@"An error occurred during Initialization: " + e.Message);
+                this.Close();
+            }
+        }
+
         private void CheckForDownloadedUpdates()
         {
             try
@@ -113,8 +117,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
-                throw;
+                LocalCore.TreatError(exception, 0);
             }
         }
 
@@ -149,13 +152,30 @@ namespace PatientDataAdministration.Client
                 _finalControl = true;
                 this.Show();
 
-                timer1.Enabled = true;
+                tmrStartUp.Enabled = true;
                 ShowInfo("Shutting Down...");
             }
             catch (Exception e)
             {
                 LocalCore.TreatError(e, 0, true);
                this.Close();
+            }
+        }
+
+        private void tmrStartUp_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                tmrStartUp.Enabled = false;
+
+                if (!_finalControl)
+                    StartUp();
+                else
+                    this.Close();
+            }
+            catch
+            {
+                // Safety Measure for Graceful Closure
             }
         }
     }

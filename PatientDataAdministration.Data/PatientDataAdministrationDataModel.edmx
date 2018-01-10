@@ -179,6 +179,7 @@
           <Property Name="ServerUsername" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="ServerPassword" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FolderLocation" Type="varchar(max)" Nullable="false" />
+          <Property Name="IsDbRefreshRequired" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <Function Name="Sp_Administration_GetAgeDistro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -408,6 +409,7 @@
           <Property Name="ServerPassword" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsDbRefreshRequired" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -608,6 +610,7 @@
           <EntitySetMapping Name="System_Update">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_Update">
               <MappingFragment StoreEntitySet="System_Update">
+                <ScalarProperty Name="IsDbRefreshRequired" ColumnName="IsDbRefreshRequired" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="FolderLocation" ColumnName="FolderLocation" />
                 <ScalarProperty Name="ServerPassword" ColumnName="ServerPassword" />

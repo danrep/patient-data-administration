@@ -23,8 +23,9 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,11 +51,24 @@
   <PropertyGroup>
     <ApplicationIcon>icons8_Facial_Recognition.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>F0FFB09E2059E1CAC6795370F574D3BE46C51B7E</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>PatientDataAdministration.Client_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -87,7 +101,9 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -110,6 +126,12 @@
     </Compile>
     <Compile Include="Authentication.Designer.cs">
       <DependentUpon>Authentication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InstallerClass.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="InstallerClass.Designer.cs">
+      <DependentUpon>InstallerClass.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalCache.cs" />
     <Compile Include="LocalPDADataSet.cs">
@@ -262,19 +284,18 @@
       <DependentUpon>LocalPDA.edmx</DependentUpon>
       <LastGenOutput>LocalPDA.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="LocalPDA.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="LocalPDA.mdf" />
     <Content Include="LocalPDA.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LocalPDA.edmx</DependentUpon>
       <LastGenOutput>LocalPDA.cs</LastGenOutput>
     </Content>
     <Content Include="LocalPDA_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\DatabaseMigrateScript.txt" />
+    <None Include="Resources\DatabaseInstallScript.txt" />
     <None Include="Resources\800px_COLOURBOX18331728.jpg" />
     <None Include="Resources\icons8_Load_96px.png" />
     <None Include="Resources\icons8_Waiting_Room_96px.png" />

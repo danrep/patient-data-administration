@@ -24,5 +24,6 @@ namespace PatientDataAdministration.Data
         public string ServerPassword { get; set; }
         public string FolderLocation { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsDbRefreshRequired { get; set; }
     }
 }

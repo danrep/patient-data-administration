@@ -1,0 +1,2083 @@
+USE [master]
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [{dbLocation}\LOCALPDA.MDF].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET AUTO_SHRINK ON 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET  MULTI_USER 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET DELAYED_DURABILITY = DISABLED 
+GO
+USE [{dbLocation}\LOCALPDA.MDF]
+GO
+/****** Object:  Table [dbo].[Local_StaffInformation]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Local_StaffInformation](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RemoteId] [bigint] NOT NULL,
+	[StaffId] [varchar](100) NULL,
+	[Surname] [varchar](100) NOT NULL,
+	[FirstName] [varchar](100) NOT NULL,
+	[Email] [varchar](100) NOT NULL,
+	[PasswordData] [varchar](1000) NOT NULL,
+	[PasswordSalt] [varchar](100) NOT NULL,
+	[DateRegistered] [datetime] NOT NULL,
+	[SiteId] [int] NOT NULL,
+	[AuthenticationState] [int] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+	[AuthPayLoad] [varchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_BioDataStore]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_BioDataStore](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[PepId] [varchar](100) NOT NULL,
+	[SiteId] [int] NOT NULL,
+	[FullName] [varchar](100) NOT NULL,
+	[PrimaryFinger] [varchar](max) NULL,
+	[SecondaryFinger] [varchar](max) NULL,
+	[NfcUid] [varchar](100) NULL,
+	[PatientData] [varchar](max) NULL,
+	[LastUpdate] [datetime] NOT NULL,
+	[LastSync] [datetime] NOT NULL,
+	[IsSync] [bit] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_ErrorLog]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_ErrorLog](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[UserId] [int] NOT NULL,
+	[ErrorDate] [datetime] NOT NULL,
+	[ErrorString] [varchar](100) NULL,
+	[ErrorMessage] [varchar](1000) NULL,
+	[SyncStatus] [bit] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_LocalGovermentArea]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_LocalGovermentArea](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[LocalGovermentAreaName] [varchar](100) NULL,
+	[StateID] [int] NULL,
+	[LocalGovermentAreaCode] [char](3) NULL,
+	[IsDeleted] [bit] NOT NULL DEFAULT ((0)),
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_Setting]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_Setting](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SettingKey] [int] NOT NULL,
+	[SettingValue] [varchar](max) NOT NULL,
+	[DateReceived] [datetime] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_SiteData]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[System_SiteData](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RemoteSiteId] [int] NOT NULL,
+	[StateId] [int] NOT NULL,
+	[SiteCode] [nvarchar](255) NULL,
+	[SiteCodeExposedInfants] [nvarchar](255) NULL,
+	[SiteCodePediatric] [nvarchar](255) NULL,
+	[SiteCodePMTCT] [nvarchar](255) NULL,
+	[SiteCodeVCT] [nvarchar](255) NULL,
+	[SiteNameInformal] [nvarchar](255) NULL,
+	[SiteNameOfficial] [nvarchar](255) NULL,
+	[IsCurrent] [bit] NOT NULL,
+	[LastUpdate] [datetime] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+/****** Object:  Table [dbo].[System_State]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_State](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[StateName] [varchar](50) NULL,
+	[StateCode] [varchar](4) NULL,
+	[IsDeleted] [bit] NOT NULL DEFAULT ((0)),
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_UpdateLog]    Script Date: 1/9/2018 6:13:50 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_UpdateLog](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[DateProvided] [datetime] NOT NULL,
+	[DateDownloaded] [datetime] NOT NULL,
+	[IsDownloaded] [bit] NOT NULL,
+	[IsApplied] [bit] NOT NULL,
+	[IsVerified] [bit] NOT NULL,
+	[VersionNumber] [bit] NOT NULL,
+	[ServerLocation] [varchar](100) NOT NULL,
+	[ServerUsername] [varchar](100) NOT NULL,
+	[ServerPassword] [varchar](100) NOT NULL,
+	[FolderLocation] [varchar](max) NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+SET IDENTITY_INSERT [dbo].[System_LocalGovermentArea] ON 
+
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (1, N'Gwagwalada', 15, N'1  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (2, N'Kuje', 15, N'2  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (3, N'Abaji', 15, N'3  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (4, N'Abuja Municipal', 15, N'4  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (5, N'Bwari', 15, N'5  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (6, N'Kwali  ', 15, N'6  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (7, N'Aba North', 1, N'7  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (8, N'Aba South', 1, N'8  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (9, N'Arochukwu', 1, N'9  ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (10, N'Bende', 1, N'10 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (11, N'Ikwuano', 1, N'11 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (12, N'Isiala-Ngwa North', 1, N'12 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (13, N'Isiala-Ngwa South', 1, N'13 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (14, N'Isuikwato', 1, N'14 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (15, N'Obi Nwa', 1, N'15 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (16, N'Ohafia', 1, N'16 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (17, N'Osisioma', 1, N'17 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (18, N'Ngwa', 1, N'18 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (19, N'Ugwunagbo', 1, N'19 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (20, N'Ukwa East', 1, N'20 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (21, N'Ukwa West', 1, N'21 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (22, N'Umuahia North', 1, N'22 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (23, N'Umuahia South', 1, N'23 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (24, N'Umu-Neochi ', 1, N'24 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (25, N'Demsa', 2, N'25 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (26, N'Fufore', 2, N'26 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (27, N'Ganaye', 2, N'27 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (28, N'Gireri', 2, N'28 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (29, N'Gombi', 2, N'29 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (30, N'Guyuk', 2, N'30 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (31, N'Hong', 2, N'31 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (32, N'Jada', 2, N'32 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (33, N'Lamurde', 2, N'33 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (34, N'Madagali', 2, N'34 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (35, N'Maiha ', 2, N'35 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (36, N'Mayo-Belwa', 2, N'36 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (37, N'Michika', 2, N'37 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (38, N'Mubi North', 2, N'38 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (39, N'Mubi South', 2, N'39 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (40, N'Numan', 2, N'40 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (41, N'Shelleng', 2, N'41 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (42, N'Song', 2, N'42 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (43, N'Toungo', 2, N'43 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (44, N'Yola North', 2, N'44 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (45, N'Yola South ', 2, N'45 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (46, N'Abak', 3, N'46 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (47, N'Eastern Obolo', 3, N'47 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (48, N'Eket', 3, N'48 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (49, N'Esit Eket', 3, N'49 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (50, N'Essien Udim', 3, N'50 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (51, N'Etim Ekpo', 3, N'51 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (52, N'Etinan', 3, N'52 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (53, N'Ibeno', 3, N'53 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (54, N'Ibesikpo Asutan', 3, N'54 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (55, N'Ibiono Ibom', 3, N'55 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (56, N'Ika', 3, N'56 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (57, N'Ikono', 3, N'57 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (58, N'Ikot Abasi', 3, N'58 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (59, N'Ikot Ekpene', 3, N'59 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (60, N'Ini', 3, N'60 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (61, N'Itu', 3, N'61 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (62, N'Mbo', 3, N'62 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (63, N'Mkpat Enin', 3, N'63 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (64, N'Nsit Atai', 3, N'64 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (65, N'Nsit Ibom', 3, N'65 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (66, N'Nsit Ubium', 3, N'66 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (67, N'Obot Akara', 3, N'67 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (68, N'Okobo', 3, N'68 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (69, N'Onna', 3, N'69 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (70, N'Oron ', 3, N'70 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (71, N'Oruk Anam', 3, N'71 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (72, N'Udung Uko', 3, N'72 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (73, N'Ukanafun', 3, N'73 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (74, N'Uruan', 3, N'74 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (75, N'Urue-Offong/Oruko', 3, N'75 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (76, N'Uyo ', 3, N'76 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (77, N'Aguata', 4, N'77 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (78, N'Anambra East', 4, N'78 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (79, N'Anambra West', 4, N'79 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (80, N'Anaocha', 4, N'80 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (81, N'Awka North', 4, N'81 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (82, N'Awka South', 4, N'82 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (83, N'Ayamelum', 4, N'83 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (84, N'Dunukofia', 4, N'84 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (85, N'Ekwusigo', 4, N'85 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (86, N'Idemili North', 4, N'86 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (87, N'Idemili south', 4, N'87 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (88, N'Ihiala', 4, N'88 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (89, N'Njikoka', 4, N'89 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (90, N'Nnewi North', 4, N'90 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (91, N'Nnewi South', 4, N'91 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (92, N'Ogbaru', 4, N'92 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (93, N'Onitsha North', 4, N'93 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (94, N'Onitsha South', 4, N'94 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (95, N'Orumba North', 4, N'95 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (96, N'Orumba South', 4, N'96 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (97, N'Oyi  ', 4, N'97 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (98, N'Bauchi  ', 6, N'98 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (99, N'Alkaleri', 6, N'99 ', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (100, N'Bauchi', 6, N'100', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (101, N'Bogoro', 6, N'101', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (102, N'Damban', 6, N'102', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (103, N'Darazo', 6, N'103', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (104, N'Dass', 6, N'104', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (105, N'Ganjuwa', 6, N'105', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (106, N'Giade', 6, N'106', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (107, N'Itas/Gadau', 6, N'107', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (108, N'Jama''are', 6, N'108', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (109, N'Katagum', 6, N'109', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (110, N'Kirfi', 6, N'110', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (111, N'Misau', 6, N'111', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (112, N'Ningi', 6, N'112', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (113, N'Shira', 6, N'113', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (114, N'Tafawa-Balewa', 6, N'114', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (115, N'Toro', 6, N'115', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (116, N'Warji', 6, N'116', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (117, N'Zaki  ', 6, N'117', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (118, N'Bayelsa  ', 5, N'118', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (119, N'Brass', 5, N'119', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (120, N'Ekeremor', 5, N'120', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (121, N'Kolokuma/Opokuma', 5, N'121', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (122, N'Nembe', 5, N'122', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (123, N'Ogbia', 5, N'123', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (124, N'Sagbama', 5, N'124', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (125, N'Southern Jaw', 5, N'125', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (126, N'Yenegoa  Benue Makurdi Ado', 5, N'126', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (127, N'Agatu', 5, N'127', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (128, N'Apa', 5, N'128', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (129, N'Buruku', 5, N'129', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (130, N'Gboko', 5, N'130', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (131, N'Guma', 5, N'131', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (132, N'Gwer East', 5, N'132', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (133, N'Gwer West', 5, N'133', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (134, N'Katsina-Ala', 5, N'134', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (135, N'Konshisha', 5, N'135', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (136, N'Kwande', 5, N'136', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (137, N'Logo', 5, N'137', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (138, N'Makurdi', 5, N'138', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (139, N'Obi', 5, N'139', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (140, N'Ogbadibo', 5, N'140', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (141, N'Oju', 5, N'141', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (142, N'Okpokwu', 5, N'142', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (143, N'Ohimini', 5, N'143', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (144, N'Oturkpo', 5, N'144', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (145, N'Tarka', 5, N'145', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (146, N'Ukum', 5, N'146', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (147, N'Ushongo', 5, N'147', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (148, N'Vandeikya  ', 5, N'148', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (150, N'Abadam', 8, N'150', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (151, N'Askira/Uba', 8, N'151', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (152, N'Bama', 8, N'152', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (153, N'Bayo', 8, N'153', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (154, N'Biu', 8, N'154', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (155, N'Chibok', 8, N'155', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (156, N'Damboa', 8, N'156', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (157, N'Dikwa', 8, N'157', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (158, N'Gubio', 8, N'158', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (159, N'Guzamala', 8, N'159', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (160, N'Gwoza', 8, N'160', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (161, N'Hawul', 8, N'161', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (162, N'Jere', 8, N'162', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (163, N'Kaga', 8, N'163', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (164, N'Kala/Balge', 8, N'164', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (165, N'Konduga', 8, N'165', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (166, N'Kukawa', 8, N'166', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (167, N'Kwaya Kusar', 8, N'167', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (168, N'Mafa', 8, N'168', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (169, N'Magumeri', 8, N'169', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (170, N'Maiduguri', 8, N'170', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (171, N'Marte', 8, N'171', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (172, N'Mobbar', 8, N'172', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (173, N'Monguno', 8, N'173', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (174, N'Ngala', 8, N'174', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (175, N'Nganzai', 8, N'175', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (176, N'Shani  ', 8, N'176', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (177, N'Akpabuyo', 9, N'177', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (178, N'Odukpani', 9, N'178', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (179, N'Akamkpa', 9, N'179', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (180, N'Biase', 9, N'180', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (181, N'Abi', 9, N'181', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (182, N'Ikom', 9, N'182', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (183, N'Yarkur', 9, N'183', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (184, N'Odubra', 9, N'184', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (185, N'Boki', 9, N'185', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (186, N'Ogoja', 9, N'186', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (187, N'Yala', 9, N'187', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (188, N'Obanliku', 9, N'188', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (189, N'Obudu', 9, N'189', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (190, N'Calabar South', 9, N'190', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (191, N'Etung', 9, N'191', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (192, N'Bekwara', 9, N'192', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (193, N'Bakassi', 9, N'193', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (194, N'Calabar Municipality ', 9, N'194', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (195, N'Oshimili', 10, N'195', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (196, N'Aniocha', 10, N'196', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (197, N'Aniocha South', 10, N'197', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (198, N'Ika South', 10, N'198', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (199, N'Ika North-East', 10, N'199', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (200, N'Ndokwa West', 10, N'200', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (201, N'Ndokwa East', 10, N'201', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (202, N'Isoko south', 10, N'202', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (203, N'Isoko North', 10, N'203', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (204, N'Bomadi', 10, N'204', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (205, N'Burutu', 10, N'205', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (206, N'Ughelli South', 10, N'206', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (207, N'Ughelli North', 10, N'207', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (208, N'Ethiope West', 10, N'208', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (209, N'Ethiope East', 10, N'209', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (210, N'Sapele', 10, N'210', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (211, N'Okpe', 10, N'211', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (212, N'Warri North', 10, N'212', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (213, N'Warri South', 10, N'213', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (214, N'Uvwie', 10, N'214', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (215, N'Udu', 10, N'215', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (216, N'Warri Central', 10, N'216', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (217, N'Ukwani', 10, N'217', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (218, N'Oshimili North', 10, N'218', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (219, N'Patani ', 10, N'219', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (220, N'Ebonyi  ', 11, N'220', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (221, N'Abakaliki ', 11, N'221', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (222, N'Afikpo South', 11, N'222', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (223, N'Afikpo North', 11, N'223', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (224, N'Onicha', 11, N'224', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (225, N'Ohaozara', 11, N'225', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (226, N'Abakaliki', 11, N'226', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (227, N'Ishielu', 11, N'227', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (228, N'lkwo', 11, N'228', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (229, N'Ezza', 11, N'229', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (230, N'Ezza South', 11, N'230', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (231, N'Ohaukwu', 11, N'231', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (232, N'Ebonyi', 11, N'232', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (233, N'Ivo  Edo Benin City', 11, N'233', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (234, N'Esan North-East', 11, N'234', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (235, N'Esan Central', 11, N'235', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (236, N'Esan West', 11, N'236', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (237, N'Egor', 11, N'237', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (238, N'Ukpoba', 11, N'238', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (239, N'Central', 11, N'239', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (240, N'Etsako Central', 11, N'240', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (241, N'Igueben', 11, N'241', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (242, N'Oredo', 11, N'242', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (243, N'Ovia SouthWest', 11, N'243', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (244, N'Ovia South-East', 11, N'244', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (245, N'Orhionwon', 11, N'245', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (246, N'Uhunmwonde', 11, N'246', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (247, N'Etsako East ', 11, N'247', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (248, N'Esan South-East  ', 11, N'248', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (249, N'Ado Ekiti', 13, N'249', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (250, N'Ado', 13, N'250', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (251, N'Ekiti-East', 13, N'251', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (252, N'Ekiti-West ', 13, N'252', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (253, N'Emure/Ise/Orun', 13, N'253', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (254, N'Ekiti South-West', 13, N'254', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (255, N'Ikare', 13, N'255', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (256, N'Irepodun', 13, N'256', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (257, N'Ijero, ', 13, N'257', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (258, N'Ido/Osi', 13, N'258', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (259, N'Oye', 13, N'259', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (260, N'Ikole', 13, N'260', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (261, N'Moba', 13, N'261', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (262, N'Gbonyin', 13, N'262', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (263, N'Efon', 13, N'263', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (264, N'Ise/Orun ', 13, N'264', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (265, N'Ilejemeje. ', 13, N'265', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (266, N'Enugu', 14, N'266', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (267, N'Enugu South, ', 14, N'267', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (268, N'Igbo-Eze South', 14, N'268', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (269, N'Enugu North', 14, N'269', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (270, N'Nkanu', 14, N'270', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (271, N'Udi Agwu', 14, N'271', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (272, N'Oji-River', 14, N'272', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (273, N'Ezeagu', 14, N'273', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (274, N'IgboEze North', 14, N'274', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (275, N'Isi-Uzo', 14, N'275', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (276, N'Nsukka', 14, N'276', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (277, N'Igbo-Ekiti', 14, N'277', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (278, N'Uzo-Uwani', 14, N'278', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (279, N'Enugu Eas', 14, N'279', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (280, N'Aninri', 14, N'280', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (281, N'Nkanu East', 14, N'281', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (282, N'Udenu.  ', 14, N'282', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (283, N'Gombe', 16, N'283', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (284, N'Akko', 16, N'284', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (285, N'Balanga', 16, N'285', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (286, N'Billiri', 16, N'286', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (287, N'Dukku', 16, N'287', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (288, N'Kaltungo', 16, N'288', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (289, N'Kwami', 16, N'289', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (290, N'Shomgom', 16, N'290', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (291, N'Funakaye', 16, N'291', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (292, N'Gombe', 16, N'292', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (293, N'Nafada/Bajoga ', 16, N'293', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (294, N'Yamaltu/Delta.  ', 16, N'294', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (295, N'Owerri', 17, N'295', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (296, N'Aboh-Mbaise', 17, N'296', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (297, N'Ahiazu-Mbaise', 17, N'297', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (298, N'Ehime-Mbano', 17, N'298', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (299, N'Ezinihitte', 17, N'299', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (300, N'Ideato North', 17, N'300', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (301, N'Ideato South', 17, N'301', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (302, N'Ihitte/Uboma', 17, N'302', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (303, N'Ikeduru', 17, N'303', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (304, N'Isiala Mbano', 17, N'304', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (305, N'Isu', 17, N'305', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (306, N'Mbaitoli', 17, N'306', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (307, N'Mbaitoli', 17, N'307', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (308, N'Ngor-Okpala', 17, N'308', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (309, N'Njaba', 17, N'309', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (310, N'Nwangele', 17, N'310', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (311, N'Nkwerre', 17, N'311', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (312, N'Obowo', 17, N'312', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (313, N'Oguta', 17, N'313', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (314, N'Ohaji/Egbema', 17, N'314', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (315, N'Okigwe', 17, N'315', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (316, N'Orlu', 17, N'316', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (317, N'Orsu', 17, N'317', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (318, N'Oru East', 17, N'318', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (319, N'Oru West', 17, N'319', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (320, N'Owerri-Municipal', 17, N'320', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (321, N'Owerri North', 17, N'321', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (322, N'Owerri West  ', 17, N'322', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (323, N'Dutse', 18, N'323', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (324, N'Auyo', 18, N'324', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (325, N'Babura', 18, N'325', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (326, N'Birni Kudu', 18, N'326', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (327, N'Biriniwa', 18, N'327', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (328, N'Buji', 18, N'328', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (329, N'Dutse', 18, N'329', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (330, N'Gagarawa', 18, N'330', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (331, N'Garki', 18, N'331', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (332, N'Gumel', 18, N'332', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (333, N'Guri', 18, N'333', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (334, N'Gwaram', 18, N'334', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (335, N'Gwiwa', 18, N'335', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (336, N'Hadejia', 18, N'336', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (337, N'Jahun', 18, N'337', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (338, N'Kafin Hausa', 18, N'338', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (339, N'Kaugama Kazaure', 18, N'339', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (340, N'Kiri Kasamma', 18, N'340', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (341, N'Kiyawa', 18, N'341', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (342, N'Maigatari', 18, N'342', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (343, N'Malam Madori', 18, N'343', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (344, N'Miga', 18, N'344', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (345, N'Ringim', 18, N'345', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (346, N'Roni', 18, N'346', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (347, N'Sule-Tankarkar', 18, N'347', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (348, N'Taura ', 18, N'348', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (349, N'Yankwashi  ', 18, N'349', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (350, N'Kaduna', 19, N'350', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (351, N'Birni-Gwari', 19, N'351', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (352, N'Chikun', 19, N'352', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (353, N'Giwa', 19, N'353', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (354, N'Igabi', 19, N'354', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (355, N'Ikara', 19, N'355', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (356, N'jaba', 19, N'356', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (357, N'Jema''a', 19, N'357', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (358, N'Kachia', 19, N'358', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (359, N'Kaduna North', 19, N'359', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (360, N'Kaduna South', 19, N'360', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (361, N'Kagarko', 19, N'361', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (362, N'Kajuru', 19, N'362', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (363, N'Kaura', 19, N'363', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (364, N'Kauru', 19, N'364', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (365, N'Kubau', 19, N'365', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (366, N'Kudan', 19, N'366', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (367, N'Lere', 19, N'367', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (368, N'Makarfi', 19, N'368', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (369, N'Sabon-Gari', 19, N'369', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (370, N'Sanga', 19, N'370', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (371, N'Soba', 19, N'371', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (372, N'Zango-Kataf', 19, N'372', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (373, N'Zaria  ', 19, N'373', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (374, N'Kano', 20, N'374', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (375, N'Ajingi', 20, N'375', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (376, N'Albasu', 20, N'376', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (377, N'Bagwai', 20, N'377', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (378, N'Bebeji', 20, N'378', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (379, N'Bichi', 20, N'379', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (380, N'Bunkure', 20, N'380', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (381, N'Dala', 20, N'381', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (382, N'Dambatta', 20, N'382', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (383, N'Dawakin Kudu', 20, N'383', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (384, N'Dawakin Tofa', 20, N'384', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (385, N'Doguwa', 20, N'385', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (386, N'Fagge', 20, N'386', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (387, N'Gabasawa', 20, N'387', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (388, N'Garko', 20, N'388', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (389, N'Garum', 20, N'389', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (390, N'Mallam', 20, N'390', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (391, N'Gaya', 20, N'391', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (392, N'Gezawa', 20, N'392', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (393, N'Gwale', 20, N'393', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (394, N'Gwarzo', 20, N'394', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (395, N'Kabo', 20, N'395', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (396, N'Kano Municipal', 20, N'396', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (397, N'Karaye', 20, N'397', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (398, N'Kibiya', 20, N'398', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (399, N'Kiru', 20, N'399', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (400, N'kumbotso', 20, N'400', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (401, N'Kunchi', 20, N'401', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (402, N'Kura', 20, N'402', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (403, N'Madobi', 20, N'403', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (404, N'Makoda', 20, N'404', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (405, N'Minjibir', 20, N'405', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (406, N'Nasarawa', 20, N'406', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (407, N'Rano', 20, N'407', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (408, N'Rimin Gado', 20, N'408', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (409, N'Rogo', 20, N'409', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (410, N'Shanono', 20, N'410', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (411, N'Sumaila', 20, N'411', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (412, N'Takali', 20, N'412', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (413, N'Tarauni', 20, N'413', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (414, N'Tofa', 20, N'414', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (415, N'Tsanyawa', 20, N'415', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (416, N'Tudun Wada', 20, N'416', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (417, N'Ungogo', 20, N'417', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (418, N'Warawa', 20, N'418', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (419, N'Wudil ', 20, N'419', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (420, N'Katsina', 21, N'420', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (421, N'Bakori', 21, N'421', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (422, N'Batagarawa', 21, N'422', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (423, N'Batsari', 21, N'423', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (424, N'Baure', 21, N'424', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (425, N'Bindawa', 21, N'425', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (426, N'Charanchi', 21, N'426', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (427, N'Dandume', 21, N'427', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (428, N'Danja', 21, N'428', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (429, N'Dan Musa', 21, N'429', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (430, N'Daura', 21, N'430', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (431, N'Dutsi', 21, N'431', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (432, N'Dutsin-Ma', 21, N'432', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (433, N'Faskari', 21, N'433', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (434, N'Funtua', 21, N'434', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (435, N'Ingawa', 21, N'435', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (436, N'Jibia', 21, N'436', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (437, N'Kafur', 21, N'437', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (438, N'Kaita', 21, N'438', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (439, N'Kankara', 21, N'439', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (440, N'Kankia', 21, N'440', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (441, N'Katsina', 21, N'441', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (442, N'Kurfi', 21, N'442', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (443, N'Kusada', 21, N'443', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (444, N'Mai''Adua', 21, N'444', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (445, N'Malumfashi', 21, N'445', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (446, N'Mani', 21, N'446', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (447, N'Mashi', 21, N'447', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (448, N'Matazuu', 21, N'448', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (449, N'Musawa', 21, N'449', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (450, N'Rimi', 21, N'450', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (451, N'Sabuwa', 21, N'451', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (452, N'Safana', 21, N'452', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (453, N'Sandamu', 21, N'453', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (454, N'Zango  Kebbi ', 21, N'454', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (455, N'Aleiro', 22, N'455', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (456, N'Arewa-Dandi', 22, N'456', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (457, N'Argungu', 22, N'457', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (458, N'Augie', 22, N'458', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (459, N'Bagudo', 22, N'459', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (460, N'Birnin Kebbi', 22, N'460', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (461, N'Bunza', 22, N'461', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (462, N'Dandi ', 22, N'462', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (463, N'Fakai', 22, N'463', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (464, N'Gwandu', 22, N'464', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (465, N'Jega', 22, N'465', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (466, N'Kalgo ', 22, N'466', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (467, N'Koko/Besse', 22, N'467', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (468, N'Maiyama', 22, N'468', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (469, N'Ngaski', 22, N'469', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (470, N'Sakaba', 22, N'470', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (471, N'Shanga', 22, N'471', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (472, N'Suru', 22, N'472', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (473, N'Wasagu/Danko', 22, N'473', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (474, N'Yauri', 22, N'474', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (475, N'Zuru  ', 22, N'475', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (476, N'Lokoja', 23, N'476', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (477, N'Adavi', 23, N'477', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (478, N'Ajaokuta', 23, N'478', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (479, N'Ankpa', 23, N'479', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (480, N'Bassa', 23, N'480', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (481, N'Dekina', 23, N'481', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (482, N'Ibaji', 23, N'482', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (483, N'Idah', 23, N'483', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (484, N'Igalamela-Odolu', 23, N'484', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (485, N'Ijumu', 23, N'485', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (486, N'Kabba/Bunu', 23, N'486', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (487, N'Kogi', 23, N'487', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (488, N'Lokoja', 23, N'488', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (489, N'Mopa-Muro', 23, N'489', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (490, N'Ofu', 23, N'490', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (491, N'Ogori/Mangongo', 23, N'491', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (492, N'Okehi', 23, N'492', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (493, N'Okene', 23, N'493', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (494, N'Olamabolo', 23, N'494', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (495, N'Omala', 23, N'495', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (496, N'Yagba East ', 23, N'496', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (497, N'Yagba West ', 23, N'497', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (498, N'Ilorin', 24, N'498', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (499, N'Asa', 24, N'499', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (500, N'Baruten', 24, N'500', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (501, N'Edu', 24, N'501', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (502, N'Ekiti', 24, N'502', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (503, N'Ifelodun', 24, N'503', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (504, N'Ilorin East', 24, N'504', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (505, N'Ilorin West', 24, N'505', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (506, N'Irepodun', 24, N'506', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (507, N'Isin', 24, N'507', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (508, N'Kaiama', 24, N'508', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (509, N'Moro', 24, N'509', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (510, N'Offa', 24, N'510', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (511, N'Oke-Ero', 24, N'511', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (512, N'Oyun', 24, N'512', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (513, N'Pategi  ', 24, N'513', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (514, N'Ikeja', 25, N'514', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (515, N'Agege', 25, N'515', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (516, N'Ajeromi-Ifelodun', 25, N'516', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (517, N'Alimosho', 25, N'517', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (518, N'Amuwo-Odofin', 25, N'518', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (519, N'Apapa', 25, N'519', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (520, N'Badagry', 25, N'520', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (521, N'Epe', 25, N'521', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (522, N'Eti-Osa', 25, N'522', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (523, N'Ibeju/Lekki', 25, N'523', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (524, N'Ifako-Ijaye ', 25, N'524', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (525, N'Ikeja', 25, N'525', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (526, N'Ikorodu', 25, N'526', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (527, N'Kosofe', 25, N'527', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (528, N'Lagos Island', 25, N'528', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (529, N'Lagos Mainland', 25, N'529', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (530, N'Mushin', 25, N'530', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (531, N'Ojo', 25, N'531', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (532, N'Oshodi-Isolo', 25, N'532', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (533, N'Shomolu', 25, N'533', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (534, N'Surulere ', 25, N'534', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (535, N'Lafia', 26, N'535', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (536, N'Akwanga', 26, N'536', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (537, N'Awe', 26, N'537', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (538, N'Doma', 26, N'538', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (539, N'Karu', 26, N'539', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (540, N'Keana', 26, N'540', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (541, N'Keffi', 26, N'541', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (542, N'Kokona', 26, N'542', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (543, N'Lafia', 26, N'543', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (544, N'Nasarawa', 26, N'544', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (545, N'Nasarawa-Eggon', 26, N'545', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (546, N'Obi', 26, N'546', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (547, N'Toto', 26, N'547', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (548, N'Wamba  ', 26, N'548', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (549, N'Minna', 27, N'549', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (550, N'Agaie', 27, N'550', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (551, N'Agwara', 27, N'551', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (552, N'Bida', 27, N'552', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (553, N'Borgu', 27, N'553', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (554, N'Bosso', 27, N'554', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (555, N'Chanchaga', 27, N'555', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (556, N'Edati', 27, N'556', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (557, N'Gbako', 27, N'557', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (558, N'Gurara', 27, N'558', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (559, N'Katcha', 27, N'559', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (560, N'Kontagora ', 27, N'560', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (561, N'Lapai', 27, N'561', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (562, N'Lavun', 27, N'562', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (563, N'Magama', 27, N'563', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (564, N'Mariga', 27, N'564', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (565, N'Mashegu', 27, N'565', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (566, N'Mokwa', 27, N'566', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (567, N'Muya', 27, N'567', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (568, N'Pailoro', 27, N'568', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (569, N'Rafi', 27, N'569', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (570, N'Rijau', 27, N'570', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (571, N'Shiroro', 27, N'571', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (572, N'Suleja', 27, N'572', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (573, N'Tafa', 27, N'573', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (574, N'Wushishi ', 27, N'574', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (575, N'Abeokuta', 28, N'575', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (576, N'Abeokuta North', 28, N'576', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (577, N'Abeokuta South', 28, N'577', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (578, N'Ado-Odo/Ota', 28, N'578', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (579, N'Egbado North', 28, N'579', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (580, N'Egbado South', 28, N'580', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (581, N'Ewekoro', 28, N'581', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (582, N'Ifo', 28, N'582', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (583, N'Ijebu East', 28, N'583', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (584, N'Ijebu North', 28, N'584', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (585, N'Ijebu North East', 28, N'585', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (586, N'Ijebu Ode', 28, N'586', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (587, N'Ikenne', 28, N'587', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (588, N'Imeko-Afon', 28, N'588', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (589, N'Ipokia', 28, N'589', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (590, N'Obafemi-Owode', 28, N'590', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (591, N'Ogun Waterside', 28, N'591', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (592, N'Odeda', 28, N'592', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (593, N'Odogbolu', 28, N'593', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (594, N'Remo North', 28, N'594', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (595, N'Shagamu ', 28, N'595', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (596, N'Akure', 29, N'596', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (597, N'Akoko North East', 29, N'597', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (598, N'Akoko North West', 29, N'598', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (599, N'Akoko South Akure East', 29, N'599', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (600, N'Akoko South West', 29, N'600', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (601, N'Akure North', 29, N'601', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (602, N'Akure South', 29, N'602', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (603, N'Ese-Odo', 29, N'603', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (604, N'Idanre', 29, N'604', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (605, N'Ifedore', 29, N'605', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (606, N'Ilaje', 29, N'606', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (607, N'Ile-Oluji', 29, N'607', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (608, N'Okeigbo', 29, N'608', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (609, N'Irele', 29, N'609', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (610, N'Odigbo', 29, N'610', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (611, N'Okitipupa', 29, N'611', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (612, N'Ondo East', 29, N'612', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (613, N'Ondo West', 29, N'613', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (614, N'Ose', 29, N'614', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (615, N'Owo  ', 29, N'615', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (616, N'Oshogbo', 30, N'616', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (617, N'Aiyedade', 30, N'617', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (618, N'Aiyedire', 30, N'618', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (619, N'Atakumosa East', 30, N'619', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (620, N'Atakumosa West', 30, N'620', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (621, N'Boluwaduro', 30, N'621', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (622, N'Boripe', 30, N'622', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (623, N'Ede North', 30, N'623', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (624, N'Ede South', 30, N'624', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (625, N'Egbedore', 30, N'625', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (626, N'Ejigbo', 30, N'626', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (627, N'Ife Central', 30, N'627', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (628, N'Ife East', 30, N'628', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (629, N'Ife North', 30, N'629', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (630, N'Ife South', 30, N'630', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (631, N'Ifedayo', 30, N'631', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (632, N'Ifelodun', 30, N'632', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (633, N'Ila', 30, N'633', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (634, N'Ilesha East', 30, N'634', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (635, N'Ilesha West', 30, N'635', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (636, N'Irepodun', 30, N'636', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (637, N'Irewole', 30, N'637', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (638, N'Isokan', 30, N'638', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (639, N'Iwo', 30, N'639', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (640, N'Obokun', 30, N'640', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (641, N'Odo-Otin', 30, N'641', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (642, N'Ola-Oluwa', 30, N'642', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (643, N'Olorunda', 30, N'643', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (644, N'Oriade', 30, N'644', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (645, N'Orolu', 30, N'645', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (646, N'Osogbo ', 30, N'646', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (647, N'Ibadan', 31, N'647', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (648, N'Afijio', 31, N'648', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (649, N'Akinyele', 31, N'649', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (650, N'Atiba', 31, N'650', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (651, N'Atigbo', 31, N'651', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (652, N'Egbeda', 31, N'652', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (653, N'IbadanCentral', 31, N'653', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (654, N'Ibadan North', 31, N'654', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (655, N'Ibadan North West', 31, N'655', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (656, N'Ibadan South East', 31, N'656', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (657, N'Ibadan South West', 31, N'657', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (658, N'Ibarapa Central', 31, N'658', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (659, N'Ibarapa East', 31, N'659', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (660, N'Ibarapa North', 31, N'660', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (661, N'Ido', 31, N'661', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (662, N'Irepo', 31, N'662', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (663, N'Iseyin', 31, N'663', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (664, N'Itesiwaju', 31, N'664', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (665, N'Iwajowa', 31, N'665', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (666, N'Kajola', 31, N'666', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (667, N'Lagelu ', 31, N'667', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (668, N'Ogbomosho ', 31, N'668', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (669, N'North', 31, N'669', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (670, N'Ogbmosho South', 31, N'670', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (671, N'Ogo Oluwa', 31, N'671', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (672, N'Olorunsogo', 31, N'672', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (673, N'Oluyole', 31, N'673', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (674, N'Ona-Ara', 31, N'674', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (675, N'Orelope', 31, N'675', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (676, N'Ori Ire', 31, N'676', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (677, N'Oyo East', 31, N'677', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (678, N'Oyo West', 31, N'678', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (679, N'Saki East', 31, N'679', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (680, N'Saki West', 31, N'680', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (681, N'Surulere ', 31, N'681', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (682, N'Jos', 32, N'682', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (683, N'Barikin Ladi', 32, N'683', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (684, N'Bassa', 32, N'684', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (685, N'Bokkos', 32, N'685', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (686, N'Jos East', 32, N'686', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (687, N'Jos North', 32, N'687', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (688, N'Jos South', 32, N'688', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (689, N'Kanam', 32, N'689', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (690, N'Kanke', 32, N'690', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (691, N'Langtang North', 32, N'691', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (692, N'Langtang South', 32, N'692', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (693, N'Mangu', 32, N'693', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (694, N'Mikang', 32, N'694', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (695, N'Pankshin', 32, N'695', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (696, N'Qua''an Pan', 32, N'696', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (697, N'Riyom', 32, N'697', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (698, N'Shendam', 32, N'698', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (699, N'Wase Rivers ', 32, N'699', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (700, N'Abua/Odual', 33, N'700', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (701, N'Ahoada East', 33, N'701', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (702, N'Ahoada West', 33, N'702', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (703, N'Akuku Toru', 33, N'703', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (704, N'Andoni', 33, N'704', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (705, N'Asari-Toru', 33, N'705', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (706, N'Bonny', 33, N'706', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (707, N'Degema', 33, N'707', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (708, N'Emohua', 33, N'708', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (709, N'Eleme', 33, N'709', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (710, N'Etche', 33, N'710', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (711, N'Gokana', 33, N'711', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (712, N'Ikwerre', 33, N'712', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (713, N'Khana', 33, N'713', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (714, N'Obia/Akpor', 33, N'714', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (715, N'Ogba/Egbema/Ndoni', 33, N'715', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (716, N'Ogu/Bolo', 33, N'716', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (717, N'Okrika', 33, N'717', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (718, N'Omumma', 33, N'718', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (719, N'Opobo/Nkoro', 33, N'719', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (720, N'Oyigbo', 33, N'720', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (721, N'Port-Harcourt', 33, N'721', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (722, N'Tai  ', 33, N'722', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (723, N'Sokoto', 34, N'723', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (724, N'Binji', 34, N'724', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (725, N'Bodinga', 34, N'725', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (726, N'Dange-shnsi', 34, N'726', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (727, N'Gada', 34, N'727', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (728, N'Goronyo', 34, N'728', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (729, N'Gudu', 34, N'729', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (730, N'Gawabawa', 34, N'730', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (731, N'Illela', 34, N'731', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (732, N'Isa', 34, N'732', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (733, N'Kware', 34, N'733', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (734, N'kebbe', 34, N'734', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (735, N'Rabah', 34, N'735', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (736, N'Sabon birni', 34, N'736', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (737, N'Shagari', 34, N'737', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (738, N'Silame', 34, N'738', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (739, N'Sokoto North', 34, N'739', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (740, N'Sokoto South', 34, N'740', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (741, N'Tambuwal', 34, N'741', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (742, N'Tqngaza', 34, N'742', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (743, N'Tureta', 34, N'743', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (744, N'Wamako', 34, N'744', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (745, N'Wurno', 34, N'745', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (746, N'Yabo ', 34, N'746', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (747, N'Jalingo', 35, N'747', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (748, N'Ardo-kola', 35, N'748', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (749, N'Bali', 35, N'749', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (750, N'Donga', 35, N'750', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (751, N'Gashaka', 35, N'751', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (752, N'Cassol', 35, N'752', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (753, N'Ibi', 35, N'753', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (754, N'Jalingo', 35, N'754', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (755, N'Karin-Lamido', 35, N'755', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (756, N'Kurmi', 35, N'756', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (757, N'Lau', 35, N'757', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (758, N'Sardauna', 35, N'758', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (759, N'Takum', 35, N'759', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (760, N'Ussa', 35, N'760', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (761, N'Wukari', 35, N'761', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (762, N'Yorro', 35, N'762', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (763, N'Zing ', 35, N'763', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (764, N'Damaturu', 36, N'764', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (765, N'Bade', 36, N'765', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (766, N'Bursari', 36, N'766', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (767, N'Damaturu', 36, N'767', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (768, N'Fika', 36, N'768', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (769, N'Fune', 36, N'769', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (770, N'Geidam', 36, N'770', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (771, N'Gujba', 36, N'771', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (772, N'Gulani', 36, N'772', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (773, N'Jakusko', 36, N'773', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (774, N'Karasuwa', 36, N'774', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (775, N'Karawa', 36, N'775', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (776, N'Machina', 36, N'776', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (777, N'Nangere', 36, N'777', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (778, N'Nguru Potiskum', 36, N'778', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (779, N'Tarmua', 36, N'779', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (780, N'Yunusari', 36, N'780', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (781, N'Yusufari Zamfara Gusau', 36, N'781', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (782, N'Anka ', 36, N'782', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (783, N'Bakura', 36, N'783', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (784, N'Birnin Magaji', 36, N'784', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (785, N'Bukkuyum', 36, N'785', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (786, N'Bungudu', 36, N'786', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (787, N'Gummi', 36, N'787', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (788, N'Gusau', 36, N'788', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (789, N'Kaura', 36, N'789', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (790, N'Namoda', 36, N'790', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (791, N'Maradun', 36, N'791', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (792, N'Maru', 36, N'792', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (793, N'Shinkafi', 36, N'793', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (794, N'Talata Mafara', 36, N'794', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (795, N'Tsafe', 36, N'795', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (796, N'Zurmi ', 36, N'796', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (797, N'Anka', 37, N'797', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (798, N'Bakura', 37, N'798', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (799, N'Birnin Magaji', 37, N'799', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (800, N'Bukkuyum', 37, N'800', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (801, N'Bungudu', 37, N'801', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (802, N'Gummi', 37, N'802', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (803, N'Gusau', 37, N'803', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (804, N'Kaura', 37, N'804', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (805, N'Namoda', 37, N'805', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (806, N'Maradun', 37, N'806', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (807, N'Maru', 37, N'807', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (808, N'Shinkafi', 37, N'808', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (809, N'Talata Mafara', 37, N'809', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (810, N'Tsafe', 37, N'810', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (811, N'Zurmi', 37, N'811', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (812, N'Ado', 7, N'812', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (813, N'Agatu', 7, N'813', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (814, N'Apa', 7, N'814', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (815, N'Buruku', 7, N'815', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (816, N'Gboko', 7, N'816', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (817, N'Guma', 7, N'817', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (818, N'Gwer East', 7, N'818', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (819, N'Gwer West', 7, N'819', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (820, N'Katsina-Ala', 7, N'820', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (821, N'Konshisha', 7, N'821', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (822, N'Kwande', 7, N'822', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (823, N'Logo', 7, N'823', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (824, N'Makurdi', 7, N'824', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (825, N'Obi', 7, N'825', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (826, N'Ogbadibo', 7, N'826', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (827, N'Oju', 7, N'827', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (828, N'Okpokwu', 7, N'828', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (829, N'Ohimini', 7, N'829', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (830, N'turkpo', 7, N'830', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (831, N'Tarka', 7, N'831', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (832, N'Ukum', 7, N'832', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (833, N'Ushongo', 7, N'833', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (834, N'Vandeikya', 7, N'834', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (835, N'Esan North-East', 12, N'835', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (836, N'Esan Central', 12, N'836', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (837, N'Esan West', 12, N'837', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (838, N'Egor', 12, N'838', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (839, N'Ukpoba', 12, N'839', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (841, N'Central', 12, N'841', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (842, N'Etsako Central', 12, N'842', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (843, N'Igueben', 12, N'843', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (844, N'Oredo', 12, N'844', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (845, N'Ovia SouthWest', 12, N'845', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (846, N'Ovia South-East', 12, N'846', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (847, N'Orhionwon', 12, N'847', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (848, N'Uhunmwonde', 12, N'848', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (849, N'Etsako East', 12, N'849', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (850, N'Owan-East', 12, N'850', 0)
+GO
+INSERT [dbo].[System_LocalGovermentArea] ([Id], [LocalGovermentAreaName], [StateID], [LocalGovermentAreaCode], [IsDeleted]) VALUES (851, N'Esan South-East', 12, N'851', 0)
+GO
+SET IDENTITY_INSERT [dbo].[System_LocalGovermentArea] OFF
+GO
+SET IDENTITY_INSERT [dbo].[System_Setting] ON 
+
+GO
+INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (1, 1, N'http://104.155.47.95:7000', CAST(N'2017-12-10 00:00:00.000' AS DateTime), 0)
+GO
+INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (2, 2, N'false', CAST(N'2017-12-18 00:00:00.000' AS DateTime), 0)
+GO
+SET IDENTITY_INSERT [dbo].[System_Setting] OFF
+GO
+SET IDENTITY_INSERT [dbo].[System_State] ON 
+
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (1, N'Abia', N'1', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (2, N'Adamawa', N'2', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (3, N'Akwaibom', N'3', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (4, N'Anambra', N'4', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (5, N'Balyesa', N'5', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (6, N'Bauchi', N'6', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (7, N'Benue', N'7', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (8, N'Borno', N'8', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (9, N'Crossriver', N'9', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (10, N'Delta', N'10', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (11, N'Ebonyi', N'11', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (12, N'Edo', N'12', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (13, N'Ekiti', N'13', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (14, N'Enugu', N'14', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (15, N'FCT-Abuja', N'15', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (16, N'Gombe', N'16', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (17, N'Imo', N'17', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (18, N'Jigawa', N'18', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (19, N'Kaduna', N'19', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (20, N'Kano', N'20', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (21, N'Kastina', N'21', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (22, N'Kebbi', N'22', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (23, N'Kogi', N'23', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (24, N'Kwara', N'24', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (25, N'Lagos', N'25', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (26, N'Nasarawa', N'26', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (27, N'Niger', N'27', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (28, N'Ogun', N'28', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (29, N'Ondo', N'29', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (30, N'Osun', N'30', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (31, N'Oyo', N'31', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (32, N'Plateau', N'32', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (33, N'Rivers', N'33', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (34, N'Sokoto', N'34', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (35, N'Taraba', N'35', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (36, N'Yobe', N'36', 0)
+GO
+INSERT [dbo].[System_State] ([Id], [StateName], [StateCode], [IsDeleted]) VALUES (37, N'Zamfara', N'37', 0)
+GO
+SET IDENTITY_INSERT [dbo].[System_State] OFF
+GO
+ALTER TABLE [dbo].[System_BioDataStore] ADD  DEFAULT (getdate()) FOR [LastUpdate]
+GO
+ALTER TABLE [dbo].[System_BioDataStore] ADD  DEFAULT (getdate()) FOR [LastSync]
+GO
+ALTER TABLE [dbo].[System_ErrorLog] ADD  DEFAULT (getdate()) FOR [ErrorDate]
+GO
+ALTER TABLE [dbo].[System_SiteData] ADD  DEFAULT ((0)) FOR [RemoteSiteId]
+GO
+ALTER TABLE [dbo].[System_SiteData] ADD  DEFAULT ((0)) FOR [StateId]
+GO
+ALTER TABLE [dbo].[System_SiteData] ADD  DEFAULT ((0)) FOR [IsCurrent]
+GO
+ALTER TABLE [dbo].[System_SiteData] ADD  DEFAULT (getdate()) FOR [LastUpdate]
+GO
+ALTER TABLE [dbo].[System_SiteData] ADD  DEFAULT ((0)) FOR [IsDeleted]
+GO
+USE [master]
+GO
+ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET  READ_WRITE 
+GO

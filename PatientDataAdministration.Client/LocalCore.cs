@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using PatientDataAdministration.Data.InterchangeModels;
 
@@ -18,7 +22,7 @@ namespace PatientDataAdministration.Client
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool isSilent = false)
         {
             LocalCore._userCredentialId = userCredentialId;
-            return isSilent ? MessageBox.Show(exception.Message + @"\n" + exception.InnerException?.Message) : DialogResult.OK;
+            return isSilent ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message) : DialogResult.OK;
         }
 
         private static void TreatError(Exception exception)
@@ -119,6 +123,106 @@ namespace PatientDataAdministration.Client
                     Message = e.Message,
                     Status = false
                 };
+            }
+        }
+
+        public static SqlConnection GetLocalDb(string dbName, bool deleteIfExists = false)
+        {
+            try
+            {
+                var outputFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                var mdfFilename = dbName + ".mdf";
+                var dbFileName = Path.Combine(outputFolder, mdfFilename);
+                var logFileName = Path.Combine(outputFolder, $"{dbName}_log.ldf");
+
+                // If the file exists, and we want to delete old data, remove it here and create a new database.
+                if (File.Exists(dbFileName) && deleteIfExists)
+                {
+                    if (File.Exists(logFileName))
+                    {
+                        File.Delete(logFileName);
+                        File.Delete(dbFileName);
+                    }
+                    CreateDatabase(dbName, dbFileName);
+                }
+
+                // If the database does not already exist, create it.
+                if (!File.Exists(dbFileName))
+                {
+                    CreateDatabase(dbName, dbFileName);
+                }
+
+                // Open newly created, or old database.
+                var connection = new SqlConnection(Properties.Settings.Default.LocalPDAConnectionString);
+                connection.Open();
+                return connection;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private static void CreateDatabase(string dbName, string dbFileName)
+        {
+            try
+            {
+                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    var installCmd = connection.CreateCommand();
+                    installCmd.CommandText = ScriptClean(Properties.Resources.DatabaseInstallScript);
+                    installCmd.ExecuteNonQuery();
+
+                    DetachDatabase(dbName);
+
+                    var migrateCmd = connection.CreateCommand();
+                    migrateCmd.CommandText = ScriptClean(Properties.Resources.DatabaseMigrateScript);
+                    migrateCmd.ExecuteNonQuery();
+                }
+
+                if (File.Exists(dbFileName))
+                    return;
+                else
+                    return;
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        private static string ScriptClean(string sqlScript)
+        {
+            sqlScript = sqlScript.Replace("GO", "");
+            sqlScript = Regex.Replace(sqlScript, "([/*][*]).*([*][/])", "");
+            sqlScript = Regex.Replace(sqlScript, "\\s{2,}", " ");
+            sqlScript = sqlScript.Replace("{dbLocation}",
+                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
+
+            return sqlScript;
+        }
+
+        private static void DetachDatabase(string dbName)
+        {
+            try
+            {
+                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandText = $"exec sp_detach_db '{dbName}'";
+                    cmd.ExecuteNonQuery();
+
+                    return;
+                }
+            }
+            catch
+            {
+                return;
             }
         }
     }
