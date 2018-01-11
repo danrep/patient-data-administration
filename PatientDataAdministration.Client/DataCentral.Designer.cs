@@ -225,6 +225,7 @@ namespace PatientDataAdministration.Client
             this.btnProfile.Text = "Profile";
             this.btnProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnProfile.UseVisualStyleBackColor = false;
+            this.btnProfile.Visible = false;
             this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // btnClose

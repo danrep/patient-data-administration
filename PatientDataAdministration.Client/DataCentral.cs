@@ -50,6 +50,8 @@ namespace PatientDataAdministration.Client
                 LocalCache.Get<List<System_Setting>>("System_Setting")
                     .FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.OnDemandSync)?
                     .SettingValue ?? "false");
+
+            SiteInfo();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -95,11 +97,6 @@ namespace PatientDataAdministration.Client
             {
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
-        }
-
-        private void btnOperations_Click(object sender, EventArgs e)
-        {
-            //
         }
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
@@ -154,8 +151,9 @@ namespace PatientDataAdministration.Client
                 {
                     Param = "Initiating Synchronization Tasks"
                 });
+                SiteInfo();
 
-                if(!bgwNewPatient.IsBusy)
+                if (!bgwNewPatient.IsBusy)
                     bgwNewPatient.RunWorkerAsync();
 
                 if(!bgwUpdatePatient.IsBusy)
@@ -343,6 +341,15 @@ namespace PatientDataAdministration.Client
         {
             _killCommandReceived = false;
             InitiateSync();
+            SiteInfo();
+        }
+
+        public void SiteInfo()
+        {
+            _operationQueue.Add(new OperationQueue()
+            {
+                Param = $"Current Site is {_systemSiteData.SiteNameOfficial}"
+            });
         }
 
         private void bgwNewPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -385,7 +392,7 @@ namespace PatientDataAdministration.Client
                     var payLoad = new
                     {
                         encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        siteId = _administrationStaffInformation.SiteId
+                        siteId = _systemSiteData.Id
                     };
 
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
