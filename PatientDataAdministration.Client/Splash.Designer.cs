@@ -98,7 +98,7 @@
             // 
             this.lblUpdateInfo.BackColor = System.Drawing.Color.White;
             this.lblUpdateInfo.Enabled = false;
-            this.lblUpdateInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUpdateInfo.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUpdateInfo.Location = new System.Drawing.Point(117, 37);
             this.lblUpdateInfo.Name = "lblUpdateInfo";
             this.lblUpdateInfo.Size = new System.Drawing.Size(218, 39);
@@ -123,7 +123,7 @@
             this.btnProfile.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnProfile.BackColor = System.Drawing.Color.White;
             this.btnProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnProfile.Location = new System.Drawing.Point(117, 79);
@@ -140,7 +140,7 @@
             this.btnYes.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnYes.BackColor = System.Drawing.Color.White;
             this.btnYes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnYes.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnYes.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnYes.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
             this.btnYes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnYes.Location = new System.Drawing.Point(229, 79);
