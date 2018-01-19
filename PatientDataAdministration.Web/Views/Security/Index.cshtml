@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Log In";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -15,35 +14,72 @@
                     <img src="/Assets/img/apin-weblogo.png" height="50"/>
                 </h4>
                 <p>
-                    APIN PUBLIC HEALTH INITIATIVES LTD: PATIENT DATA ADMINISTRATION
+                    APIN PUBLIC HEALTH INITIATIVE: PATIENT DATA ADMINISTRATION
                 </p>
             </div>
         </div>
         <div class="right-content">
             <div class="login-header">
                 <div class="brand">
-                    <img src="/assets/img/PDA_Assets.png" alt="logo" height="80">
-                    <small>built for APIN Public Health Initiatives Limited</small>
+                    <div>
+                        <img src="/assets/img/PDA_Assets.png" alt="logo" height="80">
+                    </div>
+                    <div style="text-align: right">
+                        <small>built for APIN Public Health Initiative</small>
+                    </div>
                 </div>
             </div>
             <div class="login-content">
-                <form action="@Url.Action("Index", "Home", new {authGuid = Guid.NewGuid().ToString().Reverse()})" method="POST" class="margin-bottom-0">
+                <div>
                     <div class="form-group m-b-15">
-                        <input type="text" class="form-control input-lg" placeholder="Email Address" required />
+                        <input type="text" id="email" class="form-control input-lg" placeholder="Email Address" required />
                     </div>
                     <div class="form-group m-b-15">
-                        <input type="password" class="form-control input-lg" placeholder="Password" required />
+                        <input type="password" id="password" class="form-control input-lg" placeholder="Password" required />
                     </div>
                     <div class="login-buttons">
-                        <button type="submit" class="btn btn-success btn-block btn-lg">Sign In</button>
+                        <input type="button" class="btn btn-success btn-block btn-lg" onclick="login()" value="Log In" />
                     </div>
                     <hr />
                     <p class="text-center">
                         &copy; APIN All Rights Reserved @DateTime.Now.Year
                     </p>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+@section scripts
+{
+    <script type="text/javascript">
+
+        function login(data) {
+            if ($('#email').val() === "") {
+                window.swalWarning('Please enter a valid email address');
+                return;
+            }
+
+            if ($('#password').val() === "") {
+                window.swalWarning('Please enter your password to this account');
+                return;
+            }
+
+            window.api("POST",
+                "@Url.Action("LogIn", "Home", new {area = ""})",
+                { username: $('#email').val(), password: $('#password').val() },
+                true,
+                processLogIn);
+        }
+
+        function processLogIn(data) {
+            window.swalInfo("Successful. Logging you in a Sec.");
+            setTimeout(function () {
+                window.location = '@Url.Action("Index", "Home", new {area = ""})';
+            }, 2000);
+        };
+
+        pdaWeb.controller('pdaWebCtrlr', function ($scope) { });
+
+    </script>
+}

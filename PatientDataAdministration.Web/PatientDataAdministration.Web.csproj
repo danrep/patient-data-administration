@@ -1111,6 +1111,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1126,7 +1127,6 @@
     <Folder Include="Areas\ServerCommunication\Views\Indicators\" />
     <Folder Include="Areas\ServerCommunication\Views\Shared\" />
     <Folder Include="Areas\ServerCommunication\Views\UserManagement\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\Common\" />
   </ItemGroup>

@@ -9,8 +9,11 @@
     [PasswordSalt]        VARCHAR (100)  NOT NULL,
     [DateRegistered]      DATETIME       NOT NULL,
     [SiteId]              INT            NOT NULL,
+    [RoleId]              INT            DEFAULT ((0)) NOT NULL,
     [AuthenticationState] INT            NOT NULL,
     [IsDeleted]           BIT            NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 

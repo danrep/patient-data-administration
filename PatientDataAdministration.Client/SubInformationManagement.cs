@@ -23,7 +23,7 @@ namespace PatientDataAdministration.Client
         private string _bioDataPrimary;
         private string _bioDataSecondary;
         private string _nfcUid;
-        private bool _isBusy;
+        public bool _isBusy;
 
         private readonly SGFingerPrintManager _fingerPrintManager;
         private SGFPMDeviceInfoParam _deviceInfoParam;

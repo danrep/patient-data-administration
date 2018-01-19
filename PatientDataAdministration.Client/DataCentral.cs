@@ -135,6 +135,9 @@ namespace PatientDataAdministration.Client
                     btnSync.Visible = !bgwNewPatient.IsBusy;
                 }
 
+                picDataReady.Visible = !_subInfoMan._isBusy;
+                picDataWait.Visible = _subInfoMan._isBusy;
+
                 Application.DoEvents();
             }
             catch (Exception exception)
@@ -392,7 +395,7 @@ namespace PatientDataAdministration.Client
                     var payLoad = new
                     {
                         encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        siteId = _systemSiteData.Id
+                        siteId = _systemSiteData.RemoteSiteId
                     };
 
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",

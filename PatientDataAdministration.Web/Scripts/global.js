@@ -154,7 +154,7 @@ function swalWarningConfirm(callBack) {
     swalEngineCallBack("Wait a Minute...", "This is a Sensitive Operation. Are you sure you want to Proceed", "warning", "btn-warning", callBack);
 };
 function swalInfo(message) {
-    swalEngineNoCallBack("Just FYI", message, "info", "btn-default");
+    swalEngineNoCallBack("Just FYI", message, "info", "btn-default", false);
 };
 function swalError(message) {
     swalEngineNoCallBack("Oops. There seems to be a Problem", message, "error", "btn-danger");

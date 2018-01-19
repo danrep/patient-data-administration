@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using PatientDataAdministration.EnumLibrary
+@using PatientDataAdministration.EnumLibrary.Dictionary
+@using PatientDataAdministration.Web.Models
+
+@{
+    var role = ((UserRole) SecurityModel.GetUserInSession.AdministrationStaffInformation.RoleId).DisplayName();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
@@ -7,6 +15,7 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="Codesistance" name="author" />
+    <link rel="shortcut icon" href="/Assets/img/icons8_Facial_Recognition_30px.png">
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link href="/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
@@ -33,7 +42,6 @@
     <link href="/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
 
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
-
     @RenderSection("styles", false);
 </head>
 <body>
@@ -53,56 +61,15 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-right hidden-xs">
-                    <li class="dropdown">
-                        <a href="javascript:;" data-toggle="dropdown" class="dropdown-toggle f-s-14">
-                            <i class="fa fa-bell-o"></i>
-                            <span class="label">8</span>
-                        </a>
-                        <ul class="dropdown-menu media-list pull-right animated fadeInDown">
-                            <li class="dropdown-header">Notifications (5)</li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-bug media-object bg-red"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading">Server Error Reports</h6>
-                                        <div class="text-muted f-s-11">3 minutes ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-plus media-object bg-green"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading"> New User Registered</h6>
-                                        <div class="text-muted f-s-11">1 hour ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="media">
-                                <a href="javascript:;">
-                                    <div class="media-left"><i class="fa fa-envelope media-object bg-blue"></i></div>
-                                    <div class="media-body">
-                                        <h6 class="media-heading"> New Email From John</h6>
-                                        <div class="text-muted f-s-11">2 hour ago</div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="dropdown-footer text-center">
-                                <a href="javascript:;">View more</a>
-                            </li>
-                        </ul>
-                    </li>
                     <li class="dropdown navbar-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
                             <img src="/assets/img/icons8_Customer_100px.png" alt="" />
-                            <span class="hidden-xs">Administrator</span> <b class="caret"></b>
+                            <span class="hidden-xs">@role</span> <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu animated fadeInLeft">
                             <li class="arrow"></li>
-                            <li><a href="javascript:;">Edit Profile</a></li>
-                            <li><a href="javascript:;"><span class="badge badge-danger pull-right">2</span> Inbox</a></li>
                             <li class="divider"></li>
-                            <li><a href="javascript:;">Log Out</a></li>
+                            <li><a href="@Url.Action("LogOut", "Home", new {area = ""})">Log Out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -116,8 +83,8 @@
                             <a href="javascript:;"><img src="/assets/img/icons8_Customer_100px.png" alt="" /></a>
                         </div>
                         <div class="info">
-                            Administrator
-                            <small>System Administrator</small>
+                            @SecurityModel.GetUserInSession.AdministrationStaffInformation.Surname @SecurityModel.GetUserInSession.AdministrationStaffInformation.FirstName
+                            <small>@role</small>
                         </div>
                     </li>
                 </ul>

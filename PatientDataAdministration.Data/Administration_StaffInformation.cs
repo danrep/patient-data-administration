@@ -26,5 +26,6 @@ namespace PatientDataAdministration.Data
         public int SiteId { get; set; }
         public int AuthenticationState { get; set; }
         public bool IsDeleted { get; set; }
+        public int RoleId { get; set; }
     }
 }

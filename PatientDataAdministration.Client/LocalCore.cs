@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Device.Location;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -149,6 +150,7 @@ namespace PatientDataAdministration.Client
                 // If the database does not already exist, create it.
                 if (!File.Exists(dbFileName))
                 {
+                    DropDatabase(dbFileName);
                     CreateDatabase(dbName, dbFileName);
                 }
 
@@ -224,6 +226,36 @@ namespace PatientDataAdministration.Client
             {
                 return;
             }
+        }
+
+        private static void DropDatabase(string dbName)
+        {
+            try
+            {
+                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var cmd = connection.CreateCommand();
+                    cmd.CommandText = $"drop database [{dbName}]";
+                    cmd.ExecuteNonQuery();
+
+                    return;
+                }
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        public static GeoCoordinate GetLocationProperty()
+        {
+            var watcher = new GeoCoordinateWatcher();
+            watcher.TryStart(false, TimeSpan.FromMilliseconds(1));
+
+            var coord = watcher;
+            return watcher.Position.Location.IsUnknown == false ? coord.Position.Location : null;
         }
     }
 }

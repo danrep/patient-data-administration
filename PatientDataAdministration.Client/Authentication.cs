@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Device.Location;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
@@ -53,7 +55,9 @@ namespace PatientDataAdministration.Client
                 {
                     if (Core.Encryption.IsSaltEncryptValid(txtPassword.Text.Trim(), credential.PasswordData,
                         credential.PasswordSalt))
-                        GainAccess(Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(credential.AuthPayLoad));
+                        GainAccess(
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(
+                                credential.AuthPayLoad));
                     else
                     {
                         MessageBox.Show(@"Your Password is Incorrect");
@@ -142,16 +146,33 @@ namespace PatientDataAdministration.Client
         private bool CheckCredentialServer(out Administration_StaffInformation administrationStaffInformation)
         {
             var authData = $@"{txtUserName.Text.Trim()}*{txtPassword.Text.Trim()}";
-            var result = LocalCore.Get($@"/ClientCommunication/User/Authenticate?authData={authData}");
+            //var result = LocalCore.Get($@"/ClientCommunication/User/Authenticate?authData={authData}");
+
+            var clientCoordinates = LocalCore.GetLocationProperty();
+
+            var payload = new
+            {
+                authData = authData,
+                clientInformation = new ClientInformation()
+                {
+                    ClientGuid = LocalCache.Get<string>("ClientId"),
+                    LocationLong = clientCoordinates?.Longitude.ToString(CultureInfo.InvariantCulture),
+                    ClientName = System.Security.Principal.WindowsIdentity.GetCurrent().Name, 
+                    LocationLat = clientCoordinates?.Latitude.ToString(CultureInfo.InvariantCulture),
+                    CurrentUser = 0
+                }
+            };
+            var result = LocalCore.Post(@"/ClientCommunication/User/Authenticate",
+                Newtonsoft.Json.JsonConvert.SerializeObject(payload));
 
             administrationStaffInformation = new Administration_StaffInformation();
-            if (result.Result.Status)
+            if (result.Status)
             {
-                if (result.Result.Data != null)
+                if (result.Data != null)
                 {
                     var data =
                         Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(result.Result.Data));
+                            Newtonsoft.Json.JsonConvert.SerializeObject(result.Data));
 
                     administrationStaffInformation = data;
 
@@ -160,7 +181,7 @@ namespace PatientDataAdministration.Client
                          AuthenticationState = data.AuthenticationState,
                          IsDeleted = false, 
                          Surname = data.Surname, 
-                         AuthPayLoad = Newtonsoft.Json.JsonConvert.SerializeObject(result.Result.Data),
+                         AuthPayLoad = Newtonsoft.Json.JsonConvert.SerializeObject(result.Data),
                          DateRegistered = data.DateRegistered,
                          Email = data.Email,
                          FirstName = data.FirstName, 
@@ -176,13 +197,13 @@ namespace PatientDataAdministration.Client
                 }
                 else
                 {
-                    MessageBox.Show(result.Result.Message);
+                    MessageBox.Show(result.Message);
                     return false;
                 }
             }
             else
             {
-                MessageBox.Show(result.Result.Message);
+                MessageBox.Show(result.Message);
                 return false;
             }
         }

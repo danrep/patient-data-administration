@@ -6,6 +6,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
@@ -46,6 +47,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     msg += $"You have been profiled as a Site Administrator. Your Credentials are Below:<br />";
                     msg += $"<strong>Username</strong>: {administrationStaffInformation.Email}<br />";
                     msg += $"<strong>Password</strong>: {password}<br />";
+
                     Core.Messaging.SendMail(administrationStaffInformation.Email, null, null,
                         "Authentication Credential", msg, null);
                 }
@@ -68,6 +70,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     existing.FirstName = administrationStaffInformation.FirstName;
                     existing.Surname = administrationStaffInformation.Surname;
                     existing.SiteId = administrationStaffInformation.SiteId;
+                    existing.RoleId = administrationStaffInformation.RoleId;
 
                     _db.Entry(existing).State = EntityState.Modified;
                 }
@@ -99,6 +102,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     new
                                     {
                                         UserInformation = u,
+                                        Role = ((UserRole)u.RoleId).DisplayName(),
                                         SiteInformation =
                                         siteInfo.FirstOrDefault(x => x.Id == u.SiteId) ??
                                         new Administration_SiteInformation()
@@ -133,7 +137,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     {
                         UserInformation = user,
                         SiteInformation = siteInfo ??
-                                          new Administration_SiteInformation()
+                                          new Administration_SiteInformation(),
+                        Role = ((UserRole) user.RoleId).DisplayName()
                     };
 
                     return Json(new ResponseData { Status = true, Message = "Successful", Data = userData },

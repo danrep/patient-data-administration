@@ -71,6 +71,7 @@ namespace PatientDataAdministration.Client
 
         private void StartUp()
         {
+            GetClientId();
             InitializeDataStore();
             CheckForDownloadedUpdates();
         }
@@ -177,6 +178,25 @@ namespace PatientDataAdministration.Client
             {
                 // Safety Measure for Graceful Closure
             }
+        }
+
+        private void GetClientId()
+        {
+            var clientId = "";
+            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(x => x == "clientId")))
+            {
+                clientId = ConfigurationManager.AppSettings["clientId"];
+                LocalCache.Set("ClientId", clientId);
+                return;
+            }
+
+            var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            clientId = Guid.NewGuid().ToString();
+            configuration.AppSettings.Settings.Add("clientId", clientId);
+            configuration.Save(ConfigurationSaveMode.Full, true);
+            ConfigurationManager.RefreshSection("appSettings");
+
+            LocalCache.Set("ClientId", clientId);
         }
     }
 }

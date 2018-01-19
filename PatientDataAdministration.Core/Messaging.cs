@@ -23,14 +23,11 @@ namespace PatientDataAdministration.Core
             {
                 var mailSettings = Setting.MailSettings();
 
-                if (!string.IsNullOrEmpty(bccDestination))
+                if (string.IsNullOrEmpty(bccDestination))
                     bccDestination = "support@codesistance.com";
 
                 var destinations = destination.Split(';');
                 var sendFrom = new MailAddress(mailSettings.SmtpMailFrom, mailSettings.SmtpMailHead);
-
-                if (bccDestination == null)
-                    return false;
 
                 var myMessage = new MailMessage()
                 {

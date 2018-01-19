@@ -1976,7 +1976,7 @@ GO
 SET IDENTITY_INSERT [dbo].[System_Setting] ON 
 
 GO
-INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (1, 1, N'http://104.155.47.95:7000', CAST(N'2017-12-10 00:00:00.000' AS DateTime), 0)
+INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (1, 1, N'http://41.242.57.43', CAST(N'2017-12-10 00:00:00.000' AS DateTime), 0)
 GO
 INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (2, 2, N'false', CAST(N'2017-12-18 00:00:00.000' AS DateTime), 0)
 GO

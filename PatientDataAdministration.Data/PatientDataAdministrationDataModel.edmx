@@ -83,6 +83,7 @@
           <Property Name="PasswordSalt" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="AuthenticationState" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -314,6 +315,7 @@
           <Property Name="SiteId" Type="Int32" Nullable="false" />
           <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricData">
           <Key>
@@ -506,6 +508,7 @@
           <EntitySetMapping Name="Administration_StaffInformation">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_StaffInformation">
               <MappingFragment StoreEntitySet="Administration_StaffInformation">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="AuthenticationState" ColumnName="AuthenticationState" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
