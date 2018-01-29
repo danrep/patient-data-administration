@@ -155,10 +155,10 @@ namespace PatientDataAdministration.Client
                 authData = authData,
                 clientInformation = new ClientInformation()
                 {
-                    ClientGuid = LocalCache.Get<string>("ClientId"),
-                    LocationLong = clientCoordinates?.Longitude.ToString(CultureInfo.InvariantCulture),
+                    ClientGuid = LocalCache.Get<string>("ClientId") ?? "NA",
+                    LocationLong = clientCoordinates?.Longitude.ToString(CultureInfo.InvariantCulture) ?? "0",
                     ClientName = System.Security.Principal.WindowsIdentity.GetCurrent().Name, 
-                    LocationLat = clientCoordinates?.Latitude.ToString(CultureInfo.InvariantCulture),
+                    LocationLat = clientCoordinates?.Latitude.ToString(CultureInfo.InvariantCulture) ?? "0",
                     CurrentUser = 0
                 }
             };

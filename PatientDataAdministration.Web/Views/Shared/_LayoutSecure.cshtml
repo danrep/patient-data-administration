@@ -1,4 +1,5 @@
-﻿@using PatientDataAdministration.EnumLibrary
+﻿@using System.Globalization
+@using PatientDataAdministration.EnumLibrary
 @using PatientDataAdministration.EnumLibrary.Dictionary
 @using PatientDataAdministration.Web.Models
 
@@ -48,6 +49,7 @@
     <div id="page-loader" class="fade in">
         <span class="spinner"></span>
     </div>
+    <input id="auth" type="hidden" value="@PatientDataAdministration.Core.Encryption.SaltEncrypt(Newtonsoft.Json.JsonConvert.SerializeObject(SecurityModel.GetUserInSession.AdministrationStaffInformation.Email + ":" + DateTime.Now.ToString(CultureInfo.InvariantCulture)), "APINPDA")" />
     <div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
         <div id="header" class="header navbar navbar-default navbar-fixed-top">
             <div class="container-fluid">
@@ -68,8 +70,12 @@
                         </a>
                         <ul class="dropdown-menu animated fadeInLeft">
                             <li class="arrow"></li>
-                            <li class="divider"></li>
-                            <li><a href="@Url.Action("LogOut", "Home", new {area = ""})">Log Out</a></li>
+                            @if (SecurityModel.GetUserInSession.AdministrationStaffInformation.Id != 0)
+                            {
+                                <li><a href="@Url.Action("UserProfile", "Home", new {area = ""})"><i class="fa fa-user"></i>&nbsp;Your Profile</a></li>
+                                <li class="divider"></li>
+                            }
+                            <li><a href="@Url.Action("LogOut", "Home", new {area = ""})"><i class="fa fa-power-off"></i>&nbsp;Log Out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -98,11 +104,21 @@
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
-                            <i class="fa fa-users"></i>
-                            <span>User Management</span>
+                            <i class="fa fa-database"></i>
+                            <span>Data Processor</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "UserManagement", new {area = ""})">Overview</a></li>
+                            <li class="active"><a href="@Url.Action("Index", "DataProcessor", new {area = ""})">Data Central</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-user-md"></i>
+                            <span>Patient Management</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
                         </ul>
                     </li>
                     <li class="has-sub">
@@ -118,11 +134,11 @@
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
-                            <i class="fa fa-user-md"></i>
-                            <span>Patient Management</span>
+                            <i class="fa fa-users"></i>
+                            <span>User Management</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
+                            <li class="active"><a href="@Url.Action("Index", "UserManagement", new {area = ""})">Overview</a></li>
                         </ul>
                     </li>
                     <li>

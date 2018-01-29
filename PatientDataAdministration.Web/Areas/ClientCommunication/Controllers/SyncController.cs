@@ -73,18 +73,24 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             try
             {
                 var stringData = Convert.FromBase64String(encodedListOfAvailablePepId);
-                var listOfAvalailablePepId = Encoding.ASCII.GetString(stringData);
+                var listOfAvalailablePepId = Encoding.ASCII.GetString(stringData).Split(',').OrderBy(x => x).ToList();
 
-                var listOfNewPatients =
-                    _entities.Patient_PatientInformation.Where(
-                        x => !listOfAvalailablePepId.Contains(x.PepId) && x.SiteId == siteId).Take(100).ToList();
+                var patientsInSite = _entities.Patient_PatientInformation
+                    .Where(x => !x.IsDeleted && x.SiteId == siteId)
+                    .OrderBy(x => x.Id)
+                    .ToList();
+
+                var listOfNewPatients = patientsInSite.Where(x => listOfAvalailablePepId.Any(y => y != x.PepId))
+                   .Take(100).ToList();
 
                 var returnNewPatients = new List<PatientInformation>();
 
                 foreach (var patient in listOfNewPatients)
                 {
-                    var patientInformation = new PatientInformation();
-                    patientInformation.Patient_PatientInformation = new Patient_PatientInformation();
+                    var patientInformation = new PatientInformation
+                    {
+                        Patient_PatientInformation = new Patient_PatientInformation()
+                    };
                     patientInformation.Patient_PatientInformation = patient;
 
                     if (_entities.Patient_PatientBiometricData.Any(x => x.PepId == patient.PepId))

@@ -1,0 +1,179 @@
+﻿@using PatientDataAdministration.Web.Models
+@using PatientDataAdministration.EnumLibrary
+@using PatientDataAdministration.EnumLibrary.Dictionary
+
+@{
+    ViewBag.Title = "User Profile";
+    ViewBag.TitleDesc = "User Profile and Password Management";
+    Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+
+    var userInfo = SecurityModel.GetUserInSession.AdministrationStaffInformation;
+    var siteInfo = SecurityModel.GetUserInSession.AdministrationSiteInformation;
+}
+
+@section styles
+{
+    <link href="/Assets/plugins/password-indicator/css/password-indicator.css" rel="stylesheet" />
+}
+
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <div class="profile-container">
+            <div class="profile-section">
+                <div class="profile-info">
+                    <div class="table-responsive">
+                        <table class="table table-profile">
+                            <thead>
+                                <tr>
+                                    <th class="field"><i class="fa fa-5x fa-user pull-right"></i></th>
+                                    <th>
+                                        <h4>
+                                            @userInfo.Surname @userInfo.Surname
+                                            <small>@(((UserRole)userInfo.RoleId).DisplayName())</small>
+                                        </h4>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="highlight">
+                                    <td class="field">Date Registered</td>
+                                    <td><a href="#">@userInfo.DateRegistered.ToLongDateString()</a></td>
+                                </tr>
+                                <tr class="divider">
+                                    <td colspan="2"></td>
+                                </tr>
+                                <tr>
+                                    <td class="field">Staff Id</td>
+                                    <td>
+                                        <i class="fa fa-address-card fa-lg m-r-5"></i><a href="#" class="m-l-5">@userInfo.StaffId</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="field">Mobile</td>
+                                    <td>
+                                        <i class="fa fa-mobile fa-lg m-r-5"></i><a href="#" class="m-l-5">@userInfo.PhoneNumber</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="field">E-mail</td>
+                                    <td>
+                                        <i class="fa fa-envelope fa-lg m-r-5"></i><a href="#" class="m-l-5">@userInfo.Email</a>
+                                    </td>
+                                </tr>
+                                <tr class="highlight">
+                                    <td class="field">Attached Site</td>
+                                    <td><a href="#">@siteInfo.SiteNameOfficial</a></td>
+                                </tr>
+                                <tr class="divider">
+                                    <td colspan="2"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="profile-container">
+            <div class="profile-section">
+                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:updatePassword();">
+                    <div class="modal-header">
+                        <h4 class="modal-title"><i class="fa fa-lock"></i>&nbsp;Change Password</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="col-md-12 col-sm-12">
+                                <label class="control-label" for="oldPassword">Old Password * :</label>
+                                <input class="form-control" type="password" id="oldPassword" name="oldPassword"
+                                       placeholder="Required" data-parsley-required="true" />
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                                <label class="control-label" for="newPassword">New Password * :</label>
+                                <input class="form-control" type="password" id="newPassword" name="newPassword"
+                                       placeholder="Required" data-parsley-required="true" data-toggle="password" data-placement="after" />
+                                <div id="passwordStrengthDiv" class="is0 m-t-5"></div>
+                            </div>
+                            <div class="col-md-12 col-sm-12">
+                                <label class="control-label" for="newPasswordRepeat">New Password Repeat * :</label>
+                                <input class="form-control" type="password" id="newPasswordRepeat" name="newPasswordRepeat"
+                                       placeholder="Required" data-parsley-required="true" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-warning" onclick="resetForm()">Clear</button>
+                        <button type="submit" class="btn btn-sm btn-success">Change Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="/assets/plugins/bootstrap-show-password/bootstrap-show-password.js"></script>
+    <script src="/assets/plugins/password-indicator/js/password-indicator.js"></script>
+    <script type="text/javascript">
+        function onload() {
+            $("#newPassword").passwordStrength({
+                targetDiv: "#passwordStrengthDiv"
+            });
+        }
+        onload();
+    </script>
+    <script>
+        pdaWeb.controller('pdaWebCtrlr',
+            function ($scope) {
+
+            });
+
+        function updatePassword() {
+            if ($("#newPassword").val() !== $("#newPasswordRepeat").val()) {
+                window.swalWarning("The passwords do not match.");
+                return;
+            }
+
+            var pwdSt = getPasswordStrength($("#newPassword").val());
+            if (pwdSt < 70) {
+                window.swalWarning("This password is strong enough! Ensure it contains Upper Case Letters, Digits and Symbols.");
+                return;
+            }
+
+            window.api("GET",
+                "@Url.Action("PasswordChange", "UserManagement", new {area = "ServerCommunication"})?oldPassword=" +
+                $("#oldPassword").val() +
+                "&newPassword=" +
+                $("#newPassword").val() +
+                "&email=@SecurityModel.GetUserInSession.AdministrationStaffInformation.Email",
+                null,
+                true,
+                updatePasswordComplete);
+        };
+
+        function updatePasswordComplete(data) {
+            window.swalSuccess("Update Successful");
+        };
+
+        function getPasswordStrength(h) {
+            var D = (h.length);
+            if (D > 5) {
+                D = 5;
+            }
+            var F = h.replace(/[0-9]/g, "");
+            var G = (h.length - F.length);
+            if (G > 3) { G = 3 }
+            var A = h.replace(/\W/g, "");
+            var C = (h.length - A.length);
+            if (C > 3) { C = 3 }
+            var B = h.replace(/[A-Z]/g, "");
+            var I = (h.length - B.length);
+            if (I > 3) { I = 3 }
+            var E = ((D * 10) - 20) + (G * 10) + (C * 15) + (I * 10);
+            if (E < 0) { E = 0 }
+            if (E > 100) { E = 100 }
+            return E;
+        }
+    </script>
+}

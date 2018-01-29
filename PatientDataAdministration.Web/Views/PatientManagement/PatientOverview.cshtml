@@ -200,7 +200,7 @@
 
 @section scripts
 {
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
             pageLoad();
         });
@@ -252,6 +252,14 @@
         function loadTable(data) {
             if (data === null)
                 return;
+
+            if (typeof data === 'undefined')
+                return;
+
+            if (data.length === 0) {
+                window.swalWarning("Your Criteria does not have a Match. Try again?");
+                return;
+            }
 
             window.resetDataTable($("#data-table"));
 
@@ -329,7 +337,7 @@
             $('#data-phone').val(data.PatientInfo.PhoneNumber);
             $('#dob').datepicker('setDate', new Date(data.Dob));
             $('#address').val(data.PatientInfo.HouseAddress);
-            
+
             document.getElementById('lga').value = data.PatientInfo.HouseAddresLga;
             $("#lga option[value='" + data.PatientInfo.HouseAddresLga + "']").attr("disabled", true);
         };
@@ -375,17 +383,30 @@
             $('#lga').attr("selected", null);
         };
 
+        function selectSites() {
+            window.api("GET",
+                "@Url.Action("GetSites", "Data", new {area = "ServerCommunication"})?stateId=" + $('#state').val(),
+                null,
+                true,
+                loadSites);
+        };
+
+        function loadSites(data) {
+            window.getNgScope().sitesInStates = data;
+            window.getNgScope().$apply();
+        };
+
         function savePatient() {
             if ($('#state2').val() === "0" || $('#lga').val() === "0") {
                 window.swalWarning('Please ensure that you have selected a valid State and Local Goverment for the Address');
-                return;    
+                return;
             }
 
             window.api("POST",
                 "@Url.Action("UpdateSinglePatient", "PatientManagement", new {area = "ServerCommunication"})",
                 {
                     patientPatientInformation: {
-                        PepId: $('#pepId').val(), 
+                        PepId: $('#pepId').val(),
                         Surname: $('#surname').val(),
                         Sex: $('#sex').val(),
                         Othername: $('#othernames').val(),
@@ -393,11 +414,11 @@
                         HouseAddress: $('#address').val(),
                         HouseAddressState: $('#state2').val(),
                         HouseAddressLga: $('#lga').val()
-                    }, 
+                    },
                     dob: $('#dob_data').val()
                 },
                 true,
                 search, true);
         }
-    </script>
+</script>
 }

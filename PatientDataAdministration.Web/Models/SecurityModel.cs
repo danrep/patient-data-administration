@@ -27,6 +27,16 @@ namespace PatientDataAdministration.Web.Models
 
     public class UserInformation
     {
+        private readonly Entities _entities = new Entities();
+
         public Administration_StaffInformation AdministrationStaffInformation { get; set; }
+
+        public Administration_SiteInformation AdministrationSiteInformation
+            =>
+                _entities.Administration_SiteInformation.FirstOrDefault(
+                    x => x.Id == AdministrationStaffInformation.SiteId) ?? new Administration_SiteInformation()
+                {
+                    SiteNameOfficial = "Head Office"
+                };
     }
 }

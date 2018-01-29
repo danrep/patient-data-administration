@@ -12,7 +12,7 @@ namespace PatientDataAdministration.Web.Controllers
     public class HomeController : BaseController
     {
         private readonly Entities _entities = new Entities();
-        // GET: Home
+
         public ActionResult Index()
         {
             return View();
@@ -115,6 +115,14 @@ namespace PatientDataAdministration.Web.Controllers
         {
             SecurityModel.ClearSession();
             return RedirectToAction("Index", "Security", new {area = ""});
+        }
+
+        public ActionResult UserProfile()
+        {
+            if (SecurityModel.GetUserInSession.AdministrationStaffInformation.Id == 0)
+                return RedirectToAction("Index");
+
+            return View();
         }
     }
 }

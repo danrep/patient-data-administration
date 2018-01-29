@@ -182,21 +182,18 @@ namespace PatientDataAdministration.Client
 
         private void GetClientId()
         {
-            var clientId = "";
-            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings.AllKeys.FirstOrDefault(x => x == "clientId")))
+            var clientId = ConfigurationManager.AppSettings["ClientId"]?.ToString() ?? "";
+            if (string.IsNullOrEmpty(clientId))
             {
-                clientId = ConfigurationManager.AppSettings["clientId"];
-                LocalCache.Set("ClientId", clientId);
-                return;
+                var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                clientId = Guid.NewGuid().ToString();
+                configuration.AppSettings.Settings.Add("ClientId", clientId);
+                configuration.Save(ConfigurationSaveMode.Modified, false);
+                ConfigurationManager.RefreshSection("appSettings");
             }
 
-            var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            clientId = Guid.NewGuid().ToString();
-            configuration.AppSettings.Settings.Add("clientId", clientId);
-            configuration.Save(ConfigurationSaveMode.Full, true);
-            ConfigurationManager.RefreshSection("appSettings");
-
             LocalCache.Set("ClientId", clientId);
+            return;
         }
     }
 }

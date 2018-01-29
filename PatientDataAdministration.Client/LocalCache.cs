@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
@@ -38,6 +39,10 @@ namespace PatientDataAdministration.Client
             {
                 case "System_Setting":
                     Set(cacheKeyName, _localPdaEntities.System_Setting.Where(x => !x.IsDeleted).ToList());
+                    break;
+
+                case "ClientId":
+                    Set(cacheKeyName, ConfigurationManager.AppSettings["ClientId"] ?? "");
                     break;
 
                 default:

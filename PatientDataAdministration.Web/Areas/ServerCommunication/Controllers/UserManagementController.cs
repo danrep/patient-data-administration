@@ -251,5 +251,54 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult PasswordChange(string oldPassword, string newPassword, string email)
+        {
+            try
+            {
+                var staffInformation =
+                    _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted && x.Email == email);
+
+                if (staffInformation == null)
+                    return
+                        Json(
+                            new ResponseData
+                            {
+                                Status = false,
+                                Message = "This User does not Exist"
+                            },
+                            JsonRequestBehavior.AllowGet);
+
+
+                if (!Encryption.IsSaltEncryptValid(oldPassword, staffInformation.PasswordData,
+                    staffInformation.PasswordSalt))
+                    return
+                        Json(
+                            new ResponseData
+                            {
+                                Status = false,
+                                Message = "Invalid Existing Password"
+                            },
+                            JsonRequestBehavior.AllowGet);
+
+                staffInformation.PasswordData = Encryption.SaltEncrypt(newPassword, staffInformation.PasswordSalt);
+                _db.Entry(staffInformation).State = EntityState.Modified;
+                _db.SaveChanges();
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful Modification"
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

@@ -192,7 +192,7 @@ namespace PatientDataAdministration.Client
             try
             {
                 var textBoxes = pnlOfficialInformation.Controls.OfType<TextBox>().ToList();
-                if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text) && x.Name != txtPepId.Name))
+                if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
                     textBoxes.FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
                     MessageBox.Show(@"Please ensure that all input fields have been filled");
@@ -549,17 +549,22 @@ namespace PatientDataAdministration.Client
                         _lblInformationForeColor = Color.DarkOrange;
 
                         var totalPatients = _localPdaEntities.System_BioDataStore.Count();
+                        var orderedSystemBioDataStore = _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).ToList();
                         for (var i = 0; i < totalPatients; i+= 100)
                         {
                             _systemBioDataStores.AddRange(
-                                _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Where(
-                                    x => x.SiteId == _administrationStaffInformation.SiteId).ToList());
+                                orderedSystemBioDataStore.Skip(i).Take(100).ToList());
                         }
                         
                         _lblInformationText = $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
                         _lblInformationForeColor = Color.DarkGreen;
 
                         _isBusy = false;
+
+                        orderedSystemBioDataStore.Clear();
+                        orderedSystemBioDataStore.TrimExcess();
+
+                        GC.Collect();
                     }).Start();
             }
             catch (Exception e)
@@ -1023,8 +1028,6 @@ namespace PatientDataAdministration.Client
                         chkNfc.Checked = true;
                 }
 
-                Application.DoEvents();
-
                 _systemBioDataStore =
                     _localPdaEntities.System_BioDataStore.FirstOrDefault(
                         x => x.PepId == patientDataResolved.Patient_PatientInformation.PepId) ?? new System_BioDataStore();
@@ -1095,14 +1098,41 @@ namespace PatientDataAdministration.Client
                     _systemBioDataStores.Where(
                         x =>
                             (x.PepId.ToLower().Contains(query) ||
-                             x.PatientData.ToLower().Contains(query)) &&
-                            !x.IsDeleted).Take(10).Select(s => new { s.PepId, s.FullName }).ToList();
+                             x.PatientData.ToLower()
+                             .Replace("\"patient_patientinformation\"", "")
+                             .Replace("\"id\"", "")
+                             .Replace("\"pepid\"", "")
+                             .Replace("\"previousid\"", "")
+                             .Replace("\"siteid\"", "")
+                             .Replace("\"title\"", "")
+                             .Replace("\"surname\"", "")
+                             .Replace("\"othername\"", "")
+                             .Replace("\"sex\"", "")
+                             .Replace("\"phonenumber\"", "")
+                             .Replace("\"maritalstatus\"", "")
+                             .Replace("\"dateofbirth\"", "")
+                             .Replace("\"stateoforigin\"", "")
+                             .Replace("\"houseaddress\"", "")
+                             .Replace("\"houseaddressstate\"", "")
+                             .Replace("\"houseaddresslga\"", "")
+                             .Replace("\"hospitalnumber\"", "")
+                             .Replace("\"passportdata\"", "")
+                             .Replace("\"isdeleted\"", "")
+                             .Replace("\"whencreated\"", "")
+                             .Replace("\"lastupdated\"", "")
+                             .Replace("\"patient_patientbiometricdata\"", "")
+                             .Replace("\"patient_patientNearfieldcommunicationdata\"", "")
+                             .Replace("\"administration_staffinformation\"", "")
+                             .Contains(query)) &&
+                            !x.IsDeleted).Take(10).Select(s => new {s.PepId, s.FullName}).ToList();
 
                 if (!results.Any())
                     lstBoxSearchResult.Items.Add($"No Match");
                 else
                     foreach (var result in results)
                         lstBoxSearchResult.Items.Add($"{result.PepId.ToUpper()}| {result.FullName}");
+
+                results.Clear();
 
                 if (string.IsNullOrEmpty(query))
                     lstBoxSearchResult.Visible = false;

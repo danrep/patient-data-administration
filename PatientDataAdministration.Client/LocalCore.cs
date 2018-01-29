@@ -20,10 +20,10 @@ namespace PatientDataAdministration.Client
         private static LocalPDAEntities _pdaEntities = new LocalPDAEntities();
         private static int _userCredentialId = 0;
 
-        public static DialogResult TreatError(Exception exception, int userCredentialId, bool isSilent = false)
+        public static DialogResult TreatError(Exception exception, int userCredentialId, bool canDisplayError = false)
         {
             LocalCore._userCredentialId = userCredentialId;
-            return isSilent ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message) : DialogResult.OK;
+            return canDisplayError ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message) : DialogResult.OK;
         }
 
         private static void TreatError(Exception exception)
@@ -252,7 +252,8 @@ namespace PatientDataAdministration.Client
         public static GeoCoordinate GetLocationProperty()
         {
             var watcher = new GeoCoordinateWatcher();
-            watcher.TryStart(false, TimeSpan.FromMilliseconds(1));
+            watcher.TryStart(true, TimeSpan.FromMilliseconds(1));
+            watcher.Start();
 
             var coord = watcher;
             return watcher.Position.Location.IsUnknown == false ? coord.Position.Location : null;

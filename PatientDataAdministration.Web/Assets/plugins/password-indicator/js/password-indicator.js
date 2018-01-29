@@ -25,7 +25,7 @@ $.fn.passwordStrength = function( options ){
 				.addClass( this.opts.classes[ t ] );
 				
 		})
-		.after('<a href="#">Generate Password</a>')
+		//.after('<a href="#">Generate Password</a>')
 		.next()
 		.click(function(){
 			$(this).prev().val( randomPassword() ).trigger('keyup');

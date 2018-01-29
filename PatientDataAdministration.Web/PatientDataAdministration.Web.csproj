@@ -1056,6 +1056,8 @@
     <Content Include="Views\PatientManagement\PatientOverview.cshtml" />
     <Content Include="Views\PatientManagement\PatientData.cshtml" />
     <Content Include="Views\Security\MailTemplate.cshtml" />
+    <Content Include="Views\DataProcessor\Index.cshtml" />
+    <Content Include="Views\Home\UserProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1102,6 +1104,7 @@
     <Compile Include="Areas\ServerCommunication\ServerCommunicationAreaRegistration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\DataProcessorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />

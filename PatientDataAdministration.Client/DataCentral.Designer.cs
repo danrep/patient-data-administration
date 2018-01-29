@@ -50,6 +50,8 @@ namespace PatientDataAdministration.Client
             this.picConnectionAvailable = new System.Windows.Forms.PictureBox();
             this.picSyncInProcess = new System.Windows.Forms.PictureBox();
             this.picIndUpdate = new System.Windows.Forms.PictureBox();
+            this.picDataReady = new System.Windows.Forms.PictureBox();
+            this.picDataWait = new System.Windows.Forms.PictureBox();
             this.lblUserInformation = new System.Windows.Forms.Label();
             this.metroToolTip1 = new MetroFramework.Components.MetroToolTip();
             this.tmrCheckConnection = new System.Windows.Forms.Timer(this.components);
@@ -58,8 +60,7 @@ namespace PatientDataAdministration.Client
             this.bgwNewPatient = new System.ComponentModel.BackgroundWorker();
             this.btnCancelSync = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-            this.picDataReady = new System.Windows.Forms.PictureBox();
-            this.picDataWait = new System.Windows.Forms.PictureBox();
+            this.bgwPing = new System.ComponentModel.BackgroundWorker();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -67,9 +68,9 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).BeginInit();
-            this.flowLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picDataReady)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDataWait)).BeginInit();
+            this.flowLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstBoxInfoLog
@@ -311,6 +312,30 @@ namespace PatientDataAdministration.Client
             this.metroToolTip1.SetToolTip(this.picIndUpdate, "System Update in Progress");
             this.picIndUpdate.Visible = false;
             // 
+            // picDataReady
+            // 
+            this.picDataReady.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
+            this.picDataReady.Location = new System.Drawing.Point(98, 3);
+            this.picDataReady.Name = "picDataReady";
+            this.picDataReady.Size = new System.Drawing.Size(24, 24);
+            this.picDataReady.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picDataReady.TabIndex = 14;
+            this.picDataReady.TabStop = false;
+            this.metroToolTip1.SetToolTip(this.picDataReady, "Information Data Management is Ready");
+            this.picDataReady.Visible = false;
+            // 
+            // picDataWait
+            // 
+            this.picDataWait.Image = global::PatientDataAdministration.Client.Properties.Resources._800px_COLOURBOX18331728;
+            this.picDataWait.Location = new System.Drawing.Point(68, 3);
+            this.picDataWait.Name = "picDataWait";
+            this.picDataWait.Size = new System.Drawing.Size(24, 24);
+            this.picDataWait.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picDataWait.TabIndex = 15;
+            this.picDataWait.TabStop = false;
+            this.metroToolTip1.SetToolTip(this.picDataWait, "Loading Patient Data. You may need to Wait");
+            this.picDataWait.Visible = false;
+            // 
             // lblUserInformation
             // 
             this.lblUserInformation.AutoSize = true;
@@ -350,6 +375,7 @@ namespace PatientDataAdministration.Client
             this.bgwNewPatient.WorkerReportsProgress = true;
             this.bgwNewPatient.WorkerSupportsCancellation = true;
             this.bgwNewPatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwNewPatient_DoWork);
+            this.bgwNewPatient.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwNewPatient_RunWorkerCompleted);
             // 
             // btnCancelSync
             // 
@@ -380,29 +406,11 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel3.Size = new System.Drawing.Size(366, 47);
             this.flowLayoutPanel3.TabIndex = 18;
             // 
-            // picDataReady
+            // bgwPing
             // 
-            this.picDataReady.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
-            this.picDataReady.Location = new System.Drawing.Point(98, 3);
-            this.picDataReady.Name = "picDataReady";
-            this.picDataReady.Size = new System.Drawing.Size(24, 24);
-            this.picDataReady.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picDataReady.TabIndex = 14;
-            this.picDataReady.TabStop = false;
-            this.metroToolTip1.SetToolTip(this.picDataReady, "Information Data Management is Ready");
-            this.picDataReady.Visible = false;
-            // 
-            // picDataWait
-            // 
-            this.picDataWait.Image = global::PatientDataAdministration.Client.Properties.Resources._800px_COLOURBOX18331728;
-            this.picDataWait.Location = new System.Drawing.Point(68, 3);
-            this.picDataWait.Name = "picDataWait";
-            this.picDataWait.Size = new System.Drawing.Size(24, 24);
-            this.picDataWait.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.picDataWait.TabIndex = 15;
-            this.picDataWait.TabStop = false;
-            this.metroToolTip1.SetToolTip(this.picDataWait, "Loading Patient Data. You may need to Wait");
-            this.picDataWait.Visible = false;
+            this.bgwPing.WorkerReportsProgress = true;
+            this.bgwPing.WorkerSupportsCancellation = true;
+            this.bgwPing.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwPing_DoWork);
             // 
             // DataCentral
             // 
@@ -435,9 +443,9 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picSyncInProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picIndUpdate)).EndInit();
-            this.flowLayoutPanel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picDataReady)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDataWait)).EndInit();
+            this.flowLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -471,5 +479,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
         private System.Windows.Forms.PictureBox picDataReady;
         private System.Windows.Forms.PictureBox picDataWait;
+        private System.ComponentModel.BackgroundWorker bgwPing;
     }
 }

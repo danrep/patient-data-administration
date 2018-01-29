@@ -754,7 +754,6 @@ namespace PatientDataAdministration.Client
             this.txtPepId.ForeColor = System.Drawing.Color.White;
             this.txtPepId.Location = new System.Drawing.Point(3, 52);
             this.txtPepId.Name = "txtPepId";
-            this.txtPepId.ReadOnly = true;
             this.txtPepId.Size = new System.Drawing.Size(227, 30);
             this.txtPepId.TabIndex = 55;
             // 

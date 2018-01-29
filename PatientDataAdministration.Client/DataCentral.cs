@@ -20,6 +20,7 @@ namespace PatientDataAdministration.Client
         private bool _isSyncUpdateInProgress;
         private bool _onDemandSyncEnabled;
         private bool _killCommandReceived;
+        private bool _pingResult;
 
         private Administration_StaffInformation _administrationStaffInformation;
         private System_SiteData _systemSiteData;
@@ -33,23 +34,26 @@ namespace PatientDataAdministration.Client
             return Convert.ToInt32(version.Replace(".", "").Replace("v", "").Trim());
         }
 
-        public static void PushEvents(OperationQueue operationQueue)
-        {
-            _operationQueue.Add(operationQueue);
-        }
-
         public DataCentral(Administration_StaffInformation administrationStaffInformation)
         {
             InitializeComponent();
 
+            _operationQueue.Add(new OperationQueue() { Param = "PDA Initializing" });
             this._administrationStaffInformation = administrationStaffInformation;
 
             this._systemSiteData = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
+            if (_systemSiteData != null)
+                _operationQueue.Add(new OperationQueue() { Param = "Settings Loaded" });
 
             _onDemandSyncEnabled = Convert.ToBoolean(
                 LocalCache.Get<List<System_Setting>>("System_Setting")
                     .FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.OnDemandSync)?
                     .SettingValue ?? "false");
+
+            _operationQueue.Add(new OperationQueue()
+            {
+                Param = "Real Time Synchronization " + (_onDemandSyncEnabled ? "Enabled" : "Disabled")
+            });
 
             SiteInfo();
         }
@@ -101,7 +105,14 @@ namespace PatientDataAdministration.Client
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
-            picSyncInProcess.Visible = _isSyncNewInProgress != _isSyncUpdateInProgress || _isSyncNewInProgress;
+            picConnectionAvailable.Visible = _pingResult;
+
+            picSyncInProcess.Visible = _isSyncNewInProgress;
+            if (_isSyncNewInProgress)
+                return;
+
+            if (_isSyncUpdateInProgress)
+                picSyncInProcess.Visible = _isSyncUpdateInProgress;
         }
 
         private void tmrPostInfoLogs_Tick(object sender, EventArgs e)
@@ -154,13 +165,9 @@ namespace PatientDataAdministration.Client
                 {
                     Param = "Initiating Synchronization Tasks"
                 });
-                SiteInfo();
 
                 if (!bgwNewPatient.IsBusy)
                     bgwNewPatient.RunWorkerAsync();
-
-                if(!bgwUpdatePatient.IsBusy)
-                    bgwUpdatePatient.RunWorkerAsync();
             }
             catch (Exception e)
             {
@@ -256,15 +263,8 @@ namespace PatientDataAdministration.Client
 
         private void tmrCheckConnection_Tick(object sender, EventArgs e)
         {
-            try
-            {
-                picConnectionAvailable.Visible = LocalCore.Get($@"/ClientCommunication/Misc/Ping").Result.Status;
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
-                picConnectionAvailable.Visible = false;
-            }
+            if (!bgwPing.IsBusy)
+                bgwPing.RunWorkerAsync();
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
@@ -288,10 +288,13 @@ namespace PatientDataAdministration.Client
             {
                 ExecuteSync();
 
+                _operationQueue.Add(new OperationQueue() { Param = "Initializing Patient Data Management" });
                 _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
+                _operationQueue.Add(new OperationQueue() { Param = "Patient Data Management Initialization Complete" });
 
                 btnSync.Visible = !_onDemandSyncEnabled;
-
+                
+                _operationQueue.Add(new OperationQueue(){Param = "Starting Patient Data Load"});
                 _subInfoMan.UpdatePersistedData();
 
                 new Thread(() =>
@@ -336,15 +339,16 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
             }
         }
 
         private void btnSync_Click(object sender, EventArgs e)
         {
             _killCommandReceived = false;
-            InitiateSync();
             SiteInfo();
+            InitiateSync();
         }
 
         public void SiteInfo()
@@ -368,13 +372,15 @@ namespace PatientDataAdministration.Client
                 });
                 var innerEntity = new LocalPDAEntities();
                 var pulled = 0;
+                var patientInformation = new List<string>();
+
                 while (true)
                 {
                     if (_killCommandReceived)
                     {
                         _operationQueue.Add(new OperationQueue()
                         {
-                            Param = $"KILL Command Received"
+                            Param = $"STOP Command Received"
                         });
                         break;
                     }
@@ -383,11 +389,13 @@ namespace PatientDataAdministration.Client
 
                     if (innerEntity.System_BioDataStore.Any())
                     {
-                        var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
+                        patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
 
                         listOfPepId = patientInformation.Aggregate("",
                             (current, patientInfo) => current + $"{patientInfo},");
                         listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
+
+                        patientInformation.Clear();
                     }
 
                     var data = Encoding.ASCII.GetBytes(listOfPepId);
@@ -433,7 +441,7 @@ namespace PatientDataAdministration.Client
                             {
                                 _operationQueue.Add(new OperationQueue()
                                 {
-                                    Param = $"KILL Command Received"
+                                    Param = $"STOP Command Received"
                                 });
                                 break;
                             }
@@ -451,10 +459,10 @@ namespace PatientDataAdministration.Client
 
                         _isSyncNewInProgress = false;
                     }
-
-                    if (!_onDemandSyncEnabled)
-                        _subInfoMan.UpdatePersistedData();
                 }
+
+                if (!_onDemandSyncEnabled)
+                    _subInfoMan.UpdatePersistedData();
 
                 _operationQueue.Add(new OperationQueue()
                 {
@@ -498,7 +506,7 @@ namespace PatientDataAdministration.Client
                     {
                         _operationQueue.Add(new OperationQueue()
                         {
-                            Param = $"KILL Command Received"
+                            Param = $"STOP Command Received"
                         });
                         break;
                     }
@@ -529,7 +537,7 @@ namespace PatientDataAdministration.Client
                         {
                             _operationQueue.Add(new OperationQueue()
                             {
-                                Param = $"KILL Command Received"
+                                Param = $"STOP Command Received"
                             });
                             break;
                         }
@@ -580,6 +588,36 @@ namespace PatientDataAdministration.Client
 
             bgwNewPatient.CancelAsync();
             bgwUpdatePatient.CancelAsync();
+
+            _isSyncNewInProgress = _isSyncUpdateInProgress = false;
+
+            _subInfoMan.UpdatePersistedData();
+        }
+
+        private void bgwNewPatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (!bgwUpdatePatient.IsBusy)
+                    bgwUpdatePatient.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
+        }
+
+        private void bgwPing_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {
+                _pingResult = LocalCore.Get($@"/ClientCommunication/Misc/Ping").Result.Status;
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+                _pingResult = false;
+            }
         }
     }
 }

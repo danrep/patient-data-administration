@@ -59,5 +59,18 @@ namespace PatientDataAdministration.DemoClient
             var patientTagging = new PatientTagging();
             patientTagging.ShowDialog();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Windows.Forms.MessageBox.Show(Core.Encryption.SaltDecrypt(textBox1.Text, textBox2.Text));
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
     }
 }

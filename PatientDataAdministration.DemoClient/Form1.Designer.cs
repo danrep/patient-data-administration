@@ -83,6 +83,9 @@
             this.toolStripButton22 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton24 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton25 = new System.Windows.Forms.ToolStripButton();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControlAdv2)).BeginInit();
             this.ribbonControlAdv2.SuspendLayout();
@@ -787,6 +790,29 @@
             this.toolStripButton25.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.toolStripButton25.TextImageRelation = System.Windows.Forms.TextImageRelation.Overlay;
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(383, 171);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(252, 23);
+            this.textBox1.TabIndex = 129;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(383, 197);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(252, 23);
+            this.textBox2.TabIndex = 130;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(383, 226);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(252, 23);
+            this.button1.TabIndex = 131;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -795,6 +821,9 @@
             this.Borders = new System.Windows.Forms.Padding(0);
             this.ClientSize = new System.Drawing.Size(931, 380);
             this.ColorScheme = Syncfusion.Windows.Forms.Tools.RibbonForm.ColorSchemeType.Silver;
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.gradientPanelExt2);
@@ -833,6 +862,7 @@
             this.toolStripEx2.ResumeLayout(false);
             this.toolStripEx2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -892,6 +922,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton22;
         private System.Windows.Forms.ToolStripButton toolStripButton24;
         private System.Windows.Forms.ToolStripButton toolStripButton25;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button button1;
     }
 }
 

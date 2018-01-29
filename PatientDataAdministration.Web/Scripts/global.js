@@ -10,13 +10,15 @@ function getNgScope() {
  * API Abstraction
  */
 function api(apiConnectType, url, data, asyncMode, callback, feedBack = false) {
-
     $.ajax({
         type: apiConnectType,
         url: url,
         async: asyncMode,
         data: data,
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            "user-auth": $("#auth").val()
+        }
     })
     .success(function (remoteData) {
         if (remoteData.Status === true) {
@@ -102,7 +104,7 @@ function resetFormData(form) {
  */
 function formatDate(date) {
     return moment(date).format("DD-MM-YYYY");
-}
+};
 
 /*
  *  Charting Functions
@@ -142,7 +144,7 @@ function donutChart(chartElementName, arrayData) {
         labelTextSize: "11px",
         backgroundColor: "#242a30"
     });
-}
+};
 
 /*
  * SWAL
