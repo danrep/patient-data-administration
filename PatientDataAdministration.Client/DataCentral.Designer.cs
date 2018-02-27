@@ -61,6 +61,8 @@ namespace PatientDataAdministration.Client
             this.btnCancelSync = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
             this.bgwPing = new System.ComponentModel.BackgroundWorker();
+            this.bgwFreshPatient = new System.ComponentModel.BackgroundWorker();
+            this.tmrFreshPatient = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -412,6 +414,19 @@ namespace PatientDataAdministration.Client
             this.bgwPing.WorkerSupportsCancellation = true;
             this.bgwPing.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwPing_DoWork);
             // 
+            // bgwFreshPatient
+            // 
+            this.bgwFreshPatient.WorkerReportsProgress = true;
+            this.bgwFreshPatient.WorkerSupportsCancellation = true;
+            this.bgwFreshPatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwFreshPatient_DoWork);
+            // 
+            // tmrFreshPatient
+            // 
+            this.tmrFreshPatient.Enabled = true;
+            this.tmrFreshPatient.Interval = 60000;
+            this.tmrFreshPatient.Tag = "";
+            this.tmrFreshPatient.Tick += new System.EventHandler(this.tmrFreshPatient_Tick);
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -480,5 +495,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.PictureBox picDataReady;
         private System.Windows.Forms.PictureBox picDataWait;
         private System.ComponentModel.BackgroundWorker bgwPing;
+        private System.ComponentModel.BackgroundWorker bgwFreshPatient;
+        private System.Windows.Forms.Timer tmrFreshPatient;
     }
 }

@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.C
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PatientDataAdministration.Client.SetUp", "PatientDataAdministration.Client.SetUp\PatientDataAdministration.Client.SetUp.vdproj", "{544FA1D7-7E5C-4F81-B7A4-DEE97C6D762A}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientDataAdministration.Database", "PatientDataAdministration.Database\PatientDataAdministration.Database.sqlproj", "{2B8CD5E2-1398-4508-A66E-20207744DFEF}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientDataAdministration.Database", "PatientDataAdministration.Database\PatientDataAdministration.Database.sqlproj", "{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,12 +65,12 @@ Global
 		{544FA1D7-7E5C-4F81-B7A4-DEE97C6D762A}.Debug|Any CPU.Build.0 = Debug
 		{544FA1D7-7E5C-4F81-B7A4-DEE97C6D762A}.Release|Any CPU.ActiveCfg = Release
 		{544FA1D7-7E5C-4F81-B7A4-DEE97C6D762A}.Release|Any CPU.Build.0 = Release
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B8CD5E2-1398-4508-A66E-20207744DFEF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

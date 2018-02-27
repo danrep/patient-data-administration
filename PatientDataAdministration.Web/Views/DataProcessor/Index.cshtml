@@ -1,5 +1,156 @@
-﻿@{
+﻿@using PatientDataAdministration.EnumLibrary
+@using PatientDataAdministration.EnumLibrary.Dictionary
+@using PatientDataAdministration.Web.Models
+@{
     ViewBag.Title = "Data Central";
     ViewBag.TitleDesc = "Manage and View Bulk Data";
     Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+}
+
+@section styles
+{
+    <link href="/assets/plugins/dropzone/min/dropzone.min.css" rel="stylesheet" />
+}
+
+<div class="panel panel-inverse" data-sortable-id="form-dropzone-1">
+    <div class="panel-heading">
+        <h4 class="panel-title">Bulk Data Upload</h4>
+    </div>
+    <div class="panel-body">
+        <div class="col-md-8">
+            <div id="dropzone">
+                <form action="@Url.Action("UploadFile", "DataProcessorHandler", new {area = "ServerCommunication"})" class="dropzone needsclick" id="dropzoneForm">
+                    <div class="dz-message needsclick">
+                        Drop files here or click to upload.<br />
+                        <span class="dz-note needsclick">
+                            only Excel and CSV files are required here
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p><i class="fa fa-info text-warning"></i>&nbsp;When loading file using the <strong>'@FileProcessingMethod.ExPat.DisplayName()'</strong> processing method, ensure that the sheet names are the same code with their sites.</p>
+            <p><i class="fa fa-info text-info"></i>&nbsp;Use <strong>'Force Replace'</strong> only when absolutely sure.</p>
+        </div>
+    </div>
+</div>
+<div class="panel panel-inverse" data-sortable-id="ui-widget-16">
+    <div class="panel-heading">
+        <h4 class="panel-title">Upload Control</h4>
+    </div>
+    <div class="panel-body bg-black">
+        <div class="form-group">
+            <div class="col-md-4 col-xs-12">
+                <select class="form-control" id="fileProcessingMethod">
+                    <option value="0">Select a File Processing Method</option>
+                    @foreach (var fileProcessingMethod in EnumDictionary.GetList<FileProcessingMethod>())
+                    {
+                        <option value="@fileProcessingMethod.ItemId">@fileProcessingMethod.ItemName</option>
+                    }
+                </select>
+                <div class="alert bg-black-darker p-5 m-t-10">
+                    <p class="text-white m-b-5">Enable this if you want to Force Replace <strong>ANY</strong> existing data!</p>
+                    <input type="checkbox" data-render="switchery" data-theme="default" class="pull-right" id="chkForceReplace" />
+                </div>
+                <hr />
+                <button id="btnProcessUploadedFiles" class="btn btn-success btn-sm"><i class="fa fa-upload"></i>&nbsp;Upload File(s)</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="/assets/plugins/dropzone/min/dropzone.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            FormSliderSwitcher.init();
+        });
+
+        Dropzone.options.dropzoneForm = {
+            maxFiles: 3,
+            maxFilesize: 100,
+            acceptedFiles: ".xls,.xlsx,.csv",
+            init: function () {
+                this.on("maxfilesexceeded", function (data) {
+                    window.swalWarning('Too many files has been uploaded successfully');
+                });
+
+                this.on("success", function (file) {
+                    var _this = this;
+                    window.swalSuccess(file.name + ' has been uploaded successfully');
+                });
+
+                this.on("addedfile", function (file) {
+                    var removeButton = Dropzone.createElement("<button class='btn btn-block btn-xs btn-danger'><i class='fa fa-trash'></i> Remove File</button>");
+
+                    var _this = this;
+
+                    removeButton.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+
+                        $.post("@Url.Action("DeleteFile", "DataProcessorHandler", new {area = "ServerCommunication"})",
+                        {
+                            name: file.name,
+                        }, function (data, status) {
+                            if (data.Status) {
+                                window.swalSuccess('File has been Removed from Queue');
+
+                                _this.removeFile(file);
+                            }
+                            else {
+                                window.swalWarning(file.name + ' seem to be giving some issues. Please refresh this page');
+                            }
+                        });
+                    });
+
+                    file.previewElement.appendChild(removeButton);
+                });
+            }
+        };
+
+        $("#btnProcessUploadedFiles").click(function () {
+            var readyFiles = [];
+
+            $.each(Dropzone.forElement("#dropzoneForm").getAcceptedFiles(),
+                function(i, currentFile) {
+                    readyFiles.push(currentFile.name);
+                });
+
+            if (readyFiles.length === 0) {
+                window.swalWarning("At least 1 file must have been uploaded. Please do so!");
+                return;
+            }
+
+            if ($('#fileProcessingMethod').val() === "0") {
+                window.swalWarning("A valid file processing method must be selected!");
+                return;
+            }
+
+            const postData = {
+                files: readyFiles,
+                fileProcessingMethod: $('#fileProcessingMethod').val(),
+                forceReplace: $('#chkForceReplace').prop("checked"), 
+                notifyDestination: '@(SecurityModel.GetUserInSession?.AdministrationStaffInformation.Email ?? "marigbede@codesistance.com")'
+            };
+
+            console.log($('#chkForceReplace').prop("checked"));
+
+            window.api("POST",
+                "@Url.Action("ProcessFile", "DataProcessorHandler", new {area = "ServerCommunication"})",
+                postData,
+                true,
+                postProcessFile,
+                true);
+        });
+
+        function postProcessFile(data) {
+            Dropzone.forElement("#dropzoneForm").removeAllFiles(true);
+        }
+
+        pdaWeb.controller('pdaWebCtrlr',
+            function ($scope) { });
+    </script>
 }

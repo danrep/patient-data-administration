@@ -7,7 +7,7 @@
     <Name>PatientDataAdministration.Database</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{2b8cd5e2-1398-4508-a66e-20207744dfef}</ProjectGuid>
+    <ProjectGuid>{5c7f7e2d-8911-4c6f-af36-6a1b7334bb7b}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -23,6 +23,7 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
@@ -69,18 +70,18 @@
     <Build Include="dbo\Tables\System_State.sql" />
     <Build Include="dbo\Tables\__MigrationLog.sql" />
     <Build Include="dbo\Tables\__SchemaSnapshot.sql" />
+    <Build Include="dbo\Tables\Administration_SiteInformation.sql" />
     <Build Include="dbo\Tables\Administration_ClientMap.sql" />
     <Build Include="dbo\Tables\Administration_ClientRegistry.sql" />
-    <Build Include="dbo\Tables\Administration_StaffInformation.sql" />
+    <Build Include="dbo\Tables\System_Update.sql" />
     <Build Include="dbo\Tables\Patient_PatientBiometricData.sql" />
     <Build Include="dbo\Tables\Patient_PatientNearFieldCommunicationData.sql" />
     <Build Include="dbo\Tables\Patient_PatientTransferHistory.sql" />
     <Build Include="dbo\Tables\System_LocalGovermentArea.sql" />
-    <Build Include="dbo\Tables\Patient_PatientInformation.sql" />
-    <Build Include="dbo\Tables\System_Update.sql" />
-    <Build Include="dbo\Tables\Administration_SiteInformation.sql" />
+    <Build Include="dbo\Tables\Administration_StaffInformation.sql" />
     <Build Include="dbo\Tables\Administration_ClientLog.sql" />
     <Build Include="dbo\Tables\Administration_PatientRegistrationLog.sql" />
+    <Build Include="dbo\Tables\Patient_PatientInformation.sql" />
     <Build Include="dbo\Views\__MigrationLogCurrent.sql" />
     <Build Include="dbo\Functions\Function_GetSiteId.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetAgeDistro.sql" />

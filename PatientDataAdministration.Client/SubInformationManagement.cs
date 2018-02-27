@@ -191,6 +191,9 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                if (string.IsNullOrEmpty(txtPreviousNumber.Text.Trim()))
+                    txtPreviousNumber.Text = @"NA";
+
                 var textBoxes = pnlOfficialInformation.Controls.OfType<TextBox>().ToList();
                 if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
@@ -292,74 +295,64 @@ namespace PatientDataAdministration.Client
 
                 #endregion Patient Data Composition
 
+                #region Patient Local CRUD
+
                 pnlWaiting.Visible = true;
-                var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient",
-                    Newtonsoft.Json.JsonConvert.SerializeObject(patientData));
-                pnlWaiting.Visible = false;
 
-                if (result.Status)
+                if (_systemBioDataStore.Id == 0)
                 {
-                    if (_systemBioDataStore.Id == 0)
+                    _systemBioDataStore = new System_BioDataStore()
                     {
-                        var postInfo =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<Patient_PatientInformation>(
-                                Newtonsoft.Json.JsonConvert.SerializeObject(result.Data));
-
-                        _systemBioDataStore = new System_BioDataStore()
-                        {
-                            IsDeleted = false,
-                            PepId = postInfo.PepId,
-                            PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData),
-                            FullName = txtSurname.Text + @" " + txtOtherNames.Text,
-                            IsSync = true,
-                            LastSync = DateTime.Now,
-                            LastUpdate = DateTime.Now,
-                            NfcUid = _nfcUid ?? "",
-                            PrimaryFinger = _bioDataPrimary ?? "",
-                            SecondaryFinger = _bioDataSecondary ?? "",
-                            SiteId = _administrationStaffInformation.SiteId
-                        };
-                        _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
-                    }
-                    else
-                    {
-                        _systemBioDataStore =
-                            _localPdaEntities.System_BioDataStore.FirstOrDefault(
-                                x => x.PepId == txtPepId.Text && !x.IsDeleted);
-
-                        if (_systemBioDataStore == null)
-                        {
-                            MessageBox.Show(@"This Patient does not exist. Please try again");
-                            return;
-                        }
-
-                        _systemBioDataStore.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData);
-                        _systemBioDataStore.FullName = txtSurname.Text = @" " + txtOtherNames.Text;
-                        _systemBioDataStore.IsSync = true;
-                        _systemBioDataStore.LastUpdate = DateTime.Now;
-                        _systemBioDataStore.NfcUid = _nfcUid ?? "";
-                        _systemBioDataStore.PrimaryFinger = _bioDataPrimary ?? "";
-                        _systemBioDataStore.SecondaryFinger = _bioDataSecondary ?? "";
-
-                        _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
-                    }
-
-                    _localPdaEntities.SaveChanges();
-
-                    _lblInformationText = @"Operation was Completed Successfully";
-                    _lblInformationForeColor = Color.DarkGreen;
-                    System.Media.SystemSounds.Exclamation.Play();
-
-                    MessageBox.Show(_lblInformationText);
-                    btnClear_Click(this, e);
-                    UpdatePersistedData();
+                        IsDeleted = false,
+                        PepId = txtPepId.Text.Trim(),
+                        PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData),
+                        FullName = txtSurname.Text + @" " + txtOtherNames.Text,
+                        IsSync = false,
+                        LastSync = DateTime.Now,
+                        LastUpdate = DateTime.Now,
+                        NfcUid = _nfcUid ?? "",
+                        PrimaryFinger = _bioDataPrimary ?? "",
+                        SecondaryFinger = _bioDataSecondary ?? "",
+                        SiteId = _administrationStaffInformation.SiteId
+                    };
+                    _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
                 }
                 else
                 {
-                    lblInformation.Text = result.Message;
-                    lblInformation.ForeColor = Color.DarkRed;
-                    System.Media.SystemSounds.Beep.Play();
+                    _systemBioDataStore =
+                        _localPdaEntities.System_BioDataStore.FirstOrDefault(
+                            x => x.PepId == txtPepId.Text && !x.IsDeleted);
+
+                    if (_systemBioDataStore == null)
+                    {
+                        MessageBox.Show(@"This Patient does not exist. Please try again");
+                        return;
+                    }
+
+                    _systemBioDataStore.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData);
+                    _systemBioDataStore.FullName = txtSurname.Text = @" " + txtOtherNames.Text;
+                    _systemBioDataStore.IsSync = false;
+                    _systemBioDataStore.LastUpdate = DateTime.Now;
+                    _systemBioDataStore.NfcUid = _nfcUid ?? "";
+                    _systemBioDataStore.PrimaryFinger = _bioDataPrimary ?? "";
+                    _systemBioDataStore.SecondaryFinger = _bioDataSecondary ?? "";
+
+                    _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
                 }
+                _localPdaEntities.SaveChanges();
+
+                pnlWaiting.Visible = false;
+
+                #endregion
+
+                _lblInformationText = @"Patient Saved Successfully";
+                _lblInformationForeColor = Color.DarkGreen;
+                System.Media.SystemSounds.Exclamation.Play();
+
+                MessageBox.Show(_lblInformationText);
+                btnClear_Click(this, e);
+
+                UpdatePersistedData();
             }
             catch (Exception exception)
             {

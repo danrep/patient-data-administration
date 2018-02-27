@@ -53,6 +53,12 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="ExcelDataReader, Version=3.4.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.3.4.0\lib\net45\ExcelDataReader.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.4.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDataReader.DataSet.3.4.0\lib\net45\ExcelDataReader.DataSet.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -95,6 +101,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -247,6 +254,7 @@
     <Content Include="Assets\js\timeline_demo.js" />
     <Content Include="Assets\js\ui_modal_notification_demo.js" />
     <Content Include="Assets\js\ui_tree_demo.js" />
+    <Content Include="Assets\message\fileprocesscomplete.html" />
     <Content Include="Assets\plugins\bootstrap-calendar\css\bootstrap_calendar.css" />
     <Content Include="Assets\plugins\bootstrap-calendar\js\bootstrap_calendar.min.js" />
     <Content Include="Assets\plugins\bootstrap-colorpalette\css\bootstrap-colorpalette.css" />
@@ -1097,6 +1105,7 @@
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\DataProcessorHandlerController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\IndicatorsController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\PatientManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\SiteManagementController.cs" />
@@ -1126,6 +1135,7 @@
     <Folder Include="Areas\ClientCommunication\Views\Sync\" />
     <Folder Include="Areas\ClientCommunication\Views\User\" />
     <Folder Include="Areas\ServerCommunication\Models\" />
+    <Folder Include="Areas\ServerCommunication\Views\DataProcessorHandler\" />
     <Folder Include="Areas\ServerCommunication\Views\Data\" />
     <Folder Include="Areas\ServerCommunication\Views\Indicators\" />
     <Folder Include="Areas\ServerCommunication\Views\Shared\" />

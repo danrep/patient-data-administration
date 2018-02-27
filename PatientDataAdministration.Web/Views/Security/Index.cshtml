@@ -38,7 +38,8 @@
                         <input type="password" id="password" class="form-control input-lg" placeholder="Password" required />
                     </div>
                     <div class="login-buttons">
-                        <input type="button" class="btn btn-success btn-block btn-lg" onclick="login()" value="Log In" />
+                        <input type="button" id="btnLogIn" class="btn btn-success btn-block btn-lg" onclick="login()" value="Log In" />
+                        <input type="button" id="btnWait" class="btn btn-warning btn-block btn-lg" style="display: none" value="Please Wait" />
                     </div>
                     <hr />
                     <p class="text-center">
@@ -65,6 +66,8 @@
                 return;
             }
 
+            swalInfo('Checking your Information. Please Wait');
+
             window.api("POST",
                 "@Url.Action("LogIn", "Home", new {area = ""})",
                 { username: $('#email').val(), password: $('#password').val() },
@@ -73,7 +76,7 @@
         }
 
         function processLogIn(data) {
-            window.swalInfo("Successful. Logging you in a Sec.");
+            window.swalInfo("The Authentication Process was Successful. Please Wait");
             setTimeout(function () {
                 window.location = '@Url.Action("Index", "Home", new {area = ""})';
             }, 2000);

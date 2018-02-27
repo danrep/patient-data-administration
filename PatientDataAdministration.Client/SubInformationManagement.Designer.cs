@@ -102,6 +102,7 @@ namespace PatientDataAdministration.Client
             this.btnClose = new System.Windows.Forms.Button();
             this.timerUpdateInformation = new System.Windows.Forms.Timer(this.components);
             this.tmrSecureWindow = new System.Windows.Forms.Timer(this.components);
+            this.lblDataState = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
@@ -881,12 +882,24 @@ namespace PatientDataAdministration.Client
             this.tmrSecureWindow.Interval = 1000;
             this.tmrSecureWindow.Tick += new System.EventHandler(this.tmrSecureWindow_Tick);
             // 
+            // lblDataState
+            // 
+            this.lblDataState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblDataState.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDataState.Location = new System.Drawing.Point(463, 455);
+            this.lblDataState.Name = "lblDataState";
+            this.lblDataState.Size = new System.Drawing.Size(476, 15);
+            this.lblDataState.TabIndex = 136;
+            this.lblDataState.Text = "...";
+            this.lblDataState.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // SubInformationManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 485);
             this.ControlBox = false;
+            this.Controls.Add(this.lblDataState);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblInformation);
             this.Controls.Add(this.btnRefreshNfcDevice);
@@ -1004,5 +1017,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Timer tmrSecureWindow;
+        private System.Windows.Forms.Label lblDataState;
     }
 }

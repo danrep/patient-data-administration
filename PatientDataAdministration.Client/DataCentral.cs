@@ -619,5 +619,49 @@ namespace PatientDataAdministration.Client
                 _pingResult = false;
             }
         }
+
+        private void bgwFreshPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {
+                var patientData =
+                    _localPdaEntities.System_BioDataStore.Where(x => !x.IsDeleted && !x.IsSync).ToList();
+
+                foreach (var patientDatum in patientData)
+                {
+                    var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient",
+                        Newtonsoft.Json.JsonConvert.SerializeObject(patientDatum.PatientData));
+
+                    if (result.Status)
+                    {
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = $"Patient with Pep Id {patientDatum.PepId} was pushed Successfully"
+                        });
+                        patientDatum.IsSync = true;
+                        _localPdaEntities.Entry(patientDatum).State = EntityState.Modified;
+                        _localPdaEntities.SaveChangesAsync();
+                    }
+                    else
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = $"Local Registry Sync encountered an Error. "
+                        });
+                }
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Local Registry Sync encountered an Error. " + ex.ToString()
+                });
+            }
+        }
+
+        private void tmrFreshPatient_Tick(object sender, EventArgs e)
+        {
+            if (!bgwFreshPatient.IsBusy)
+                bgwFreshPatient.RunWorkerAsync();
+        }
     }
 }

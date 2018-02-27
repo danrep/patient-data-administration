@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -75,6 +75,9 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         x => !x.IsDeleted && x.WhenCreated >= DbFunctions.TruncateTime(DateTime.Now));
                 var complied = _entities.Sp_Administration_GetPatientCompliance().ToList().Count;
 
+                var biometricsOnly =
+                    _entities.Patient_PatientBiometricData.Select(x => x.PepId).Distinct().ToList().Count;
+
                 return
                     Json(
                         new ResponseData
@@ -86,7 +89,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 TotalPatients = patients,
                                 SeenRecently = seenRecently,
                                 RegisteredToday = registeredToday,
-                                Complied = complied
+                                Complied = complied,
+                                QuickFacts = new
+                                {
+                                    RegBioCount = biometricsOnly,
+                                    RegBioPercent = (biometricsOnly / patients) * 100
+                                }
                             }
                         },
                         JsonRequestBehavior.AllowGet);
@@ -95,6 +103,98 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult PatientStatsByDate(string date)
+        {
+            try
+            {
+                date = date.Replace("00/", DateTime.Now.Month.ToString("00") + "/");
+
+                var dateOfConcern = DateTime.ParseExact(date, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+                var previousDateOfConcern = dateOfConcern.Subtract(new TimeSpan(1, 0, 0, 0));
+
+                var patients =
+                    _entities.Patient_PatientInformation.Where(
+                        x =>
+                            !x.IsDeleted &&
+                            DbFunctions.TruncateTime(x.WhenCreated) == DbFunctions.TruncateTime(dateOfConcern)).ToList();
+
+                var patientsOfPreviousDay = _entities.Patient_PatientInformation.Count(x => !x.IsDeleted &&
+                        DbFunctions.TruncateTime(x.WhenCreated) == DbFunctions.TruncateTime(previousDateOfConcern));
+
+                if (!patients.Any())
+                    return
+                        Json(
+                            new ResponseData
+                            {
+                                Status = true,
+                                Message = "Successful",
+                                Data = new
+                                {
+                                    TotalPatients = 0,
+                                    MalePatients = 0,
+                                    FemalePatients = 0,
+                                    ChangeOverYesterday = 0
+                                }
+                            },
+                            JsonRequestBehavior.AllowGet);
+
+                var top3SiteData = patients.GroupBy(info => info.SiteId)
+                    .Select(group => new
+                    {
+                        SiteId = group.Key,
+                        Count = group.Count()
+                    })
+                    .OrderByDescending(x => x.Count).Take(3).ToList();
+
+                var top3Sites = top3SiteData.Select(x => x.SiteId).ToList();
+
+                var states = _entities.System_State.Where(x => !x.IsDeleted).ToList();
+
+                var sites =
+                    _entities.Administration_SiteInformation.Where(
+                        x => !x.IsDeleted && top3Sites.Contains(x.Id));
+
+                var siteData = top3SiteData.Select(siteMetric => new
+                {
+                    SiteMetric = siteMetric,
+                    Site = sites.FirstOrDefault(z => z.Id == siteMetric.SiteId) ?? null, 
+                    PercentOverGlobal = ((siteMetric.Count * 100) / patients.Count)
+                }).ToList();
+
+                var changeOverYesterday = 0.0;
+                if (patientsOfPreviousDay != 0)
+                    changeOverYesterday = (((patients.Count - patientsOfPreviousDay) * 100) / patientsOfPreviousDay);
+                else
+                    changeOverYesterday = 0;
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = new
+                            {
+                                TotalPatients = patients.Count,
+                                HighSitesInfo = siteData.Select(sm => new
+                                {
+                                    Metric = sm,
+                                    State = states.FirstOrDefault(y => y.Id == sm.Site.StateId)
+                                }).OrderByDescending(x => x.Metric.SiteMetric.Count).ToList(),
+                                MalePatients = patients.Count(x => x.Sex.ToLower() == "male"),
+                                FemalePatients = patients.Count(x => x.Sex.ToLower() == "female"), 
+                                ChangeOverYesterday = changeOverYesterday
+                            }
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -121,9 +221,11 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     _entities.Administration_SiteInformation.Where(x => !x.IsDeleted && x.StateId == state.Id)
                         .Select(x => x.Id);
 
-                var patientsInState =
-                    _entities.Patient_PatientInformation.Count(x => !x.IsDeleted && siteIds.Contains(x.SiteId));
+                var listOfPatients = _entities.Patient_PatientInformation.Where(x => !x.IsDeleted && siteIds.Contains(x.SiteId)).Select(x => x.PepId).Distinct().ToList();
+                var patientsInState = listOfPatients.Count;
 
+                var collectedBioData = _entities.Patient_PatientBiometricData.Count(x => !x.IsDeleted);
+                var collectedNfcData = _entities.Patient_PatientNearFieldCommunicationData.Count(x => !x.IsDeleted);
 
                 var average = 0.0;
                 if (sitesInState != 0)
@@ -140,7 +242,9 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 State = state,
                                 PatientsInState = patientsInState,
                                 SitesInState = sitesInState,
-                                Average = average
+                                Average = average,
+                                CollectedBioData = collectedBioData,
+                                CollectedNfcData = collectedNfcData
                             }
                         },
                         JsonRequestBehavior.AllowGet);
