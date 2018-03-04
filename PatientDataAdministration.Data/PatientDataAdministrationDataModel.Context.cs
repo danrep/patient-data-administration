@@ -33,13 +33,13 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Administration_PatientRegistrationLog> Administration_PatientRegistrationLog { get; set; }
         public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
         public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
-        public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
         public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
         public virtual DbSet<Patient_PatientNearFieldCommunicationData> Patient_PatientNearFieldCommunicationData { get; set; }
         public virtual DbSet<Patient_PatientTransferHistory> Patient_PatientTransferHistory { get; set; }
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
+        public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetInActiveUsers_Result> Sp_Administration_GetInActiveUsers(Nullable<int> inactiveBar)
         {
@@ -58,6 +58,68 @@ namespace PatientDataAdministration.Data
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetAgeDistro_Result>("Sp_Administration_GetAgeDistro");
+        }
+    
+        public virtual int Sp_System_CleanUp()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_System_CleanUp");
+        }
+    
+        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_SexSiteState_Result> Sp_System_Indicators_PopulationDistro_SexSiteState()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>("Sp_System_Indicators_PopulationDistro_SexSiteState");
+        }
+    
+        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_30DayStatePlotData_Result> Sp_System_Indicators_PopulationDistro_30DayStatePlotData(string abbreviation)
+        {
+            var abbreviationParameter = abbreviation != null ?
+                new ObjectParameter("abbreviation", abbreviation) :
+                new ObjectParameter("abbreviation", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_30DayStatePlotData_Result>("Sp_System_Indicators_PopulationDistro_30DayStatePlotData", abbreviationParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_BioCount_Result> Sp_System_Indicators_PopulationDistro_BioCount(string abbrevation)
+        {
+            var abbrevationParameter = abbrevation != null ?
+                new ObjectParameter("abbrevation", abbrevation) :
+                new ObjectParameter("abbrevation", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_BioCount_Result>("Sp_System_Indicators_PopulationDistro_BioCount", abbrevationParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_NfcCount_Result> Sp_System_Indicators_PopulationDistro_NfcCount(string abbrevation)
+        {
+            var abbrevationParameter = abbrevation != null ?
+                new ObjectParameter("abbrevation", abbrevation) :
+                new ObjectParameter("abbrevation", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_NfcCount_Result>("Sp_System_Indicators_PopulationDistro_NfcCount", abbrevationParameter);
+        }
+    
+        public virtual ObjectResult<Sp_Administration_GetPatients_Result> Sp_Administration_GetPatients(string query, Nullable<int> stateId, Nullable<int> siteId, Nullable<bool> hasBio, Nullable<bool> hasNfc)
+        {
+            var queryParameter = query != null ?
+                new ObjectParameter("query", query) :
+                new ObjectParameter("query", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("stateId", stateId) :
+                new ObjectParameter("stateId", typeof(int));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("siteId", siteId) :
+                new ObjectParameter("siteId", typeof(int));
+    
+            var hasBioParameter = hasBio.HasValue ?
+                new ObjectParameter("hasBio", hasBio) :
+                new ObjectParameter("hasBio", typeof(bool));
+    
+            var hasNfcParameter = hasNfc.HasValue ?
+                new ObjectParameter("hasNfc", hasNfc) :
+                new ObjectParameter("hasNfc", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetPatients_Result>("Sp_Administration_GetPatients", queryParameter, stateIdParameter, siteIdParameter, hasBioParameter, hasNfcParameter);
         }
     }
 }

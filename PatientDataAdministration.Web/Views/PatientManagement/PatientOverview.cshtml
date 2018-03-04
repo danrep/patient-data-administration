@@ -44,6 +44,14 @@
                                 <option ng-repeat="option in sitesInStates track by option.Id" value="{{option.Id}}">{{option.SiteNameOfficial}}</option>
                             </select>
                         </div>
+                        <div class="alert bg-black-darker p-5 m-t-10">
+                            <p class="text-white m-b-5">Captured Biometrics?</p>
+                            <input type="checkbox" data-render="switchery" data-theme="default" id="chkHasBio" />
+                        </div>
+                        <div class="alert bg-black-darker p-5 m-t-10">
+                            <p class="text-white m-b-5">eCard Issued?</p>
+                            <input type="checkbox" data-render="switchery" data-theme="default" id="chkHasNfc" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -73,6 +81,7 @@
                             <th>Phone Number</th>
                             <th>Age</th>
                             <th>Site Code</th>
+                            <th><i class="fa fa-database"></i></th>
                             <th>...</th>
                         </tr>
                     </thead>
@@ -203,6 +212,7 @@
 <script type="text/javascript">
         $(document).ready(function() {
             pageLoad();
+            FormSliderSwitcher.init();
         });
 
         pdaWeb.controller('pdaWebCtrlr',
@@ -284,6 +294,21 @@
                         '</a></td>';
                     rowData += '<td>';
 
+                    if (datum.PatientInfo.HasBio)
+                        rowData += '<span class="fa fa-user text text-success" title="Patient has Registered Biometrics"></span>';
+                    else
+                        rowData += '<span class="fa fa-user text text-danger" title="No Bio Data Collected"></span>';
+
+                    rowData += '&nbsp;|&nbsp;';
+
+                    if (datum.PatientInfo.HasNfc)
+                        rowData += '<span class="fa fa-credit-card text text-success" title="Patient has been Issued an e-Card"></span>';
+                    else
+                        rowData += '<span class="fa fa-credit-card text text-danger" title="No e-Card Issued"></span>';
+
+                    rowData += '</td>';
+                    rowData += '<td>';
+
                     rowData += '<a href="@Url.Action("PatientData", "PatientManagement", new {area=  ""})?pepId=' +
                         datum.PatientInfo.PepId +
                         '" class="btn btn-info btn-xs"><span class="fa fa-cogs"></span></a>';
@@ -295,6 +320,7 @@
                     */
 
                     rowData += '</td>';
+
                     rowData += '</tr>';
 
                     $("#data-table tbody").append(rowData);
@@ -356,20 +382,19 @@
         };
 
         function search() {
-            if ($('#search').val() === '') {
-                window
-                    .swalWarning('You need to enter a Query Text. Lots of Patients here you know. Please use the Reporting Enging for a more comprehensive Report');
-                return;
-            }
+            window.swalInfo('Processing... Please Wait');
 
-            window.api("GET",
-                "@Url.Action("GetPatient", "PatientManagement", new {area = "ServerCommunication"})?query=" +
-                $('#search').val() +
-                "&stateId=" +
-                $('#state').val() +
-                "&siteId=" +
-                $('#sites').val(),
-                null,
+            const postData = {
+                Query: $('#search').val(),
+                StateId: $('#state').val(),
+                SiteId: $('#sites').val(),
+                HasBio: $('#chkHasBio').prop("checked"),
+                HasNfc: $('#chkHasNfc').prop("checked"),
+            };
+
+            window.api("POST",
+                "@Url.Action("GetPatient", "PatientManagement", new {area = "ServerCommunication"})",
+                postData,
                 true,
                 loadTable);
         };

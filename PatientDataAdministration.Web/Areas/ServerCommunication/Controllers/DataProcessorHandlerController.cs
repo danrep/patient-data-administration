@@ -13,7 +13,6 @@ using Newtonsoft.Json.Linq;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
-using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
@@ -92,6 +91,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 {
                     var path = $"{directory.FullName}\\{file}";
                     var trackingGuid = Guid.NewGuid().ToString().Trim();
+
+                    if (!System.IO.File.Exists(path))
+                    {
+                        ActivityLogger.Log("INFO", $"Upload of {file} must have failed. The file was not found.");
+                        continue;
+                    }
 
                     var asyncProc = new Thread(() =>
                     {
@@ -325,6 +330,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                     returnData.Add(returnDataPerTable);
                 }
+
+                innerentities.Sp_System_CleanUp();
 
                 var messageBody =
                     System.IO.File.ReadAllText(

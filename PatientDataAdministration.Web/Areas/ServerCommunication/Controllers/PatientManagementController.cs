@@ -14,37 +14,13 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
     {
         private readonly Entities _db = new Entities();
 
-        public JsonResult GetPatient(string query, int stateId = 0, int siteId = 0)
+        public JsonResult GetPatient(PatientSearch patientSearch)
         {
             try
             {
-                var sites = new List<Administration_SiteInformation>();
+                var sites = _db.Administration_SiteInformation.Where(x => !x.IsDeleted).ToList();
 
-                if (stateId != 0)
-                    sites = _db.Administration_SiteInformation.Where(x => !x.IsDeleted && x.StateId == stateId).ToList();
-
-                if (siteId != 0)
-                    sites = sites.Where(x => x.Id == siteId).ToList();
-
-                if (!sites.Any())
-                    sites = _db.Administration_SiteInformation.Where(x => !x.IsDeleted).ToList();
-
-                var siteIds = sites.Select(x => x.Id).ToList();
-
-                var patients = _db.Patient_PatientInformation.Where(x => !x.IsDeleted && siteIds.Contains(x.SiteId) && (
-                                                                             x.HospitalNumber.Contains(query) ||
-                                                                             x.HouseAddress.Contains(query) ||
-                                                                             x.Othername.Contains(query) ||
-                                                                             x.PepId.Contains(query) ||
-                                                                             x.PhoneNumber.Contains(query) ||
-                                                                             x.PreviousId.Contains(query) ||
-                                                                             x.Surname.Contains(query) ||
-                                                                             x.Title.Contains(query) ||
-                                                                             x.Sex.Contains(query)
-                                                                         )).Take(50).ToList();
-
-                var state = _db.System_State.Where(x => !x.IsDeleted).ToList();
-                var lga = _db.System_LocalGovermentArea.Where(x => !x.IsDeleted).ToList();
+                var patients = _db.Sp_Administration_GetPatients(patientSearch.Query, patientSearch.StateId, patientSearch.SiteId, patientSearch.HasBio, patientSearch.HasNfc);
 
                 return Json(new ResponseData
                 {
@@ -57,21 +33,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             {
                                 SiteNameOfficial = "[Unassigned]"
                             },
-                            SiteInfoState =
-                            state.FirstOrDefault(x => x.Id == sites.FirstOrDefault(y => y.Id == p.SiteId)?.StateId),
-                            State = state.FirstOrDefault(x => x.Id == p.StateOfOrigin) ?? new System_State()
-                            {
-                                StateName = "[Unassigned]"
-                            },
-                            LGA = lga.FirstOrDefault(x => x.Id == p.HouseAddresLga) ?? new System_LocalGovermentArea()
-                            {
-                                LocalGovermentAreaName = "[Unassigned]"
-                            },
                             Age = (DateTime.Now.Subtract(p.DateOfBirth).TotalDays / 365)
-                        })
-                        .OrderBy(x => x.PatientInfo.Surname)
-                        .ThenBy(x => x.PatientInfo.Othername)
-                        .ThenBy(x => x.PatientInfo.PhoneNumber).ToList()
+                        }).ToList()
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

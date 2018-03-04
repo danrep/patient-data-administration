@@ -136,8 +136,6 @@
                 notifyDestination: '@(SecurityModel.GetUserInSession?.AdministrationStaffInformation.Email ?? "marigbede@codesistance.com")'
             };
 
-            console.log($('#chkForceReplace').prop("checked"));
-
             window.api("POST",
                 "@Url.Action("ProcessFile", "DataProcessorHandler", new {area = "ServerCommunication"})",
                 postData,

@@ -1,8 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using PatientDataAdministration.Web.Controllers;
+using System.Web.Mvc;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
-    public class BaseServerCommController : Controller
+    public class BaseServerCommController : BaseController
     {
 
     }

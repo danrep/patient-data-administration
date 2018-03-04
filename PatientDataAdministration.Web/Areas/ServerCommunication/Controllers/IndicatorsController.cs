@@ -61,22 +61,40 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             try
             {
                 var patients = _entities.Patient_PatientInformation.Count(x => !x.IsDeleted);
+
                 var date7Past = DateTime.Now.AddDays(-7);
-                var seenRecently =
-                    _entities.Administration_PatientRegistrationLog.Where(
+                var registeredRecently =
+                    _entities.Patient_PatientInformation.Where(
                             x =>
                                 !x.IsDeleted &&
-                                DbFunctions.TruncateTime(x.DateLogged) >= DbFunctions.TruncateTime(date7Past))
+                                DbFunctions.TruncateTime(x.WhenCreated) >= DbFunctions.TruncateTime(date7Past))
                         .Select(x => x.PepId)
                         .Distinct()
                         .Count();
+                var updatedRecently =
+                    _entities.Patient_PatientInformation.Where(
+                            x =>
+                                !x.IsDeleted &&
+                                DbFunctions.TruncateTime(x.LastUpdated) >= DbFunctions.TruncateTime(date7Past) &&
+                                DbFunctions.TruncateTime(x.WhenCreated) < date7Past)
+                        .Select(x => x.PepId)
+                        .Distinct()
+                        .Count();
+
                 var registeredToday =
                     _entities.Patient_PatientInformation.Count(
                         x => !x.IsDeleted && x.WhenCreated >= DbFunctions.TruncateTime(DateTime.Now));
+                var updatedToday =
+                    _entities.Patient_PatientInformation.Count(
+                        x => !x.IsDeleted && x.LastUpdated >= DbFunctions.TruncateTime(DateTime.Now) &&
+                        DbFunctions.TruncateTime(x.WhenCreated) != DbFunctions.TruncateTime(DateTime.Now));
+
                 var complied = _entities.Sp_Administration_GetPatientCompliance().ToList().Count;
 
                 var biometricsOnly =
                     _entities.Patient_PatientBiometricData.Select(x => x.PepId).Distinct().ToList().Count;
+
+                var bioStats = _entities.Sp_System_Indicators_PopulationDistro_BioCount(null).ToList();
 
                 return
                     Json(
@@ -87,13 +105,17 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             Data = new
                             {
                                 TotalPatients = patients,
-                                SeenRecently = seenRecently,
+                                RegisteredRecently = registeredRecently,
+                                UpdatedRecently = updatedRecently,
                                 RegisteredToday = registeredToday,
+                                UpdatedToday = updatedToday,
                                 Complied = complied,
                                 QuickFacts = new
                                 {
                                     RegBioCount = biometricsOnly,
-                                    RegBioPercent = (biometricsOnly / patients) * 100
+                                    RegBioPercent = (biometricsOnly / Convert.ToDouble(patients)) * 100,
+                                    NewBio = bioStats.Where(x => !x.IsUpdated.Value).Count(),
+                                    UpdatedBio = bioStats.Where(x => x.IsUpdated.Value).Count()
                                 }
                             }
                         },
@@ -217,19 +239,21 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var sitesInState =
                     _entities.Administration_SiteInformation.Count(x => !x.IsDeleted && x.StateId == state.Id);
 
-                var siteIds =
-                    _entities.Administration_SiteInformation.Where(x => !x.IsDeleted && x.StateId == state.Id)
-                        .Select(x => x.Id);
+                var distroData = _entities.Sp_System_Indicators_PopulationDistro_SexSiteState()
+                    .Where(x => x.StateAbbreviation == abbreviation).ToList();
 
-                var listOfPatients = _entities.Patient_PatientInformation.Where(x => !x.IsDeleted && siteIds.Contains(x.SiteId)).Select(x => x.PepId).Distinct().ToList();
-                var patientsInState = listOfPatients.Count;
-
-                var collectedBioData = _entities.Patient_PatientBiometricData.Count(x => !x.IsDeleted);
-                var collectedNfcData = _entities.Patient_PatientNearFieldCommunicationData.Count(x => !x.IsDeleted);
+                var patientsInState = distroData.Sum(x => x.PatientPopulation).Value;
+                var collectedBioData = _entities.Sp_System_Indicators_PopulationDistro_BioCount(abbreviation).ToList();
+                var collectedNfcData = _entities.Sp_System_Indicators_PopulationDistro_NfcCount(abbreviation).ToList();
 
                 var average = 0.0;
                 if (sitesInState != 0)
                     average = patientsInState / (double)sitesInState;
+
+                var distro = _entities.Sp_System_Indicators_PopulationDistro_30DayStatePlotData(abbreviation)
+                    .OrderBy(x => x.PlotDate).Select(
+                            distroElement => new { x = distroElement.PlotDate.ToString("yyyy-MM-dd"), y = distroElement.CreatedCount, z = distroElement.UpdatedCount })
+                        .ToList();
 
                 return
                     Json(
@@ -243,8 +267,13 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 PatientsInState = patientsInState,
                                 SitesInState = sitesInState,
                                 Average = average,
-                                CollectedBioData = collectedBioData,
-                                CollectedNfcData = collectedNfcData
+                                CollectedBioData = collectedBioData.Sum(x=> x.PatientPopulation).Value,
+                                CollectedNfcData = collectedNfcData.Sum(x => x.PatientPopulation).Value,
+                                TotalMales = distroData.Where(x => x.Sex == "male").ToList().Count(),
+                                TotalFemales = distroData.Where(x => x.Sex == "female").ToList().Count(), 
+                                Distro = distro, 
+                                NewBio = collectedBioData.Where(x=> !x.IsUpdated.Value).Sum(x => x.PatientPopulation).Value,
+                                UpdatedBio = collectedBioData.Where(x => x.IsUpdated.Value).Sum(x => x.PatientPopulation).Value
                             }
                         },
                         JsonRequestBehavior.AllowGet);

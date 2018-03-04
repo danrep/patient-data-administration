@@ -70,6 +70,7 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="InterchangeModels\ClientInformation.cs" />
+    <Compile Include="InterchangeModels\PatientSearch.cs" />
     <Compile Include="InterchangeModels\PatientMatching.cs" />
     <Compile Include="InterchangeModels\PatientInformation.cs" />
     <Compile Include="InterchangeModels\ResponseData.cs" />
@@ -106,6 +107,21 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Sp_Administration_GetInActiveUsers_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_Administration_GetPatients_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_Indicators_PopulationDistro_30DayStatePlotData_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_Indicators_PopulationDistro_BioCount_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_Indicators_PopulationDistro_NfcCount_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_Indicators_PopulationDistro_SexSiteState_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="System_LocalGovermentArea.cs">

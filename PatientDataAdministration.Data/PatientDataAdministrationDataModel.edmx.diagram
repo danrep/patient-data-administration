@@ -11,13 +11,13 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" Width="1.5" PointX="4.75" PointY="4.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" Width="1.5" PointX="6.75" PointY="0.75" />
-        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformation" Width="1.5" PointX="6.75" PointY="5.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientNearFieldCommunicationData" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientTransferHistory" Width="1.5" PointX="2.75" PointY="8.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_LocalGovermentArea" Width="1.5" PointX="8.75" PointY="4.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_State" Width="1.5" PointX="8.75" PointY="7.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_Update" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" Width="1.5" PointX="9.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

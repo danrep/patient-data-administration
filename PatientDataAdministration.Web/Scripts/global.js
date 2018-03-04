@@ -105,6 +105,9 @@ function resetFormData(form) {
 function formatDate(date) {
     return moment(date).format("DD-MM-YYYY");
 };
+function formatDateShort(date) {
+    return moment(date).format("MMM DD");
+};
 
 /*
  *  Charting Functions
@@ -135,6 +138,36 @@ function lineChartOneToOne(chartElementName, arrayData, label, hoverCallBack) {
         hideHover: "auto"
     });
 };
+function lineChartTwoToOne(chartElementName, arrayData, label, hoverCallBack) {
+    var a = "#0D888B",
+        b = "#00ACAC",
+        c = "#3273B1",
+        d = "#348FE2",
+        e = "rgba(0,0,0,0.6)",
+        f = "rgba(255,255,255,0.4)";
+
+    Morris.Line({
+        element: chartElementName,
+        data: arrayData,
+        xkey: "x",
+        ykeys: ["y", "z"],
+        xLabelFormat: function (a) {
+            return a = formatDateShort(a);
+        },
+        labels: ["New Patients", "Returning Patients"],
+        lineColors: [a, c],
+        pointFillColors: [b, d],
+        lineWidth: "2px",
+        pointStrokeColors: [e, e],
+        resize: !0,
+        gridTextFamily: "Open Sans",
+        gridTextColor: f,
+        gridTextWeight: "normal",
+        gridTextSize: "10px",
+        gridLineColor: "rgba(0,0,0,0.5)",
+        hideHover: "auto"
+    });
+};
 function donutChart(chartElementName, arrayData) {
     Morris.Donut({
         element: chartElementName,
@@ -156,7 +189,7 @@ function swalWarningConfirm(callBack) {
     swalEngineCallBack("Wait a Minute...", "This is a Sensitive Operation. Are you sure you want to Proceed", "warning", "btn-warning", callBack);
 };
 function swalInfo(message) {
-    swalEngineNoCallBack("Just FYI", message, "info", "btn-default", false);
+    swalEngineNoCallBack("Information", message, "info", "btn-default", false);
 };
 function swalError(message) {
     swalEngineNoCallBack("Oops. There seems to be a Problem", message, "error", "btn-danger");

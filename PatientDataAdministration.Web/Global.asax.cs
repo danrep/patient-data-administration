@@ -1,6 +1,8 @@
-﻿using System;
+﻿using PatientDataAdministration.Web.Engines;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -18,6 +20,10 @@ namespace PatientDataAdministration.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            new Thread(()=> {
+                var cron = new Cron();
+            }).Start();
         }
     }
 }

@@ -27,11 +27,11 @@
         <div class="widget widget-stats bg-orange-darker">
             <div class="stats-icon"><i class="fa fa-clock-o"></i></div>
             <div class="stats-info">
-                <h4>SEEN RECENTLY (PAST WEEK)</h4>
+                <h4>NEW / RETURNING PATIENTS 7 DAYS AGO</h4>
                 <p id="seenPastWeek_p">00</p>
             </div>
             <div class="stats-link">
-                <a>Visited at Least Once in the Past Week <i class="fa fa-info"></i></a>
+                <a>Total Activity a Week Ago <i class="fa fa-info"></i></a>
             </div>
         </div>
     </div>
@@ -40,11 +40,11 @@
         <div class="widget widget-stats bg-blue-darker">
             <div class="stats-icon"><i class="fa fa-edit"></i></div>
             <div class="stats-info">
-                <h4>REGISTERED TODAY</h4>
+                <h4>NEW / RETURNING PATIENTS TODAY</h4>
                 <p id="registeredToday_p">00</p>
             </div>
             <div class="stats-link">
-                <a>Total Registrations Today <i class="fa fa-info"></i></a>
+                <a>Total Activity Today <i class="fa fa-info"></i></a>
             </div>
         </div>
     </div>
@@ -68,10 +68,11 @@
         <div class="panel panel-inverse" data-sortable-id="ui-buttons-5">
             <div class="panel-heading">
                 <div class="panel-heading-btn">
+                    Click here to Open&nbsp;
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-info"
                        data-click="panel-collapse"><i class="fa fa-minus"></i></a>
                 </div>
-                <h4 class="panel-title">Quick Facts by Dates:&nbsp;<span id="spanSelectedDate">Today</span><span id="spanLoading" class="pull-right pulse btn btn-xs btn-warning">Loading ...</span></h4>
+                <h4 class="panel-title">Quick Facts by Dates:&nbsp;<span id="spanSelectedDate">Today</span><span id="spanLoading" class="text-center text-warning">&nbsp;Loading ...</span></h4>
             </div>
             <div class="panel-body" style="display: none">
                 <div class="col-md-3 col-xs-12">
@@ -144,63 +145,104 @@
         </div>
     </div>
     <div class="col-md-4">
-
+        <h4 class="chart-title">
+            Quick Facts
+            <small>Biometric Registration Distribution</small>
+        </h4>
+        <div class="widget widget-stats bg-red-darker">
+            <div class="stats-icon"><i class="fa fa-shield"></i></div>
+            <div class="stats-info">
+                <h4>Registered Bio-Data</h4>
+                <p><span id="nation_reg_bio_span">00</span></p>
+            </div>
+        </div>
+        <div class="widget widget-stats bg-orange-darker">
+            <div class="stats-icon"><i class="fa fa-tag"></i></div>
+            <div class="stats-info">
+                <h4>Newly Registered Patients with Biometric Data</h4>
+                <p><span id="nation_reg_bio_new_span">00</span></p>
+                <h4>Returning Patients having Biometric Data</h4>
+                <p><span id="nation_reg_bio_upd_span">00</span></p>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <div class="panel panel-inverse" data-sortable-id="index-1">
             <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-info"
+                       data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
                 <h4 class="panel-title">
-                    Total Population by State
+                    Patient Statistics By State<span id="spanLoading2" class="text-center text-warning">&nbsp;Loading ...</span>
                 </h4>
             </div>
-            <div id="visitors-map" class="bg-black">
-                <div class="jsmaps-wrapper" id="nigeria-map" style="height: 175px; width: 175px; padding: 2px">
+            <div class="panel-body bg-black">
+                <div class="widget-chart bg-black p-t-20">
+                    <div class="col-md-4">
+                        <div id="visitors-map" class="bg-black">
+                            <div class="jsmaps-wrapper" id="nigeria-map" style="height: 175px; width: 175px; padding: 2px">
 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="widget-chart with-sidebar bg-black">
+                            <div class="widget-chart-content">
+                                <h3 class="chart-title">
+                                    State Name:
+                                    <span id="selected_state_name_span"></span>
+                                    <small>
+                                        All Registered Sites:&nbsp;<strong><span id="state_sites_span">00</span></strong> and
+                                        All Registered Patients:&nbsp;<strong><span id="total_patients_span">00</span></strong>
+                                    </small>
+                                    <small>
+                                        Average Patient/Site:&nbsp;<strong><span id="average_patient_span">00</span></strong>
+                                    </small>
+                                </h3>
+                                <hr />
+                                <h4 class="chart-title">
+                                    Patient Visit Trend
+                                    <small>New and Returning for Past 30 Days</small>
+                                </h4>
+                                <div id="patient-reg-distro" class="morris-inverse" style="height: 200px;">
+                                    <h4 class="alert alert-info">
+                                        <small>Select a State to Load Data</small>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="widget-chart-sidebar bg-black-darker">
+                                <h4 class="chart-title">
+                                    Quick Facts
+                                    <small>Biometric Registration Distribution</small>
+                                </h4>
+                                <div class="col-md-12">
+                                    <div class="widget widget-stats bg-red-darker">
+                                        <div class="stats-icon"><i class="fa fa-shield"></i></div>
+                                        <div class="stats-info">
+                                            <h4>Registered Bio-Data</h4>
+                                            <p><span id="state_reg_bio_span">00</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="widget widget-stats bg-orange-darker">
+                                        <div class="stats-icon"><i class="fa fa-tag"></i></div>
+                                        <div class="stats-info">
+                                            <h4>New Patients</h4>
+                                            <p><span id="state_reg_bio_new_span">00</span></p>
+                                            <h4>Returning Patients</h4>
+                                            <p><span id="state_reg_bio_upd_span">00</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <div class="widget-chart with-sidebar bg-black">
-            <div class="widget-chart-content">
-                <h3 class="chart-title">
-                    State Name: 
-                    <span id="selected_state_name_span"></span>
-                    <small>
-                        Sites:&nbsp;<span id="state_sites_span">00</span>
-                    </small>
-                    <small>
-                        Total Patients:&nbsp;<span id="total_patients_span"></span>
-                    </small>
-                    <small>
-                        Average Patient/Site:&nbsp;<span id="average_patient_span">00</span>
-                    </small>
-                </h3>
-                <hr/>
-				<div class="col-md-6">
-					<div class="widget widget-stats bg-blue-darker">
-						<div class="stats-icon"><i class="fa fa-shield"></i></div>
-						<div class="stats-info">
-							<h4>Registered Bio-Data</h4>
-							<p><span id="state_reg_bio_span">0</span></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="widget widget-stats bg-red-darker">
-						<div class="stats-icon"><i class="fa fa-tag"></i></div>
-						<div class="stats-info">
-							<h4>Issued e-Cards</h4>
-							<p><span id="state_reg_nfc_span">0</span></p>
-						</div>
-					</div>
-				</div>
-            </div>
-            <div class="widget-chart-sidebar bg-black-darker">
-
             </div>
         </div>
     </div>
@@ -216,8 +258,8 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            window.swalInfo('Loading Data and Analytics...');
-            pageLoad();
+            $('#spanLoading2').hide();
+            window.swalInfo('Loading Data and Analytics ...');
 
             $('#nigeria-map').JSMaps({
                 map: 'nigeria',
@@ -234,7 +276,11 @@
                     $('#spanLoading').show();
                     var date = $('#datepicker-inline').data('datepicker').getFormattedDate('mm/dd/yyyy');
                     loadPatientStatsByDateApi(date);
+                    iniTileLoad();
                 });
+
+            // after all initialization load page
+            pageLoad();
         });
 
         function loadPatientStatsByDateApi(date) {
@@ -246,8 +292,6 @@
         }
 
         function loadPatientStatsByDate(data) {
-            $('#spanLoading').hide();
-
             $('#span_total_today').text(data.TotalPatients.format());
             $('#span_total_male_today').text(data.MalePatients.format());
             $('#span_total_female_today').text(data.FemalePatients.format());
@@ -261,9 +305,11 @@
                 $('#indi_down').show();
             }
 
+
             var progressData = "";
             if (data.TotalPatients === 0) {
                 $('#prgDiv').html("<h3 class='text-warning'><i class='fa fa-warning'></i>&nbsp;No Data for this Date<br /><small>Please select another date</small></h3>");
+                $('#spanLoading').hide();
                 return;
             }
 
@@ -283,9 +329,12 @@
                 });
 
             $('#prgDiv').html(progressData);
+            $('#spanLoading').hide();
         };
 
         function stateClick(data) {
+            $('#spanLoading2').show();
+
             window.api("GET",
                 "@Url.Action("StateStatsByStateAbb", "Indicators", new {area = "ServerCommunication"})?abbreviation=" + data.abbreviation,
                 null,
@@ -298,30 +347,62 @@
             $('#total_patients_span').text(data.PatientsInState.format());
             $('#state_sites_span').text(data.SitesInState.format());
             $('#average_patient_span').text(data.Average.format(2));
-			
+
             $('#state_reg_bio_span').text(data.CollectedBioData.format());
-            $('#state_reg_bio_span').text(data.CollectedNfcData.format());
+            $('#state_reg_bio_new_span').text(data.NewBio.format());
+            $('#state_reg_bio_upd_span').text(data.UpdatedBio.format());
+
+            $('#patient-reg-distro').html("");
+
+            lineChartTwoToOne("patient-reg-distro",
+                data.Distro,
+                "Patient's Seen",
+                function (index, options, content) {
+                    var datum = options.data[index];
+                    content =
+                        "<div class='morris-hover-row-label'>Date " +
+                        datum.x +
+                        " </div><div class='morris-hover-point' style='color: #ddd'>";
+                    content += "Number of Patients:";
+                    content += "" + datum.y.format() + "";
+                    content += "</div >";
+                    return (content);
+                });
+
+            $('#spanLoading2').hide();
+            iniTileLoad();
         };
 
         function pageLoad() {
-            window.api("GET",
-                "@Url.Action("PatientStats", "Indicators", new {area = "ServerCommunication"})",
-                null,
-                true,
-                loadTiles);
-
-            var date = '@DateTime.Now.Date.ToString("mm/dd/yyyy")';
-            loadPatientStatsByDateApi(date);
+            iniTileLoad();
+            iniDateLoad();
 
             $('#indi_up').hide();
             $('#indi_down').hide();
         };
 
+        function iniDateLoad() {
+            var date = '@DateTime.Now.Date.ToString("mm/dd/yyyy")';
+            loadPatientStatsByDateApi(date);
+        }
+
+        function iniTileLoad() {
+            window.api("GET",
+                "@Url.Action("PatientStats", "Indicators", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadTiles);
+        }
+
         function loadTiles(data) {
             $('#totalPatents_p').text(data.TotalPatients.format());
-            $('#seenPastWeek_p').text(data.SeenRecently.format());
-            $('#registeredToday_p').text(data.RegisteredToday.format());
+            $('#seenPastWeek_p').text(data.RegisteredRecently.format() + " / " + data.UpdatedRecently.format());
+            $('#registeredToday_p').text(data.RegisteredToday.format() + " / " + data.UpdatedToday.format());
             $('#fullyRegistered_p').text(data.Complied.format());
+
+            $('#nation_reg_bio_span').text(data.QuickFacts.RegBioCount.format() + " as " + data.QuickFacts.RegBioPercent.format(2) + "%");
+            $('#nation_reg_bio_new_span').text(data.QuickFacts.NewBio.format());
+            $('#nation_reg_bio_upd_span').text(data.QuickFacts.UpdatedBio.format());
 
             window.api("GET",
                 "@Url.Action("GetAgeDistro", "Indicators", new {area = "ServerCommunication"})",

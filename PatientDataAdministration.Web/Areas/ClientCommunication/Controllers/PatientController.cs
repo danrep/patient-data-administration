@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -199,6 +197,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
                     patientInformation.Patient_PatientBiometricData.PepId = pepId;
                     patientInformation.Patient_PatientBiometricData.DateRegistered = DateTime.Now;
+                    patientInformation.Patient_PatientBiometricData.FingerDataHash = Sha512Engine.GenerateSHA512String(patientInformation.Patient_PatientBiometricData.FingerPrimary + "|" + patientInformation.Patient_PatientBiometricData.FingerSecondary);
                     _entities.Patient_PatientBiometricData.Add(patientInformation.Patient_PatientBiometricData);
                 }
 

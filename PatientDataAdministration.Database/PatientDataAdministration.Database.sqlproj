@@ -87,5 +87,14 @@
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetAgeDistro.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetInActiveUsers.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetPatientCompliance.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_Indicators_PopulationDistro_SexSiteState.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_Indicators_PopulationDistro_NfcCount.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_Indicators_PopulationDistro_BioCount.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_Indicators_PopulationDistro_30DayStatePlotData.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_CleanUp.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_Administration_GetPatients.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />
   </ItemGroup>
 </Project>

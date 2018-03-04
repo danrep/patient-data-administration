@@ -18,6 +18,7 @@ namespace PatientDataAdministration.Data
         public string PepId { get; set; }
         public string FingerPrimary { get; set; }
         public string FingerSecondary { get; set; }
+        public string FingerDataHash { get; set; }
         public System.DateTime DateRegistered { get; set; }
         public bool IsValid { get; set; }
         public bool IsDeleted { get; set; }

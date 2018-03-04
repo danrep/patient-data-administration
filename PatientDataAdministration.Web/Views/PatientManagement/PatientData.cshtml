@@ -1,4 +1,5 @@
 ﻿@using PatientDataAdministration.Data
+@using PatientDataAdministration.Core
 @model Patient_PatientInformation
 
 @{
@@ -83,51 +84,66 @@
         </ul>
         <div class="tab-content" data-sortable-id="index-3">
             <div class="tab-pane fade active in" id="latest-post">
-                <div class="height-sm" data-scrollbar="true">
-                    <ul class="media-list media-list-with-divider">
-                        <li class="media media-lg">
-                            <a href="javascript:;" class="pull-left">
-                                <img src="/assets/img/pda/icons8_Fingerprint_Scan_96px.png" alt="" />
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">
-                                    Fingerprint Data
-                                </h4>
-                                @{
-                                    if (bioData != null)
+                <div class="height-md" data-scrollbar="true">
+                    <div class="col-md-12 ui-sortable">
+                        <div class="panel panel-inverse" data-sortable-id="ui-widget-16">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                </div>
+                                <h4 class="panel-title">Fingerprint Data</h4>
+                            </div>
+                            <div class="panel-body bg-black">
+                                @if (bioData == null)
+                                {
+                                    <p class="text text-danger">No Biometric Data has been Captured</p>
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(bioData.FingerDataHash))
                                     {
-                                        <h5 class="text-success">Biometric Data has been Captured</h5>
-                                        <span>@bioData.DateRegistered.ToLongDateString() @bioData.DateRegistered.ToLongTimeString()</span>
+                                        bioData.FingerDataHash = Sha512Engine.GenerateSHA512String(bioData.FingerPrimary + "|" + bioData.FingerSecondary);
+                                        pdaEntities.Entry(bioData).State = System.Data.Entity.EntityState.Modified;
+                                        pdaEntities.SaveChanges();
                                     }
-                                    else
-                                    {
-                                        <h5 class="text-danger">No Biometric Data has been Captured</h5>
-                                    }
+
+                                    var pdf512Code = bioData.FingerPrimary + "|" + bioData.FingerDataHash;
+
+                                    <div class="col-md-6 col-xs-12">
+                                        <img src="/assets/img/pda/icons8_Fingerprint_Scan_96px.png" alt="" />
+                                        <h5 class="text text-success">Biometric Data has been Captured</h5>
+                                        <p>@bioData.DateRegistered.ToLongDateString() @bioData.DateRegistered.ToLongTimeString()</p>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                        <h5 class="text text-white pull-right"><i class="fa fa-lock"></i>&nbsp;Patient Identity Barcode</h5>
+                                        <img alt="@Model.PepId" class="pull-right" style="max-width:100%" src="data:image/png;base64,@BarCodeRender.GeneratePdf417BarCode(pdf512Code)" />
+                                    </div>
                                 }
                             </div>
-                        </li>
-                        <li class="media media-lg">
-                            <a href="javascript:;" class="pull-left">
-                                <img src="/assets/img/pda/icons8_NFC_96px.png" alt="" />
-                            </a>
-                            <div class="media-body">
-                                <h4 class="media-heading">
-                                    NFC Tag Assignment
-                                </h4>
-                                @{
-                                    if (nfcData != null)
-                                    {
-                                        <h5 class="text-success">No NFC Data has been Captured</h5>
-                                        <span>@nfcData.DateRegistered.ToLongDateString() @nfcData.DateRegistered.ToLongTimeString()</span>
-                                    }
-                                    else
-                                    {
-                                        <h5 class="text-danger">No NFC Data Card has been Assigned</h5>
-                                    }
+                        </div>
+                        <div class="panel panel-inverse" data-sortable-id="ui-widget-16">
+                            <div class="panel-heading">
+                                <div class="panel-heading-btn">
+                                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-warning" data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                                </div>
+                                <h4 class="panel-title">Near Field Communication Data</h4>
+                            </div>
+                            <div class="panel-body bg-black">
+                                @if (nfcData == null)
+                                {
+                                    <p class="text text-danger">No NFC Data has been Captured. eCard not yet Issued</p>
+                                }
+                                else
+                                {
+                                    <div class="col-md-6 col-xs-12">
+                                        <img src="~/assets/img/pda/icons8_NFC_96px.png" alt="" />
+                                        <h5 class="text text-success">NFC Data has been Captured</h5>
+                                        <p>@nfcData.DateRegistered.ToLongDateString() @nfcData.DateRegistered.ToLongTimeString()</p>
+                                    </div>
                                 }
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="purchase">
@@ -141,8 +157,7 @@
                                 <th>Attended By</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -157,8 +172,7 @@
                                 <th>Attended By</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -169,12 +183,12 @@
 @section scripts
 {
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
 
         });
 
         pdaWeb.controller('pdaWebCtrlr',
-            function($scope) {
+            function ($scope) {
 
             });
     </script>

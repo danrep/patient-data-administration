@@ -45,6 +45,13 @@
     <link href="/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
 
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
+
+    <style>
+        text {
+            font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+            font-weight: 100;
+        }
+    </style>
     @RenderSection("styles", false);
 </head>
 <body>
@@ -103,16 +110,19 @@
                             <span>Home</span>
                         </a>
                     </li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-database"></i>
-                            <span>Data Processor</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "DataProcessor", new {area = ""})">Data Central</a></li>
-                        </ul>
-                    </li>
+                    @if (SecurityModel.GetUserInSession.AdministrationStaffInformation.Id == 0)
+                    {
+                        <li class="has-sub">
+                            <a href="javascript:;">
+                                <b class="caret pull-right"></b>
+                                <i class="fa fa-database"></i>
+                                <span>Data Processor</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="active"><a href="@Url.Action("Index", "DataProcessor", new { area = "" })">Data Central</a></li>
+                            </ul>
+                        </li>
+                    }
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
@@ -203,6 +213,7 @@
     <script src="/assets/plugins/morris/raphael.min.js"></script>
     <script src="/assets/plugins/morris/morris.js"></script>
     <script src="/assets/plugins/parsley/dist/parsley.js"></script>
+    <script src="/assets/plugins/moment/moment.min.js"></script>
 
     <script src="/assets/plugins/switchery/switchery.min.js"></script>
     <script src="/assets/plugins/powerange/powerange.min.js"></script>

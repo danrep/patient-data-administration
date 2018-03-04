@@ -76,7 +76,7 @@
         }
 
         function processLogIn(data) {
-            window.swalInfo("The Authentication Process was Successful. Please Wait");
+            window.swalSuccess("The Authentication Process was Successful. Please Wait");
             setTimeout(function () {
                 window.location = '@Url.Action("Index", "Home", new {area = ""})';
             }, 2000);

@@ -9,7 +9,7 @@ namespace PatientDataAdministration.Core
         {
             return new
             {
-                SmtpMailFrom = ConfigurationManager.AppSettings["LogRollOver"] ?? "info@PatientDataAdministration.com",
+                SmtpMailFrom = ConfigurationManager.AppSettings["SmtpMailFrom"] ?? "info@PatientDataAdministration.com",
                 SmtpMailHead = ConfigurationManager.AppSettings["SmtpMailHead"] ?? "Patient Data Administration Messaging",
                 SmtpServer = ConfigurationManager.AppSettings["SmtpServer"] ?? "smtp.gmail.com",
                 SmtpUsername = ConfigurationManager.AppSettings["SmtpUsername"] ?? "notification@codesistance.com",
@@ -20,6 +20,6 @@ namespace PatientDataAdministration.Core
         }
 
         public static string LogFolder => ConfigurationManager.AppSettings["LogFolder"] ?? "\\";
-        public static long LogRollOver => Convert.ToInt64(ConfigurationManager.AppSettings["LogRollOver"] ?? "100000");
+        public static long LogRollOver => Convert.ToInt64(ConfigurationManager.AppSettings["LogRollOver"] ?? "1000000");
     }
 }
