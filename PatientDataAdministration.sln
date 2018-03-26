@@ -23,6 +23,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PatientDataAdministration.C
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientDataAdministration.Database", "PatientDataAdministration.Database\PatientDataAdministration.Database.sqlproj", "{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codesistance.UniqueBioSearchSecugen", "Codesistance.UniqueBioSearchSecugen\Codesistance.UniqueBioSearchSecugen.csproj", "{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

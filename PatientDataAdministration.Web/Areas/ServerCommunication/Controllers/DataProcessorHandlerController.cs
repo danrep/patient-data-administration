@@ -149,7 +149,6 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 var innerentities = new Entities();
                 var returnData = new List<List<string>>();
-                var listOfPatients = new List<Patient_PatientInformation>();
 
                 foreach (DataTable table in dataSet.Tables)
                 {
@@ -229,16 +228,9 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     Title = "",
                                     WhenCreated = DateTime.Now
                                 };
-                                listOfPatients.Add(newPatientInfo);
 
-                                if (listOfPatients.Count < 100)
-                                    continue;
-
-                                innerentities.Patient_PatientInformation.AddRange(listOfPatients);
+                                innerentities.Patient_PatientInformation.Add(newPatientInfo);
                                 innerentities.SaveChanges();
-
-                                listOfPatients.Clear();
-                                listOfPatients.TrimExcess();
                             }
                             else
                             {
@@ -266,66 +258,16 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 {
                                     innerentities = new Entities();
                                     ActivityLogger.Log(ex);
-                                    TreatProcessingError(ex, patientInformation);
-
-                                    listOfPatients.Clear();
-                                    listOfPatients.TrimExcess();
+                                    TreatProcessingError(ex, dataRow.ItemArray);
                                 }
                             }
                         }
                         catch (Exception ex)
                         {
-                            innerentities = new Entities();
                             ActivityLogger.Log(ex);
-
-                            foreach (var patient in listOfPatients)
-                            {
-                                try
-                                {
-                                    innerentities.Patient_PatientInformation.Add(patient);
-                                    innerentities.SaveChanges();
-                                }
-                                catch (Exception exx)
-                                {
-                                    TreatProcessingError(exx, patient);
-                                    innerentities = new Entities();
-                                }
-                            }
-
-                            listOfPatients.Clear();
-                            listOfPatients.TrimExcess();
+                            innerentities = new Entities();
+                            TreatProcessingError(ex, dataRow.ItemArray);
                         }
-                    }
-
-                    try
-                    {
-                        if (listOfPatients.Count > 0)
-                        {
-                            innerentities.Patient_PatientInformation.AddRange(listOfPatients);
-                            innerentities.SaveChanges();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        innerentities = new Entities();
-                        ActivityLogger.Log(ex);
-
-                        foreach (var patient in listOfPatients)
-                        {
-                            try
-                            {
-                                innerentities.Patient_PatientInformation.Add(patient);
-                                innerentities.SaveChanges();
-                            }
-                            catch (Exception exx)
-                            {
-                                TreatProcessingError(exx, patient);
-                                innerentities = new Entities();
-                            }
-                        }
-
-                        listOfPatients.Clear();
-                        listOfPatients.TrimExcess();
                     }
 
                     returnData.Add(returnDataPerTable);
@@ -366,7 +308,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             ActivityLogger.Log(e);
             ActivityLogger.Log("Trace on Failed Upload",
                 JsonConvert.SerializeObject(data));
-            returnDataPerTable.Add("Upload of Record Failed");
+            returnDataPerTable.Add("Error in Data");
             returnDataPerTable.Add(JValue.Parse(JsonConvert.SerializeObject(data)).ToString(Formatting.Indented));
         }
     }

@@ -115,7 +115,7 @@
                                         <p>@bioData.DateRegistered.ToLongDateString() @bioData.DateRegistered.ToLongTimeString()</p>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
-                                        <h5 class="text text-white pull-right"><i class="fa fa-lock"></i>&nbsp;Patient Identity Barcode</h5>
+                                        <h5 class="text text-white pull-right"><i class="fa fa-lock"></i>&nbsp;Patient Identity Barcode: <span class="text text-success">@bioData.FingerDataHash.Substring(0, 10).ToUpper()</span></h5>
                                         <img alt="@Model.PepId" class="pull-right" style="max-width:100%" src="data:image/png;base64,@BarCodeRender.GeneratePdf417BarCode(pdf512Code)" />
                                     </div>
                                 }
