@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using SecuGen.SecuSearchSDK3;
 
-namespace SecuGen.SecuSearch3Samples
+namespace Codesistance.UniqueBioSearchSecugen
 {
     struct Template
     {

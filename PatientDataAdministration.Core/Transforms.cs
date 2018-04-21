@@ -4,41 +4,41 @@ namespace PatientDataAdministration.Core
 {
     public static class Transforms
     {
-        public static DateTime NormalizeDate(string rawDate)
+        public static DateTime? NormalizeDate(string rawDate)
         {
             try
             {
-                var dateCompnent = new string[] { };
+                string[] dateComponent;
 
                 if (rawDate.Contains("\\"))
-                    dateCompnent = rawDate.Split('\\');
+                    dateComponent = rawDate.Split('\\');
                 else if (rawDate.Contains("/"))
-                    dateCompnent = rawDate.Split('/');
+                    dateComponent = rawDate.Split('/');
                 else if (rawDate.Contains("-"))
-                    dateCompnent = rawDate.Split('-');
+                    dateComponent = rawDate.Split('-');
                 else
-                    dateCompnent = rawDate.Split('.');
+                    dateComponent = rawDate.Split('.');
 
-                if (Convert.ToInt32(dateCompnent[0].Trim()) > 31)
-                    return new DateTime(Convert.ToInt32(dateCompnent[0].Trim()),
-                        Convert.ToInt32(dateCompnent[1].Trim()), Convert.ToInt32(dateCompnent[2].Trim()));
+                if (Convert.ToInt32(dateComponent[0].Trim()) > 31)
+                    return new DateTime(Convert.ToInt32(dateComponent[0].Trim()),
+                        Convert.ToInt32(dateComponent[1].Trim()), Convert.ToInt32(dateComponent[2].Trim()));
 
-                var month = Convert.ToInt32(dateCompnent[1].Trim());
+                var month = Convert.ToInt32(dateComponent[1].Trim());
                 if (month > 12)
                     month = 12;
 
-                var day = Convert.ToInt32(dateCompnent[0].Trim());
+                var day = Convert.ToInt32(dateComponent[0].Trim());
                 if (day > 30 && month == 2)
                     day = 28;
 
-                var date = new DateTime(Convert.ToInt32(dateCompnent[2].Trim()),
+                var date = new DateTime(Convert.ToInt32(dateComponent[2].Trim()),
                     month, day).Date;
                 return date;
             }
             catch (Exception e)
             {
                 ActivityLogger.Log(e);
-                return DateTime.Now.Date;
+                return null;
             }
         }
 

@@ -1,0 +1,22 @@
+﻿@using PatientDataAdministration.Web.Engines
+@{
+    ViewBag.Title = "Data Integrity Overview";
+    ViewBag.TitleDesc = "Manage Data Inconsistency and profer solutions";
+    Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+}
+
+<!--CASE A-->
+<div class="col-md-12">
+    @if (EngineDataIntegrity.DataIntegrityPepId?.Any() ?? false)
+    {
+        <div class="note note-danger">
+            <h4>Duplicate PepIDs Found!</h4>
+            <p>
+                The system has found some patient records with recurring PeP Id numbers. The current batch count is @EngineDataIntegrity.DataIntegrityPepId.Count. Click <a href="@Url.Action("TreatPepIdDuplicates", "DataIntegrity")">here</a> to view them!
+            </p>
+        </div>
+    }
+</div>
+<!--CASE B-->
+<!--Same Phone Numbers-->
+<!--Same Address-->

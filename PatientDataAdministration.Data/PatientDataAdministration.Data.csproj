@@ -112,6 +112,18 @@
     <Compile Include="Sp_Administration_GetPatients_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Sp_System_DataIntegrity_Opr_CreateNew_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_DataIntegrity_Opr_Delete_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_DataIntegrity_Opr_Preffered_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_System_DataIntegrity_PepId_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Sp_System_Indicators_PopulationDistro_30DayStatePlotData_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
@@ -124,7 +136,13 @@
     <Compile Include="Sp_System_Indicators_PopulationDistro_SexSiteState_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="System_DataIntegrityActionLog.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_LocalGovermentArea.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_NotificationLog.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="System_State.cs">

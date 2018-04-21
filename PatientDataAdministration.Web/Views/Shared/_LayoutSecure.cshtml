@@ -1,10 +1,25 @@
 ﻿@using System.Globalization
 @using PatientDataAdministration.EnumLibrary
 @using PatientDataAdministration.EnumLibrary.Dictionary
+@using PatientDataAdministration.Web.Engines
 @using PatientDataAdministration.Web.Models
 
 @{
-    var role = ((UserRole) SecurityModel.GetUserInSession.AdministrationStaffInformation.RoleId).DisplayName();
+    var role = string.Empty;
+    var roleId = 0;
+    var dataIntegrityIssues = false;
+
+    if (!SecurityModel.IsUserSessionActive)
+    {
+        Response.Redirect(Url.Action("Index", "Security").ToString(), false);
+    }
+    else
+    {
+        role = ((UserRole)SecurityModel.GetUserInSession.AdministrationStaffInformation.RoleId).DisplayName();
+        roleId = SecurityModel.GetUserInSession.AdministrationStaffInformation.RoleId;
+    }
+
+    dataIntegrityIssues = EngineDataIntegrity.DataIntegrityPepId?.Any() ?? false;
 }
 
 <!DOCTYPE html>
@@ -22,7 +37,7 @@
     <link href="/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="/assets/css/animate.min.css" rel="stylesheet" />
+    <link href="/assets/css/animate-custom.css" rel="stylesheet" />
     <link href="/assets/css/style.css" rel="stylesheet" />
     <link href="/assets/css/style-responsive.css" rel="stylesheet" />
     <link href="/assets/css/theme/default.css" rel="stylesheet" id="theme" />
@@ -42,6 +57,7 @@
     <link href="/assets/plugins/powerange/powerange.min.css" rel="stylesheet" />
 
     <link href="/assets/plugins/DataTables/media/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/plugins/DataTables/extensions/FixedHeader/css/fixedHeader.bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/plugins/DataTables/extensions/Responsive/css/responsive.bootstrap.min.css" rel="stylesheet" />
 
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
@@ -51,8 +67,14 @@
             font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif !important;
             font-weight: 100;
         }
+
+        .desaturateGreyScale {
+            -moz-filter: grayscale(100%);
+            -webkit-filter: grayscale(100%);
+            filter: grayscale(100%);
+        }
     </style>
-    @RenderSection("styles", false);
+    @RenderSection("styles", false)
 </head>
 <body>
     <div id="page-loader" class="fade in">
@@ -123,6 +145,33 @@
                             </ul>
                         </li>
                     }
+
+                    @if (dataIntegrityIssues)
+                    {
+                        if (roleId == (int)UserRole.CountryAdministrator || roleId == (int)UserRole.SystemAdministrator)
+                        {
+                            <li class="has-sub active">
+                                <a href="javascript:;">
+                                    <b class="caret pull-right"></b>
+                                    <i class="fa fa-shield"></i>
+                                    <span>Data Integrity Overview</span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="active">
+                                        <div class="note note-warning">
+                                            <span class="fa fa-warning"></span> APIN PDA noticed some Data Integrity Issues. Please fix them as soon as possible.
+                                            <br />
+                                            <a class="btn btn-info btn-xs" href="@Url.Action("Index", "DataIntegrity", new {area = ""})">
+                                                View
+                                            </a>
+                                            <button class="btn btn-danger btn-xs" onclick="refreshDupData('@Url.Action("RefreshStaticData", "Home", new {area = ""})')">Refresh</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    }
+
                     <li class="has-sub">
                         <a href="javascript:;">
                             <b class="caret pull-right"></b>
@@ -193,8 +242,8 @@
 
     <script src="/assets/plugins/DataTables/media/js/jquery.dataTables.js"></script>
     <script src="/assets/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
-    <script src="/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
     <script src="/assets/js/table_manage_default_demo.js"></script>
+    <script src="/assets/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
     <script src="/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
     <script src="/assets/plugins/gritter/js/jquery.gritter.js"></script>
@@ -221,6 +270,7 @@
 
     <script src="/assets/js/app.js"></script>
     <script src="/Scripts/global.js"></script>
+    <script src="/Scripts/layout.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -235,6 +285,6 @@
         });
     </script>
 
-    @RenderSection("scripts", false);
+    @RenderSection("scripts", false)
 </body>
 </html>

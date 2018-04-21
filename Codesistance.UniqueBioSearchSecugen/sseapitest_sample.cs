@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using SecuGen.SecuSearchSDK3;
 
-namespace SecuGen.SecuSearch3Samples
+namespace Codesistance.UniqueBioSearchSecugen
 {
-    class SearchEngine
+    class SSEAPITest
     {
         public const string SEARCH_DB_PATH = "sample.tdb";
 
@@ -14,7 +14,7 @@ namespace SecuGen.SecuSearch3Samples
         public bool Initialized;
         public MDB Mdb;
 
-        SearchEngine()
+        SSEAPITest()
         {
             SSearch = new SecuSearch();
             Mdb = new MDB();
@@ -22,7 +22,7 @@ namespace SecuGen.SecuSearch3Samples
             InitSSE();
         }
 
-        ~SearchEngine()
+        ~SSEAPITest()
         {
             DeinitSSE();
         }

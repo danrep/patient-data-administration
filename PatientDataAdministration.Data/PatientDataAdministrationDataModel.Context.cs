@@ -33,13 +33,15 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Administration_PatientRegistrationLog> Administration_PatientRegistrationLog { get; set; }
         public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
         public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
-        public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
         public virtual DbSet<Patient_PatientNearFieldCommunicationData> Patient_PatientNearFieldCommunicationData { get; set; }
         public virtual DbSet<Patient_PatientTransferHistory> Patient_PatientTransferHistory { get; set; }
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
         public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
+        public virtual DbSet<System_NotificationLog> System_NotificationLog { get; set; }
+        public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
+        public virtual DbSet<System_DataIntegrityActionLog> System_DataIntegrityActionLog { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetInActiveUsers_Result> Sp_Administration_GetInActiveUsers(Nullable<int> inactiveBar)
         {
@@ -120,6 +122,38 @@ namespace PatientDataAdministration.Data
                 new ObjectParameter("hasNfc", typeof(bool));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetPatients_Result>("Sp_Administration_GetPatients", queryParameter, stateIdParameter, siteIdParameter, hasBioParameter, hasNfcParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_DataIntegrity_PepId_Result> Sp_System_DataIntegrity_PepId()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_PepId_Result>("Sp_System_DataIntegrity_PepId");
+        }
+    
+        public virtual ObjectResult<Sp_System_DataIntegrity_Opr_CreateNew_Result> Sp_System_DataIntegrity_Opr_CreateNew(Nullable<int> rowId)
+        {
+            var rowIdParameter = rowId.HasValue ?
+                new ObjectParameter("rowId", rowId) :
+                new ObjectParameter("rowId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_Opr_CreateNew_Result>("Sp_System_DataIntegrity_Opr_CreateNew", rowIdParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_DataIntegrity_Opr_Delete_Result> Sp_System_DataIntegrity_Opr_Delete(Nullable<int> rowId)
+        {
+            var rowIdParameter = rowId.HasValue ?
+                new ObjectParameter("rowId", rowId) :
+                new ObjectParameter("rowId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_Opr_Delete_Result>("Sp_System_DataIntegrity_Opr_Delete", rowIdParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_DataIntegrity_Opr_Preffered_Result> Sp_System_DataIntegrity_Opr_Preffered(Nullable<int> rowId)
+        {
+            var rowIdParameter = rowId.HasValue ?
+                new ObjectParameter("rowId", rowId) :
+                new ObjectParameter("rowId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_Opr_Preffered_Result>("Sp_System_DataIntegrity_Opr_Preffered", rowIdParameter);
         }
     }
 }

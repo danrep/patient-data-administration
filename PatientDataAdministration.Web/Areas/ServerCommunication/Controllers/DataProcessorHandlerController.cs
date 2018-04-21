@@ -18,7 +18,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
     public class DataProcessorHandlerController : BaseServerCommController
     {
-        List<string> returnDataPerTable = new List<string>();
+        private List<string> _returnDataPerTable = new List<string>();
 
         // GET: ServerCommunication/DataProcessorHandler
         public ActionResult UploadFile()
@@ -152,7 +152,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                 foreach (DataTable table in dataSet.Tables)
                 {
-                    returnDataPerTable = new List<string>();
+                    _returnDataPerTable = new List<string>();
 
                     var site =
                         innerentities.Administration_SiteInformation.FirstOrDefault(x => x.SiteCode == table.TableName);
@@ -202,7 +202,66 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                         try
                         {
-                            if (patientInformation == null)
+                            if (forceReplace)
+                            {
+                                if (patientInformation == null)
+                                {
+                                    var newPatientInfo = new Patient_PatientInformation()
+                                    {
+                                        DateOfBirth =
+                                            Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim()),
+                                        HospitalNumber = dataRow[3]?.ToString().Trim() ?? "NA",
+                                        HouseAddresLga = 0,
+                                        HouseAddressState = 0,
+                                        HouseAddress = dataRow[9]?.ToString().Trim() ?? "NA",
+                                        IsDeleted = false,
+                                        LastUpdated = DateTime.Now,
+                                        MaritalStatus = "",
+                                        Othername = dataRow[5]?.ToString().Trim() ?? "NA",
+                                        PassportData = null,
+                                        PepId = pepId,
+                                        PhoneNumber =
+                                            Transforms.NormalizePhoneNumber(dataRow[8]?.ToString().Trim() ?? "00000000000"),
+                                        PreviousId = "",
+                                        Sex = dataRow[6]?.ToString().Trim() ?? "female",
+                                        SiteId = site.Id,
+                                        StateOfOrigin = 0,
+                                        Surname = dataRow[4]?.ToString().Trim() ?? "NA",
+                                        Title = "",
+                                        WhenCreated = DateTime.Now
+                                    };
+
+                                    innerentities.Patient_PatientInformation.Add(newPatientInfo);
+                                    innerentities.SaveChanges();
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        patientInformation.DateOfBirth =
+                                            Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim());
+                                        patientInformation.HospitalNumber = dataRow[3].ToString().Trim();
+                                        patientInformation.HouseAddress = dataRow[9].ToString().Trim();
+                                        patientInformation.LastUpdated = DateTime.Now;
+                                        patientInformation.Othername = dataRow[5].ToString().Trim();
+                                        patientInformation.PhoneNumber =
+                                            Transforms.NormalizePhoneNumber(dataRow[8].ToString().Trim());
+                                        patientInformation.Sex = dataRow[6].ToString().Trim();
+                                        patientInformation.SiteId = site.Id;
+                                        patientInformation.Surname = dataRow[4].ToString().Trim();
+
+                                        innerentities.Entry(patientInformation).State = EntityState.Modified;
+                                        innerentities.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        innerentities = new Entities();
+                                        ActivityLogger.Log(ex);
+                                        TreatProcessingError(ex, dataRow.ItemArray);
+                                    }
+                                }
+                            }
+                            else
                             {
                                 var newPatientInfo = new Patient_PatientInformation()
                                 {
@@ -232,35 +291,6 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 innerentities.Patient_PatientInformation.Add(newPatientInfo);
                                 innerentities.SaveChanges();
                             }
-                            else
-                            {
-                                if (!forceReplace)
-                                    continue;
-
-                                try
-                                {
-                                    patientInformation.DateOfBirth =
-                                        Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim());
-                                    patientInformation.HospitalNumber = dataRow[3].ToString().Trim();
-                                    patientInformation.HouseAddress = dataRow[9].ToString().Trim();
-                                    patientInformation.LastUpdated = DateTime.Now;
-                                    patientInformation.Othername = dataRow[5].ToString().Trim();
-                                    patientInformation.PhoneNumber =
-                                        Transforms.NormalizePhoneNumber(dataRow[8].ToString().Trim());
-                                    patientInformation.Sex = dataRow[6].ToString().Trim();
-                                    patientInformation.SiteId = site.Id;
-                                    patientInformation.Surname = dataRow[4].ToString().Trim();
-
-                                    innerentities.Entry(patientInformation).State = EntityState.Modified;
-                                    innerentities.SaveChanges();
-                                }
-                                catch (Exception ex)
-                                {
-                                    innerentities = new Entities();
-                                    ActivityLogger.Log(ex);
-                                    TreatProcessingError(ex, dataRow.ItemArray);
-                                }
-                            }
                         }
                         catch (Exception ex)
                         {
@@ -270,7 +300,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         }
                     }
 
-                    returnData.Add(returnDataPerTable);
+                    returnData.Add(_returnDataPerTable);
                 }
 
                 innerentities.Sp_System_CleanUp();
@@ -308,8 +338,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             ActivityLogger.Log(e);
             ActivityLogger.Log("Trace on Failed Upload",
                 JsonConvert.SerializeObject(data));
-            returnDataPerTable.Add("Error in Data");
-            returnDataPerTable.Add(JValue.Parse(JsonConvert.SerializeObject(data)).ToString(Formatting.Indented));
+            _returnDataPerTable.Add("Error in Data");
+            _returnDataPerTable.Add(JValue.Parse(JsonConvert.SerializeObject(data)).ToString(Formatting.Indented));
         }
     }
 }

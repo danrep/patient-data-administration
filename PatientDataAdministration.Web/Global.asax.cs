@@ -1,14 +1,10 @@
 ﻿using PatientDataAdministration.Web.Engines;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Web.Security;
-using System.Web.SessionState;
+using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web
 {
@@ -21,8 +17,12 @@ namespace PatientDataAdministration.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            new Thread(()=> {
+            new Thread(() => {
                 var cron = new Cron();
+            }).Start();
+
+            new Thread(() => {
+                var recurrent = new RecurrentData();
             }).Start();
         }
     }

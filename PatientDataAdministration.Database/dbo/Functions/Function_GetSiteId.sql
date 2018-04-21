@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION Function_GetSiteId
+﻿CREATE FUNCTION [dbo].[Function_GetSiteId]
 (
 	@site_code varchar(50)
 )

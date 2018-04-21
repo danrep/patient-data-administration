@@ -44,7 +44,7 @@
                         </tr>
                         <tr>
                             <td class="field">Born&nbsp;<i class="fa fa-birthday-cake"></i></td>
-                            <td><span>@Model.DateOfBirth.ToLongDateString(), @((DateTime.Now.Subtract(Model.DateOfBirth).TotalDays / 365).ToString("0")) years old today</span></td>
+                            <td><span>@(Model.DateOfBirth?.ToLongDateString() ?? ""), @((DateTime.Now.Subtract(Model.DateOfBirth?.Date ?? DateTime.Now.Date).TotalDays / 365).ToString("0")) years old today</span></td>
                         </tr>
                         <tr>
                             <td class="field">Previous Id&nbsp;<i class="fa fa-clipboard"></i></td>

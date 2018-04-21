@@ -987,7 +987,7 @@ namespace PatientDataAdministration.Client
                 var patientDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformation>(patientData.PatientData);
 
                 txtAddress.Text = patientDataResolved.Patient_PatientInformation.HouseAddress;
-                txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth;
+                txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth ?? DateTime.Now.Date;
                 txtHospitalNumber.Text = patientDataResolved.Patient_PatientInformation.HospitalNumber;
                 //txtMaritalStatus.Text = patientDataResolved.Patient_PatientInformation.MaritalStatus;
                 txtOtherNames.Text = patientDataResolved.Patient_PatientInformation.Othername;

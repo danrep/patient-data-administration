@@ -43,6 +43,9 @@
     <Compile Include="Dictionary\EnumDescriptor.cs" />
     <Compile Include="Dictionary\EnumDictionary.cs" />
     <Compile Include="FileProcessingMethod.cs" />
+    <Compile Include="DataIntegrityIssue.cs" />
+    <Compile Include="RecurrenceInterval.cs" />
+    <Compile Include="ActionTypeDataIntegrity.cs" />
     <Compile Include="UserRole.cs" />
     <Compile Include="PatientVisitReason.cs" />
     <Compile Include="Status.cs" />

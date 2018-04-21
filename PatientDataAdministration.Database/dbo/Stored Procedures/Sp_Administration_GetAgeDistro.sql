@@ -1,4 +1,4 @@
-﻿CREATE procedure Sp_Administration_GetAgeDistro
+﻿CREATE procedure [dbo].[Sp_Administration_GetAgeDistro]
 AS 
 BEGIN
 	SELECT patient_patientInformation.RangeOfValues AS RangeOfValues, COUNT(*) AS NumberOfOccurences
@@ -15,7 +15,7 @@ BEGIN
 			WHEN DATEDIFF(YEAR, dateofbirth, GETDATE()) BETWEEN 80 AND 89 THEN '80-89'
 			ELSE '90 above' 
 		END AS RangeOfValues
-		FROM Patient_PatientInformation) patient_patientInformation
+		FROM Patient_PatientInformation where DateOfBirth is not null) patient_patientInformation
 	GROUP BY patient_patientInformation.RangeOfValues
 	ORDER BY patient_patientInformation.RangeOfValues
 END

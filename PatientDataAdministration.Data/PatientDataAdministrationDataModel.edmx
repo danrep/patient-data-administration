@@ -83,9 +83,9 @@
           <Property Name="PasswordSalt" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="SiteId" Type="int" Nullable="false" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
           <Property Name="AuthenticationState" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricData">
           <Key>
@@ -114,7 +114,7 @@
           <Property Name="Sex" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="MaritalStatus" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="DateOfBirth" Type="datetime" Nullable="false" />
+          <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="StateOfOrigin" Type="int" Nullable="false" />
           <Property Name="HouseAddress" Type="varchar(max)" Nullable="false" />
           <Property Name="HouseAddressState" Type="int" Nullable="false" />
@@ -148,6 +148,21 @@
           <Property Name="DateMoved" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_DataIntegrityActionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ActionDate" Type="datetime" Nullable="false" />
+          <Property Name="ActionUser" Type="int" Nullable="false" />
+          <Property Name="ActionType" Type="int" Nullable="false" />
+          <Property Name="DataBefore" Type="varchar(max)" />
+          <Property Name="DataAfter" Type="varchar(max)" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsReversed" Type="bit" Nullable="false" />
+          <Property Name="ActionReversedUser" Type="int" Nullable="false" />
+          <Property Name="ActionReversedDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="System_LocalGovermentArea">
           <Key>
             <PropertyRef Name="Id" />
@@ -157,6 +172,17 @@
           <Property Name="StateID" Type="int" />
           <Property Name="LocalGovermentAreaCode" Type="char" MaxLength="3" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_NotificationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotificationId" Type="int" Nullable="false" />
+          <Property Name="DateLastSent" Type="datetime" Nullable="false" />
+          <Property Name="Interval" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsLatest" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="System_State">
           <Key>
@@ -197,6 +223,16 @@
           <Parameter Name="hasNfc" Type="bit" Mode="In" />
         </Function>
         <Function Name="Sp_System_CleanUp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_System_DataIntegrity_Opr_CreateNew" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="rowId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_System_DataIntegrity_Opr_Delete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="rowId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_System_DataIntegrity_Opr_Preffered" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="rowId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_System_DataIntegrity_PepId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Sp_System_Indicators_PopulationDistro_30DayStatePlotData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="abbreviation" Type="varchar" Mode="In" />
         </Function>
@@ -218,7 +254,9 @@
           <EntitySet Name="Patient_PatientInformation" EntityType="Self.Patient_PatientInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="Self.Patient_PatientNearFieldCommunicationData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientTransferHistory" EntityType="Self.Patient_PatientTransferHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_DataIntegrityActionLog" EntityType="Self.System_DataIntegrityActionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_NotificationLog" EntityType="Self.System_NotificationLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_State" EntityType="Self.System_State" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Update" EntityType="Self.System_Update" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
@@ -238,7 +276,6 @@
           <EntitySet Name="Administration_PatientRegistrationLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog" />
           <EntitySet Name="Administration_SiteInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" />
           <EntitySet Name="Administration_StaffInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" />
-          <EntitySet Name="Patient_PatientInformation" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformation" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientNearFieldCommunicationData" />
           <EntitySet Name="Patient_PatientTransferHistory" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientTransferHistory" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="PatientDataAdministration.DatabaseModel.System_LocalGovermentArea" />
@@ -263,6 +300,19 @@
             <Parameter Name="hasNfc" Mode="In" Type="Boolean" />
           </FunctionImport>
           <EntitySet Name="Patient_PatientBiometricData" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" />
+          <EntitySet Name="System_NotificationLog" EntityType="PatientDataAdministration.DatabaseModel.System_NotificationLog" />
+          <FunctionImport Name="Sp_System_DataIntegrity_PepId" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_PepId_Result)" />
+          <EntitySet Name="Patient_PatientInformation" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformation" />
+          <FunctionImport Name="Sp_System_DataIntegrity_Opr_CreateNew" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_CreateNew_Result)">
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_System_DataIntegrity_Opr_Delete" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Delete_Result)">
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_System_DataIntegrity_Opr_Preffered" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Preffered_Result)">
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="System_DataIntegrityActionLog" EntityType="PatientDataAdministration.DatabaseModel.System_DataIntegrityActionLog" />
         </EntityContainer>
         <ComplexType Name="Sp_Administration_GetInActiveUsers_Result">
           <Property Type="Int32" Name="CurrentUserId" Nullable="false" />
@@ -353,31 +403,6 @@
           <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="RoleId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Patient_PatientInformation">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PepId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PreviousId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="SiteId" Type="Int32" Nullable="false" />
-          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Othername" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Sex" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="MaritalStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="StateOfOrigin" Type="Int32" Nullable="false" />
-          <Property Name="HouseAddress" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="HouseAddressState" Type="Int32" Nullable="false" />
-          <Property Name="HouseAddresLga" Type="Int32" Nullable="false" />
-          <Property Name="HospitalNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PassportData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="WhenCreated" Type="DateTime" Precision="3" />
-          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Patient_PatientNearFieldCommunicationData">
           <Key>
@@ -503,6 +528,74 @@
           <Property Name="IsValid" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_NotificationLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotificationId" Type="Int32" Nullable="false" />
+          <Property Name="DateLastSent" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Interval" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsLatest" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="Sp_System_DataIntegrity_PepId_Result">
+          <Property Type="String" Name="PepId" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="NumberOfOccurences" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Patient_PatientInformation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PreviousId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Othername" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Sex" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MaritalStatus" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="StateOfOrigin" Type="Int32" Nullable="false" />
+          <Property Name="HouseAddress" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="HouseAddressState" Type="Int32" Nullable="false" />
+          <Property Name="HouseAddresLga" Type="Int32" Nullable="false" />
+          <Property Name="HospitalNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PassportData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="WhenCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="Sp_System_DataIntegrity_Opr_CreateNew_Result">
+          <Property Type="String" Name="LastPepId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="NewPepId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="PatientName" Nullable="true" MaxLength="201" />
+        </ComplexType>
+        <ComplexType Name="Sp_System_DataIntegrity_Opr_Delete_Result">
+          <Property Type="String" Name="LastPepId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="PatientName" Nullable="true" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="Sp_System_DataIntegrity_Opr_Preffered_Result">
+          <Property Type="String" Name="LastPepId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="PatientName" Nullable="true" MaxLength="201" />
+        </ComplexType>
+        <EntityType Name="System_DataIntegrityActionLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActionDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ActionUser" Type="Int32" Nullable="false" />
+          <Property Name="ActionType" Type="Int32" Nullable="false" />
+          <Property Name="DataBefore" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DataAfter" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsReversed" Type="Boolean" Nullable="false" />
+          <Property Name="ActionReversedUser" Type="Int32" Nullable="false" />
+          <Property Name="ActionReversedDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -610,32 +703,6 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="Surname" ColumnName="Surname" />
                 <ScalarProperty Name="StaffId" ColumnName="StaffId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Patient_PatientInformation">
-            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientInformation">
-              <MappingFragment StoreEntitySet="Patient_PatientInformation">
-                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
-                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="PassportData" ColumnName="PassportData" />
-                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
-                <ScalarProperty Name="HouseAddresLga" ColumnName="HouseAddresLga" />
-                <ScalarProperty Name="HouseAddressState" ColumnName="HouseAddressState" />
-                <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
-                <ScalarProperty Name="StateOfOrigin" ColumnName="StateOfOrigin" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-                <ScalarProperty Name="Sex" ColumnName="Sex" />
-                <ScalarProperty Name="Othername" ColumnName="Othername" />
-                <ScalarProperty Name="Surname" ColumnName="Surname" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
-                <ScalarProperty Name="PreviousId" ColumnName="PreviousId" />
-                <ScalarProperty Name="PepId" ColumnName="PepId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -787,6 +854,93 @@
                 <ScalarProperty Name="FingerSecondary" ColumnName="FingerSecondary" />
                 <ScalarProperty Name="FingerPrimary" ColumnName="FingerPrimary" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_NotificationLog">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_NotificationLog">
+              <MappingFragment StoreEntitySet="System_NotificationLog">
+                <ScalarProperty Name="IsLatest" ColumnName="IsLatest" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Interval" ColumnName="Interval" />
+                <ScalarProperty Name="DateLastSent" ColumnName="DateLastSent" />
+                <ScalarProperty Name="NotificationId" ColumnName="NotificationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_System_DataIntegrity_PepId" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_System_DataIntegrity_PepId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_PepId_Result">
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="NumberOfOccurences" ColumnName="NumberOfOccurences" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Patient_PatientInformation">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientInformation">
+              <MappingFragment StoreEntitySet="Patient_PatientInformation">
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PassportData" ColumnName="PassportData" />
+                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+                <ScalarProperty Name="HouseAddresLga" ColumnName="HouseAddresLga" />
+                <ScalarProperty Name="HouseAddressState" ColumnName="HouseAddressState" />
+                <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+                <ScalarProperty Name="StateOfOrigin" ColumnName="StateOfOrigin" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="Othername" ColumnName="Othername" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="PreviousId" ColumnName="PreviousId" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_System_DataIntegrity_Opr_CreateNew" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_System_DataIntegrity_Opr_CreateNew">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_CreateNew_Result">
+                <ScalarProperty Name="LastPepId" ColumnName="LastPepId" />
+                <ScalarProperty Name="NewPepId" ColumnName="NewPepId" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_System_DataIntegrity_Opr_Delete" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_System_DataIntegrity_Opr_Delete">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Delete_Result">
+                <ScalarProperty Name="LastPepId" ColumnName="LastPepId" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_System_DataIntegrity_Opr_Preffered" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_System_DataIntegrity_Opr_Preffered">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Preffered_Result">
+                <ScalarProperty Name="LastPepId" ColumnName="LastPepId" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="System_DataIntegrityActionLog">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_DataIntegrityActionLog">
+              <MappingFragment StoreEntitySet="System_DataIntegrityActionLog">
+                <ScalarProperty Name="ActionReversedDate" ColumnName="ActionReversedDate" />
+                <ScalarProperty Name="ActionReversedUser" ColumnName="ActionReversedUser" />
+                <ScalarProperty Name="IsReversed" ColumnName="IsReversed" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DataAfter" ColumnName="DataAfter" />
+                <ScalarProperty Name="DataBefore" ColumnName="DataBefore" />
+                <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+                <ScalarProperty Name="ActionUser" ColumnName="ActionUser" />
+                <ScalarProperty Name="ActionDate" ColumnName="ActionDate" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

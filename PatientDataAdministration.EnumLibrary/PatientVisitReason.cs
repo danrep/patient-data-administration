@@ -8,7 +8,11 @@ namespace PatientDataAdministration.EnumLibrary
         Registration = 0,
         [EnumDisplayName(DisplayName = "Drugs Dispensation")]
         Dispensation,
+        [EnumDisplayName(DisplayName = "Laboratory")]
+        Laboratory,
         [EnumDisplayName(DisplayName = "Report")]
-        Report
+        Report,
+        [EnumDisplayName(DisplayName = "Counselling")]
+        Counselling
     }
 }

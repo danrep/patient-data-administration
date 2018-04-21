@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
@@ -99,7 +99,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         AddressLga = addressLga,
                         BiometricData = biometricData,
                         NfcData = nfcData, 
-                        Dob = patient.DateOfBirth.ToString("MM/dd/yyyy")
+                        Dob = patient.DateOfBirth?.ToString("MM/dd/yyyy") ?? ""
                     }
                 }, JsonRequestBehavior.AllowGet);
             }
@@ -107,6 +107,36 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetPatients(string pepId)
+        {
+            try
+            {
+                var patients = _db.Patient_PatientInformation.Where(x => !x.IsDeleted && x.PepId == pepId).ToList();
+
+                return Json(new ResponseData
+                {
+                    Status = true,
+                    Message = "Successful",
+                    Data = new
+                    {
+                        PatientData = patients.Select(p => new
+                        {
+                            PatientInformation = p,
+                            SiteInformation = RecurrentData.Sites.FirstOrDefault(x => x.Id == p.SiteId) ??
+                                              new Administration_SiteInformation()
+                        }).ToList(),
+                        HasBioData = _db.Patient_PatientBiometricData.Any(x => x.PepId == pepId),
+                        HasNfcData = _db.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == pepId)
+                    }
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

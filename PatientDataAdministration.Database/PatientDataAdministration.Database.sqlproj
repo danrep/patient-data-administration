@@ -93,6 +93,12 @@
     <Build Include="dbo\Stored Procedures\Sp_System_Indicators_PopulationDistro_30DayStatePlotData.sql" />
     <Build Include="dbo\Stored Procedures\Sp_System_CleanUp.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetPatients.sql" />
+    <Build Include="dbo\Tables\System_NotificationLog.sql" />
+    <Build Include="dbo\Tables\System_DataIntegrityActionLog.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_PepId.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_Opr_Preffered.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_Opr_Delete.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_Opr_CreateNew.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />

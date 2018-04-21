@@ -5,6 +5,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.Web.Engines;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Controllers
@@ -123,6 +124,20 @@ namespace PatientDataAdministration.Web.Controllers
                 return RedirectToAction("Index");
 
             return View();
+        }
+
+        public JsonResult RefreshStaticData()
+        {
+            try
+            {
+                new EngineDataIntegrity();
+                return Json(new ResponseData { Status = true, Message = "Sucessful" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

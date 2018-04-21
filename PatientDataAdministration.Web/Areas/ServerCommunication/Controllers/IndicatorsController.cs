@@ -76,18 +76,25 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             x =>
                                 !x.IsDeleted &&
                                 DbFunctions.TruncateTime(x.LastUpdated) >= DbFunctions.TruncateTime(date7Past) &&
-                                DbFunctions.TruncateTime(x.WhenCreated) < date7Past)
+                                DbFunctions.TruncateTime(x.WhenCreated) < date7Past &&
+                                x.LastUpdated > x.WhenCreated)
                         .Select(x => x.PepId)
                         .Distinct()
                         .Count();
 
                 var registeredToday =
-                    _entities.Patient_PatientInformation.Count(
-                        x => !x.IsDeleted && x.WhenCreated >= DbFunctions.TruncateTime(DateTime.Now));
+                    _entities.Patient_PatientInformation.Where(
+                        x => !x.IsDeleted && x.WhenCreated >= DbFunctions.TruncateTime(DateTime.Now))
+                        .Select(x => x.PepId)
+                        .Distinct()
+                        .Count();
                 var updatedToday =
-                    _entities.Patient_PatientInformation.Count(
+                    _entities.Patient_PatientInformation.Where(
                         x => !x.IsDeleted && x.LastUpdated >= DbFunctions.TruncateTime(DateTime.Now) &&
-                        DbFunctions.TruncateTime(x.WhenCreated) != DbFunctions.TruncateTime(DateTime.Now));
+                        DbFunctions.TruncateTime(x.WhenCreated) != DbFunctions.TruncateTime(DateTime.Now))
+                        .Select(x => x.PepId)
+                        .Distinct()
+                        .Count();
 
                 var complied = _entities.Sp_Administration_GetPatientCompliance().ToList().Count;
 

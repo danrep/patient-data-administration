@@ -1,8 +1,15 @@
 ﻿CREATE PROCEDURE [dbo].[Sp_System_CleanUp]
 AS
-	UPDATE Patient_PatientInformation SET sex = 'female' WHERE sex = 'f'
-	UPDATE Patient_PatientInformation SET sex = 'male' WHERE sex = 'm'
-	
-	UPDATE Patient_PatientInformation SET sex = 'female' WHERE sex <> 'male'
-	UPDATE Patient_PatientInformation SET sex = 'male' WHERE sex = 'male'
+	--Regularize Sex
+	UPDATE Patient_PatientInformation SET Sex = 'female' WHERE Sex = 'f';
+	UPDATE Patient_PatientInformation SET Sex = 'male' WHERE Sex = 'm';	
+	UPDATE Patient_PatientInformation SET Sex = 'female' WHERE Sex <> 'male';
+	UPDATE Patient_PatientInformation SET Sex = 'male' WHERE Sex = 'male';
+
+	--Remove Operational Duplicates
+	WITH CTE AS(
+		SELECT PepId, Surname, Othername, SiteId, RN = ROW_NUMBER()OVER(PARTITION BY PepId, Surname, Othername, SiteId ORDER BY PepId)
+		FROM dbo.Patient_PatientInformation
+	)
+	DELETE FROM CTE WHERE RN > 1;
 RETURN 0
