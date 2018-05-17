@@ -23,7 +23,7 @@ namespace PatientDataAdministration.Data
         public string Sex { get; set; }
         public string PhoneNumber { get; set; }
         public string MaritalStatus { get; set; }
-        public System.DateTime DateOfBirth { get; set; }
+        public Nullable<System.DateTime> DateOfBirth { get; set; }
         public int StateOfOrigin { get; set; }
         public string HouseAddress { get; set; }
         public int HouseAddressState { get; set; }

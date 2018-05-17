@@ -644,8 +644,7 @@ namespace PatientDataAdministration.Client
 
                 foreach (var patientDatum in patientData)
                 {
-                    var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient",
-                        Newtonsoft.Json.JsonConvert.SerializeObject(patientDatum.PatientData));
+                    var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", patientDatum.PatientData);
 
                     if (result.Status)
                     {

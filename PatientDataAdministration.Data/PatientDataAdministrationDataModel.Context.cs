@@ -99,31 +99,6 @@ namespace PatientDataAdministration.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_NfcCount_Result>("Sp_System_Indicators_PopulationDistro_NfcCount", abbrevationParameter);
         }
     
-        public virtual ObjectResult<Sp_Administration_GetPatients_Result> Sp_Administration_GetPatients(string query, Nullable<int> stateId, Nullable<int> siteId, Nullable<bool> hasBio, Nullable<bool> hasNfc)
-        {
-            var queryParameter = query != null ?
-                new ObjectParameter("query", query) :
-                new ObjectParameter("query", typeof(string));
-    
-            var stateIdParameter = stateId.HasValue ?
-                new ObjectParameter("stateId", stateId) :
-                new ObjectParameter("stateId", typeof(int));
-    
-            var siteIdParameter = siteId.HasValue ?
-                new ObjectParameter("siteId", siteId) :
-                new ObjectParameter("siteId", typeof(int));
-    
-            var hasBioParameter = hasBio.HasValue ?
-                new ObjectParameter("hasBio", hasBio) :
-                new ObjectParameter("hasBio", typeof(bool));
-    
-            var hasNfcParameter = hasNfc.HasValue ?
-                new ObjectParameter("hasNfc", hasNfc) :
-                new ObjectParameter("hasNfc", typeof(bool));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetPatients_Result>("Sp_Administration_GetPatients", queryParameter, stateIdParameter, siteIdParameter, hasBioParameter, hasNfcParameter);
-        }
-    
         public virtual ObjectResult<Sp_System_DataIntegrity_PepId_Result> Sp_System_DataIntegrity_PepId()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_PepId_Result>("Sp_System_DataIntegrity_PepId");
@@ -154,6 +129,31 @@ namespace PatientDataAdministration.Data
                 new ObjectParameter("rowId", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_DataIntegrity_Opr_Preffered_Result>("Sp_System_DataIntegrity_Opr_Preffered", rowIdParameter);
+        }
+    
+        public virtual ObjectResult<Sp_Administration_GetPatients_Result> Sp_Administration_GetPatients(string query, Nullable<int> stateId, Nullable<int> siteId, Nullable<bool> hasBio, Nullable<bool> hasNfc)
+        {
+            var queryParameter = query != null ?
+                new ObjectParameter("query", query) :
+                new ObjectParameter("query", typeof(string));
+    
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("stateId", stateId) :
+                new ObjectParameter("stateId", typeof(int));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("siteId", siteId) :
+                new ObjectParameter("siteId", typeof(int));
+    
+            var hasBioParameter = hasBio.HasValue ?
+                new ObjectParameter("hasBio", hasBio) :
+                new ObjectParameter("hasBio", typeof(bool));
+    
+            var hasNfcParameter = hasNfc.HasValue ?
+                new ObjectParameter("hasNfc", hasNfc) :
+                new ObjectParameter("hasNfc", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetPatients_Result>("Sp_Administration_GetPatients", queryParameter, stateIdParameter, siteIdParameter, hasBioParameter, hasNfcParameter);
         }
     }
 }

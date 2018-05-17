@@ -16,7 +16,7 @@ AS
     [Sex]               VARCHAR (10)  NOT NULL,
     [PhoneNumber]       VARCHAR (20)  NOT NULL,
     [MaritalStatus]     VARCHAR (10)  NOT NULL,
-    [DateOfBirth]       DATETIME      NOT NULL,
+    [DateOfBirth]       DATETIME      NULL,
     [StateOfOrigin]     INT           NOT NULL,
     [HouseAddress]      VARCHAR (MAX) NOT NULL,
     [HouseAddressState] INT           NOT NULL,

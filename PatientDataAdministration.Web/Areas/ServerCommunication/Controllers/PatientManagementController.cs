@@ -33,7 +33,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             {
                                 SiteNameOfficial = "[Unassigned]"
                             },
-                            Age = (DateTime.Now.Subtract(p.DateOfBirth).TotalDays / 365)
+                            Age = (DateTime.Now.Subtract(p.DateOfBirth ?? DateTime.Now).TotalDays / 365)
                         }).ToList()
                 }, JsonRequestBehavior.AllowGet);
             }
