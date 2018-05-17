@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace PatientDataAdministration.Core
 {
@@ -8,6 +9,9 @@ namespace PatientDataAdministration.Core
         {
             try
             {
+                if (rawDate == "...")
+                    return null;
+
                 string[] dateComponent;
 
                 if (rawDate.Contains("\\"))
@@ -50,6 +54,14 @@ namespace PatientDataAdministration.Core
             if (rawPhoneNumber.Length == 10 && rawPhoneNumber[0] != '0')
                 return "0" + rawPhoneNumber;
             else return rawPhoneNumber;
+        }
+
+        public static string TrimSpacesBetweenString(string rawString)
+        {
+            var mystring = rawString.Split(' ');
+            var result = mystring.Select(mstr => mstr.Trim()).Where(ss => !string.IsNullOrEmpty(ss))
+                .Aggregate(string.Empty, (current, ss) => current + ss + " ");
+            return result.Trim();
         }
     }
 }

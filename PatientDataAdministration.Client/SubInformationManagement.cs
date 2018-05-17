@@ -44,6 +44,7 @@ namespace PatientDataAdministration.Client
         private SCardChannel _cardchannel = null;
         private NfcTag _tag = null;
         private Thread _cardthread;
+        private Thread _dataLoadthread;
         private bool _inLoop = false;
 
         #endregion
@@ -533,7 +534,8 @@ namespace PatientDataAdministration.Client
             try
             {
                 if (!_isBusy)
-                    new Thread(() =>
+                {
+                    _dataLoadthread = new Thread(() =>
                     {
                         _isBusy = true;
                         _systemBioDataStores = new List<System_BioDataStore>();
@@ -542,14 +544,16 @@ namespace PatientDataAdministration.Client
                         _lblInformationForeColor = Color.DarkOrange;
 
                         var totalPatients = _localPdaEntities.System_BioDataStore.Count();
-                        var orderedSystemBioDataStore = _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).ToList();
-                        for (var i = 0; i < totalPatients; i+= 100)
+                        var orderedSystemBioDataStore =
+                            _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).ToList();
+                        for (var i = 0; i < totalPatients; i += 100)
                         {
                             _systemBioDataStores.AddRange(
                                 orderedSystemBioDataStore.Skip(i).Take(100).ToList());
                         }
-                        
-                        _lblInformationText = $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
+
+                        _lblInformationText =
+                            $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
                         _lblInformationForeColor = Color.DarkGreen;
 
                         _isBusy = false;
@@ -558,13 +562,17 @@ namespace PatientDataAdministration.Client
                         orderedSystemBioDataStore.TrimExcess();
 
                         GC.Collect();
-                    }).Start();
+                    });
+                    _dataLoadthread.Start();
+                }
             }
             catch (Exception e)
             {
                 LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
+
+        public ThreadState UpdatePersistenceStatus => _dataLoadthread.ThreadState;
 
         private void ClearContents()
         {

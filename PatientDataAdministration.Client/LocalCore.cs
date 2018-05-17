@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Device.Location;
 using System.IO;
@@ -23,7 +22,9 @@ namespace PatientDataAdministration.Client
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool canDisplayError = false)
         {
             LocalCore._userCredentialId = userCredentialId;
-            return canDisplayError ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message) : DialogResult.OK;
+            return canDisplayError
+                ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message)
+                : DialogResult.OK;
         }
 
         private static void TreatError(Exception exception)
@@ -32,8 +33,8 @@ namespace PatientDataAdministration.Client
             {
                 _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
                 {
-                    IsDeleted = false, 
-                    ErrorDate = DateTime.Now, 
+                    IsDeleted = false,
+                    ErrorDate = DateTime.Now,
                     ErrorMessage = exception.Message,
                     ErrorString = exception.ToString(),
                     SyncStatus = false,
@@ -60,7 +61,8 @@ namespace PatientDataAdministration.Client
                                 x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "");
 
                     client.DefaultRequestHeaders.Accept.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                     var response = client.GetAsync(url).Result;
 
                     if (response.IsSuccessStatusCode)
@@ -86,18 +88,20 @@ namespace PatientDataAdministration.Client
                 };
             }
         }
-        
+
         public static ResponseData Post(string url, string payload)
         {
             try
             {
                 _pdaEntities = new LocalPDAEntities();
-                var request = (HttpWebRequest)WebRequest.Create((_pdaEntities.System_Setting.FirstOrDefault(
-                            x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "") + url);
+                var request = (HttpWebRequest) WebRequest.Create((_pdaEntities.System_Setting.FirstOrDefault(
+                                                                          x => x.SettingKey ==
+                                                                               (int) EnumLibrary.SettingKey.RemoteApi)
+                                                                      ?.SettingValue ?? "") + url);
 
                 request.Method = "POST";
                 request.Credentials = CredentialCache.DefaultCredentials;
-                ((HttpWebRequest)request).UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
+                ((HttpWebRequest) request).UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 
                 var byteArray = Encoding.UTF8.GetBytes(payload);
                 request.ContentType = "application/json; charset=utf-8";
@@ -113,7 +117,7 @@ namespace PatientDataAdministration.Client
                 reader.Close();
                 dataStream.Close();
                 response.Close();
-                
+
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseData>(responseFromServer);
             }
             catch (Exception e)
@@ -144,6 +148,7 @@ namespace PatientDataAdministration.Client
                         File.Delete(logFileName);
                         File.Delete(dbFileName);
                     }
+
                     CreateDatabase(dbName, dbFileName);
                 }
 
@@ -169,7 +174,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                var connectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -211,7 +217,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                var connectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -232,7 +239,8 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+                var connectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();

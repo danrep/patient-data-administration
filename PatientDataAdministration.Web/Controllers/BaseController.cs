@@ -20,7 +20,10 @@ namespace PatientDataAdministration.Web.Controllers
                 return;
 
             if (SecurityModel.IsUserSessionActive)
+            {
+
                 return;
+            }
 
             filterContext.Result = RedirectToAction("Index", "Security", new {area = ""});
             SecurityModel.ClearSession();

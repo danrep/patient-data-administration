@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -73,14 +72,14 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             try
             {
                 var stringData = Convert.FromBase64String(encodedListOfAvailablePepId);
-                var listOfAvalailablePepId = Encoding.ASCII.GetString(stringData).Split(',').OrderBy(x => x).ToList();
+                var listOfAvalailablePepId = Encoding.ASCII.GetString(stringData);
 
                 var patientsInSite = _entities.Patient_PatientInformation
                     .Where(x => !x.IsDeleted && x.SiteId == siteId)
                     .OrderBy(x => x.Id)
                     .ToList();
 
-                var listOfNewPatients = patientsInSite.Where(x => listOfAvalailablePepId.Any(y => y != x.PepId))
+                var listOfNewPatients = patientsInSite.Where(x => !listOfAvalailablePepId.Contains(x.PepId))
                    .Take(100).ToList();
 
                 var returnNewPatients = new List<PatientInformation>();
@@ -174,7 +173,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
         {
             try
             {
-                var sites = _entities.Administration_SiteInformation.Where(x => !x.IsDeleted).OrderBy(x => x.SiteNameOfficial).ToList();
+                var sites = _entities.Administration_SiteInformation.Where(x => !x.IsDeleted)
+                    .OrderBy(x => x.SiteNameOfficial).ToList();
 
                 return
                     Json(
@@ -188,7 +188,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
     }

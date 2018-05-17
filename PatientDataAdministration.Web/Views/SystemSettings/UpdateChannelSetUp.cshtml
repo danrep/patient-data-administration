@@ -1,0 +1,116 @@
+﻿@using PatientDataAdministration.Data
+@model System_Update
+
+@{
+    ViewBag.Title = "Update Channel SetUp";
+    ViewBag.TitleDesc = "Update Engine to Manage the Web Repo for the Update Distribution";
+    Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+
+    var entity = new Entities();
+    var currentSetting = entity.System_Update.FirstOrDefault(x => x.IsNew) ?? new System_Update()
+    {
+        ServerLocation = "Server Location", 
+        FolderLocation = "Folder",
+        ServerUsername = "Username", 
+        VersionNumber = "0.0.0"
+    };
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-default"
+                       data-click="panel-reload"><i class="fa fa-repeat"></i></a>
+                </div>
+                <h4 class="panel-title"><i class="fa fa-user-o"></i>&nbsp;Current Update Repo</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span class="fa fa-2x fa-cogs"></span>
+                            <h3 class="panel-title">Current Configuration <small>v @currentSetting.VersionNumber</small></h3>                                      
+                        </div>
+                        <div class="panel-body list-group">
+                            <a href="#" class="list-group-item"><span class="fa fa-server"></span> Server Location <span class="badge badge-danger">@currentSetting.ServerLocation</span></a>
+                            <a href="#" class="list-group-item"><span class="fa fa-folder-open"></span>Server Folder <span class="badge badge-success">@currentSetting.FolderLocation</span></a>
+                            <a href="#" class="list-group-item"><span class="fa fa-lock"></span> Server Username <span class="badge badge-info">@currentSetting.ServerUsername</span></a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-8">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+
+                            <div class="form-group">
+                                <span class="control-label col-md-2">Version Number</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.VersionNumber, new {htmlAttributes = new {@class = "form-control"}})
+                                    @Html.ValidationMessageFor(model => model.VersionNumber, "", new {@class = "text-danger"})
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="control-label col-md-2">Server Location</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ServerLocation, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ServerLocation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="control-label col-md-2">Server Username</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ServerUsername, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ServerUsername, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="control-label col-md-2">Server Password</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.ServerPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.ServerPassword, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <span class="control-label col-md-2">Folder Location</span>
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.FolderLocation, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FolderLocation, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Add New Location" class="btn btn-success btn-default btn-sm pull-right"/>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+        });
+
+        pdaWeb.controller('pdaWebCtrlr',
+            function ($scope) {
+            });
+    </script>
+}

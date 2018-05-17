@@ -54,8 +54,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
             return
                 Json(isSavedSuccessfully
-                    ? new {Message = "File(s) was Uploaded Successfully", Status = true}
-                    : new {Message = "Error in saving file", Status = false});
+                    ? new { Message = "File(s) was Uploaded Successfully", Status = true }
+                    : new { Message = "Error in saving file", Status = false });
         }
 
         public ActionResult DeleteFile(string name)
@@ -69,12 +69,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var path = $"{directory.FullName}\\{name}";
                 System.IO.File.Delete(path);
 
-                return Json(new {Message = "File(s) was Deleted Successfully", Status = true});
+                return Json(new { Message = "File(s) was Deleted Successfully", Status = true });
             }
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new {Message = "Error in Deleting file", Status = false});
+                return Json(new { Message = "Error in Deleting file", Status = false });
             }
         }
 
@@ -104,7 +104,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                         var stream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read);
                         var reader = ExcelReaderFactory.CreateReader(stream);
-                        if ((int) FileProcessingMethod.ExPat == fileProcessingMethod)
+                        if ((int)FileProcessingMethod.ExPat == fileProcessingMethod)
                         {
                             var dataSet = reader.AsDataSet();
                             dataSet.DataSetName = file;
@@ -139,7 +139,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new {Message = "Error in Processing file", Status = false});
+                return Json(new { Message = "Error in Processing file", Status = false });
             }
         }
 
@@ -175,14 +175,14 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         {
                             ActivityLogger.Log("WARN",
                                 $"Error with Record {pepId} in {table.TableName}: Invalid Date of Birth [{dataRow[7]?.ToString().Trim() ?? "null"}]");
-                            dataRow[7] = DateTime.Now.ToString("MM/dd/yyyy");
+                            dataRow[7] = "...";
                         }
 
                         if (dataRow[7].ToString().Trim() == "0000-00-00")
                         {
                             ActivityLogger.Log("WARN",
                                 $"Error with Record {pepId} in {table.TableName}: Invalid Date of Birth [{dataRow[7]?.ToString().Trim() ?? "null"}]");
-                            dataRow[7] = DateTime.Now.ToString("MM/dd/yyyy");
+                            dataRow[7] = "...";
                         }
 
                         if (dataRow[7].ToString().Trim().Contains("T"))
@@ -192,12 +192,14 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             dataRow[7] = dataRow[7].ToString().Trim().Replace("T00:00:00", " ").Trim();
                         }
 
-                        if (dataRow[7].ToString().Trim().Contains("/00") || dataRow[7].ToString().Trim().Contains("00/") ||
-                            dataRow[7].ToString().Trim().Contains("00-") || dataRow[7].ToString().Trim().Contains("-00"))
+                        if (dataRow[7].ToString().Trim().Contains("/00") ||
+                            dataRow[7].ToString().Trim().Contains("00/") ||
+                            dataRow[7].ToString().Trim().Contains("00-") ||
+                            dataRow[7].ToString().Trim().Contains("-00"))
                         {
                             ActivityLogger.Log("WARN",
                                 $"Error with Record {pepId} in {table.TableName}: Invalid Character found [{dataRow[7]?.ToString().Trim() ?? "null"}]");
-                            dataRow[7] = DateTime.Now.ToString("MM/dd/yyyy");
+                           dataRow[7] = "...";
                         }
 
                         try
@@ -210,23 +212,24 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     {
                                         DateOfBirth =
                                             Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim()),
-                                        HospitalNumber = dataRow[3]?.ToString().Trim() ?? "NA",
+                                        HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3]?.ToString().Trim() ?? "NA"),
                                         HouseAddresLga = 0,
                                         HouseAddressState = 0,
-                                        HouseAddress = dataRow[9]?.ToString().Trim() ?? "NA",
+                                        HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9]?.ToString().Trim() ?? "NA"),
                                         IsDeleted = false,
                                         LastUpdated = DateTime.Now,
                                         MaritalStatus = "",
-                                        Othername = dataRow[5]?.ToString().Trim() ?? "NA",
+                                        Othername = Transforms.TrimSpacesBetweenString(dataRow[5]?.ToString().Trim() ?? "NA"),
                                         PassportData = null,
                                         PepId = pepId,
                                         PhoneNumber =
-                                            Transforms.NormalizePhoneNumber(dataRow[8]?.ToString().Trim() ?? "00000000000"),
+                                            Transforms.NormalizePhoneNumber(
+                                                dataRow[8]?.ToString().Trim() ?? "00000000000"),
                                         PreviousId = "",
                                         Sex = dataRow[6]?.ToString().Trim() ?? "female",
                                         SiteId = site.Id,
                                         StateOfOrigin = 0,
-                                        Surname = dataRow[4]?.ToString().Trim() ?? "NA",
+                                        Surname = Transforms.TrimSpacesBetweenString(dataRow[4]?.ToString().Trim() ?? "NA"),
                                         Title = "",
                                         WhenCreated = DateTime.Now
                                     };
@@ -240,15 +243,15 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     {
                                         patientInformation.DateOfBirth =
                                             Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim());
-                                        patientInformation.HospitalNumber = dataRow[3].ToString().Trim();
-                                        patientInformation.HouseAddress = dataRow[9].ToString().Trim();
+                                        patientInformation.HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3].ToString().Trim());
+                                        patientInformation.HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9].ToString().Trim());
                                         patientInformation.LastUpdated = DateTime.Now;
-                                        patientInformation.Othername = dataRow[5].ToString().Trim();
+                                        patientInformation.Othername = Transforms.TrimSpacesBetweenString(dataRow[5].ToString().Trim());
                                         patientInformation.PhoneNumber =
                                             Transforms.NormalizePhoneNumber(dataRow[8].ToString().Trim());
                                         patientInformation.Sex = dataRow[6].ToString().Trim();
                                         patientInformation.SiteId = site.Id;
-                                        patientInformation.Surname = dataRow[4].ToString().Trim();
+                                        patientInformation.Surname = Transforms.TrimSpacesBetweenString(dataRow[4].ToString().Trim());
 
                                         innerentities.Entry(patientInformation).State = EntityState.Modified;
                                         innerentities.SaveChanges();
@@ -267,23 +270,24 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 {
                                     DateOfBirth =
                                         Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim()),
-                                    HospitalNumber = dataRow[3]?.ToString().Trim() ?? "NA",
+                                    HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3]?.ToString().Trim() ?? "NA"),
                                     HouseAddresLga = 0,
                                     HouseAddressState = 0,
-                                    HouseAddress = dataRow[9]?.ToString().Trim() ?? "NA",
+                                    HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9]?.ToString().Trim() ?? "NA"),
                                     IsDeleted = false,
                                     LastUpdated = DateTime.Now,
                                     MaritalStatus = "",
-                                    Othername = dataRow[5]?.ToString().Trim() ?? "NA",
+                                    Othername = Transforms.TrimSpacesBetweenString(dataRow[5]?.ToString().Trim() ?? "NA"),
                                     PassportData = null,
                                     PepId = pepId,
                                     PhoneNumber =
-                                        Transforms.NormalizePhoneNumber(dataRow[8]?.ToString().Trim() ?? "00000000000"),
+                                        Transforms.NormalizePhoneNumber(
+                                            dataRow[8]?.ToString().Trim() ?? "00000000000"),
                                     PreviousId = "",
                                     Sex = dataRow[6]?.ToString().Trim() ?? "female",
                                     SiteId = site.Id,
                                     StateOfOrigin = 0,
-                                    Surname = dataRow[4]?.ToString().Trim() ?? "NA",
+                                    Surname = Transforms.TrimSpacesBetweenString(dataRow[4]?.ToString().Trim() ?? "NA"),
                                     Title = "",
                                     WhenCreated = DateTime.Now
                                 };
@@ -339,7 +343,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             ActivityLogger.Log("Trace on Failed Upload",
                 JsonConvert.SerializeObject(data));
             _returnDataPerTable.Add("Error in Data");
-            _returnDataPerTable.Add(JValue.Parse(JsonConvert.SerializeObject(data)).ToString(Formatting.Indented));
+            _returnDataPerTable.Add(JToken.Parse(JsonConvert.SerializeObject(data)).ToString(Formatting.Indented));
         }
     }
 }

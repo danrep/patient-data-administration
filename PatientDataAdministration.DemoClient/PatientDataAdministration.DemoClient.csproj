@@ -231,10 +231,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Documents\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj">
-      <Project>{d363637b-0ce4-4150-a6bf-15676285754d}</Project>
-      <Name>Codesistance.NFC</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PatientDataAdministration.Core\PatientDataAdministration.Core.csproj">
       <Project>{9b1a1cf1-1bd1-4ef1-9281-07b07d0b3a43}</Project>
       <Name>PatientDataAdministration.Core</Name>

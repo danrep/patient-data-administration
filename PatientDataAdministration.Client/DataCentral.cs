@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Client
 {
@@ -148,6 +149,7 @@ namespace PatientDataAdministration.Client
 
                 picDataReady.Visible = !_subInfoMan._isBusy;
                 picDataWait.Visible = _subInfoMan._isBusy;
+                listOfEvents = new List<OperationQueue>();
 
                 Application.DoEvents();
             }
@@ -294,7 +296,7 @@ namespace PatientDataAdministration.Client
 
                 btnSync.Visible = !_onDemandSyncEnabled;
                 
-                _operationQueue.Add(new OperationQueue(){Param = "Starting Patient Data Load"});
+                _operationQueue.Add(new OperationQueue(){Param = "Starting Patient Data Pre Load"});
                 _subInfoMan.UpdatePersistedData();
 
                 new Thread(() =>
@@ -336,6 +338,15 @@ namespace PatientDataAdministration.Client
 
                     _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
                 }).Start();
+
+                new Thread(() =>
+                {
+                    while (_subInfoMan.UpdatePersistenceStatus == ThreadState.Running)
+                    {
+
+                    }
+                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
+                }).Start();
             }
             catch (Exception ex)
             {
@@ -372,7 +383,6 @@ namespace PatientDataAdministration.Client
                 });
                 var innerEntity = new LocalPDAEntities();
                 var pulled = 0;
-                var patientInformation = new List<string>();
 
                 while (true)
                 {
@@ -389,7 +399,7 @@ namespace PatientDataAdministration.Client
 
                     if (innerEntity.System_BioDataStore.Any())
                     {
-                        patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
+                        var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
 
                         listOfPepId = patientInformation.Aggregate("",
                             (current, patientInfo) => current + $"{patientInfo},");
@@ -458,6 +468,11 @@ namespace PatientDataAdministration.Client
                             });
 
                         _isSyncNewInProgress = false;
+
+                        if (returnedPatients.Count < 100)
+                        {
+                            break;
+                        }
                     }
                 }
 

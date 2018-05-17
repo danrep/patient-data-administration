@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.DemoClient", "PatientDataAdministration.DemoClient\PatientDataAdministration.DemoClient.csproj", "{EBC30A71-77B5-4920-84ED-17FDC2515D19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codesistance.NFC", "..\..\..\Documents\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj", "{D363637B-0CE4-4150-A6BF-15676285754D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.ClientUpdater", "PatientDataAdministration.ClientUpdater\PatientDataAdministration.ClientUpdater.csproj", "{818804D1-D1DC-4639-903A-6A0B137BA9EF}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PatientDataAdministration.Client.SetUp", "PatientDataAdministration.Client.SetUp\PatientDataAdministration.Client.SetUp.vdproj", "{544FA1D7-7E5C-4F81-B7A4-DEE97C6D762A}"
@@ -24,6 +22,8 @@ EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "PatientDataAdministration.Database", "PatientDataAdministration.Database\PatientDataAdministration.Database.sqlproj", "{5C7F7E2D-8911-4C6F-AF36-6A1B7334BB7B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codesistance.UniqueBioSearchSecugen", "Codesistance.UniqueBioSearchSecugen\Codesistance.UniqueBioSearchSecugen.csproj", "{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codesistance.NFC", "..\..\..\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj", "{D363637B-0CE4-4150-A6BF-15676285754D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +55,6 @@ Global
 		{EBC30A71-77B5-4920-84ED-17FDC2515D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC30A71-77B5-4920-84ED-17FDC2515D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC30A71-77B5-4920-84ED-17FDC2515D19}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D363637B-0CE4-4150-A6BF-15676285754D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D363637B-0CE4-4150-A6BF-15676285754D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{818804D1-D1DC-4639-903A-6A0B137BA9EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{818804D1-D1DC-4639-903A-6A0B137BA9EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{818804D1-D1DC-4639-903A-6A0B137BA9EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,6 +73,10 @@ Global
 		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BAC5B69-C214-4E1F-9109-09824EBEC4C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D363637B-0CE4-4150-A6BF-15676285754D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D363637B-0CE4-4150-A6BF-15676285754D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

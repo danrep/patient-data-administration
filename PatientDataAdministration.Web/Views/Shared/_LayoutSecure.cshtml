@@ -141,7 +141,17 @@
                                 <span>Data Processor</span>
                             </a>
                             <ul class="sub-menu">
-                                <li class="active"><a href="@Url.Action("Index", "DataProcessor", new { area = "" })">Data Central</a></li>
+                                <li class="active"><a href="@Url.Action("Index", "DataProcessor", new {area = ""})">Data Central</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="javascript:;">
+                                <b class="caret pull-right"></b>
+                                <i class="fa fa-cogs"></i>
+                                <span>System Settings</span>
+                            </a>
+                            <ul class="sub-menu">
+                                <li class="active"><a href="@Url.Action("UpdateChannelSetUp", "SystemSettings", new {area = ""})">Update Engine</a></li>
                             </ul>
                         </li>
                     }
