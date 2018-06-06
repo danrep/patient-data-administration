@@ -1,0 +1,2 @@
+[INFO] 6/6/2018 3:12:03 PM: Started Cron Manager
+[INFO] 6/6/2018 3:12:06 PM: Started Recurrent Data Manager

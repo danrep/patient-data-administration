@@ -20,13 +20,15 @@ namespace PatientDataAdministration.Core
         {
             try
             {
-                var location = Setting.LogFolder;
+                var location = System.Web.Hosting.HostingEnvironment.MapPath("~/logs");
 
                 var dirInfo = new DirectoryInfo(location);
                 if (!dirInfo.Exists)
                 {
                     Directory.CreateDirectory(location);
                 }
+
+                location = location + "/";
 
                 if (!File.Exists(location + "PDA_Web_Logs.txt"))
                 {
