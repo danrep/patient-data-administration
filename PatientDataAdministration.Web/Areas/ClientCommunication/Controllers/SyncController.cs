@@ -72,15 +72,17 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             try
             {
                 var stringData = Convert.FromBase64String(encodedListOfAvailablePepId);
-                var listOfAvalailablePepId = Encoding.ASCII.GetString(stringData);
+                var listOfAvalailablePepId =
+                    Encoding.ASCII.GetString(stringData).ToLower().Split(',').OrderBy(x => x).ToList();
 
                 var patientsInSite = _entities.Patient_PatientInformation
                     .Where(x => !x.IsDeleted && x.SiteId == siteId)
                     .OrderBy(x => x.Id)
                     .ToList();
 
-                var listOfNewPatients = patientsInSite.Where(x => !listOfAvalailablePepId.Contains(x.PepId))
-                   .Take(100).ToList();
+                var listOfNewPatients = patientsInSite
+                    .Where(x => listOfAvalailablePepId.Any(y => y == x.PepId.ToLower()) == false)
+                    .Take(100).ToList();
 
                 var returnNewPatients = new List<PatientInformation>();
 
@@ -101,9 +103,11 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
                     if (_entities.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == patient.PepId))
                     {
-                        patientInformation.Patient_PatientNearFieldCommunicationData = new Patient_PatientNearFieldCommunicationData();
                         patientInformation.Patient_PatientNearFieldCommunicationData =
-                            _entities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x => x.PepId == patient.PepId);
+                            new Patient_PatientNearFieldCommunicationData();
+                        patientInformation.Patient_PatientNearFieldCommunicationData =
+                            _entities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x =>
+                                x.PepId == patient.PepId);
                     }
 
                     returnNewPatients.Add(patientInformation);
@@ -121,7 +125,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -151,7 +155,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
         {
             try
             {
-                var lga = _entities.System_LocalGovermentArea.Where(x => !x.IsDeleted).OrderBy(x => x.LocalGovermentAreaName).ToList();
+                var lga = _entities.System_LocalGovermentArea.Where(x => !x.IsDeleted)
+                    .OrderBy(x => x.LocalGovermentAreaName).ToList();
 
                 return
                     Json(
@@ -165,7 +170,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 

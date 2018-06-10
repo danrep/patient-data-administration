@@ -8,6 +8,11 @@ namespace PatientDataAdministration.Core
         public static void Log(Exception exception)
         {
             Log("ERROR>>" + exception.Source, "[" + exception + "]" + exception.Message);
+            if (exception.InnerException != null)
+            {
+                Log("ERROR>>" + exception.InnerException.Source,
+                    "[" + exception.InnerException + "]" + exception.InnerException.Message);
+            }
         }
 
         public static void Log(string messageType, string message)

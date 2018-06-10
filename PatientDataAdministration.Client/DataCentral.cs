@@ -381,11 +381,12 @@ namespace PatientDataAdministration.Client
                 {
                     Param = "Initiating Synchronization Task: New Entries from Partner Sites"
                 });
-                var innerEntity = new LocalPDAEntities();
                 var pulled = 0;
 
                 while (true)
                 {
+                    var innerEntity = new LocalPDAEntities();
+
                     if (_killCommandReceived)
                     {
                         _operationQueue.Add(new OperationQueue()
@@ -401,7 +402,7 @@ namespace PatientDataAdministration.Client
                     {
                         var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
 
-                        listOfPepId = patientInformation.Aggregate("",
+                        listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
                             (current, patientInfo) => current + $"{patientInfo},");
                         listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
 
@@ -419,60 +420,60 @@ namespace PatientDataAdministration.Client
                     var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
                         Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
 
-                    if (responseData.Status)
+                    if (!responseData.Status)
+                        continue;
+
+                    _isSyncNewInProgress = true;
+
+                    _operationQueue.Add(new OperationQueue()
                     {
-                        _isSyncNewInProgress = true;
+                        Param = responseData.Message
+                    });
 
-                        _operationQueue.Add(new OperationQueue()
-                        {
-                            Param = responseData.Message
-                        });
+                    var returnedPatients =
+                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
+                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
-                        var returnedPatients =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                        if (returnedPatients.Count == 0)
-                        {
-                            if (!_onDemandSyncEnabled)
-                                _operationQueue.Add(new OperationQueue()
-                                {
-                                    Param = $"No New Patients found this time. Please Try the Synchronization Later"
-                                });
-
-                            break;
-                        }
-
-                        pulled += returnedPatients.Count;
-
-                        foreach (var patient in returnedPatients)
-                        {
-                            if (_killCommandReceived)
-                            {
-                                _operationQueue.Add(new OperationQueue()
-                                {
-                                    Param = $"STOP Command Received"
-                                });
-                                break;
-                            }
-
-                            SaveUpdate(patient);
-                        }
-
-                        if (_onDemandSyncEnabled)
-                            _subInfoMan.UpdatePersistedData();
-                        else
+                    if (returnedPatients.Count == 0)
+                    {
+                        if (!_onDemandSyncEnabled)
                             _operationQueue.Add(new OperationQueue()
                             {
-                                Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
+                                Param = $"No New Patients found this time. Please Try the Synchronization Later"
                             });
 
-                        _isSyncNewInProgress = false;
+                        break;
+                    }
 
-                        if (returnedPatients.Count < 100)
+                    pulled += returnedPatients.Count;
+
+                    foreach (var patient in returnedPatients)
+                    {
+                        if (_killCommandReceived)
                         {
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"STOP Command Received"
+                            });
                             break;
                         }
+
+                        SaveUpdate(patient);
+                    }
+
+                    if (_onDemandSyncEnabled)
+                        _subInfoMan.UpdatePersistedData();
+                    else
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
+                        });
+
+                    _isSyncNewInProgress = false;
+
+                    if (returnedPatients.Count < 100)
+                    {
+                        break;
                     }
                 }
 
@@ -654,7 +655,7 @@ namespace PatientDataAdministration.Client
                         });
                         patientDatum.IsSync = true;
                         _localPdaEntities.Entry(patientDatum).State = EntityState.Modified;
-                        _localPdaEntities.SaveChangesAsync();
+                        _localPdaEntities.SaveChanges();
                     }
                     else
                         _operationQueue.Add(new OperationQueue()
