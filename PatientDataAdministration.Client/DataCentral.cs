@@ -299,6 +299,28 @@ namespace PatientDataAdministration.Client
                 _operationQueue.Add(new OperationQueue(){Param = "Starting Patient Data Pre Load"});
                 _subInfoMan.UpdatePersistedData();
 
+                CheckForUpdates();
+
+                new Thread(() =>
+                {
+                    while (_subInfoMan.UpdatePersistenceStatus == ThreadState.Running)
+                    {
+
+                    }
+                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
+                }).Start();
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
+            }
+        }
+
+        private void CheckForUpdates()
+        {
+            try
+            {
                 new Thread(() =>
                 {
                     var responseData = LocalCore.Get($@"/ClientCommunication/Misc/GetUpdateData").Result;
@@ -338,15 +360,6 @@ namespace PatientDataAdministration.Client
 
                     _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
                 }).Start();
-
-                new Thread(() =>
-                {
-                    while (_subInfoMan.UpdatePersistenceStatus == ThreadState.Running)
-                    {
-
-                    }
-                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
-                }).Start();
             }
             catch (Exception ex)
             {
@@ -360,6 +373,8 @@ namespace PatientDataAdministration.Client
             _killCommandReceived = false;
             SiteInfo();
             InitiateSync();
+
+            CheckForUpdates();
         }
 
         public void SiteInfo()
