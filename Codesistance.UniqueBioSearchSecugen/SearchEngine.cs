@@ -6,28 +6,28 @@ using SecuGen.SecuSearchSDK3;
 
 namespace Codesistance.UniqueBioSearchSecugen
 {
-    class SSEAPITest
+    public class SearchEngine
     {
         public const string SEARCH_DB_PATH = "sample.tdb";
 
         public SecuSearch SSearch;
         public bool Initialized;
-        public MDB Mdb;
+        public SearchModel SearchModel;
 
-        SSEAPITest()
+        private SearchEngine()
         {
             SSearch = new SecuSearch();
-            Mdb = new MDB();
+            SearchModel = new SearchModel();
             Initialized = false;
-            InitSSE();
+            InitSearchEngine();
         }
 
-        ~SSEAPITest()
+        ~SearchEngine()
         {
             DeinitSSE();
         }
 
-        void InitSSE()
+        private void InitSearchEngine()
         {
             Initialized = false;
 
@@ -82,20 +82,20 @@ namespace Codesistance.UniqueBioSearchSecugen
         }
 
         // Read .min files
-        void LoadMDB(string mdbPathName)
+        void LoadMdb(List<PatientData> patientData)
         {
             Debug.Assert(Initialized);
 
-            Console.WriteLine("loading template files in {0}", mdbPathName);
-            bool loaded = Mdb.Load(mdbPathName);
+            Console.WriteLine("loading {0} templat ", patientData.Count);
+            bool loaded = SearchModel.Load(patientData);
             Debug.Assert(loaded);
 
-            Console.WriteLine("mdb size = {0}", Mdb.Size);
+            Console.WriteLine("mdb size = {0}", SearchModel.Size);
             Console.WriteLine("loading templates done");
         }
 
         // Load internal template db into secusearch
-        void LoadDB()
+        void LoadDb()
         {
             Debug.Assert(Initialized);
 
@@ -117,10 +117,10 @@ namespace Codesistance.UniqueBioSearchSecugen
             Console.WriteLine("Registering templates ...>>>");
             int registerCount = 0;
             SSError error = SSError.NONE;
-            for (int i = 0; i < Mdb.Size; i++)
+            for (int i = 0; i < SearchModel.Size; i++)
             {
-                uint templateID = Mdb.GetTemplate(i).Index;
-                byte[] templateBuff = Mdb.GetTemplate(i).TBuffer;
+                uint templateID = SearchModel.GetTemplate(i).Index;
+                byte[] templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
                 error = SSearch.RegisterFP(templateBuff, templateID);
                 if (error != SSError.NONE)
                 {
@@ -153,13 +153,13 @@ namespace Codesistance.UniqueBioSearchSecugen
             const int batchCount = 1000;
             SSIdTemplatePair[] pairs = new SSIdTemplatePair[batchCount];
             int i = 0;
-            while (i < Mdb.Size)
+            while (i < SearchModel.Size)
             {
                 int k;
-                for (k = 0; k < batchCount && i < Mdb.Size; k++, i++)
+                for (k = 0; k < batchCount && i < SearchModel.Size; k++, i++)
                 {
                     pairs[k].Id = (UInt32)i;
-                    pairs[k].Template = Mdb.GetTemplate(i).TBuffer;
+                    pairs[k].Template = SearchModel.GetTemplate(i).TemplatesBuffer;
                 }
                 error = SSearch.RegisterFPBatch(pairs, k);
                 if (error != SSError.NONE)
@@ -192,11 +192,11 @@ namespace Codesistance.UniqueBioSearchSecugen
             Console.WriteLine("API version: {0}\n", SSearch.GetVersion());
 
             // Read template files
-            LoadMDB(mdbPathName);
+            ////LoadMdb(mdbPathName);
 
             if (bLoadDB)
             {
-                LoadDB();
+                LoadDb();
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             }
 
             // how many templates in mdb
-            int testCount = Mdb.Size;
+            int testCount = SearchModel.Size;
 
             // how many templates in secusearch
             int fpCount = 0;
@@ -263,13 +263,13 @@ namespace Codesistance.UniqueBioSearchSecugen
             for (int i = 0; i < testCount; i++)
             {
                 uint templateID = (uint)i;
-                error = SSearch.SearchFP(Mdb.GetTemplate(i).TBuffer, ref candList);
+                error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
                 if (error != SSError.NONE)
                 {
                     Console.WriteLine("search failed error: {0}", error);
                 }
 
-                Console.Write("{0} : ", Mdb.GetTemplate(i).Filename);
+                Console.Write("{0} : ", SearchModel.GetTemplate(i).Filename);
                 Console.Write("{0} : ", templateID);
                 if (candList.Count > 0)
                 {
@@ -285,7 +285,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             // add/register
             if (bLoadDB)
             {
-                LoadDB();
+                LoadDb();
             }
             else
             {
@@ -296,13 +296,13 @@ namespace Codesistance.UniqueBioSearchSecugen
             for (int i = 0; i < testCount; i++)
             {
                 uint templateID = (uint)i;
-                error = SSearch.SearchFP(Mdb.GetTemplate(i).TBuffer, ref candList);
+                error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
                 if (error != SSError.NONE)
                 {
                     Console.WriteLine("search failed error: {0}", error);
                 }
 
-                Console.Write("{0} : ", Mdb.GetTemplate(i).Filename);
+                Console.Write("{0} : ", SearchModel.GetTemplate(i).Filename);
                 Console.Write("{0} : ", templateID);
                 if (candList.Count > 0)
                 {
@@ -435,7 +435,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             Console.WriteLine("Press Enter key to keep running...");
             Console.ReadLine();
 
-            SSEAPITest sseApiTest = new SSEAPITest();
+            SearchEngine sseApiTest = new SearchEngine();
 
             if (sseApiTest.Initialized)
             {

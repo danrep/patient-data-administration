@@ -152,7 +152,7 @@ namespace PatientDataAdministration.Client
 
             var payload = new
             {
-                authData = authData,
+                authData,
                 clientInformation = new ClientInformation()
                 {
                     ClientGuid = LocalCache.Get<string>("ClientId") ?? "NA",

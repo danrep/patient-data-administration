@@ -63,6 +63,8 @@ namespace PatientDataAdministration.Client
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(
                         new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                    client.DefaultRequestHeaders.Add("APIN_AUTH_TOKEN", LocalCache.Get<string>("ClientId"));
+
                     var response = client.GetAsync(url).Result;
 
                     if (response.IsSuccessStatusCode)
@@ -104,8 +106,11 @@ namespace PatientDataAdministration.Client
                 ((HttpWebRequest) request).UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 
                 var byteArray = Encoding.UTF8.GetBytes(payload);
+
                 request.ContentType = "application/json; charset=utf-8";
                 request.ContentLength = byteArray.Length;
+                request.Headers.Add("APIN_AUTH_TOKEN", LocalCache.Get<string>("ClientId"));
+
                 var dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();

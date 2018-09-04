@@ -5,14 +5,23 @@ namespace PatientDataAdministration.Core
 {
     public static class ActivityLogger
     {
+        public static string LogFilePath => System.Web.Hosting.HostingEnvironment.MapPath("~/logs") + "/";
+
+        public static string LogFileName => "PDA_Web_Logs.txt";
+
         public static void Log(Exception exception)
         {
             Log("ERROR>>" + exception.Source, "[" + exception + "]" + exception.Message);
-            if (exception.InnerException != null)
-            {
-                Log("ERROR>>" + exception.InnerException.Source,
-                    "[" + exception.InnerException + "]" + exception.InnerException.Message);
-            }
+
+            EntityValidationErrorLog(exception);
+
+            if (exception.InnerException == null)
+                return;
+
+            Log("ERROR>>" + exception.InnerException.Source,
+                "[" + exception.InnerException + "]" + exception.InnerException.Message);
+
+            EntityValidationErrorLog(exception.InnerException);
         }
 
         public static void Log(string messageType, string message)
@@ -25,7 +34,7 @@ namespace PatientDataAdministration.Core
         {
             try
             {
-                var location = System.Web.Hosting.HostingEnvironment.MapPath("~/logs");
+                var location = LogFilePath;
 
                 var dirInfo = new DirectoryInfo(location);
                 if (!dirInfo.Exists)
@@ -33,33 +42,48 @@ namespace PatientDataAdministration.Core
                     Directory.CreateDirectory(location);
                 }
 
-                location = location + "/";
-
-                if (!File.Exists(location + "PDA_Web_Logs.txt"))
+                if (!File.Exists(location + LogFileName))
                 {
-                    using (var sw = File.CreateText(location + "PDA_Web_Logs.txt"))
+                    using (var sw = File.CreateText(location + LogFileName))
                     {
-                        sw.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
+                        sw.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(new Logger()
+                        {
+                            TimeStamp = DateTime.Now,
+                            MessageType = messageType,
+                            Message = message
+                        }));
                         sw.Close();
                     }
                 }
                 else
-                    using (var sw = File.AppendText(location + "PDA_Web_Logs.txt"))
+                    using (var sw = File.AppendText(location + LogFileName))
                     {
-                        var fI = new FileInfo(location + "PDA_Web_Logs.txt");
+                        var fI = new FileInfo(location + LogFileName);
                         if (fI.Length <= Setting.LogRollOver)
                         {
-                            sw.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
+                            sw.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(new Logger()
+                            {
+                                TimeStamp = DateTime.Now,
+                                MessageType = messageType,
+                                Message = message
+                            }));
                             sw.Close();
                         }
                         else
                         {
                             sw.Close();
-                            File.Move(location + "PDA_Web_Logs.txt", location + "PDA_Web_Logs_" + DateTime.Now.ToString("yyyymmddhhMMsstt"));
+                            File.Move(location + LogFileName,
+                                location + LogFileName.Replace(".txt", "").Trim() + "_" +
+                                DateTime.Now.ToString("yyyymmddhhMMsstt"));
 
-                            using (var sw3 = File.CreateText(location + "PDA_Web_Logs.txt"))
+                            using (var sw3 = File.CreateText(location + LogFileName))
                             {
-                                sw3.WriteLine("[" + messageType + "] " + DateTime.Now + ": " + message);
+                                sw3.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(new Logger()
+                                {
+                                    TimeStamp = DateTime.Now,
+                                    MessageType = messageType,
+                                    Message = message
+                                }));
                                 sw3.Close();
                             }
                         }
@@ -76,5 +100,34 @@ namespace PatientDataAdministration.Core
 
             return true;
         }
+
+        private static void EntityValidationErrorLog(Exception e)
+        {
+            try
+            {
+                var trackingGuid = Guid.NewGuid().ToString().ToUpper();
+
+                var entitiyException = (System.Data.Entity.Validation.DbEntityValidationException)e;
+                foreach (var eve in entitiyException.EntityValidationErrors)
+                {
+                    Log($"DB_ERROR_NODE: {trackingGuid}", Newtonsoft.Json.JsonConvert.SerializeObject(eve));
+
+                    foreach (var ve in eve.ValidationErrors)
+                        Log($"DB_ERROR_ITEM: {trackingGuid}", Newtonsoft.Json.JsonConvert.SerializeObject(eve));
+                }
+            }
+            catch
+            {
+
+            }
+        }
+    }
+
+    public class Logger
+    {
+        public DateTime TimeStamp { get; set; }
+        public string MessageType { get; set; }
+        public string Message { get; set; }
+        public string Date => TimeStamp.ToString("yy/MM/dd hh:mm:ss tt");
     }
 }

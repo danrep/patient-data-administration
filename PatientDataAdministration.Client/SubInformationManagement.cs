@@ -219,6 +219,13 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
+                if (txtPhoneNumber.Text.Trim().Length > 14)
+                {
+                    txtPhoneNumber.Focus();
+                    MessageBox.Show(@"This Phone Number is just too long. Please Check");
+                    return;
+                }
+
                 if (!Regex.Match(txtPhoneNumber.Text, @"\d{11}").Success)
                 {
                     txtPhoneNumber.Focus();

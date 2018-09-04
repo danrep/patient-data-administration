@@ -20,6 +20,7 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_NotificationLog" Width="1.5" PointX="0.75" PointY="11.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformation" Width="1.5" PointX="5.375" PointY="8.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_DataIntegrityActionLog" Width="1.5" PointX="11.375" PointY="4.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_ClientPulse" Width="1.5" PointX="11.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -134,6 +134,13 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     return Json(new ResponseData { Status = false, Message = "No Query Received" },
                         JsonRequestBehavior.AllowGet);
 
+                if (!string.IsNullOrEmpty(patientInformation.Patient_PatientInformation.PhoneNumber))
+                {
+                    if (patientInformation.Patient_PatientInformation.PhoneNumber.Contains(','))
+                        patientInformation.Patient_PatientInformation.PhoneNumber =
+                            patientInformation.Patient_PatientInformation.PhoneNumber.Split(',')[0].Trim();
+                }
+
                 if (string.IsNullOrEmpty(patientInformation.Patient_PatientInformation.PepId))
                 {
                     pepId = GetPepId(patientInformation.Patient_PatientInformation.SiteId);

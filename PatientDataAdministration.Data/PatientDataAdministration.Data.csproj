@@ -136,6 +136,9 @@
     <Compile Include="Sp_System_Indicators_PopulationDistro_SexSiteState_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="System_ClientPulse.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_DataIntegrityActionLog.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>

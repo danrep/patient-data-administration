@@ -30,7 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -51,15 +61,30 @@
   <ItemGroup>
     <Compile Include="ActivityLogger.cs" />
     <Compile Include="BarCodeRender.cs" />
+    <Compile Include="DataTranslation\InfoBipIngresUserPush.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="Messaging.cs" />
+    <Compile Include="Processor\MessageProcessors\ProcessorInfoBip.cs" />
+    <Compile Include="Processor\MessageProcessors\ProcessorXwireless.cs" />
+    <Compile Include="Processor\MessageProcessors\ShortMessagingBridgeExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteRequest.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sha512Engine.cs" />
     <Compile Include="Transforms.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Processor\ClientProcessors\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PatientDataAdministration.Data\PatientDataAdministration.Data.csproj">
+      <Project>{0D35BDA4-BE0F-4FA4-B6C7-4766EFD5500B}</Project>
+      <Name>PatientDataAdministration.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

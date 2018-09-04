@@ -11,6 +11,25 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
     {
         private readonly Entities _entities = new Entities();
 
+        public JsonResult GetLogs(string filename = null)
+        {
+            try
+            {
+                var logData = filename == null
+                    ? System.IO.File.ReadAllLines(ActivityLogger.LogFilePath + ActivityLogger.LogFileName)
+                    : System.IO.File.ReadAllLines(ActivityLogger.LogFilePath + filename);
+
+                return Json(ResponseData.SendSuccessMsg(data: logData
+                    .Select(Newtonsoft.Json.JsonConvert.DeserializeObject<Logger>)
+                    .OrderByDescending(x => x.TimeStamp).ToList()), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult GetStates()
         {
             try

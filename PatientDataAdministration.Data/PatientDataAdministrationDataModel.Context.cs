@@ -42,6 +42,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<System_NotificationLog> System_NotificationLog { get; set; }
         public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
         public virtual DbSet<System_DataIntegrityActionLog> System_DataIntegrityActionLog { get; set; }
+        public virtual DbSet<System_ClientPulse> System_ClientPulse { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetInActiveUsers_Result> Sp_Administration_GetInActiveUsers(Nullable<int> inactiveBar)
         {

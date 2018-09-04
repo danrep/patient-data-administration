@@ -148,6 +148,17 @@
           <Property Name="DateMoved" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_ClientPulse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CheckInPeriod" Type="datetime" Nullable="false" />
+          <Property Name="ClientId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="UserId" Type="bigint" Nullable="false" />
+          <Property Name="AppVersion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="System_DataIntegrityActionLog">
           <Key>
             <PropertyRef Name="Id" />
@@ -254,6 +265,7 @@
           <EntitySet Name="Patient_PatientInformation" EntityType="Self.Patient_PatientInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="Self.Patient_PatientNearFieldCommunicationData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientTransferHistory" EntityType="Self.Patient_PatientTransferHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_ClientPulse" EntityType="Self.System_ClientPulse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_DataIntegrityActionLog" EntityType="Self.System_DataIntegrityActionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_NotificationLog" EntityType="Self.System_NotificationLog" Schema="dbo" store:Type="Tables" />
@@ -313,6 +325,7 @@
             <Parameter Name="hasBio" Mode="In" Type="Boolean" />
             <Parameter Name="hasNfc" Mode="In" Type="Boolean" />
           </FunctionImport>
+          <EntitySet Name="System_ClientPulse" EntityType="PatientDataAdministration.DatabaseModel.System_ClientPulse" />
         </EntityContainer>
         <ComplexType Name="Sp_Administration_GetInActiveUsers_Result">
           <Property Type="Int32" Name="CurrentUserId" Nullable="false" />
@@ -596,6 +609,17 @@
           <Property Type="Boolean" Name="HasBio" Nullable="false" />
           <Property Type="Boolean" Name="HasNfc" Nullable="false" />
         </ComplexType>
+        <EntityType Name="System_ClientPulse">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CheckInPeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ClientId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int64" Nullable="false" />
+          <Property Name="AppVersion" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -945,6 +969,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="System_ClientPulse">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_ClientPulse">
+              <MappingFragment StoreEntitySet="System_ClientPulse">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AppVersion" ColumnName="AppVersion" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="CheckInPeriod" ColumnName="CheckInPeriod" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

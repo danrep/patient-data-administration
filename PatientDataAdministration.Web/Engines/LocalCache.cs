@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Configuration;
-using System.Linq;
+using System.Collections.Generic;
 using System.Runtime.Caching;
+using PatientDataAdministration.Data;
 
-namespace PatientDataAdministration.Client
+namespace PatientDataAdministration.Web.Engines
 {
     public class LocalCache
     {
         private static ObjectCache _cache = MemoryCache.Default;
         private static CacheItemPolicy _policy = null;
-        private static readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
 
         public static void Set(string cacheKeyName, object cacheItem)
         {
@@ -34,12 +33,8 @@ namespace PatientDataAdministration.Client
         {
             switch (cacheKeyName)
             {
-                case "System_Setting":
-                    Set(cacheKeyName, _localPdaEntities.System_Setting.Where(x => !x.IsDeleted).ToList());
-                    break;
-
-                case "ClientId":
-                    Set(cacheKeyName, ConfigurationManager.AppSettings["ClientId"] ?? "");
+                case "System_ClientPulse":
+                    Set(cacheKeyName, new List<System_ClientPulse>());
                     break;
 
                 default:
