@@ -1,50 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+using PatientDataAdministration.Core;
 using SecuGen.SecuSearchSDK3;
 
 namespace Codesistance.UniqueBioSearchSecugen
 {
     public class SearchEngine
     {
-        public const string SEARCH_DB_PATH = "sample.tdb";
-
         public SecuSearch SSearch;
         public bool Initialized;
         public SearchModel SearchModel;
 
-        private SearchEngine()
+        public SearchEngine()
         {
             SSearch = new SecuSearch();
             SearchModel = new SearchModel();
             Initialized = false;
-            InitSearchEngine();
+            Initialize();
         }
 
         ~SearchEngine()
         {
-            DeinitSSE();
+            DeInitialize();
         }
 
-        private void InitSearchEngine()
+        public void Initialize()
         {
             Initialized = false;
 
-            SSParam param;
-
-            // How many candiates as results of search
-            param.CandidateCount = 10;
-
-            // How many engines to be created internally.
-            // If the concurrency is zero, SecuSearch automatically determines the total count of the CPU cores and use all the cores.
-            param.Concurrency = 0;
+            var param = new SSParam
+            {
+                CandidateCount = 10,
+                Concurrency = 0,
+                EnableRotation = true
+            };
 
             // license file - Ask SecuGen with your volume number which bin\VolNoReader.exe returns.
-            param.LicenseFile = "./license.dat";
-
-            // Whether or not to allow any amount of fingerprint rotations.
-            param.EnableRotation = true;
+            //param.LicenseFile = "./license.dat";
 
             SSError error = SSearch.InitializeEngine(param);
             switch (error)
@@ -53,112 +46,94 @@ namespace Codesistance.UniqueBioSearchSecugen
                     Initialized = true;
                     break;
                 case SSError.SECUSEARCHAPI_DLL_UNLOADED:
-                    if (IntPtr.Size == 8)
-                        Console.WriteLine("{0} is not loaded.", SSConstants.SECUSEARCH_API_DLL_NAME_64BIT);
-                    else
-                        Console.WriteLine("{0} is not loaded.", SSConstants.SECUSEARCH_API_DLL_NAME_32BIT);
+                    ActivityLogger.Log("WARN",
+                        IntPtr.Size == 8
+                            ? $"{SSConstants.SECUSEARCH_API_DLL_NAME_64BIT} is not loaded."
+                            : $"{SSConstants.SECUSEARCH_API_DLL_NAME_32BIT} is not loaded.");
                     break;
                 case SSError.SET_LOCK_PAGE_PRIVILEGE:
-                    Console.WriteLine("Cannot enable the SE_LOCK_MEMORY privilege");
+                    ActivityLogger.Log("WARN", "Cannot enable the SE_LOCK_MEMORY privilege");
                     break;
                 case SSError.LICENSE_LOAD:
                 case SSError.LICENSE_KEY:
                 case SSError.LICENSE_EXPIRED:
-                    Console.WriteLine("License file({0}) is missing or not valid", param.LicenseFile);
+                    ActivityLogger.Log("WARN", $"License file({param.LicenseFile}) is missing or not valid");
                     break;
                 default:
-                    Console.WriteLine("failed to initialize SecuSearch(code = {0})", error);
+                    ActivityLogger.Log("WARN", $"failed to initialize SecuSearch(code = {error})");
                     break;
             }
         }
 
-        void DeinitSSE()
+        public void DeInitialize()
         {
-            if (Initialized)
+            if (!Initialized)
+                return;
+
+            SSearch.TerminateEngine();
+            Initialized = false;
+        }
+
+        public void LoadTemplates(List<PatientData> patientData)
+        {
+            if (!Initialized)
+                Initialize();
+
+            ActivityLogger.Log("INFO", $"Loaded {patientData.Count}");
+            var loaded = SearchModel.Load(patientData);
+
+            if (!loaded)
             {
-                SSearch.TerminateEngine();
-                Initialized = false;
+                ActivityLogger.Log("WARN", $"Failed to Load Biometric Templates");
+                return;
             }
+
+            ActivityLogger.Log("INFO", $"Loaded Data Size {SearchModel.Size}");
         }
 
-        // Read .min files
-        void LoadMdb(List<PatientData> patientData)
+        private SSError RegisterSearchModel()
         {
-            Debug.Assert(Initialized);
+            ActivityLogger.Log("INFO", "Registering templates ...>>>");
+            var error = SSError.NONE;
 
-            Console.WriteLine("loading {0} templat ", patientData.Count);
-            bool loaded = SearchModel.Load(patientData);
-            Debug.Assert(loaded);
-
-            Console.WriteLine("mdb size = {0}", SearchModel.Size);
-            Console.WriteLine("loading templates done");
-        }
-
-        // Load internal template db into secusearch
-        void LoadDb()
-        {
-            Debug.Assert(Initialized);
-
-            Console.WriteLine("reloading template db: {0}", SEARCH_DB_PATH);
-            SSError error = SSearch.LoadFPDB(SEARCH_DB_PATH);
-            Debug.Assert(error == SSError.NONE);
-
-            int fpCount = 0;
-            error = SSearch.GetFPCount(ref fpCount);
-            Debug.Assert(error == SSError.NONE);
-
-            Console.WriteLine(">>  fpcount = {0}", fpCount);
-            Console.WriteLine("reloading templates db done");
-        }
-
-        // Add/Register templates to secusearch
-        SSError RegisterMDB()
-        {
-            Console.WriteLine("Registering templates ...>>>");
-            int registerCount = 0;
-            SSError error = SSError.NONE;
-            for (int i = 0; i < SearchModel.Size; i++)
+            for (var i = 0; i < SearchModel.Size; i++)
             {
-                uint templateID = SearchModel.GetTemplate(i).Index;
-                byte[] templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
-                error = SSearch.RegisterFP(templateBuff, templateID);
+                var templateId = SearchModel.GetTemplate(i).Index;
+                var templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
+                error = SSearch.RegisterFP(templateBuff, templateId);
                 if (error != SSError.NONE)
                 {
                     break;
                 }
-                registerCount++;
             }
 
             int fpCount = 0;
             error = SSearch.GetFPCount(ref fpCount);
             Debug.Assert(error == SSError.NONE);
-
-            Console.Write("Registering templates done ");
-            Console.WriteLine(">>  fpcount = {0}\n", fpCount);
+            
+            ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
 
             return error;
         }
-
-        // Add/Register templates in batches to secusearch
-        // to improve the speed by using multi-cores
-        SSError RegisterMDBBatch()
+        
+        private SSError RegisterSearchModelBatch()
         {
             int fpCountBefore = 0, fpCount = 0;
 
-            SSError error = SSearch.GetFPCount(ref fpCountBefore);
+            var error = SSearch.GetFPCount(ref fpCountBefore);
             Debug.Assert(error == SSError.NONE);
 
-            Console.WriteLine("Registering templates in batches ...>>>");
-            int registerCount = 0;
+            ActivityLogger.Log("INFO", "Registering templates in Batches");
             const int batchCount = 1000;
-            SSIdTemplatePair[] pairs = new SSIdTemplatePair[batchCount];
-            int i = 0;
+            var pairs = new SSIdTemplatePair[batchCount];
+            var i = 0;
+
             while (i < SearchModel.Size)
             {
                 int k;
                 for (k = 0; k < batchCount && i < SearchModel.Size; k++, i++)
                 {
-                    pairs[k].Id = (UInt32)i;
+                    pairs[k].Id = (uint)i;
                     pairs[k].Template = SearchModel.GetTemplate(i).TemplatesBuffer;
                 }
                 error = SSearch.RegisterFPBatch(pairs, k);
@@ -166,111 +141,62 @@ namespace Codesistance.UniqueBioSearchSecugen
                 {
                     break;
                 }
-                registerCount += k;
             }
 
-
             error = SSearch.GetFPCount(ref fpCount);
-            Debug.Assert(error == SSError.NONE);
-            Debug.Assert(fpCount == fpCountBefore + registerCount);
 
-            Console.Write("Registering templates in batches done ");
-            Console.WriteLine(">>  fpcount = {0}\n", fpCount);
+            ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
 
             return error;
         }
 
-        void Test(bool bLoadDB = false, bool testRemove = false)
+        public bool Process()
         {
             if (!Initialized)
-                return;
+                return false;
 
-            string mdbPathName = "../min_data";
-
-            SSError error = SSError.NONE;
+            var error = SSError.NONE;
 
             Console.WriteLine("API version: {0}\n", SSearch.GetVersion());
 
             // Read template files
-            ////LoadMdb(mdbPathName);
-
-            if (bLoadDB)
-            {
-                LoadDb();
-            }
-            else
-            {
-                // Register
-                error = RegisterMDB();
-                Debug.Assert(error == SSError.NONE);
-
-                // Save templates of secusearch into files
-                // When shutting down secusearch, you can save templates registered 
-                // and then reload on start-up of secusearch by calling LoadFPDB().
-                Console.WriteLine();
-                Console.WriteLine("write DB to {0}", SEARCH_DB_PATH);
-
-                error = SSearch.SaveFPDB(SEARCH_DB_PATH);
-                Debug.Assert(error == SSError.NONE);
-            }
+            // Register
+            error = RegisterSearchModel();
+            Debug.Assert(error == SSError.NONE);
 
             // how many templates in mdb
-            int testCount = SearchModel.Size;
+            var templateSearchModelSize = SearchModel.Size;
 
             // how many templates in secusearch
-            int fpCount = 0;
+            var fpCount = 0;
             error = SSearch.GetFPCount(ref fpCount);
             Debug.Assert(error == SSError.NONE);
 
             // List IDs of templates registered
-            List<uint> idList = new List<uint>();
+            var idList = new List<uint>();
             error = SSearch.GetIDList(idList);
-            Debug.Assert(error == SSError.NONE);
-            Debug.Assert(idList.Count == fpCount);
 
-            foreach (uint id in idList)
+            foreach (var id in idList)
             {
                 Console.WriteLine("id = {0}", id);
             }
 
-            //
-            // search test
-            //
-            if (testRemove)
-            {
-                // Remove templates
-                for (uint i = 0; i < testCount; i++)
-                {
-                    uint templateID = i;
-                    SSearch.RemoveFP(templateID);	// Delete one template in secusearch
-                }
-            }
-            else
-            {
-                error = SSearch.ClearFPDB();		// Delete all templates in secusearch
-                Debug.Assert(error == SSError.NONE);
-                Console.Write("Template DB is cleared ");
-
-                error = SSearch.GetFPCount(ref fpCount);
-                Debug.Assert(error == SSError.NONE);
-                Console.WriteLine(">>  fpcount = {0}", fpCount);
-                Debug.Assert(fpCount == 0);
-            }
-
             // search : the candidate count must be zero because secusearch has no templates.
-            SSCandList candList = new SSCandList();
+            var candList = new SSCandList();
 
-            for (int i = 0; i < testCount; i++)
+            for (var i = 0; i < templateSearchModelSize; i++)
             {
-                uint templateID = (uint)i;
+                var templateId = (uint)i;
+                ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(i).Filename} of {templateId}");
+
                 error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
                 if (error != SSError.NONE)
                 {
                     Console.WriteLine("search failed error: {0}", error);
+                    ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(i).Filename} | {error}");
+                    continue;
                 }
 
-                Console.Write("{0} : ", SearchModel.GetTemplate(i).Filename);
-                Console.Write("{0} : ", templateID);
                 if (candList.Count > 0)
                 {
                     Console.Write("{0}   ", candList.Candidates[0].Id);
@@ -282,171 +208,7 @@ namespace Codesistance.UniqueBioSearchSecugen
                 }
             }
 
-            // add/register
-            if (bLoadDB)
-            {
-                LoadDb();
-            }
-            else
-            {
-                RegisterMDBBatch();
-            }
-
-            //// search : scores should be high such as 9999
-            for (int i = 0; i < testCount; i++)
-            {
-                uint templateID = (uint)i;
-                error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                }
-
-                Console.Write("{0} : ", SearchModel.GetTemplate(i).Filename);
-                Console.Write("{0} : ", templateID);
-                if (candList.Count > 0)
-                {
-                    Console.Write("{0}   ", candList.Candidates[0].Id);
-                    Console.WriteLine("matchScore={0}", candList.Candidates[0].MatchScore);
-                }
-                else
-                {
-                    Console.WriteLine(" no candidate");
-                }
-            }
-
-            // ANSI 378 and ISO 19794 standard template conversion
-            Console.WriteLine("\nRegister and search a ANSI 378 template");
-
-            byte[] ansiTemplate = File.ReadAllBytes("../test_data/ansi378_2views.bin");
-            byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
-            uint numberOfViews = 0;
-
-            SSearch.GetNumberOfView(ansiTemplate, SSTemplateType.ANSI378, ref numberOfViews);
-            Debug.Assert(numberOfViews == 2);
-
-            for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
-            {
-                uint templateId = 1234560 + indexOfView;
-
-                error = SSearch.ExtractTemplate(ansiTemplate, SSTemplateType.ANSI378, indexOfView, sgTemplate);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("template extraction failed error: {0}", error);
-                    continue;
-                }
-
-                error = SSearch.RegisterFP(sgTemplate, templateId);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                    continue;
-                }
-
-                Console.WriteLine("registered the {0}-th view", indexOfView);
-
-                error = SSearch.SearchFP(sgTemplate, ref candList);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                    continue;
-                }
-
-                Console.WriteLine("searched the {0}-th view", indexOfView);
-                Console.WriteLine("expected candate: {0}", templateId);
-
-                if (candList.Count > 0)
-                {
-                    Console.Write("candidate: {0}, ", candList.Candidates[0].Id);
-                    Console.WriteLine("matchScore={0}", candList.Candidates[0].MatchScore);
-                }
-                else
-                {
-                    Console.WriteLine(" no candidate");
-                }
-            }
-
-            Console.WriteLine("\nRegister and search a ISO 19794 template");
-
-            byte[] isoTemplate = File.ReadAllBytes("../test_data/iso19794_1view.bin");
-
-            SSearch.GetNumberOfView(isoTemplate, SSTemplateType.ISO19794, ref numberOfViews);
-            Debug.Assert(numberOfViews == 1);
-
-            for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
-            {
-                uint templateId = 9876540 + indexOfView;
-
-                error = SSearch.ExtractTemplate(isoTemplate, SSTemplateType.ISO19794, indexOfView, sgTemplate);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("template extraction failed error: {0}", error);
-                    continue;
-                }
-
-                error = SSearch.RegisterFP(sgTemplate, templateId);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                    continue;
-                }
-
-                Console.WriteLine("registered the {0}-th view", indexOfView);
-
-                error = SSearch.SearchFP(sgTemplate, ref candList);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                    continue;
-                }
-
-                Console.WriteLine("searched the {0}-th view", indexOfView);
-                Console.WriteLine("expected candate: {0}", templateId);
-
-                if (candList.Count > 0)
-                {
-                    Console.Write("candidate: {0}, ", candList.Candidates[0].Id);
-                    Console.WriteLine("matchScore={0}", candList.Candidates[0].MatchScore);
-                }
-                else
-                {
-                    Console.WriteLine(" no candidate");
-                }
-            }
-
+            return true;
         }
-
-        static void Main(string[] args)
-        {
-            bool loadDB = false;
-
-            if (args.Length == 1 && args[0] == "--loaddb")
-                loadDB = true;
-
-            //
-            // NOTE: 
-            //
-            Console.WriteLine("Note:");
-            Console.WriteLine("The following must be checked before running this sample.");
-            Console.WriteLine("Otherwise, it will not work properly.");
-            Console.WriteLine("  -license file: for example, license.dat");
-            Console.WriteLine("  -run as administrator");
-            Console.WriteLine();
-            Console.WriteLine("Press Enter key to keep running...");
-            Console.ReadLine();
-
-            SearchEngine sseApiTest = new SearchEngine();
-
-            if (sseApiTest.Initialized)
-            {
-                // How to use the APIs
-                sseApiTest.Test(loadDB);
-            }
-
-            Console.WriteLine("\nApplication is done. Press Enter key to close.\n");
-            Console.ReadLine();
-        }
-
-    } // SSAPITest
-
-} // SecuGen.SecuSearch3Samples
+    } 
+} 

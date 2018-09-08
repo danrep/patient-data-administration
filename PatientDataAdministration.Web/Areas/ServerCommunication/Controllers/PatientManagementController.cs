@@ -18,6 +18,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
+                _db.Database.CommandTimeout = 0;
+
                 var sites = _db.Administration_SiteInformation.Where(x => !x.IsDeleted).ToList();
 
                 var patients = _db.Sp_Administration_GetPatients(patientSearch.Query, patientSearch.StateId, patientSearch.SiteId, patientSearch.HasBio, patientSearch.HasNfc);

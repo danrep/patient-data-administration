@@ -118,51 +118,64 @@
 </div>
 
 <div class="row">
-    <div class="col-md-8">
-        <div class="widget-chart with-sidebar bg-black">
-            <div class="widget-chart-content">
-                <h4 class="chart-title">
-                    Patient Analytics
-                    <small>Registration Distribution by Age Group</small>
-                </h4>
-                <div id="patient-age-distro" class="morris-inverse" style="height: 260px;">
-                    <h4 class="alert alert-success">
-                        <small>Processing data and analytics at the moment. Please wait</small>
+    <div class="col-md-12 ui-sortable">
+        <div class="panel panel-inverse" data-sortable-id="ui-buttons-5">
+            <div class="panel-heading">
+                <div class="panel-heading-btn">
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-info"
+                       data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">Analytics</h4>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-8">
+                    <div class="widget-chart with-sidebar bg-black">
+                        <div class="widget-chart-content">
+                            <h4 class="chart-title">
+                                Patient Analytics
+                                <small>Registration Distribution by Age Group</small>
+                            </h4>
+                            <div id="patient-age-distro" class="morris-inverse" style="height: 260px;">
+                                <h4 class="alert alert-success">
+                                    <small>Processing data and analytics at the moment. Please wait</small>
+                                </h4>
+                            </div>
+                        </div>
+                        <div class="widget-chart-sidebar bg-black-darker">
+                            <div class="chart-number">
+                                <span id="most_polulated_ag_span">00</span>
+                                <small>Most Populated Age Group: <strong id="most_polulated_ag_info_span"></strong></small>
+                            </div>
+                            <div class="chart-number">
+                                <span id="least_polulated_ag_span">00</span>
+                                <small>Least Populated Age Group: <strong id="least_polulated_ag_info_span"></strong></small>
+                            </div>
+                            <div id="sex-distro-donut-chart" style="height: 160px"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="chart-title">
+                        Quick Facts
+                        <small>Biometric Registration Distribution</small>
                     </h4>
+                    <div class="widget widget-stats bg-red-darker">
+                        <div class="stats-icon"><i class="fa fa-shield"></i></div>
+                        <div class="stats-info">
+                            <h4>Registered Bio-Data</h4>
+                            <p><span id="nation_reg_bio_span">00</span></p>
+                        </div>
+                    </div>
+                    <div class="widget widget-stats bg-orange-darker">
+                        <div class="stats-icon"><i class="fa fa-tag"></i></div>
+                        <div class="stats-info">
+                            <h4>Newly Registered Patients with Biometric Data</h4>
+                            <p><span id="nation_reg_bio_new_span">00</span></p>
+                            <h4>Returning Patients having Biometric Data</h4>
+                            <p><span id="nation_reg_bio_upd_span">00</span></p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="widget-chart-sidebar bg-black-darker">
-                <div class="chart-number">
-                    <span id="most_polulated_ag_span">00</span>
-                    <small>Most Populated Age Group: <strong id="most_polulated_ag_info_span"></strong></small>
-                </div>
-                <div class="chart-number">
-                    <span id="least_polulated_ag_span">00</span>
-                    <small>Least Populated Age Group: <strong id="least_polulated_ag_info_span"></strong></small>
-                </div>
-                <div id="sex-distro-donut-chart" style="height: 160px"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <h4 class="chart-title">
-            Quick Facts
-            <small>Biometric Registration Distribution</small>
-        </h4>
-        <div class="widget widget-stats bg-red-darker">
-            <div class="stats-icon"><i class="fa fa-shield"></i></div>
-            <div class="stats-info">
-                <h4>Registered Bio-Data</h4>
-                <p><span id="nation_reg_bio_span">00</span></p>
-            </div>
-        </div>
-        <div class="widget widget-stats bg-orange-darker">
-            <div class="stats-icon"><i class="fa fa-tag"></i></div>
-            <div class="stats-info">
-                <h4>Newly Registered Patients with Biometric Data</h4>
-                <p><span id="nation_reg_bio_new_span">00</span></p>
-                <h4>Returning Patients having Biometric Data</h4>
-                <p><span id="nation_reg_bio_upd_span">00</span></p>
             </div>
         </div>
     </div>

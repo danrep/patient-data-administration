@@ -44,16 +44,22 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 if (string.IsNullOrEmpty(clientId))
                     clientId = Request.UserHostAddress;
 
-                var currentUser = currentUsers.FirstOrDefault(x => x.ClientId == clientId) ?? new System_ClientPulse()
+                var currentUser = currentUsers.FirstOrDefault(x => x.ClientId == clientId);
+                if (currentUser == null)
                 {
-                    AppVersion = appVersion,
-                    CheckInPeriod = DateTime.Now,
-                    ClientId = clientId,
-                    IsDeleted = false,
-                    UserId = currentUserId
-                };
+                    currentUser = new System_ClientPulse()
+                    {
+                        AppVersion = appVersion,
+                        CheckInPeriod = DateTime.Now,
+                        ClientId = clientId,
+                        IsDeleted = false,
+                        UserId = currentUserId
+                    };
 
-                if (DateTime.Now.Subtract(currentUser.CheckInPeriod).TotalSeconds > 1800)
+                    currentUsers.Add(currentUser);
+                    ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
+                }  
+                else if (DateTime.Now.Subtract(currentUser.CheckInPeriod).TotalSeconds > 1800)
                 {
                     currentUsers.Remove(currentUser);
                     currentUser = new System_ClientPulse()
@@ -64,10 +70,12 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         IsDeleted = false,
                         UserId = currentUserId
                     };
+
                     currentUsers.Add(currentUser);
-                    LocalCache.Set("System_ClientPulse", currentUsers);
                     ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
                 }
+
+                LocalCache.Set("System_ClientPulse", currentUsers);
 
                 return
                     Json(
