@@ -12,18 +12,13 @@ namespace PatientDataAdministration.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class System_Update
+    public partial class System_ReportingLog
     {
-        public int Id { get; set; }
-        public System.DateTime DateProvided { get; set; }
-        public System.DateTime DateDownloaded { get; set; }
-        public bool IsNew { get; set; }
-        public string VersionNumber { get; set; }
-        public string ServerLocation { get; set; }
-        public string ServerUsername { get; set; }
-        public string ServerPassword { get; set; }
-        public string FolderLocation { get; set; }
-        public bool IsDbRefreshRequired { get; set; }
+        public long Id { get; set; }
+        public int ReportId { get; set; }
+        public int IntervalId { get; set; }
+        public System.DateTime ReportDate { get; set; }
+        public bool IsCurrent { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

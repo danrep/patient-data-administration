@@ -85,6 +85,10 @@
       <Project>{0D35BDA4-BE0F-4FA4-B6C7-4766EFD5500B}</Project>
       <Name>PatientDataAdministration.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj">
+      <Project>{C914F40E-8A5E-49C4-8D1E-7739D2453D8D}</Project>
+      <Name>PatientDataAdministration.EnumLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

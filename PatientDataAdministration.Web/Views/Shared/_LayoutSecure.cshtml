@@ -1,7 +1,7 @@
 ﻿@using System.Globalization
 @using PatientDataAdministration.EnumLibrary
 @using PatientDataAdministration.EnumLibrary.Dictionary
-@using PatientDataAdministration.Web.Engines
+@using PatientDataAdministration.Web.Engines.EngineDataIntegrity
 @using PatientDataAdministration.Web.Models
 
 @{
@@ -19,7 +19,7 @@
         roleId = SecurityModel.GetUserInSession.AdministrationStaffInformation.RoleId;
     }
 
-    dataIntegrityIssues = EngineDataIntegrity.DataIntegrityPepId?.Any() ?? false;
+    dataIntegrityIssues = EngineDataIntegrity.IsDataIntegrityIssueExist();
 }
 
 <!DOCTYPE html>

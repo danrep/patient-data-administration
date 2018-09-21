@@ -74,7 +74,7 @@ namespace PatientDataAdministration.Core
                             sw.Close();
                             File.Move(location + LogFileName,
                                 location + LogFileName.Replace(".txt", "").Trim() + "_" +
-                                DateTime.Now.ToString("yyyymmddhhMMsstt"));
+                                DateTime.Now.ToString("yyyymmddhhMMsstt") + ".txt");
 
                             using (var sw3 = File.CreateText(location + LogFileName))
                             {

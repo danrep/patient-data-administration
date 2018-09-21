@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.Web.Engines;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
@@ -359,6 +360,129 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSiteDistro()
+        {
+            try
+            {
+                var allSites = LocalCache.Get<List<Administration_SiteInformation>>(
+                    "Administration_SiteInformation");
+
+                var allSitesInStateInCountry =
+                    LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(
+                        "Sp_System_Indicators_PopulationDistro_SexSiteState_Result");
+
+                var states =
+                    LocalCache.Get<List<System_State>>(
+                        "System_State");
+
+                var allPatientInSite = allSitesInStateInCountry
+                    .GroupBy(sites => new {sites.SiteId, sites.StateAbbreviation})
+                    .Select(grp => new
+                    {
+                        level = "Site",
+                        name = allSites.FirstOrDefault(x => x.Id == grp.Key.SiteId)?.SiteNameOfficial ?? "Unknown",
+                        value = grp.Sum(x => x.PatientPopulation),
+                        description =
+                            $"{allSites.FirstOrDefault(x => x.Id == grp.Key.SiteId)?.SiteNameOfficial ?? "Unknown"}",
+                        state = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key.StateAbbreviation),
+                        site = allSites.FirstOrDefault(x => x.Id == grp.Key.SiteId)
+                    }).ToArray();
+
+                var allSitesInStates = allSitesInStateInCountry
+                    .GroupBy(sites => sites.StateAbbreviation)
+                    .Select(grp => new
+                    {
+                        level = "State",
+                        name = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key)?.StateName ?? "Unknown",
+                        description = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key),
+                        value = grp.Sum(x => x.PatientPopulation),
+                        children = allPatientInSite.Where(x => x.state.StateAbbreviation == grp.Key).ToList()
+                    }).ToArray();
+
+                return
+                    Json(
+                        new
+                        {
+                            Level = "National",
+                            name = "Nigeria",
+                            value = allSitesInStateInCountry.Sum(x => x.PatientPopulation),
+                            children = allSitesInStates
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new { }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSiteDistroForState(string stateAbbreviation)
+        {
+            try
+            {
+                var states =
+                    LocalCache.Get<List<System_State>>(
+                        "System_State");
+
+                var distroData =
+                    LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(
+                            "Sp_System_Indicators_PopulationDistro_SexSiteState_Result")
+                        .Where(x => x.StateAbbreviation == stateAbbreviation).ToList();
+
+                return
+                    Json(ResponseData.SendSuccessMsg(data: new
+                    {
+                        Heading = "State Information",
+                        Name =
+                            states.FirstOrDefault(x => x.StateAbbreviation == stateAbbreviation)?.StateName ??
+                            "NA",
+                        SiteCount = distroData.GroupBy(x => x.SiteId).Count(),
+                        PatientTotal = distroData.Sum(x => x.PatientPopulation), 
+                        SiteId = 0
+                    }), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(ResponseData.SendExceptionMsg(ex), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSiteDistroForSite(int siteId)
+        {
+            try
+            {
+                var site =
+                    LocalCache.Get<List<Administration_SiteInformation>>(
+                        "Administration_SiteInformation").FirstOrDefault(x => x.Id == siteId);
+
+                var state =
+                    LocalCache.Get<List<System_State>>(
+                        "System_State").FirstOrDefault(x => x.Id == (site?.StateId ?? 0));
+
+                var distroData =
+                    LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(
+                            "Sp_System_Indicators_PopulationDistro_SexSiteState_Result")
+                        .Where(x => x.SiteId == siteId).ToList();
+
+                return
+                    Json(ResponseData.SendSuccessMsg(data: new
+                    {
+                        Heading = "Site Information",
+                        Name = site?.SiteNameOfficial ?? "NA",
+                        PatientTotal = distroData.Sum(x => x.PatientPopulation),
+                        Location = state?.StateName ?? "NA",
+                        SiteId = siteId
+                    }), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(ResponseData.SendExceptionMsg(ex), JsonRequestBehavior.AllowGet);
             }
         }
     }

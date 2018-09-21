@@ -14,5 +14,10 @@ namespace PatientDataAdministration.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult TreatDupBioDataDuplicates()
+        {
+            return View();
+        }
     }
 }

@@ -1,11 +1,5 @@
 ﻿using PatientDataAdministration.Core;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Web.Engines
 {
@@ -27,7 +21,7 @@ namespace PatientDataAdministration.Web.Engines
 
             try
             {
-                new EngineDataIntegrity();
+                new EngineDataIntegrity.EngineDataIntegrity();
             }
             catch (Exception ex)
             {
@@ -35,42 +29,19 @@ namespace PatientDataAdministration.Web.Engines
             }
 
             #endregion
-        }
 
-        public static bool GetTimerInterval(int interval, DateTime? lastDate)
-        {
-            var today = DateTime.Now.Date;
-            var publishDate = lastDate ?? DateTime.Now;
+            #region Reporting Engine
 
-            switch ((EnumLibrary.RecurrenceInterval)interval)
+            try
             {
-                case EnumLibrary.RecurrenceInterval.BiAnnual:
-                    if (publishDate.AddDays(182) <= today)
-                        return true;
-                    break;
-                case EnumLibrary.RecurrenceInterval.Day:
-                    if (publishDate.AddDays(1) <= today)
-                        return true;
-                    break;
-                case EnumLibrary.RecurrenceInterval.Month:
-                    if (publishDate.AddMonths(1) <= today)
-                        return true;
-                    break;
-                case EnumLibrary.RecurrenceInterval.Querterly:
-                    if (publishDate.AddMonths(3) <= today)
-                        return true;
-                    break;
-                case EnumLibrary.RecurrenceInterval.Week:
-                    if (publishDate.AddDays(7) <= today)
-                        return true;
-                    break;
-                case EnumLibrary.RecurrenceInterval.Year:
-                    if (publishDate.AddYears(1) <= today)
-                        return true;
-                    break;
+                new EngineReporting.EngineReporting();
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
             }
 
-            return false;
+            #endregion
         }
     }
 }

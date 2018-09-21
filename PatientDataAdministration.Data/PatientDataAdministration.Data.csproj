@@ -136,6 +136,9 @@
     <Compile Include="Sp_System_Indicators_PopulationDistro_SexSiteState_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Sp_System_Reporting_PopulationDataSite_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_ClientPulse.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
@@ -146,6 +149,12 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="System_NotificationLog.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_OperationLog.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_ReportingLog.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="System_State.cs">

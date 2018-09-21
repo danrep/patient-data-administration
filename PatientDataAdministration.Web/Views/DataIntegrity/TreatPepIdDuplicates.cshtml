@@ -145,7 +145,7 @@
 
                 $scope.loadDuplicates = function() {
                     window.api("GET",
-                        "@Url.Action("GetData", "DataIntegrity", new {area = "ServerCommunication"})",
+                        "@Url.Action("GetDataPepIdIntegrity", "DataIntegrity", new {area = "ServerCommunication"})",
                         null,
                         true,
                         loadPatientsData);
@@ -155,7 +155,7 @@
                 $scope.createNew = function (patientData) {
                     window.swalInfo('Working on it. This may take a while.');
                     window.api("GET",
-                        "@Url.Action("CreateNew", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
+                        "@Url.Action("CreateNewPepIdIntegrity", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
                         null,
                         true,
                         refreshWorkingList, true);
@@ -164,7 +164,7 @@
                 $scope.selectPreffered = function (patientData) {
                     window.swalInfo('Working on it. This may take a while.');
                     window.api("GET",
-                        "@Url.Action("Preffered", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
+                        "@Url.Action("PrefferedPepIdIntegrity", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
                         null,
                         true,
                         refreshWorkingList, true);
@@ -173,7 +173,7 @@
                 $scope.delete = function (patientData) {
                     window.swalInfo('Working on it. This may take a while.');
                     window.api("GET",
-                        "@Url.Action("Delete", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
+                        "@Url.Action("DeletePepIdIntegrity", "DataIntegrity", new {area = "ServerCommunication"})?recordRow=" + patientData.PatientInformation.Id + "&pepId=" + patientData.PatientInformation.PepId,
                         null,
                         true,
                         refreshWorkingList, true);

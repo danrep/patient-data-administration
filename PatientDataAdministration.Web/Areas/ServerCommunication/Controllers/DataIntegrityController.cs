@@ -6,7 +6,8 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
-using PatientDataAdministration.Web.Engines;
+using PatientDataAdministration.EnumLibrary.Dictionary;
+using PatientDataAdministration.Web.Engines.EngineDataIntegrity;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
@@ -16,7 +17,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         // GET: ServerCommunication/DataIntegrity
         private readonly Entities _entities = new Entities();
 
-        public JsonResult CreateNew(int recordRow, string pepId)
+        public JsonResult CreateNewPepIdIntegrity(int recordRow, string pepId)
         {
             try
             {
@@ -39,8 +40,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
-                LogAction(ActionTypeDataIntegrity.CreateNew, beforeData, afterData);
-                Reload();
+                LogActionPepIdIntegrity(ActionTypeDataIntegrity.CreateNew, beforeData, afterData);
+                ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -59,7 +60,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult Preffered(int recordRow, string pepId)
+        public JsonResult PrefferedPepIdIntegrity(int recordRow, string pepId)
         {
             try
             {
@@ -81,8 +82,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
-                LogAction(ActionTypeDataIntegrity.Preffered, beforeData, afterData);
-                Reload();
+                LogActionPepIdIntegrity(ActionTypeDataIntegrity.Preffered, beforeData, afterData);
+                ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -101,7 +102,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult Delete(int recordRow, string pepId)
+        public JsonResult DeletePepIdIntegrity(int recordRow, string pepId)
         {
             try
             {
@@ -123,8 +124,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
-                LogAction(ActionTypeDataIntegrity.Delete, beforeData, afterData);
-                Reload();
+                LogActionPepIdIntegrity(ActionTypeDataIntegrity.Delete, beforeData, afterData);
+                ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -143,14 +144,21 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult GetData()
+        public JsonResult GetDataPepIdIntegrity()
         {
             try
             {
-                if (DateTime.Now.Subtract(EngineDataIntegrity.DateGenerated).TotalSeconds > 60)
+                var task = EngineDataIntegrity.Tasks
+                    .FirstOrDefault(x =>
+                        x.ThreadEngine.Name == DataIntegrityIssue.DupPepId.DisplayName());
+
+                if (DateTime.Now
+                        .Subtract(task?.DateGenerated ?? DateTime.Now).TotalSeconds > 60)
                 {
-                    EngineDataIntegrity.DataIntegrityPepId = _entities.Sp_System_DataIntegrity_PepId().ToList();
-                    EngineDataIntegrity.DateGenerated = DateTime.Now;
+                    EngineDuplicatePepId.DataIntegrityPepId = _entities.Sp_System_DataIntegrity_PepId().ToList();
+
+                    if (task != null)
+                        task.DateGenerated = DateTime.Now;
                 }
 
                 return
@@ -159,7 +167,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         {
                             Status = true,
                             Message = "Successful",
-                            Data = EngineDataIntegrity.DataIntegrityPepId
+                            Data = EngineDuplicatePepId.DataIntegrityPepId
                         },
                         JsonRequestBehavior.AllowGet);
             }
@@ -170,12 +178,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        private static void Reload()
+        private static void ReloadPepIdIntegrity()
         {
-            new EngineDataIntegrity();
+            EngineDuplicatePepId.ProcessDataIntegrityPepId();
         }
 
-        private void LogAction(ActionTypeDataIntegrity actionTypeDataIntegrity, string dataBefore,
+        private void LogActionPepIdIntegrity(ActionTypeDataIntegrity actionTypeDataIntegrity, string dataBefore,
             string dataAfter)
         {
             try

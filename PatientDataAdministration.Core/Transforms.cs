@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PatientDataAdministration.EnumLibrary;
+using System;
 using System.Linq;
 
 namespace PatientDataAdministration.Core
@@ -62,6 +63,65 @@ namespace PatientDataAdministration.Core
             var result = mystring.Select(mstr => mstr.Trim()).Where(ss => !string.IsNullOrEmpty(ss))
                 .Aggregate(string.Empty, (current, ss) => current + ss + " ");
             return result.Trim();
+        }
+
+        public static DateTime? ProcessDateUpperBound(DateTime lastProcessDate, RecurrenceInterval recurrenceInterval, out DateTime lowerBound)
+        {
+            lowerBound = DateTime.Now;
+
+            try
+            {
+                switch (recurrenceInterval)
+                {
+                    case RecurrenceInterval.Day:
+                        if (DateTime.Now.Date.Subtract(lastProcessDate.Date).TotalDays > 0)
+                        {
+                            lowerBound = DateTime.Now.Date;
+                            return lowerBound.AddDays(1);
+                        }
+                        break;
+                    case RecurrenceInterval.Month:
+                        if (DateTime.Now.Month != lastProcessDate.Month)
+                        {
+                            lowerBound = new DateTime(lastProcessDate.Year, lastProcessDate.Month, 1).Date;
+                            return lowerBound.AddMonths(1);
+                        }
+                        break;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return null;
+            }
+        }
+
+        public static string TransformInterval(int inverval)
+        {
+            var intervalText = "";
+            switch ((RecurrenceInterval)inverval)
+            {
+                case RecurrenceInterval.BiAnnual:
+                    intervalText = "Bi-Annual";
+                    break;
+                case RecurrenceInterval.Month:
+                    intervalText = "Monthly";
+                    break;
+                case RecurrenceInterval.Week:
+                    intervalText = "Weekly";
+                    break;
+                case RecurrenceInterval.Day:
+                    intervalText = "Daily";
+                    break;
+                case RecurrenceInterval.Querterly:
+                    intervalText = "Querterly";
+                    break;
+                case RecurrenceInterval.Year:
+                    intervalText = "Yearly";
+                    break;
+            }
+            return intervalText;
         }
     }
 }

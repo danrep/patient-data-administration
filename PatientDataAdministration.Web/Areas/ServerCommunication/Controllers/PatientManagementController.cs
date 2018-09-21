@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.Web.Engines;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
@@ -18,9 +20,16 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
+                if (string.IsNullOrEmpty(patientSearch.Query.Trim()))
+                    return Json(new ResponseData()
+                    {
+                        Status = false,
+                        Message = "Blind Search are not alowed. Please specify a query with at least 3 characters"
+                    }, JsonRequestBehavior.AllowGet);
+
                 _db.Database.CommandTimeout = 0;
 
-                var sites = _db.Administration_SiteInformation.Where(x => !x.IsDeleted).ToList();
+                var sites = LocalCache.Get <List<Administration_SiteInformation>>("Administration_SiteInformation");
 
                 var patients = _db.Sp_Administration_GetPatients(patientSearch.Query, patientSearch.StateId, patientSearch.SiteId, patientSearch.HasBio, patientSearch.HasNfc);
 

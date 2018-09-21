@@ -23,13 +23,13 @@
     <link href="/assets/plugins/parsley/src/parsley.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
 
-    <script type='text/javascript'>
+    <script type="text/javascript">
         var appInsights = window.appInsights ||
             function(config) {
                 function r(config) {
                     t[config] = function() {
                         var i = arguments;
-                        t.queue.push(function() { t[config].apply(t, i) })
+                        t.queue.push(function() { t[config].apply(t, i) });
                     }
                 }
 
@@ -39,12 +39,12 @@
                         .queue = [], i = ['Event', 'Exception', 'Metric', 'PageView', 'Trace', 'Ajax'];
                     i.length;
                 ) r('track' + i.pop());
-                return r('setAuthenticatedUserContext'), r('clearAuthenticatedUserContext'), config
-                    .disableExceptionTracking ||
-                    (i = 'onerror', r('_' + i), f = e[i], e[i] = function(config, r, u, e, o) {
-                        var s = f && f(config, r, u, e, o);
-                        return s !== !0 && t['_' + i](config, r, u, e, o), s
-                    }), t
+            return r('setAuthenticatedUserContext'), r('clearAuthenticatedUserContext'), config
+                .disableExceptionTracking ||
+                (i = 'onerror', r('_' + i), f = e[i], e[i] = function (config, r, u, e, o) {
+                    var s = f && f(config, r, u, e, o);
+                    return s !== !0 && t['_' + i](config, r, u, e, o), s
+                }), t;
             }({
                 instrumentationKey: 'f824ace8-2397-47d9-9e3b-a209a2a28cce'
             });

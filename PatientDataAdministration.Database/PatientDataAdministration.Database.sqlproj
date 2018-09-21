@@ -100,6 +100,11 @@
     <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_Opr_Delete.sql" />
     <Build Include="dbo\Stored Procedures\Sp_System_DataIntegrity_Opr_CreateNew.sql" />
     <Build Include="dbo\Tables\System_ClientPulse.sql" />
+    <Build Include="dbo\Tables\System_ReportingLog.sql" />
+    <Build Include="dbo\Tables\System_OperationLog.sql" />
+    <Build Include="dbo\Functions\Function_GetPatientNfcRegStatus.sql" />
+    <Build Include="dbo\Functions\Function_GetPatientBioRegStatus.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_System_Reporting_PopulationDataSite.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />

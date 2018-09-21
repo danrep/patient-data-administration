@@ -12,4 +12,8 @@ AS
 		FROM dbo.Patient_PatientInformation
 	)
 	DELETE FROM CTE WHERE RN > 1;
+
+	--Sanitize PepIds
+	UPDATE Patient_PatientInformation SET PepId = LTRIM(RTRIM(REPLACE(PepId, '?', ' '))) WHERE LEN(PepId) > 10
+	UPDATE Patient_PatientInformation SET PepId = LTRIM(RTRIM(REPLACE(PepId, '=', '-'))) WHERE PepId LIKE '%=%'
 RETURN 0

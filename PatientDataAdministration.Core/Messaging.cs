@@ -40,11 +40,20 @@ namespace PatientDataAdministration.Core
 
                 foreach (var currentDestination in destinations)
                 {
+                    if (string.IsNullOrEmpty(currentDestination))
+                        continue;
+
                     myMessage.To.Add(currentDestination);
                 }
 
                 if (!string.IsNullOrEmpty(ccDestination))
-                    myMessage.CC.Add(ccDestination);
+                    foreach (var currentCcDestination in ccDestination.Split(';'))
+                    {
+                        if (string.IsNullOrEmpty(currentCcDestination))
+                            continue;
+
+                        myMessage.CC.Add(currentCcDestination);
+                    }
 
                 if (!string.IsNullOrEmpty(attachments))
                 {

@@ -101,6 +101,7 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.Services.Client" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
@@ -362,6 +363,8 @@
     <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps.js" />
     <Content Include="Assets\plugins\country\nigeria\jsmaps\jsmaps.min.js" />
     <Content Include="Assets\plugins\country\nigeria\maps\nigeria.js" />
+    <Content Include="Assets\plugins\d3\d3.v4.js" />
+    <Content Include="Assets\plugins\d3\d3.v4.min.js" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\css\autoFill.bootstrap.min.css" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\js\autoFill.bootstrap.min.js" />
     <Content Include="Assets\plugins\DataTables\extensions\AutoFill\js\dataTables.autoFill.min.js" />
@@ -1082,6 +1085,7 @@
     <Content Include="Areas\ServerCommunication\Views\web.config" />
     <Content Include="Assets\plugins\country\nigeria\images\Thumbs.db" />
     <Content Include="Areas\Integration\Views\web.config" />
+    <Content Include="Assets\plugins\d3\d3-procesor.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1097,6 +1101,7 @@
     <Content Include="Views\SystemSettings\UpdateChannelSetUp.cshtml" />
     <Content Include="Views\SystemOperations\ApplicationLogs.cshtml" />
     <Content Include="Views\SystemOperations\Index.cshtml" />
+    <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicates.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1159,7 +1164,10 @@
     <Compile Include="Controllers\SystemSettingsController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Engines\Cron.cs" />
-    <Compile Include="Engines\EngineDataIntegrity.cs" />
+    <Compile Include="Engines\EngineDataIntegrity\EngineDataIntegrity.cs" />
+    <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioData.cs" />
+    <Compile Include="Engines\EngineDataIntegrity\EngineDuplicatePepId.cs" />
+    <Compile Include="Engines\EngineReporting\EngineReporting.cs" />
     <Compile Include="Engines\LocalCache.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />
     <Compile Include="Global.asax.cs">

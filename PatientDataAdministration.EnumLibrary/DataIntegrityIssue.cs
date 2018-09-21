@@ -5,6 +5,9 @@ namespace PatientDataAdministration.EnumLibrary
     public enum DataIntegrityIssue : int
     {
         [EnumDisplayName(DisplayName = "Duplicate Pep Id")]
-        DupPepId = 0
+        DupPepId = 0,
+
+        [EnumDisplayName(DisplayName = "Duplicate Biometric Data")]
+        DupBioData
     }
 }

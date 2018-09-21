@@ -34,17 +34,17 @@ AS
 	SET @tableLimit = 100
 	
 	SET @hasNfc = ISNULL(@hasNfc, 'false')
-	set @hasBio = isnull(@hasBio, 'false')
+	set @hasBio = ISNULL(@hasBio, 'false')
 	SET @siteId = ISNULL(@siteId, 0)
-	set @stateId = isnull(@stateId, 0)
+	set @stateId = ISNULL(@stateId, 0)
 	SET @query = ISNULL(@query, '')
 
 	IF LEN(@query) < 1 AND @stateId = 0 AND @siteId = 0
 	BEGIN	
 		INSERT INTO @patientInformation
 		SELECT *, 
-		IIF (EXISTS(SELECT * FROM Patient_PatientBiometricData WHERE IsDeleted = 'False' AND Patient_PatientBiometricData.PepId = Patient_PatientInformation.PepId), 'true', 'false'), 
-		IIF (EXISTS(SELECT * FROM Patient_PatientNearFieldCommunicationData WHERE IsDeleted = 'False' AND Patient_PatientNearFieldCommunicationData.PepId = Patient_PatientInformation.PepId), 'true', 'false')
+		IIF (EXISTS(SELECT 1 FROM Patient_PatientBiometricData WHERE IsDeleted = 'False' AND Patient_PatientBiometricData.PepId = Patient_PatientInformation.PepId), 'true', 'false'), 
+		IIF (EXISTS(SELECT 1 FROM Patient_PatientNearFieldCommunicationData WHERE IsDeleted = 'False' AND Patient_PatientNearFieldCommunicationData.PepId = Patient_PatientInformation.PepId), 'true', 'false')
 		FROM Patient_PatientInformation WHERE IsDeleted = 'False' 
 		ORDER BY NEWID()
 	end
@@ -62,8 +62,8 @@ AS
             
 		INSERT INTO @patientInformation
 		SELECT *, 
-		IIF (EXISTS(SELECT * FROM Patient_PatientBiometricData WHERE IsDeleted = 'False' AND Patient_PatientBiometricData.PepId = Patient_PatientInformation.PepId), 'true', 'false'), 
-		IIF (EXISTS(SELECT * FROM Patient_PatientNearFieldCommunicationData WHERE IsDeleted = 'False' AND Patient_PatientNearFieldCommunicationData.PepId = Patient_PatientInformation.PepId), 'true', 'false')
+		IIF (EXISTS(SELECT 1 FROM Patient_PatientBiometricData WHERE IsDeleted = 'False' AND Patient_PatientBiometricData.PepId = Patient_PatientInformation.PepId), 'true', 'false'), 
+		IIF (EXISTS(SELECT 1 FROM Patient_PatientNearFieldCommunicationData WHERE IsDeleted = 'False' AND Patient_PatientNearFieldCommunicationData.PepId = Patient_PatientInformation.PepId), 'true', 'false')
 		FROM Patient_PatientInformation WHERE IsDeleted = 'False' AND 
 		(
 			PepId LIKE '%'+@query+'%' OR
