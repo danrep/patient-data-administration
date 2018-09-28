@@ -9,7 +9,6 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
 
         public static void ProcessDataIntegrityBiometric()
         {
-            BioDataIntegrityCase =new List<BioDataIntegrityCase>();
         }
     }
 

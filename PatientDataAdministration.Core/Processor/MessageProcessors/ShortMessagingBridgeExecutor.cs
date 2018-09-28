@@ -11,12 +11,15 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
             {
                 LogMessage(result);
 
-                var messageParts = result.Text.Split(' ');
                 ActivityLogger.Log("MSG_AUDIT", Newtonsoft.Json.JsonConvert.SerializeObject(result));
 
-                switch (messageParts[0].ToLower())
+                switch (result.Keyword?.ToUpper())
                 {
-                    
+                    case "HELP":
+                        break;
+                    case null:
+                        //This is for messages that have no keyword
+                        break;
                 }
             }
             catch (Exception e)

@@ -49,7 +49,9 @@ namespace PatientDataAdministration.Web.Controllers
                 Messaging.SendMail(SecurityModel.GetUserInSession.AdministrationStaffInformation.Email, null, null,
                     "File Delete Notice", msg, fileInfo.FullName);
 
-                System.IO.File.Delete(fileInfo.FullName);
+                fileInfo = null;
+
+                System.IO.File.Delete(ActivityLogger.LogFilePath + filename);
             }
             catch (Exception e)
             {

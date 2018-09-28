@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.Linq;
 using System.Runtime.Caching;
 
-namespace PatientDataAdministration.Client
+namespace PatientDataAdministration.Client.LocalSettingStorage
 {
     public class LocalCache
     {
@@ -39,7 +38,7 @@ namespace PatientDataAdministration.Client
                     break;
 
                 case "ClientId":
-                    Set(cacheKeyName, ConfigurationManager.AppSettings["ClientId"] ?? "");
+                    Set(cacheKeyName, AppSetting.ClientId);
                     break;
 
                 default:

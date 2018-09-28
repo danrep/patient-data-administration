@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -186,30 +185,33 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         using (var entity = new Entities())
                         {
                             users = entity.Administration_StaffInformation
-                                .Where(x => !x.IsDeleted && x.RoleId == (int)role).Select(x => x.Email).ToList();
+                                .Where(x => !x.IsDeleted && x.RoleId == (int) role).Select(x => x.Email).ToList();
 
                             foreach (var user in users)
                                 mailingList += $"{user};";
                         }
+
                         break;
                     case UserRole.StateAdministrator:
                         using (var entity = new Entities())
                         {
                             users = entity.Administration_StaffInformation
-                                .Where(x => !x.IsDeleted && x.RoleId == (int) role && x.SiteId == siteId)
+                                .Where(x => !x.IsDeleted && x.RoleId == (int) role)
                                 .Select(x => x.Email).ToList();
 
                             foreach (var user in users)
                                 mailingList += $"{user};";
                         }
+
                         break;
                     case UserRole.SiteAdministrator:
                         using (var entity = new Entities())
                         {
                             users = entity.Administration_StaffInformation
-                                .Where(x => !x.IsDeleted && x.RoleId == (int)role && x.SiteId == siteId)
+                                .Where(x => !x.IsDeleted && x.RoleId == (int) role && x.SiteId == siteId)
                                 .Select(x => x.Email).ToList();
                         }
+
                         break;
                 }
 
@@ -270,7 +272,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         return;
 
                     if (entity.Patient_PatientInformation.Any(x =>
-                        !x.IsDeleted && DbFunctions.TruncateTime(x.LastUpdated) >= dateLimit))
+                        !x.IsDeleted && x.SiteId == siteId && DbFunctions.TruncateTime(x.LastUpdated) >= dateLimit))
                         return;
 
                     if (!entity.Administration_StaffInformation.Any(x =>
@@ -278,7 +280,8 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         return;
 
                     var msg = "Dear Administrators<br />";
-                    msg += $"Its been a while since any data was received from your site <b>{site.SiteNameOfficial}</b> in {state.StateName} State. ";
+                    msg +=
+                        $"Its been a while since any data was received from your site <b>{site.SiteNameOfficial}</b> in {state.StateName} State. ";
                     msg += $"It is imperative that you initiate a sync as soon as possible.";
 
                     Core.Messaging.SendMail(GetMailingList(UserRole.SiteAdministrator, siteId),

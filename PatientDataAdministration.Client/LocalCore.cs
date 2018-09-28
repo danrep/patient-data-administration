@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data.InterchangeModels;
 
 namespace PatientDataAdministration.Client

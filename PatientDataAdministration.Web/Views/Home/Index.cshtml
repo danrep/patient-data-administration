@@ -241,12 +241,13 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="col-md-8">
                     <div class="widget-chart with-sidebar bg-black-lighter">
                         <div class="widget-chart-content">
                             <h4 class="chart-title">
                                 Population by Date of Birth
-                                <small>Registration Distribution by Age Group</small>
+                                <small>Registration Distribution by Age Group<span id="dob_error_span" class="text text-warning pull-right animated pulse"></span></small>
                             </h4>
                             <div id="patient-age-distro" class="morris-inverse" style="height: 260px;">
                                 <h4 class="alert alert-success">
@@ -440,7 +441,6 @@
                 $('#indi_down').show();
             }
 
-
             var progressData = "";
             if (data.TotalPatients === 0) {
                 $('#prgDiv').html("<h3 class='text-warning'><i class='fa fa-warning'></i>&nbsp;No Data for this Date<br /><small>Please select another date</small></h3>");
@@ -571,6 +571,13 @@
             $('#least_polulated_ag_span').text(data.Min.y.format());
 
             donutChart("sex-distro-donut-chart", data.SexDistro);
+
+            if (data.BadDate !== 0) {
+                $('#dob_error_span').show();
+                $('#dob_error_span').text(data.BadDate.format() + " Bad Date of Birth Records");
+            } else {
+                $('#dob_error_span').hide();
+            }
         };
 
         function iniTreeLoad() {
@@ -578,8 +585,6 @@
         }
 
         function loadTile(data) {
-            console.log(data);
-
             if (data.level === "State") {
                 window.api("GET",
                     "@Url.Action("GetSiteDistroForState", "Indicators", new {area = "ServerCommunication"})?stateAbbreviation=" +
@@ -598,8 +603,6 @@
         }
 
         function displayData(data) {
-            console.log(data);
-
             if (data.SiteId === 0)
                 return $.gritter.add({
                     title: data.Heading,

@@ -122,8 +122,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 {
                                     RegBioCount = biometricsOnly,
                                     RegBioPercent = (biometricsOnly / Convert.ToDouble(patients)) * 100,
-                                    NewBio = bioStats.Where(x => !x.IsUpdated.Value).Count(),
-                                    UpdatedBio = bioStats.Where(x => x.IsUpdated.Value).Count()
+                                    NewBio = bioStats.Count(x => !x.IsUpdated ?? false),
+                                    UpdatedBio = bioStats.Count(x => x.IsUpdated ?? false)
                                 }
                             }
                         },
@@ -196,7 +196,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                 var changeOverYesterday = 0.0;
                 if (patientsOfPreviousDay != 0)
-                    changeOverYesterday = (((patients.Count - patientsOfPreviousDay) * 100) / patientsOfPreviousDay);
+                    changeOverYesterday = ((patients.Count - patientsOfPreviousDay) * 100) / patientsOfPreviousDay;
                 else
                     changeOverYesterday = 0;
 
@@ -325,7 +325,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 Distro = distro,
                                 Max = distro.FirstOrDefault(z => z.y == distro.Max(y => y.y)),
                                 Min = distro.FirstOrDefault(z => z.y == distro.Min(y => y.y)),
-                                SexDistro = sexDistro
+                                SexDistro = sexDistro,
+                                BadDate = _entities.Patient_PatientInformation.Count(x => x.DateOfBirth == null)
                             }
                         },
                         JsonRequestBehavior.AllowGet);
@@ -378,13 +379,17 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     LocalCache.Get<List<System_State>>(
                         "System_State");
 
+                var totalPopulation = allSitesInStateInCountry.Sum(x => x.PatientPopulation);
+
                 var allPatientInSite = allSitesInStateInCountry
                     .GroupBy(sites => new {sites.SiteId, sites.StateAbbreviation})
                     .Select(grp => new
                     {
                         level = "Site",
                         name = allSites.FirstOrDefault(x => x.Id == grp.Key.SiteId)?.SiteNameOfficial ?? "Unknown",
-                        value = grp.Sum(x => x.PatientPopulation),
+                        value = allSitesInStateInCountry.Where(x =>
+                                x.StateAbbreviation == grp.Key.StateAbbreviation && x.SiteId == grp.Key.SiteId)
+                            .Sum(x => x.PatientPopulation),
                         description =
                             $"{allSites.FirstOrDefault(x => x.Id == grp.Key.SiteId)?.SiteNameOfficial ?? "Unknown"}",
                         state = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key.StateAbbreviation),
@@ -398,7 +403,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         level = "State",
                         name = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key)?.StateName ?? "Unknown",
                         description = states.FirstOrDefault(x => x.StateAbbreviation == grp.Key),
-                        value = grp.Sum(x => x.PatientPopulation),
+                        value = allPatientInSite.Where(x => x.state.StateAbbreviation == grp.Key)
+                            .Sum(x => x.value ?? 0),
                         children = allPatientInSite.Where(x => x.state.StateAbbreviation == grp.Key).ToList()
                     }).ToArray();
 
@@ -408,7 +414,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         {
                             Level = "National",
                             name = "Nigeria",
-                            value = allSitesInStateInCountry.Sum(x => x.PatientPopulation),
+                            value = totalPopulation,
                             children = allSitesInStates
                         },
                         JsonRequestBehavior.AllowGet);

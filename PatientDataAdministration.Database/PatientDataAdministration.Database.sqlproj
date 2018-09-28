@@ -105,6 +105,7 @@
     <Build Include="dbo\Functions\Function_GetPatientNfcRegStatus.sql" />
     <Build Include="dbo\Functions\Function_GetPatientBioRegStatus.sql" />
     <Build Include="dbo\Stored Procedures\Sp_System_Reporting_PopulationDataSite.sql" />
+    <Build Include="dbo\Tables\Administration_Messaging_PatientComplaint.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />

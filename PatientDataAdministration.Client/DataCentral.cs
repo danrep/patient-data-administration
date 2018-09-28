@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using ThreadState = System.Threading.ThreadState;
@@ -335,7 +335,7 @@ namespace PatientDataAdministration.Client
                             Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
                     if (GenerateVersionCode(update.VersionNumber) <=
-                        GenerateVersionCode(ConfigurationManager.AppSettings["appVersion"]))
+                        GenerateVersionCode(AppSetting.Version))
                         return;
 
                     _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
@@ -642,7 +642,11 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                _pingResult = LocalCore.Get($@"/ClientCommunication/Misc/Ping").Result.Status;
+                _pingResult = LocalCore
+                    .Get(
+                        $@"/ClientCommunication/Misc/Ping?clientId={AppSetting.ClientId}&appVersion={
+                                AppSetting.Version
+                            }&currentUserId={_administrationStaffInformation.Id}").Result.Status;
             }
             catch (Exception exception)
             {

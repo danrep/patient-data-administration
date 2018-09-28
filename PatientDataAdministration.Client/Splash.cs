@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
+using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using MessageBox = System.Windows.Forms.MessageBox;
 

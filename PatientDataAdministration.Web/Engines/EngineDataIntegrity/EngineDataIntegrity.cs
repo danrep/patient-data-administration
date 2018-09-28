@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using PatientDataAdministration.Core;
+using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 
@@ -14,6 +15,12 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
 
         public EngineDataIntegrity()
         {
+            if (EngineDuplicatePepId.DataIntegrityPepId == null)
+                EngineDuplicatePepId.DataIntegrityPepId = new List<Sp_System_DataIntegrity_PepId_Result>();
+
+            if (EngineDuplicateBioData.BioDataIntegrityCase == null)
+                EngineDuplicateBioData.BioDataIntegrityCase = new List<BioDataIntegrityCase>();
+
             try
             {
                 if (Tasks == null)
@@ -67,12 +74,20 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
 
         public static bool IsDataIntegrityIssueExist()
         {
-            if (EngineDuplicatePepId.DataIntegrityPepId.Any())
-                return true;
-            else if (EngineDuplicateBioData.BioDataIntegrityCase.Any())
-                return true;
+            try
+            {
+                if (EngineDuplicatePepId.DataIntegrityPepId.Any())
+                    return true;
+                else if (EngineDuplicateBioData.BioDataIntegrityCase.Any())
+                    return true;
 
-            return false;
+                return false;
+            }
+            catch(Exception e)
+            {
+                ActivityLogger.Log(e);
+                return false;
+            }
         }
     }
 

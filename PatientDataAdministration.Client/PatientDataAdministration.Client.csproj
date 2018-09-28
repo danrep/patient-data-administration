@@ -134,7 +134,8 @@
     <Compile Include="InstallerClass.Designer.cs">
       <DependentUpon>InstallerClass.cs</DependentUpon>
     </Compile>
-    <Compile Include="LocalCache.cs" />
+    <Compile Include="LocalSettingStorage\AppSetting.cs" />
+    <Compile Include="LocalSettingStorage\LocalCache.cs" />
     <Compile Include="LocalPDADataSet.cs">
       <DependentUpon>LocalPDADataSet.xsd</DependentUpon>
     </Compile>

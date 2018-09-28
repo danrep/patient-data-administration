@@ -126,7 +126,7 @@ function initializeTree(rawData, elId, callback = null) {
                 .html(function (d) {
                     return '' +
                         '<p class="title"> ' + d.data.name + '</p><p>' +
-                        formatNumber(d.value) +
+                        formatNumber(d.data.value) +
                         '</p>';
                 })
                 .attr("class", "textdiv")
@@ -252,8 +252,8 @@ function initializeTree(rawData, elId, callback = null) {
         function name(d) {
             return breadcrumbs(d) +
                 (d.parent
-                    ? " -  Click to Zoom Out"
-                    : " - Click any Square to Zoom In");
+                    ? " - Click to Zoom Out"
+                    : " - Click any Square to Zoom In. Click Title to see more Information");
         };
 
         function breadcrumbs(d) {

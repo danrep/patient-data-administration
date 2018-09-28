@@ -1133,7 +1133,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\ClientCommunication\ClientCommunicationAreaRegistration.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\BaseClientCommController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\PatientController.cs" />
@@ -1142,7 +1141,7 @@
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\Integration\Controllers\BaseIntegrationController.cs" />
     <Compile Include="Areas\Integration\IntegrationAreaRegistration.cs" />
-    <Compile Include="Areas\Integration\MessagingIngressController.cs" />
+    <Compile Include="Areas\Integration\Controllers\MessagingIngressController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataIntegrityController.cs" />

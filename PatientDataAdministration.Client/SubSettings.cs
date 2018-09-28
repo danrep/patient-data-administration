@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using PatientDataAdministration.Client.LocalSettingStorage;
 
 namespace PatientDataAdministration.Client
 {

@@ -3,6 +3,7 @@ using System.Device.Location;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using MessageBox = System.Windows.Forms.MessageBox;

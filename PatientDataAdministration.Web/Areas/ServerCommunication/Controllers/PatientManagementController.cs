@@ -20,7 +20,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
-                if (string.IsNullOrEmpty(patientSearch.Query.Trim()))
+                if (string.IsNullOrEmpty(patientSearch.Query?.Trim()))
                     return Json(new ResponseData()
                     {
                         Status = false,

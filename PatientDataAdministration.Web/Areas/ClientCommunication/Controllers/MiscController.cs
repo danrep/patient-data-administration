@@ -45,36 +45,25 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     clientId = Request.UserHostAddress;
 
                 var currentUser = currentUsers.FirstOrDefault(x => x.ClientId == clientId);
-                if (currentUser == null)
+                if (currentUser != null)
                 {
-                    currentUser = new System_ClientPulse()
+                    if (DateTime.Now.Subtract(currentUser.CheckInPeriod).TotalSeconds > 1800)
                     {
-                        AppVersion = appVersion,
-                        CheckInPeriod = DateTime.Now,
-                        ClientId = clientId,
-                        IsDeleted = false,
-                        UserId = currentUserId
-                    };
+                        currentUsers.Remove(currentUser);
+                    }
+                }   
 
-                    currentUsers.Add(currentUser);
-                    ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
-                }  
-                else if (DateTime.Now.Subtract(currentUser.CheckInPeriod).TotalSeconds > 1800)
+                currentUser = new System_ClientPulse()
                 {
-                    currentUsers.Remove(currentUser);
-                    currentUser = new System_ClientPulse()
-                    {
-                        AppVersion = appVersion,
-                        CheckInPeriod = DateTime.Now,
-                        ClientId = clientId,
-                        IsDeleted = false,
-                        UserId = currentUserId
-                    };
+                    AppVersion = appVersion,
+                    CheckInPeriod = DateTime.Now,
+                    ClientId = clientId,
+                    IsDeleted = false,
+                    UserId = currentUserId
+                };
 
-                    currentUsers.Add(currentUser);
-                    ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
-                }
-
+                currentUsers.Add(currentUser);
+                ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
                 LocalCache.Set("System_ClientPulse", currentUsers);
 
                 return

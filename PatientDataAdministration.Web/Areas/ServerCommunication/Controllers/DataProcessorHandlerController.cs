@@ -162,7 +162,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                     foreach (DataRow dataRow in table.Rows)
                     {
-                        var pepId = dataRow[2].ToString().Trim();
+                        var pepId = dataRow[2].ToString().Trim().ToUpper();
 
                         if (!pepId.Contains('-'))
                             continue;
@@ -199,7 +199,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         {
                             ActivityLogger.Log("WARN",
                                 $"Error with Record {pepId} in {table.TableName}: Invalid Character found [{dataRow[7]?.ToString().Trim() ?? "null"}]");
-                           dataRow[7] = "...";
+                            dataRow[7] = "...";
                         }
 
                         try
@@ -215,7 +215,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                         HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3]?.ToString().Trim() ?? "NA"),
                                         HouseAddresLga = 0,
                                         HouseAddressState = 0,
-                                        HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9]?.ToString().Trim() ?? "NA"),
+                                        HouseAddress = Transforms.TrimSpacesBetweenString(dataRow.ItemArray.Length < 10 ? "NA" : dataRow[9]?.ToString().Trim() ?? "NA"),
                                         IsDeleted = false,
                                         LastUpdated = DateTime.Now,
                                         MaritalStatus = "",
@@ -224,7 +224,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                         PepId = pepId,
                                         PhoneNumber =
                                             Transforms.NormalizePhoneNumber(
-                                                dataRow[8]?.ToString().Trim() ?? "00000000000"),
+                                                dataRow.ItemArray.Length < 9 ? "NA" : dataRow[8]?.ToString().Trim() ?? "00000000000"),
                                         PreviousId = "",
                                         Sex = dataRow[6]?.ToString().Trim() ?? "female",
                                         SiteId = site.Id,
@@ -244,11 +244,11 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                         patientInformation.DateOfBirth =
                                             Transforms.NormalizeDate(dataRow[7].ToString().Trim().Split(' ')[0].Trim());
                                         patientInformation.HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3].ToString().Trim());
-                                        patientInformation.HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9].ToString().Trim());
+                                        patientInformation.HouseAddress = Transforms.TrimSpacesBetweenString(dataRow.ItemArray.Length < 10 ? "NA" : dataRow[9].ToString().Trim());
                                         patientInformation.LastUpdated = DateTime.Now;
                                         patientInformation.Othername = Transforms.TrimSpacesBetweenString(dataRow[5].ToString().Trim());
                                         patientInformation.PhoneNumber =
-                                            Transforms.NormalizePhoneNumber(dataRow[8].ToString().Trim());
+                                            Transforms.NormalizePhoneNumber(dataRow.ItemArray.Length < 9 ? "NA" : dataRow[8].ToString().Trim());
                                         patientInformation.Sex = dataRow[6].ToString().Trim();
                                         patientInformation.SiteId = site.Id;
                                         patientInformation.Surname = Transforms.TrimSpacesBetweenString(dataRow[4].ToString().Trim());
@@ -273,7 +273,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     HospitalNumber = Transforms.TrimSpacesBetweenString(dataRow[3]?.ToString().Trim() ?? "NA"),
                                     HouseAddresLga = 0,
                                     HouseAddressState = 0,
-                                    HouseAddress = Transforms.TrimSpacesBetweenString(dataRow[9]?.ToString().Trim() ?? "NA"),
+                                    HouseAddress = Transforms.TrimSpacesBetweenString(dataRow.ItemArray.Length < 10 ? "NA" : dataRow[9]?.ToString().Trim() ?? "NA"),
                                     IsDeleted = false,
                                     LastUpdated = DateTime.Now,
                                     MaritalStatus = "",
@@ -282,7 +282,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                     PepId = pepId,
                                     PhoneNumber =
                                         Transforms.NormalizePhoneNumber(
-                                            dataRow[8]?.ToString().Trim() ?? "00000000000"),
+                                            dataRow.ItemArray.Length < 9 ? "NA" : dataRow[8]?.ToString().Trim() ?? "00000000000"),
                                     PreviousId = "",
                                     Sex = dataRow[6]?.ToString().Trim() ?? "female",
                                     SiteId = site.Id,
