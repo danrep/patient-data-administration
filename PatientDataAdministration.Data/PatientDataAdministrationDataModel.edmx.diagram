@@ -23,6 +23,8 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_ReportingLog" Width="1.5" PointX="10.75" PointY="10.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_State" Width="1.5" PointX="0.75" PointY="11.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_Update" Width="1.5" PointX="2.75" PointY="11.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" Width="1.5" PointX="5.375" PointY="11.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataManifest" Width="1.5" PointX="7.375" PointY="11.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -31,12 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0-beta1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -69,7 +67,14 @@
     <Compile Include="Administration_StaffInformation.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Integration_AppointmentDataItem.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Integration_AppointmentDataManifest.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="InterchangeModels\ClientInformation.cs" />
+    <Compile Include="InterchangeModels\IntegrationAppointmentDataIngress.cs" />
     <Compile Include="InterchangeModels\PatientSearch.cs" />
     <Compile Include="InterchangeModels\PatientMatching.cs" />
     <Compile Include="InterchangeModels\PatientInformation.cs" />

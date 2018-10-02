@@ -63,6 +63,8 @@ namespace PatientDataAdministration.Client
             this.bgwPing = new System.ComponentModel.BackgroundWorker();
             this.bgwFreshPatient = new System.ComponentModel.BackgroundWorker();
             this.tmrFreshPatient = new System.Windows.Forms.Timer(this.components);
+            this.bgwSelfServer = new System.ComponentModel.BackgroundWorker();
+            this.bgwContentManager = new System.ComponentModel.BackgroundWorker();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -80,10 +82,11 @@ namespace PatientDataAdministration.Client
             this.lstBoxInfoLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lstBoxInfoLog.ForeColor = System.Drawing.Color.Black;
             this.lstBoxInfoLog.FormattingEnabled = true;
+            this.lstBoxInfoLog.ItemHeight = 17;
             this.lstBoxInfoLog.Location = new System.Drawing.Point(20, 295);
             this.lstBoxInfoLog.Name = "lstBoxInfoLog";
             this.lstBoxInfoLog.ScrollAlwaysVisible = true;
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(557, 106);
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(557, 104);
             this.lstBoxInfoLog.TabIndex = 12;
             // 
             // flowLayoutPanel1
@@ -346,7 +349,7 @@ namespace PatientDataAdministration.Client
             this.lblUserInformation.ForeColor = System.Drawing.Color.White;
             this.lblUserInformation.Location = new System.Drawing.Point(3, 13);
             this.lblUserInformation.Name = "lblUserInformation";
-            this.lblUserInformation.Size = new System.Drawing.Size(0, 15);
+            this.lblUserInformation.Size = new System.Drawing.Size(0, 18);
             this.lblUserInformation.TabIndex = 9;
             // 
             // metroToolTip1
@@ -371,6 +374,7 @@ namespace PatientDataAdministration.Client
             this.bgwUpdatePatient.WorkerReportsProgress = true;
             this.bgwUpdatePatient.WorkerSupportsCancellation = true;
             this.bgwUpdatePatient.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwUpdatePatient_DoWork);
+            this.bgwUpdatePatient.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwUpdatePatient_RunWorkerCompleted);
             // 
             // bgwNewPatient
             // 
@@ -427,9 +431,21 @@ namespace PatientDataAdministration.Client
             this.tmrFreshPatient.Tag = "";
             this.tmrFreshPatient.Tick += new System.EventHandler(this.tmrFreshPatient_Tick);
             // 
+            // bgwSelfServer
+            // 
+            this.bgwSelfServer.WorkerReportsProgress = true;
+            this.bgwSelfServer.WorkerSupportsCancellation = true;
+            this.bgwSelfServer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwSelfServer_DoWork);
+            // 
+            // bgwContentManager
+            // 
+            this.bgwContentManager.WorkerReportsProgress = true;
+            this.bgwContentManager.WorkerSupportsCancellation = true;
+            this.bgwContentManager.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwContentManager_DoWork);
+            // 
             // DataCentral
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 467);
             this.ControlBox = false;
@@ -497,5 +513,7 @@ namespace PatientDataAdministration.Client
         private System.ComponentModel.BackgroundWorker bgwPing;
         private System.ComponentModel.BackgroundWorker bgwFreshPatient;
         private System.Windows.Forms.Timer tmrFreshPatient;
+        private System.ComponentModel.BackgroundWorker bgwSelfServer;
+        private System.ComponentModel.BackgroundWorker bgwContentManager;
     }
 }

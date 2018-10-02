@@ -34,6 +34,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 },
                                 JsonRequestBehavior.AllowGet);
 
+                    administrationSiteInformation.LastUpdate = DateTime.Now;
                     _db.Administration_SiteInformation.Add(administrationSiteInformation);
                 }
                 else

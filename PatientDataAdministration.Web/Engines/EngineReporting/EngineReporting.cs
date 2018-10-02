@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Policy;
 using System.Threading;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -195,9 +198,19 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     case UserRole.StateAdministrator:
                         using (var entity = new Entities())
                         {
-                            users = entity.Administration_StaffInformation
-                                .Where(x => !x.IsDeleted && x.RoleId == (int) role)
-                                .Select(x => x.Email).ToList();
+                            if (siteId == 0)
+                                users = entity.Administration_StaffInformation
+                                    .Where(x => !x.IsDeleted && x.RoleId == (int) role)
+                                    .Select(x => x.Email).ToList();
+                            else
+                            {
+                                var allSites = entity.Administration_SiteInformation.Where(x => x.StateId == siteId)
+                                    .Select(x => x.Id).ToList();
+
+                                users = entity.Administration_StaffInformation
+                                    .Where(x => !x.IsDeleted && x.RoleId == (int) role && allSites.Contains(x.SiteId))
+                                    .Select(x => x.Email).ToList();
+                            }
 
                             foreach (var user in users)
                                 mailingList += $"{user};";
@@ -233,12 +246,12 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
             {
                 using (var entity = new Entities())
                 {
-                    var siteIds = entity.Administration_SiteInformation.Where(x => !x.IsDeleted).Select(x => x.Id)
+                    var stateIds = entity.System_State.Where(x => !x.IsDeleted).Select(x => x.Id)
                         .ToList();
 
-                    foreach (var siteId in siteIds)
+                    foreach (var stateId in stateIds)
                     {
-                        SyncComplianceSite(siteId);
+                        SyncComplianceState(stateId);
                     }
                 }
 
@@ -253,7 +266,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
             }
         }
 
-        private static void SyncComplianceSite(int siteId)
+        private static void SyncComplianceState(int stateId)
         {
             try
             {
@@ -261,37 +274,74 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                 {
                     entity.Database.CommandTimeout = 0;
 
-                    var dateLimit = DateTime.Now.Date.AddDays(-3);
-
-                    var site = entity.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId);
-                    if (site == null)
+                    var sitesInState = entity.Administration_SiteInformation.Where(x => x.StateId == stateId).ToList();
+                    if (!sitesInState.Any())
                         return;
 
-                    var state = entity.System_State.FirstOrDefault(x => x.Id == site.StateId);
+                    var state = entity.System_State.FirstOrDefault(x => x.Id == stateId);
                     if (state == null)
                         return;
 
-                    if (entity.Patient_PatientInformation.Any(x =>
-                        !x.IsDeleted && x.SiteId == siteId && DbFunctions.TruncateTime(x.LastUpdated) >= dateLimit))
-                        return;
-
-                    if (!entity.Administration_StaffInformation.Any(x =>
-                        x.SiteId == siteId && x.RoleId == (int) UserRole.SiteAdministrator && !x.IsDeleted))
-                        return;
-
-                    var msg = "Dear Administrators<br />";
+                    var msg = "Dear State Administrator(s)<br />";
                     msg +=
-                        $"Its been a while since any data was received from your site <b>{site.SiteNameOfficial}</b> in {state.StateName} State. ";
-                    msg += $"It is imperative that you initiate a sync as soon as possible.";
+                        $"Its been a while since any data was received from some sites in <b>{state.StateName} State</b>.<br/><br/>";
 
-                    Core.Messaging.SendMail(GetMailingList(UserRole.SiteAdministrator, siteId),
-                        GetMailingList(UserRole.StateAdministrator) + GetMailingList(UserRole.CountryAdministrator),
-                        null, "Operation Compliance Alert", msg, null);
+                    var innerMsg = "";
+                    foreach (var site in sitesInState)
+                    {
+                        innerMsg += GetSiteInformation(site);
+                    }
+                    
+                    msg += innerMsg + $"Kindly assist by looking them up.";
+
+                    if (!string.IsNullOrEmpty(innerMsg))
+                        Core.Messaging.SendMail(GetMailingList(UserRole.StateAdministrator, stateId),
+                            GetMailingList(UserRole.CountryAdministrator),
+                            null, "Operation Compliance Alert", msg, null);
                 }
             }
             catch (Exception e)
             {
                 ActivityLogger.Log(e);
+            }
+        }
+
+        private static string GetSiteInformation(Administration_SiteInformation site)
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    var dateLimit = DateTime.Now.Date.AddDays(-3);
+
+                    if (entity.Patient_PatientInformation.Any(x =>
+                        !x.IsDeleted && x.SiteId == site.Id && DbFunctions.TruncateTime(x.LastUpdated) >= dateLimit))
+                        return string.Empty;
+
+                    var siteAdmins = entity.Administration_StaffInformation.Where(x =>
+                        x.SiteId == site.Id && x.RoleId == (int) UserRole.SiteAdministrator && !x.IsDeleted).ToList();
+                    if (!siteAdmins.Any())
+                        return string.Empty;
+
+                    var content = "";
+                    content +=
+                        $"<b>{site.SiteNameOfficial}:</b> Last Known Communication: {entity.Patient_PatientInformation.Where(x => !x.IsDeleted && x.SiteId == site.Id).OrderByDescending(x => x.LastUpdated).Take(1).FirstOrDefault()?.LastUpdated:MMMM dd, yyyy hh:mm tt}<br/>";
+                    content += "Contact Information of Site Adminsitrator(s)<br />";
+
+                    foreach (var siteAdmin in siteAdmins)
+                    {
+                        content += $"{siteAdmin.FirstName} {siteAdmin.Surname} ({siteAdmin.PhoneNumber})<br />";
+                    }
+
+                    content += "<br/>";
+
+                    return content;
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return string.Empty;
             }
         }
 

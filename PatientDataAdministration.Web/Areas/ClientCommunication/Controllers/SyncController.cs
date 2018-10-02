@@ -1,6 +1,7 @@
 ﻿using PatientDataAdministration.Data;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -189,6 +190,47 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                             Message = $"Found {sites.Count} LGAs",
                             Data = sites
                         }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult ClientPushAppointmentData(
+            IntegrationAppointmentDataIngressPayLoad integrationAppointmentDataIngressPayLoad)
+        {
+            try
+            {
+                var manifest = new Integration_AppointmentDataManifest()
+                {
+                    ClientId = integrationAppointmentDataIngressPayLoad.ClientId,
+                    SiteId = integrationAppointmentDataIngressPayLoad.SiteId,
+                    DateLog = DateTime.Now,
+                    IsDeleted = false,
+                    UserId = integrationAppointmentDataIngressPayLoad.UserId
+                };
+                _entities.Integration_AppointmentDataManifest.Add(manifest);
+                _entities.SaveChanges();
+
+                _entities.Integration_AppointmentDataItem.AddRange(
+                    integrationAppointmentDataIngressPayLoad.IntegrationAppointmentDataIngresses.Select(item =>
+                        new Integration_AppointmentDataItem()
+                        {
+                            IsDeleted = false,
+                            AppointmentData = Newtonsoft.Json.JsonConvert.SerializeObject(item.AppointmentData),
+                            AppointmentDataManifestId = manifest.Id,
+                            AppointmentOffice = item.AppointmentOffice,
+                            DateAppointment = DateTime.ParseExact(item.AppointmentDate, "yyyy-MM-dd",
+                                CultureInfo.InvariantCulture),
+                            DateVisit = DateTime.ParseExact(item.VisitDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                            PepId = item.PepId
+                        }));
+                _entities.SaveChanges();
+
+                return
+                    Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

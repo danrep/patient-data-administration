@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web.Http;
+using System.Web.Http.SelfHost;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -23,23 +27,20 @@ namespace PatientDataAdministration.Client
         private bool _killCommandReceived;
         private bool _pingResult;
 
-        private Administration_StaffInformation _administrationStaffInformation;
-        private System_SiteData _systemSiteData;
+        private readonly Administration_StaffInformation _administrationStaffInformation;
+        private readonly System_SiteData _systemSiteData;
+
+        private static List<OperationQueue> _operationQueue;
+
         private SubInformationManagement _subInfoMan;
-
+        private HttpSelfHostServer _selfServer;
         private Process _process = new Process();
-        private static List<OperationQueue> _operationQueue = new List<OperationQueue>();
-
-        private static int GenerateVersionCode(string version)
-        {
-            return Convert.ToInt32(version.Replace(".", "").Replace("v", "").Trim());
-        }
 
         public DataCentral(Administration_StaffInformation administrationStaffInformation)
         {
             InitializeComponent();
+            _operationQueue = new List<OperationQueue> {new OperationQueue() {Param = "PDA Initializing"}};
 
-            _operationQueue.Add(new OperationQueue() { Param = "PDA Initializing" });
             this._administrationStaffInformation = administrationStaffInformation;
 
             this._systemSiteData = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
@@ -59,15 +60,69 @@ namespace PatientDataAdministration.Client
             SiteInfo();
         }
 
+        private void DataCentral_Load(object sender, EventArgs e)
+        {
+            lblUserInformation.Text = @"Welcome, " +
+                                      _administrationStaffInformation.Surname + @" " +
+                                      _administrationStaffInformation.FirstName +
+                                      @". You are attached to " +
+                                     _systemSiteData.SiteNameOfficial;
+        }
+
+        private void DataCentral_Shown(object sender, EventArgs e)
+        {
+            try
+            {
+                ExecuteSync();
+
+                _operationQueue.Add(new OperationQueue() { Param = "Initializing Patient Data Management" });
+                _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
+                _operationQueue.Add(new OperationQueue() { Param = "Patient Data Management Initialization Complete" });
+
+                btnSync.Visible = !_onDemandSyncEnabled;
+
+                _operationQueue.Add(new OperationQueue() { Param = "Starting Patient Data Pre Load" });
+                _subInfoMan.UpdatePersistedData();
+
+                CheckForUpdates();
+
+                new Thread(() =>
+                {
+                    while (_subInfoMan.UpdatePersistenceStatus == ThreadState.Running)
+                    {
+
+                    }
+                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
+                }).Start();
+
+                _operationQueue.Add(new OperationQueue() { Param = "Starting Application Server" });
+                bgwSelfServer.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
+            }
+        }
+
+        private void DataCentral_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //
+        }
+
+
         private void btnClose_Click(object sender, EventArgs e)
         {
             try
             {
+                _selfServer.CloseAsync();
+                
                 _onDemandSyncEnabled = false;
                 _killCommandReceived = true;
 
                 bgwNewPatient.CancelAsync();
                 bgwUpdatePatient.CancelAsync();
+                bgwSelfServer.CancelAsync();
 
                 this.Close();
             }
@@ -77,18 +132,13 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void DataCentral_FormClosing(object sender, FormClosingEventArgs e)
+        private void btnSync_Click(object sender, EventArgs e)
         {
-            //
-        }
+            _killCommandReceived = false;
+            SiteInfo();
+            InitiateSync();
 
-        private void DataCentral_Load(object sender, EventArgs e)
-        {
-            lblUserInformation.Text = @"Welcome, " +
-                                      _administrationStaffInformation.Surname + @" " +
-                                      _administrationStaffInformation.FirstName +
-                                      @". You are attached to " +
-                                     _systemSiteData.SiteNameOfficial;
+            CheckForUpdates();
         }
 
         private void btnPatientManagement_Click(object sender, EventArgs e)
@@ -104,6 +154,24 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void btnCancelSync_Click(object sender, EventArgs e)
+        {
+            _killCommandReceived = true;
+
+            bgwNewPatient.CancelAsync();
+            bgwUpdatePatient.CancelAsync();
+
+            _isSyncNewInProgress = _isSyncUpdateInProgress = false;
+
+            _subInfoMan.UpdatePersistedData();
+        }
+
+        private void btnProfile_Click(object sender, EventArgs e)
+        {
+            //
+        }
+
+
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
             picConnectionAvailable.Visible = _pingResult;
@@ -114,6 +182,11 @@ namespace PatientDataAdministration.Client
 
             if (_isSyncUpdateInProgress)
                 picSyncInProcess.Visible = _isSyncUpdateInProgress;
+        }
+
+        private void tmrSync_Tick(object sender, EventArgs e)
+        {
+            ExecuteSync();
         }
 
         private void tmrPostInfoLogs_Tick(object sender, EventArgs e)
@@ -159,6 +232,34 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void tmrCheckConnection_Tick(object sender, EventArgs e)
+        {
+            if (!bgwPing.IsBusy)
+                bgwPing.RunWorkerAsync();
+        }
+
+        private void tmrLaunchUpdate_Tick(object sender, EventArgs e)
+        {
+            if (_process.HasExited)
+            {
+                _operationQueue.Add(new OperationQueue() { Param = $"Download of New Update is complete." });
+                picIndUpdate.Visible = false;
+                tmrLaunchUpdate.Enabled = false;
+            }
+        }
+
+        private void tmrFreshPatient_Tick(object sender, EventArgs e)
+        {
+            if (!bgwFreshPatient.IsBusy)
+                bgwFreshPatient.RunWorkerAsync();
+        }
+
+
+        private static int GenerateVersionCode(string version)
+        {
+            return Convert.ToInt32(version.Replace(".", "").Replace("_", "").Replace("v", "").Trim());
+        }
+
         private void InitiateSync()
         {
             try
@@ -183,11 +284,6 @@ namespace PatientDataAdministration.Client
                 return;
 
             InitiateSync();
-        }
-
-        private void tmrSync_Tick(object sender, EventArgs e)
-        {
-            ExecuteSync();
         }
 
         private void SaveUpdate(PatientInformation patientInformation)
@@ -263,60 +359,6 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void tmrCheckConnection_Tick(object sender, EventArgs e)
-        {
-            if (!bgwPing.IsBusy)
-                bgwPing.RunWorkerAsync();
-        }
-
-        private void btnProfile_Click(object sender, EventArgs e)
-        {
-            //
-        }
-
-        private void tmrLaunchUpdate_Tick(object sender, EventArgs e)
-        {
-            if (_process.HasExited)
-            {
-                _operationQueue.Add(new OperationQueue() { Param = $"Download of New Update is complete." });
-                picIndUpdate.Visible = false;
-                tmrLaunchUpdate.Enabled = false;
-            }
-        }
-
-        private void DataCentral_Shown(object sender, EventArgs e)
-        {
-            try
-            {
-                ExecuteSync();
-
-                _operationQueue.Add(new OperationQueue() { Param = "Initializing Patient Data Management" });
-                _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
-                _operationQueue.Add(new OperationQueue() { Param = "Patient Data Management Initialization Complete" });
-
-                btnSync.Visible = !_onDemandSyncEnabled;
-                
-                _operationQueue.Add(new OperationQueue(){Param = "Starting Patient Data Pre Load"});
-                _subInfoMan.UpdatePersistedData();
-
-                CheckForUpdates();
-
-                new Thread(() =>
-                {
-                    while (_subInfoMan.UpdatePersistenceStatus == ThreadState.Running)
-                    {
-
-                    }
-                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
-                }).Start();
-            }
-            catch (Exception ex)
-            {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
-            }
-        }
-
         private void CheckForUpdates()
         {
             try
@@ -368,15 +410,6 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void btnSync_Click(object sender, EventArgs e)
-        {
-            _killCommandReceived = false;
-            SiteInfo();
-            InitiateSync();
-
-            CheckForUpdates();
-        }
-
         public void SiteInfo()
         {
             _operationQueue.Add(new OperationQueue()
@@ -384,6 +417,7 @@ namespace PatientDataAdministration.Client
                 Param = $"Current Site is {_systemSiteData.SiteNameOfficial}"
             });
         }
+
 
         private void bgwNewPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
@@ -613,18 +647,6 @@ namespace PatientDataAdministration.Client
             _isSyncUpdateInProgress = false;
         }
 
-        private void btnCancelSync_Click(object sender, EventArgs e)
-        {
-            _killCommandReceived = true;
-
-            bgwNewPatient.CancelAsync();
-            bgwUpdatePatient.CancelAsync();
-
-            _isSyncNewInProgress = _isSyncUpdateInProgress = false;
-
-            _subInfoMan.UpdatePersistedData();
-        }
-
         private void bgwNewPatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             try
@@ -644,8 +666,8 @@ namespace PatientDataAdministration.Client
             {
                 _pingResult = LocalCore
                     .Get(
-                        $@"/ClientCommunication/Misc/Ping?clientId={AppSetting.ClientId}&appVersion={
-                                AppSetting.Version
+                        $@"/ClientCommunication/Misc/Ping?clientId={AppSetting.ClientId.ToUpper()}&appVersion={
+                                AppSetting.Version.Replace('.', '_')
                             }&currentUserId={_administrationStaffInformation.Id}").Result.Status;
             }
             catch (Exception exception)
@@ -692,10 +714,112 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void tmrFreshPatient_Tick(object sender, EventArgs e)
+        private void bgwSelfServer_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if (!bgwFreshPatient.IsBusy)
-                bgwFreshPatient.RunWorkerAsync();
+            try
+            {
+                var config = new HttpSelfHostConfiguration("http://localhost:8000");
+
+                config.Routes.MapHttpRoute(
+                    "API Default", "api/{controller}/{id}",
+                    new { controller = "Home", id = RouteParameter.Optional });
+
+                _selfServer = new HttpSelfHostServer(config);
+                _selfServer.OpenAsync().Wait();
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Local Server Operation Encountered an Error. " + ex.ToString()
+                });
+            }
+        }
+
+        private void bgwContentManager_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            try
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Initiating Synchronization Task: 3rd Party Data >> Appointment Data"
+                });
+
+                var readyFiles = new DirectoryInfo(AppSetting.PathAppointmentDataIngress)
+                    .EnumerateFiles().ToList();
+
+                foreach (var readyFile in readyFiles)
+                {
+                    try
+                    {
+                        var fileData =
+                            JsonConvert.DeserializeObject<List<IntegrationAppointmentDataIngress>>(
+                                File.ReadAllText(readyFile.FullName));
+
+                        var integrationAppointmentDataIngressPayLoad = new IntegrationAppointmentDataIngressPayLoad()
+                        {
+                            SiteId = _systemSiteData.RemoteSiteId,
+                            IntegrationAppointmentDataIngresses = fileData,
+                            UserId = _administrationStaffInformation.Id,
+                            ClientId = AppSetting.ClientId
+                        };
+
+                        var result = LocalCore.Post(@"/ClientCommunication/Sync/ClientPushAppointmentData",
+                            JsonConvert.SerializeObject(integrationAppointmentDataIngressPayLoad));
+
+                        if (result.Status)
+                        {
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"File {readyFile.Name} has been uploaded Successfully"
+                            });
+
+                            File.Delete(readyFile.FullName);
+                        }
+                        else
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"File {readyFile.Name} Failed this time. Reason: {result.Message}"
+                            });
+                    }
+                    catch (Exception exception)
+                    {
+                        LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param = $"File {readyFile.Name} Failed this time. Reason: {exception.ToString()}"
+                        });
+                    }
+                }
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Completing Synchronization Task: 3rd Party Data >> Appointment Data"
+                });
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Content Manager Encountered an Error. " + ex.ToString()
+                });
+            }
+        }
+
+        private void bgwUpdatePatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (!bgwContentManager.IsBusy)
+                    bgwContentManager.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
         }
     }
 }
