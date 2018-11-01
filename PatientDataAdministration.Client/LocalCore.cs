@@ -48,6 +48,8 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        #region Remote Processors
+
         public static async Task<ResponseData> Get(string url)
         {
             try
@@ -59,7 +61,7 @@ namespace PatientDataAdministration.Client
                     client.BaseAddress =
                         new Uri(
                             _pdaEntities.System_Setting.FirstOrDefault(
-                                x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "");
+                                x => x.SettingKey == (int) EnumLibrary.SyncMode.RemoteApi)?.SettingValue ?? "");
 
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(
@@ -97,14 +99,14 @@ namespace PatientDataAdministration.Client
             try
             {
                 _pdaEntities = new LocalPDAEntities();
-                var request = (HttpWebRequest) WebRequest.Create((_pdaEntities.System_Setting.FirstOrDefault(
-                                                                          x => x.SettingKey ==
-                                                                               (int) EnumLibrary.SettingKey.RemoteApi)
-                                                                      ?.SettingValue ?? "") + url);
+                var request = (HttpWebRequest) WebRequest.Create(
+                    (_pdaEntities.System_Setting
+                         .FirstOrDefault(x => x.SettingKey == (int) EnumLibrary.SyncMode.RemoteApi)?.SettingValue ??
+                     "") + url);
 
                 request.Method = "POST";
                 request.Credentials = CredentialCache.DefaultCredentials;
-                ((HttpWebRequest) request).UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
+                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
 
                 var byteArray = Encoding.UTF8.GetBytes(payload);
 
@@ -137,6 +139,49 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        public static bool PostLocal(string url, string payload)
+        {
+            try
+            {
+                _pdaEntities = new LocalPDAEntities();
+                var request = (HttpWebRequest)WebRequest.Create(url);
+
+                request.Method = "POST";
+                request.Credentials = CredentialCache.DefaultCredentials;
+                request.UserAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
+
+                var byteArray = Encoding.UTF8.GetBytes(payload);
+
+                request.ContentType = "application/json; charset=utf-8";
+                request.ContentLength = byteArray.Length;
+
+                var dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                var response = request.GetResponse();
+                dataStream = response.GetResponseStream();
+
+                var reader = new StreamReader(dataStream);
+                var responseFromServer = reader.ReadToEnd();
+
+                reader.Close();
+                dataStream.Close();
+                response.Close();
+
+                return responseFromServer.Contains("200");
+            }
+            catch (Exception e)
+            {
+                TreatError(e);
+                return false;
+            }
+        }
+
+        #endregion
+
+        #region Database Management
+
         public static SqlConnection GetLocalDb(string dbName, bool deleteIfExists = false)
         {
             try
@@ -155,14 +200,14 @@ namespace PatientDataAdministration.Client
                         File.Delete(dbFileName);
                     }
 
-                    CreateDatabase(dbName, dbFileName);
+                    CreatePrimaryDatabase(dbName, dbFileName);
                 }
 
                 // If the database does not already exist, create it.
                 if (!File.Exists(dbFileName))
                 {
                     DropDatabase(dbFileName);
-                    CreateDatabase(dbName, dbFileName);
+                    CreatePrimaryDatabase(dbName, dbFileName);
                 }
 
                 // Open newly created, or old database.
@@ -176,26 +221,13 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private static void CreateDatabase(string dbName, string dbFileName)
+        private static void CreatePrimaryDatabase(string dbName, string dbFileName)
         {
             try
             {
-                var connectionString =
-                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
+                RunDatabaseSript(dbName, Properties.Resources.DatabaseInstallScript);
 
-                    var installCmd = connection.CreateCommand();
-                    installCmd.CommandText = ScriptClean(Properties.Resources.DatabaseInstallScript);
-                    installCmd.ExecuteNonQuery();
-
-                    DetachDatabase(dbName);
-
-                    var migrateCmd = connection.CreateCommand();
-                    migrateCmd.CommandText = ScriptClean(Properties.Resources.DatabaseMigrateScript);
-                    migrateCmd.ExecuteNonQuery();
-                }
+                RunDatabaseSript(dbName, Properties.Resources.DatabaseMigrateScript);
 
                 if (File.Exists(dbFileName))
                     return;
@@ -205,6 +237,30 @@ namespace PatientDataAdministration.Client
             catch
             {
                 throw;
+            }
+        }
+
+        public static void RunDatabaseSript(string dbName, string scriptText)
+        {
+            try
+            {
+                const string connectionString =
+                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    DetachDatabase(dbName);
+
+                    var migrateCmd = connection.CreateCommand();
+                    migrateCmd.CommandText = ScriptClean(scriptText);
+                    migrateCmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                //
             }
         }
 
@@ -262,6 +318,8 @@ namespace PatientDataAdministration.Client
                 return;
             }
         }
+
+        #endregion
 
         public static GeoCoordinate GetLocationProperty()
         {

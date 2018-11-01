@@ -344,6 +344,7 @@ namespace PatientDataAdministration.Client
                     _systemBioDataStore.NfcUid = _nfcUid ?? "";
                     _systemBioDataStore.PrimaryFinger = _bioDataPrimary ?? "";
                     _systemBioDataStore.SecondaryFinger = _bioDataSecondary ?? "";
+                    _systemBioDataStore.IsLocalPush = false;
 
                     _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
                 }
@@ -719,6 +720,7 @@ namespace PatientDataAdministration.Client
         {
             NfcTag tag = null;
             string msg = null;
+
             try
             {
                 if (NfcTagType2.RecognizeAtr(_cardchannel))

@@ -44,6 +44,8 @@
     <Compile Include="Dictionary\EnumDictionary.cs" />
     <Compile Include="FileProcessingMethod.cs" />
     <Compile Include="DataIntegrityIssue.cs" />
+    <Compile Include="OperationType.cs" />
+    <Compile Include="BiometricIntegrity.cs" />
     <Compile Include="ReportingType.cs" />
     <Compile Include="RecurrenceInterval.cs" />
     <Compile Include="ActionTypeDataIntegrity.cs" />

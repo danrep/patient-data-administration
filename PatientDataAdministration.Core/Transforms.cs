@@ -103,20 +103,11 @@ namespace PatientDataAdministration.Core
             var intervalText = "";
             switch ((RecurrenceInterval)inverval)
             {
-                case RecurrenceInterval.BiAnnual:
-                    intervalText = "Bi-Annual";
-                    break;
                 case RecurrenceInterval.Month:
                     intervalText = "Monthly";
                     break;
-                case RecurrenceInterval.Week:
-                    intervalText = "Weekly";
-                    break;
                 case RecurrenceInterval.Day:
                     intervalText = "Daily";
-                    break;
-                case RecurrenceInterval.Querterly:
-                    intervalText = "Querterly";
                     break;
                 case RecurrenceInterval.Year:
                     intervalText = "Yearly";
@@ -132,6 +123,19 @@ namespace PatientDataAdministration.Core
                 .GroupBy(x => x.Index / chunkSize)
                 .Select(x => x.Select(v => v.Value).ToList())
                 .ToList();
+        }
+
+        public static string FormatPhoneNumber(string phoneNumber)
+        {
+            if (string.IsNullOrEmpty(phoneNumber))
+                return "2340000000000";
+
+            if (phoneNumber.Length == 10 && phoneNumber[0] != '0')
+                phoneNumber =  "234" + phoneNumber;
+            if (phoneNumber.Length == 11 && phoneNumber[0] == '0')
+                phoneNumber = "234" + phoneNumber.Substring(1);
+            
+            return phoneNumber;
         }
     }
 }

@@ -64,10 +64,11 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
                 var collection = new NameValueCollection {{"authorization", "Basic Q29kZXNpc3RhbmNlOnNreVJ1bm4zcg=="}};
                 var response = RemoteRequest.RequestPost(url, Newtonsoft.Json.JsonConvert.SerializeObject(new
                 {
-                    from = "CloudPortal",
+                    from = "StayHealthy",
                     to = destination,
                     text = message
                 }), collection);
+
                 ActivityLogger.Log("MSG_PROC_INFOBIP", Newtonsoft.Json.JsonConvert.SerializeObject(response));
             }
             catch (Exception e)

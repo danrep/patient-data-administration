@@ -15,9 +15,8 @@ namespace PatientDataAdministration.Data
     public partial class System_OperationLog
     {
         public long Id { get; set; }
-        public int OperationProcessId { get; set; }
-        public int IntervalId { get; set; }
         public int OperationId { get; set; }
+        public int IntervalId { get; set; }
         public System.DateTime OperationDate { get; set; }
         public bool IsCurrent { get; set; }
         public bool IsDeleted { get; set; }

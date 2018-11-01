@@ -5,6 +5,9 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using PatientDataAdministration.Client.LocalSettingStorage;
+using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
+using Exception = System.Exception;
 
 namespace PatientDataAdministration.Client
 {
@@ -34,14 +37,14 @@ namespace PatientDataAdministration.Client
                 #region Connection Setting
                 
                 var currentRemoteApiSetting =
-                    _systemSettings.FirstOrDefault(x => x.SettingKey == (int) EnumLibrary.SettingKey.RemoteApi);
+                    _systemSettings.FirstOrDefault(x => x.SettingKey == (int) EnumLibrary.SyncMode.RemoteApi);
 
                 if (currentRemoteApiSetting == null)
                 {
                     _localPdaEntities.System_Setting.Add(new System_Setting()
                     {
                         IsDeleted = false,
-                        SettingKey = (int)EnumLibrary.SettingKey.RemoteApi,
+                        SettingKey = (int)EnumLibrary.SyncMode.RemoteApi,
                         DateReceived = DateTime.Now,
                         SettingValue = string.Empty
                     });
@@ -53,13 +56,13 @@ namespace PatientDataAdministration.Client
                 }
                 _localPdaEntities.SaveChanges();
 
-                var currentOnDemandSync = _systemSettings.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SettingKey.OnDemandSync);
+                var currentOnDemandSync = _systemSettings.FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SyncMode.OnDemandSync);
                 if (currentOnDemandSync == null)
                 {
                     _localPdaEntities.System_Setting.Add(new System_Setting()
                     {
                         IsDeleted = false,
-                        SettingKey = (int)EnumLibrary.SettingKey.RemoteApi,
+                        SettingKey = (int)EnumLibrary.SyncMode.RemoteApi,
                         DateReceived = DateTime.Now,
                         SettingValue = chkCurrentOnDemandSync.Checked.ToString()
                     });
@@ -94,11 +97,11 @@ namespace PatientDataAdministration.Client
 
                 txtRemoteApi.Text =
                     _systemSettings.FirstOrDefault(
-                        x => x.SettingKey == (int)EnumLibrary.SettingKey.RemoteApi)?.SettingValue ?? "No URL Set";
+                        x => x.SettingKey == (int)EnumLibrary.SyncMode.RemoteApi)?.SettingValue ?? "No URL Set";
 
                 chkCurrentOnDemandSync.Checked = Convert.ToBoolean(_systemSettings.FirstOrDefault(
                                                                            x => x.SettingKey ==
-                                                                               (int) EnumLibrary.SettingKey.OnDemandSync)
+                                                                               (int) EnumLibrary.SyncMode.OnDemandSync)
                                                                        ?.SettingValue ?? "false");
 
                 lblInformation.Text = @"Done Loading Settings";
@@ -125,7 +128,10 @@ namespace PatientDataAdministration.Client
             {
                 // TODO: This line of code loads data into the 'localPDADataSet.System_State' table. You can move, or remove it, as needed.
                 this.system_StateTableAdapter.Fill(this.localPDADataSet.System_State);
+
                 LoadCurrentSite();
+
+                LoadEndPoints();
             }
             catch (Exception exception)
             {
@@ -279,6 +285,20 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void LoadEndPoints()
+        {
+            try
+            {
+                cmbEndPoint.DataSource = EnumDictionary.GetList<LocalEndPoint>();
+                cmbEndPoint.DisplayMember = "ItemName";
+                cmbEndPoint.ValueMember = "ItemId";
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+            }
+        }
+
         private void LoadCurrentSite()
         {
             var current = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent);
@@ -291,6 +311,78 @@ namespace PatientDataAdministration.Client
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSaveEndPoints_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtBoxEndpointUrl.Text.Trim()))
+                {
+                    lblInformation.Text = @"Please Enter a URL";
+                    Application.DoEvents();
+                    return;
+                }
+
+                if (!CheckUrlValid(txtBoxEndpointUrl.Text.Trim()))
+                {
+                    lblInformation.Text = @"Please enter a valid URL";
+                    return;
+                }
+
+                using (var localEntities = new LocalPDAEntities())
+                {
+                    var selectedValue = Convert.ToInt32(cmbEndPoint.SelectedValue.ToString());
+                    var currentSettings =
+                        localEntities.System_EndPointLog.FirstOrDefault(x => x.EndPointId == selectedValue);
+
+                    if (currentSettings == null)
+                    {
+                        currentSettings = new System_EndPointLog()
+                        {
+                            EndPointId = selectedValue, 
+                            EndPointUrl = txtBoxEndpointUrl.Text.Trim(), 
+                            IsDeleted = false
+                        };
+                        localEntities.System_EndPointLog.Add(currentSettings);
+                    }
+                    else
+                    {
+                        currentSettings.EndPointUrl = txtBoxEndpointUrl.Text.Trim();
+                        localEntities.Entry(currentSettings).State = EntityState.Modified;
+                    }
+
+                    localEntities.SaveChanges();
+                    lblInformation.Text = @"Url Updated Sucessfully";
+                }
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+            }
+        }
+
+        public static bool CheckUrlValid(string source)
+        {
+            return Uri.TryCreate(source, UriKind.Absolute, out var uriResult);
+        }
+
+        private void cmbEndPoint_SelectedValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var entities = new LocalPDAEntities())
+                {
+                    var endPointId = Convert.ToInt32(cmbEndPoint.SelectedValue.ToString());
+
+                    txtBoxEndpointUrl.Text = entities.System_EndPointLog.FirstOrDefault(x => x.EndPointId == endPointId)
+                                                 ?.EndPointUrl ?? "";
+                }
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+            }
         }
     }
 }

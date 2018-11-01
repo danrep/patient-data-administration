@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using PatientDataAdministration.Core;
 using SecuGen.SecuSearchSDK3;
 
@@ -33,11 +34,12 @@ namespace Codesistance.UniqueBioSearchSecugen
             {
                 CandidateCount = 10,
                 Concurrency = 0,
-                EnableRotation = true
+                EnableRotation = true,
+                LicenseFile = "license.dat"
             };
 
             // license file - Ask SecuGen with your volume number which bin\VolNoReader.exe returns.
-            //param.LicenseFile = "./license.dat";
+            // param.LicenseFile = "./license.dat";
 
             SSError error = SSearch.InitializeEngine(param);
             switch (error)
@@ -70,6 +72,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             if (!Initialized)
                 return;
 
+            SSearch.ClearFPDB();
             SSearch.TerminateEngine();
             Initialized = false;
         }
@@ -78,6 +81,8 @@ namespace Codesistance.UniqueBioSearchSecugen
         {
             if (!Initialized)
                 Initialize();
+
+            ActivityLogger.Log("INFO", $"Version ==> {SSearch.GetVersion()}");
 
             ActivityLogger.Log("INFO", $"Loaded {patientData.Count}");
             var loaded = SearchModel.Load(patientData);
@@ -93,7 +98,7 @@ namespace Codesistance.UniqueBioSearchSecugen
 
         private SSError RegisterSearchModel()
         {
-            ActivityLogger.Log("INFO", "Registering templates ...>>>");
+            ActivityLogger.Log("INFO", "Registering Templates");
             var error = SSError.NONE;
 
             for (var i = 0; i < SearchModel.Size; i++)
@@ -103,112 +108,86 @@ namespace Codesistance.UniqueBioSearchSecugen
                 error = SSearch.RegisterFP(templateBuff, templateId);
                 if (error != SSError.NONE)
                 {
-                    break;
                 }
             }
 
             int fpCount = 0;
             error = SSearch.GetFPCount(ref fpCount);
-            Debug.Assert(error == SSError.NONE);
-            
-            ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
-
-            return error;
-        }
-        
-        private SSError RegisterSearchModelBatch()
-        {
-            int fpCountBefore = 0, fpCount = 0;
-
-            var error = SSearch.GetFPCount(ref fpCountBefore);
-            Debug.Assert(error == SSError.NONE);
-
-            ActivityLogger.Log("INFO", "Registering templates in Batches");
-            const int batchCount = 1000;
-            var pairs = new SSIdTemplatePair[batchCount];
-            var i = 0;
-
-            while (i < SearchModel.Size)
-            {
-                int k;
-                for (k = 0; k < batchCount && i < SearchModel.Size; k++, i++)
-                {
-                    pairs[k].Id = (uint)i;
-                    pairs[k].Template = SearchModel.GetTemplate(i).TemplatesBuffer;
-                }
-                error = SSearch.RegisterFPBatch(pairs, k);
-                if (error != SSError.NONE)
-                {
-                    break;
-                }
-            }
-
-            error = SSearch.GetFPCount(ref fpCount);
 
             ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
 
             return error;
         }
 
-        public bool Process()
+        public List<MatchModel> Process()
         {
             if (!Initialized)
-                return false;
+                return null;
 
-            var error = SSError.NONE;
+            var matchModels = new List<MatchModel>();
 
-            Console.WriteLine("API version: {0}\n", SSearch.GetVersion());
-
-            // Read template files
-            // Register
-            error = RegisterSearchModel();
-            Debug.Assert(error == SSError.NONE);
-
-            // how many templates in mdb
-            var templateSearchModelSize = SearchModel.Size;
-
-            // how many templates in secusearch
-            var fpCount = 0;
-            error = SSearch.GetFPCount(ref fpCount);
-            Debug.Assert(error == SSError.NONE);
-
-            // List IDs of templates registered
-            var idList = new List<uint>();
-            error = SSearch.GetIDList(idList);
-
-            foreach (var id in idList)
+            try
             {
-                Console.WriteLine("id = {0}", id);
+                var error = SSError.NONE;
+
+                // Read template files
+                // Register
+                error = RegisterSearchModel();
+
+                // how many templates in mdb
+                var templateSearchModelSize = SearchModel.Size;
+
+                // how many templates in secusearch
+                var fpCount = 0;
+                error = SSearch.GetFPCount(ref fpCount);
+
+                // List IDs of templates registered
+                var idList = new List<uint>();
+                error = SSearch.GetIDList(idList);
+
+                // search : the candidate count must be zero because secusearch has no templates.
+                var candList = new SSCandList();
+
+                for (var i = 0; i < templateSearchModelSize; i++)
+                {
+                    var templateId = (uint)i;
+                    ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(i).Filename} of {templateId}");
+
+                    error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
+
+                    if (error != SSError.NONE)
+                    {
+                        ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(i).Filename} | {error}");
+                        continue;
+                    }
+
+                    ActivityLogger.Log("INFO",
+                        candList.Count > 0
+                            ? $"Matching: Found {candList.Count} Matches"
+                            : "Matching: No Matching Candidate");
+
+                    if (candList.Count > 0)
+                    {
+                        matchModels.Add(new MatchModel()
+                        {
+                            Pivot = SearchModel.GetTemplate(i).Filename,
+                            SuspectedCandidates = candList.Candidates
+                                .Where(x => x.ConfidenceLevel != SSConfLevel.INVALID)
+                                .Select(x => new SuspectedCandidate()
+                                {
+                                    BioDataSuspect = SearchModel.GetTemplate((int) x.Id),
+                                    MatchScore = x.MatchScore
+                                }).ToList()
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
             }
 
-            // search : the candidate count must be zero because secusearch has no templates.
-            var candList = new SSCandList();
-
-            for (var i = 0; i < templateSearchModelSize; i++)
-            {
-                var templateId = (uint)i;
-                ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(i).Filename} of {templateId}");
-
-                error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
-                if (error != SSError.NONE)
-                {
-                    Console.WriteLine("search failed error: {0}", error);
-                    ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(i).Filename} | {error}");
-                    continue;
-                }
-
-                if (candList.Count > 0)
-                {
-                    Console.Write("{0}   ", candList.Candidates[0].Id);
-                    Console.WriteLine("matchScore={0}", candList.Candidates[0].MatchScore);
-                }
-                else
-                {
-                    Console.WriteLine(" no candidate");
-                }
-            }
-
-            return true;
+            return matchModels;
         }
-    } 
-} 
+    }
+}

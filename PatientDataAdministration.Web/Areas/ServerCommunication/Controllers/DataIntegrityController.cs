@@ -178,9 +178,63 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
+        public JsonResult GetBioDataIntegrity()
+        {
+            try
+            {
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = EngineDuplicateBioData.BioDataIntegrityCases
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetBioDataIntegritySuspects(int caseId)
+        {
+            try
+            {
+                var suspectInformation = _entities.Patient_PatientBiometricIntegrityCaseMember
+                    .Where(x => !x.IsDeleted &&
+                                !x.IsTreated &&
+                                x.PatientBiometricIntegrityCaseId == caseId &&
+                                x.MemberTreatmentTypeId == (int) CaseMemberStatus.Undecided).ToList();
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = suspectInformation.Select(x => new
+                            {
+                                SuspectData = x, 
+                                PatientInformation = _entities.Patient_PatientInformation.FirstOrDefault(y => y.PepId == x.SuspectPepId),
+                                BiometricInformation = _entities.Patient_PatientBiometricData.FirstOrDefault(y => y.PepId == x.SuspectPepId)
+                            }).ToList()
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         private static void ReloadPepIdIntegrity()
         {
             EngineDuplicatePepId.ProcessDataIntegrityPepId();
+
+            EngineDuplicateBioData.ProcessDataIntegrityBiometric();
         }
 
         private void LogActionPepIdIntegrity(ActionTypeDataIntegrity actionTypeDataIntegrity, string dataBefore,

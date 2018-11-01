@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Web.Http;
 using PatientDataAdministration.Data.InterchangeModels;
 
@@ -29,7 +28,7 @@ namespace PatientDataAdministration.Client.Web.Controllers
                     var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".pda";
 
                     File.WriteAllText(Path.Combine(basePath, fileName),
-                        Newtonsoft.Json.JsonConvert.SerializeObject(chunk), Encoding.UTF8);
+                        Newtonsoft.Json.JsonConvert.SerializeObject(chunk));
 
                     size += new FileInfo(Path.Combine(basePath, fileName)).Length;
                 }

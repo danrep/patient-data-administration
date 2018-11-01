@@ -12,6 +12,8 @@ namespace PatientDataAdministration.Client
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class LocalPDAEntities : DbContext
     {
@@ -33,5 +35,11 @@ namespace PatientDataAdministration.Client
         public virtual DbSet<System_SiteData> System_SiteData { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_UpdateLog> System_UpdateLog { get; set; }
+        public virtual DbSet<System_EndPointLog> System_EndPointLog { get; set; }
+    
+        public virtual int Sp_System_CleanUp()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_System_CleanUp");
+        }
     }
 }

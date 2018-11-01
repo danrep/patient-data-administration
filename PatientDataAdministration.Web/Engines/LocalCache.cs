@@ -11,7 +11,7 @@ namespace PatientDataAdministration.Web.Engines
         private static ObjectCache _cache = MemoryCache.Default;
         private static CacheItemPolicy _policy = null;
 
-        public static void Set(string cacheKeyName, object cacheItem, int absoluteExpiration = 1000)
+        public static void Set(string cacheKeyName, object cacheItem, int absoluteExpiration = 3600)
         {
             _policy = new CacheItemPolicy
             {
@@ -41,23 +41,36 @@ namespace PatientDataAdministration.Web.Engines
                 case "Sp_System_Indicators_PopulationDistro_SexSiteState_Result":
                     using (var entities = new Entities())
                     {
-                        Set(cacheKeyName, entities.Sp_System_Indicators_PopulationDistro_SexSiteState().ToList(), 100);
+                        // 5 mins
+                        Set(cacheKeyName,
+                            entities.Sp_System_Indicators_PopulationDistro_SexSiteState(null, null).ToList(), 300);
                     }
                     break;
 
                 case "Administration_SiteInformation":
                     using (var entities = new Entities())
                     {
+                        // 1 Hour
                         Set(cacheKeyName, entities.Administration_SiteInformation.Where(x => !x.IsDeleted).ToList()
-                            , 10000);
+                            , 3200);
                     }
                     break;
 
-                case "System_State":
+                case "System_ReportingLog":
                     using (var entities = new Entities())
                     {
-                        Set(cacheKeyName, entities.System_State.Where(x => !x.IsDeleted).ToList()
-                            , 10000);
+                        // 12 Hours
+                        Set(cacheKeyName, entities.System_ReportingLog.Where(x => x.IsCurrent && !x.IsDeleted).ToList()
+                            , 43200);
+                    }
+                    break;
+
+                case "System_OperationLog":
+                    using (var entities = new Entities())
+                    {
+                        // 12 Hours
+                        Set(cacheKeyName, entities.System_OperationLog.Where(x => x.IsCurrent && !x.IsDeleted).ToList()
+                            , 43200);
                     }
                     break;
 

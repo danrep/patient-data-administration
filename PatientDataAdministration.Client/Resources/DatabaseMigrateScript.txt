@@ -67,7 +67,7 @@ ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET DELAYED_DURABILITY = DISABLED
 GO
 USE [{dbLocation}\LOCALPDA.MDF]
 GO
-/****** Object:  Table [dbo].[Local_StaffInformation]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[Local_StaffInformation]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -97,7 +97,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_BioDataStore]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_BioDataStore]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -116,6 +116,7 @@ CREATE TABLE [dbo].[System_BioDataStore](
 	[LastUpdate] [datetime] NOT NULL,
 	[LastSync] [datetime] NOT NULL,
 	[IsSync] [bit] NOT NULL,
+	[IsLocalPush] [bit] NOT NULL,
 	[IsDeleted] [bit] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
@@ -126,7 +127,28 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_ErrorLog]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_EndPointLog]    Script Date: 10/13/2018 7:47:03 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[System_EndPointLog](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[EndPointId] [int] NOT NULL,
+	[EndPointUrl] [varchar](max) NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[System_ErrorLog]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -150,7 +172,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_LocalGovermentArea]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_LocalGovermentArea]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -172,7 +194,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_Setting]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_Setting]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -194,7 +216,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_SiteData]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_SiteData]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -220,7 +242,7 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[System_State]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_State]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -241,7 +263,7 @@ PRIMARY KEY CLUSTERED
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[System_UpdateLog]    Script Date: 1/9/2018 6:13:50 PM ******/
+/****** Object:  Table [dbo].[System_UpdateLog]    Script Date: 10/13/2018 7:47:03 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1976,7 +1998,7 @@ GO
 SET IDENTITY_INSERT [dbo].[System_Setting] ON 
 
 GO
-INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (1, 1, N'http://41.242.57.43', CAST(N'2017-12-10 00:00:00.000' AS DateTime), 0)
+INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (1, 1, N'http://pbs.apin.org.ng', CAST(N'2017-12-10 00:00:00.000' AS DateTime), 0)
 GO
 INSERT [dbo].[System_Setting] ([Id], [SettingKey], [SettingValue], [DateReceived], [IsDeleted]) VALUES (2, 2, N'false', CAST(N'2017-12-18 00:00:00.000' AS DateTime), 0)
 GO
@@ -2064,6 +2086,8 @@ GO
 ALTER TABLE [dbo].[System_BioDataStore] ADD  DEFAULT (getdate()) FOR [LastUpdate]
 GO
 ALTER TABLE [dbo].[System_BioDataStore] ADD  DEFAULT (getdate()) FOR [LastSync]
+GO
+ALTER TABLE [dbo].[System_BioDataStore] ADD  DEFAULT ((0)) FOR [IsLocalPush]
 GO
 ALTER TABLE [dbo].[System_ErrorLog] ADD  DEFAULT (getdate()) FOR [ErrorDate]
 GO

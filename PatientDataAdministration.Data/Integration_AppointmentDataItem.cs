@@ -21,6 +21,7 @@ namespace PatientDataAdministration.Data
         public System.DateTime DateAppointment { get; set; }
         public string AppointmentOffice { get; set; }
         public string AppointmentData { get; set; }
+        public bool IsValid { get; set; }
         public bool IsDeleted { get; set; }
     }
 }

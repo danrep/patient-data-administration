@@ -244,6 +244,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
+                ActivityLogger.Log("ERROR_ITEM", Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation));
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }

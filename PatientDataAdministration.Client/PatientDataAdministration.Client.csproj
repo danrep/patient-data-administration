@@ -203,6 +203,9 @@
     <Compile Include="System_BioDataStore.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>
+    <Compile Include="System_EndPointLog.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_ErrorLog.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>

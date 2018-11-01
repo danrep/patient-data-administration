@@ -18,15 +18,25 @@
     }
     else
     {
-        if (EngineDuplicateBioData.BioDataIntegrityCase?.Any() ?? false)
+        if (EngineDuplicateBioData.BioDataIntegrityCases?.Any() ?? false)
         {
             <div class="note note-warning">
                 <h4>Duplicate Biometric Registrations Found!</h4>
                 <p>
-                    The system has found some patient records with matching Biometric Registrations. The current batch count is @EngineDuplicateBioData.BioDataIntegrityCase.Count. Click <a href="@Url.Action("TreatDupBioDataDuplicates", "DataIntegrity")">here</a> to view them!
+                    The system has found some patient records with matching Biometric Registrations. The current batch count is @EngineDuplicateBioData.BioDataIntegrityCases.Count. Click <a href="@Url.Action("TreatDupBioDataDuplicates", "DataIntegrity")">here</a> to view them!
                 </p>
             </div>
         }
+        else
+        {
+            <div class="note note-success">
+                <h4>All is Good Here!</h4>
+                <p>
+                    Biometric Duplicate Engine does not have anything to Report at the moment. Please click Refresh on the Left!
+                </p>
+            </div>
+        }
+    }
     }
 </div>
 <!--CASE B-->
@@ -41,3 +51,13 @@
         </div>
     }
 </div>
+
+@section scripts
+{
+    <script>
+        pdaWeb.controller('pdaWebCtrlr',
+            function ($scope) {
+                
+            });
+    </script>
+}

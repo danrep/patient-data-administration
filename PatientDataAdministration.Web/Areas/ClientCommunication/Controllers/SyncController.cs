@@ -83,6 +83,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
                 var listOfNewPatients = patientsInSite
                     .Where(x => listOfAvalailablePepId.Any(y => y == x.PepId.ToLower()) == false)
+                    .OrderBy(x => x.PepId)
                     .Take(100).ToList();
 
                 var returnNewPatients = new List<PatientInformation>();
@@ -219,13 +220,16 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         new Integration_AppointmentDataItem()
                         {
                             IsDeleted = false,
-                            AppointmentData = Newtonsoft.Json.JsonConvert.SerializeObject(item.AppointmentData),
+                            AppointmentData =
+                                Newtonsoft.Json.JsonConvert.SerializeObject(item.AppointmentDataItems),
                             AppointmentDataManifestId = manifest.Id,
                             AppointmentOffice = item.AppointmentOffice,
                             DateAppointment = DateTime.ParseExact(item.AppointmentDate, "yyyy-MM-dd",
                                 CultureInfo.InvariantCulture),
                             DateVisit = DateTime.ParseExact(item.VisitDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                            PepId = item.PepId
+                            PepId = item.PepId,
+                            IsValid = DateTime.ParseExact(item.AppointmentDate, "yyyy-MM-dd",
+                                CultureInfo.InvariantCulture) > DateTime.Now
                         }));
                 _entities.SaveChanges();
 

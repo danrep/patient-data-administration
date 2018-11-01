@@ -8,6 +8,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.Web.Engines;
+using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 {
@@ -247,10 +248,10 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var sitesInState =
                     _entities.Administration_SiteInformation.Count(x => !x.IsDeleted && x.StateId == state.Id);
 
-                var distroData = _entities.Sp_System_Indicators_PopulationDistro_SexSiteState()
+                var distroData = _entities.Sp_System_Indicators_PopulationDistro_SexSiteState(null, null)
                     .Where(x => x.StateAbbreviation == abbreviation).ToList();
 
-                var patientsInState = distroData.Sum(x => x.PatientPopulation).Value;
+                var patientsInState = distroData.Sum(x => x.PatientPopulation ?? 0);
                 var collectedBioData = _entities.Sp_System_Indicators_PopulationDistro_BioCount(abbreviation).ToList();
                 var collectedNfcData = _entities.Sp_System_Indicators_PopulationDistro_NfcCount(abbreviation).ToList();
 
@@ -375,9 +376,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(
                         "Sp_System_Indicators_PopulationDistro_SexSiteState_Result");
 
-                var states =
-                    LocalCache.Get<List<System_State>>(
-                        "System_State");
+                var states = RecurrentData.States;
 
                 var totalPopulation = allSitesInStateInCountry.Sum(x => x.PatientPopulation);
 
@@ -430,9 +429,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
-                var states =
-                    LocalCache.Get<List<System_State>>(
-                        "System_State");
+                var states = RecurrentData.States;
 
                 var distroData =
                     LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(
@@ -467,8 +464,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         "Administration_SiteInformation").FirstOrDefault(x => x.Id == siteId);
 
                 var state =
-                    LocalCache.Get<List<System_State>>(
-                        "System_State").FirstOrDefault(x => x.Id == (site?.StateId ?? 0));
+                    RecurrentData.States.FirstOrDefault(x => x.Id == (site?.StateId ?? 0));
 
                 var distroData =
                     LocalCache.Get<List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>>(

@@ -30,10 +30,15 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
         public virtual DbSet<Administration_ClientMap> Administration_ClientMap { get; set; }
         public virtual DbSet<Administration_ClientRegistry> Administration_ClientRegistry { get; set; }
+        public virtual DbSet<Administration_MessagingPatientComplaint> Administration_MessagingPatientComplaint { get; set; }
         public virtual DbSet<Administration_PatientRegistrationLog> Administration_PatientRegistrationLog { get; set; }
         public virtual DbSet<Administration_SiteInformation> Administration_SiteInformation { get; set; }
         public virtual DbSet<Administration_StaffInformation> Administration_StaffInformation { get; set; }
+        public virtual DbSet<Integration_AppointmentDataItem> Integration_AppointmentDataItem { get; set; }
+        public virtual DbSet<Integration_AppointmentDataManifest> Integration_AppointmentDataManifest { get; set; }
         public virtual DbSet<Patient_PatientBiometricData> Patient_PatientBiometricData { get; set; }
+        public virtual DbSet<Patient_PatientBiometricIntegrityCase> Patient_PatientBiometricIntegrityCase { get; set; }
+        public virtual DbSet<Patient_PatientBiometricIntegrityCaseMember> Patient_PatientBiometricIntegrityCaseMember { get; set; }
         public virtual DbSet<Patient_PatientInformation> Patient_PatientInformation { get; set; }
         public virtual DbSet<Patient_PatientNearFieldCommunicationData> Patient_PatientNearFieldCommunicationData { get; set; }
         public virtual DbSet<Patient_PatientTransferHistory> Patient_PatientTransferHistory { get; set; }
@@ -45,8 +50,6 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<System_ReportingLog> System_ReportingLog { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
-        public virtual DbSet<Integration_AppointmentDataItem> Integration_AppointmentDataItem { get; set; }
-        public virtual DbSet<Integration_AppointmentDataManifest> Integration_AppointmentDataManifest { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {
@@ -156,11 +159,6 @@ namespace PatientDataAdministration.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_NfcCount_Result>("Sp_System_Indicators_PopulationDistro_NfcCount", abbrevationParameter);
         }
     
-        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_SexSiteState_Result> Sp_System_Indicators_PopulationDistro_SexSiteState()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>("Sp_System_Indicators_PopulationDistro_SexSiteState");
-        }
-    
         public virtual ObjectResult<Sp_System_Reporting_PopulationDataSite_Result> Sp_System_Reporting_PopulationDataSite(Nullable<int> siteId, Nullable<System.DateTime> lowerDate, Nullable<System.DateTime> upperDate)
         {
             var siteIdParameter = siteId.HasValue ?
@@ -176,6 +174,19 @@ namespace PatientDataAdministration.Data
                 new ObjectParameter("upperDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Reporting_PopulationDataSite_Result>("Sp_System_Reporting_PopulationDataSite", siteIdParameter, lowerDateParameter, upperDateParameter);
+        }
+    
+        public virtual ObjectResult<Sp_System_Indicators_PopulationDistro_SexSiteState_Result> Sp_System_Indicators_PopulationDistro_SexSiteState(Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("toDate", toDate) :
+                new ObjectParameter("toDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>("Sp_System_Indicators_PopulationDistro_SexSiteState", fromDateParameter, toDateParameter);
         }
     }
 }

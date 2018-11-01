@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 
@@ -77,45 +76,21 @@ namespace PatientDataAdministration.ClientUpdater
                     }
                 }
 
-                var files = Directory.EnumerateFiles(_storeLocation).ToList();
+                var files = Directory.EnumerateFiles(_storeLocation).Where(x => !x.Contains(".sql")).ToList();
                 var i = 1.0;
 
                 foreach (var file in files)
                 {
-                    var fileInfo = new FileInfo(file);
-                    Console.WriteLine($@"Installing {fileInfo.Name} {fileInfo.Length} bytes ...");
-                    var destination = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, fileInfo.Name);
-
                     try
                     {
+                        var fileInfo = new FileInfo(file);
+                        Console.WriteLine($@"Installing {fileInfo.Name} {fileInfo.Length} bytes ...");
+                        var destination = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, fileInfo.Name);
+
                         if (File.Exists(destination))
                             File.Delete(destination);
 
-                        if (file.Contains("database-update.txt"))
-                        {
-                            try
-                            {
-                                var connectionString =
-                                    @"Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True";
-
-                                using (var connection = new SqlConnection(connectionString))
-                                {
-                                    connection.Open();
-
-                                    var installCmd = connection.CreateCommand();
-                                    installCmd.CommandText = ScriptClean(File.ReadAllText(file));
-                                    installCmd.ExecuteNonQuery();
-                                }
-
-                                File.Delete(file);
-                            }
-                            catch
-                            {
-                                //
-                            }
-                        }
-                        else
-                            File.Move(file, destination);
+                        File.Move(file, destination);
                     }
                     catch
                     {
@@ -154,17 +129,6 @@ namespace PatientDataAdministration.ClientUpdater
                 File.WriteAllText($@"{_storeLocation}/data.txt",
                     Newtonsoft.Json.JsonConvert.SerializeObject(_systemUpdate));
             }
-        }
-
-        private static string ScriptClean(string sqlScript)
-        {
-            sqlScript = sqlScript.Replace("GO", "");
-            sqlScript = Regex.Replace(sqlScript, "([/*][*]).*([*][/])", "");
-            sqlScript = Regex.Replace(sqlScript, "\\s{2,}", " ");
-            sqlScript = sqlScript.Replace("{dbLocation}",
-                Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)));
-
-            return sqlScript;
         }
 
         static void CheckPersistence()

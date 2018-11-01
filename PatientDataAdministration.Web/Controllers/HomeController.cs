@@ -133,6 +133,7 @@ namespace PatientDataAdministration.Web.Controllers
                 _entities.Sp_System_CleanUp();
 
                 new EngineDataIntegrity();
+                
                 return Json(new ResponseData { Status = true, Message = "Sucessful" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

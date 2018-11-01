@@ -6,7 +6,10 @@
     [DateAppointment]           DATETIME      NOT NULL,
     [AppointmentOffice]         VARCHAR (5)   NOT NULL,
     [AppointmentData]           VARCHAR (MAX) NOT NULL,
+    [IsValid]                   BIT           DEFAULT ((0)) NOT NULL,
     [IsDeleted]                 BIT           NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 

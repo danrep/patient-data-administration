@@ -74,6 +74,7 @@ namespace PatientDataAdministration.Client
         {
             GetClientId();
             InitializeDataStore();
+            RunDataBaseUpdate();
             CheckForDownloadedUpdates();
         }
 
@@ -87,6 +88,40 @@ namespace PatientDataAdministration.Client
             {
                 MessageBox.Show(@"An error occurred during Initialization: " + e.Message);
                 this.Close();
+            }
+        }
+
+        private void RunDataBaseUpdate()
+        {
+            try
+            {
+                ShowInfo("Checking for Database Schema");
+
+                var storeLocation = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DownloadedUpdate");
+                var databaseScriptFile = $@"{storeLocation}/database.sql";
+
+                if (!File.Exists(databaseScriptFile))
+                {
+                    databaseScriptFile = $@"{System.AppDomain.CurrentDomain.BaseDirectory}/database.sql";
+
+                    if (!File.Exists(databaseScriptFile))
+                    {
+                        ShowInfo("Schema up to Date");
+                        return;
+                    }
+                }
+
+                var databaseScriptSessions = File.ReadAllText(databaseScriptFile).Split('~');
+                foreach (var databaseScriptSession in databaseScriptSessions)
+                    LocalCore.RunDatabaseSript("LOCALPDA", databaseScriptSession);
+
+                ShowInfo("Schema updated Succesfully");
+
+                File.Delete(databaseScriptFile);
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
             }
         }
 

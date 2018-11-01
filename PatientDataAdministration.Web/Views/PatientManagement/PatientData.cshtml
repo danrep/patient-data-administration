@@ -14,6 +14,21 @@
 
     var bioData = pdaEntities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == Model.PepId);
     var nfcData = pdaEntities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x => x.PepId == Model.PepId);
+
+    var appointmentPharm = pdaEntities.Integration_AppointmentDataItem
+        .Where(x => !x.IsDeleted && x.PepId == Model.PepId && x.AppointmentOffice == "P")
+        .OrderByDescending(x => x.DateAppointment)
+        .Take(5).ToList();
+
+    var appointmentClinic = pdaEntities.Integration_AppointmentDataItem
+        .Where(x => !x.IsDeleted && x.PepId == Model.PepId && x.AppointmentOffice == "C")
+        .OrderByDescending(x => x.DateAppointment)
+        .Take(5).ToList();
+
+    var appointmentLab = pdaEntities.Integration_AppointmentDataItem
+        .Where(x => !x.IsDeleted && x.PepId == Model.PepId && x.AppointmentOffice == "L")
+        .OrderByDescending(x => x.DateAppointment)
+        .Take(5).ToList();
 }
 
 <div class="profile-container">
@@ -66,24 +81,29 @@
     <div class="profile-section">
         <ul class="nav nav-tabs nav-tabs-inverse nav-justified nav-justified-mobile" data-sortable-id="index-2">
             <li class="active">
-                <a href="#latest-post" data-toggle="tab">
+                <a href="#regId" data-toggle="tab">
                     <i class="fa fa-picture-o m-r-5"></i>
                     <span class="hidden-xs">Registered Identities</span>
                 </a>
             </li>
             <li class="">
-                <a href="#purchase" data-toggle="tab">
+                <a href="#clinicVisit" data-toggle="tab">
                     <i class="fa fa-hospital-o m-r-5"></i> <span class="hidden-xs">Last 5 Visits</span>
                 </a>
             </li>
             <li class="">
-                <a href="#email" data-toggle="tab">
-                    <i class="fa fa-ambulance m-r-5"></i> <span class="hidden-xs">Last 5 Dispensations</span>
+                <a href="#pharmVisit" data-toggle="tab">
+                    <i class="fa fa-heartbeat m-r-5"></i> <span class="hidden-xs">Last 5 Dispensations</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="#labVisit" data-toggle="tab">
+                    <i class="fa fa-flask m-r-5"></i> <span class="hidden-xs">Last 5 Lab Tests</span>
                 </a>
             </li>
         </ul>
         <div class="tab-content" data-sortable-id="index-3">
-            <div class="tab-pane fade active in" id="latest-post">
+            <div class="tab-pane fade active in" id="regId">
                 <div class="height-md" data-scrollbar="true">
                     <div class="col-md-12 ui-sortable">
                         <div class="panel panel-inverse" data-sortable-id="ui-widget-16">
@@ -146,33 +166,66 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="purchase">
+            <div class="tab-pane fade" id="clinicVisit">
                 <div class="height-sm" data-scrollbar="true">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th class="hidden-sm">Reason for Visit</th>
-                                <th>Remarks</th>
-                                <th>Attended By</th>
+                                <th>Date Last Visit</th>
+                                <th>Date Next Visit</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                            @foreach (var visit in appointmentClinic)
+                            {
+                                <tr>
+                                    <td>@visit.DateVisit.ToLongDateString()</td>
+                                    <td>@visit.DateAppointment.ToLongDateString()</td>
+                                </tr>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
-            <div class="tab-pane fade" id="email">
+            <div class="tab-pane fade" id="pharmVisit">
                 <div class="height-sm" data-scrollbar="true">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th class="hidden-sm">Prescription</th>
-                                <th>Quantity</th>
-                                <th>Attended By</th>
-                            </tr>
+                        <tr>
+                            <th>Date Last Visit</th>
+                            <th>Date Next Visit</th>
+                        </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody>
+                        @foreach (var visit in appointmentPharm)
+                        {
+                            <tr>
+                                <td>@visit.DateVisit.ToLongDateString()</td>
+                                <td>@visit.DateAppointment.ToLongDateString()</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="labVisit">
+                <div class="height-sm" data-scrollbar="true">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Date Last Visit</th>
+                            <th>Date Next Visit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var visit in appointmentLab)
+                        {
+                            <tr>
+                                <td>@visit.DateVisit.ToLongDateString()</td>
+                                <td>@visit.DateAppointment.ToLongDateString()</td>
+                            </tr>
+                        }
+                        </tbody>
                     </table>
                 </div>
             </div>

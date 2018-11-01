@@ -185,7 +185,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
-                var user = _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted);
+                var user = _db.Administration_StaffInformation.FirstOrDefault(x => !x.IsDeleted && x.Id == userId);
 
                 if (user == null)
                     return Json(new ResponseData { Status = true, Message = "No User Found" },

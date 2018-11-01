@@ -1086,6 +1086,7 @@
     <Content Include="Assets\plugins\country\nigeria\images\Thumbs.db" />
     <Content Include="Areas\Integration\Views\web.config" />
     <Content Include="Assets\plugins\d3\d3-procesor.js" />
+    <Content Include="Engines\EngineOperationManagement\DataHealthMessages.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1163,8 +1164,10 @@
     <Compile Include="Controllers\SystemSettingsController.cs" />
     <Compile Include="Controllers\UserManagementController.cs" />
     <Compile Include="Engines\Cron.cs" />
-    <Compile Include="Engines\EngineDataIntegrity\EngineDataIntegrity.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioData.cs" />
+    <Compile Include="Engines\EngineModels\ReportReadiness.cs" />
+    <Compile Include="Engines\EngineOperationManagement\EngineOperation.cs" />
+    <Compile Include="Engines\EngineDataIntegrity\EngineDataIntegrity.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicatePepId.cs" />
     <Compile Include="Engines\EngineReporting\EngineReporting.cs" />
     <Compile Include="Engines\LocalCache.cs" />

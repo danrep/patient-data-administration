@@ -8,12 +8,14 @@ namespace Codesistance.UniqueBioSearchSecugen
         public string Filename;
         public uint Index;
         public byte[] TemplatesBuffer;
+        public object Data;
 
-        public Template(string filename, uint index, byte[] templateBuffer)
+        public Template(string filename, uint index, byte[] templateBuffer, object data)
         {
             Filename = filename;
             Index = index;
             TemplatesBuffer = templateBuffer;
+            Data = data;
         }
     }
 
@@ -35,7 +37,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             foreach (var patientDatum in patientData)
             {
                 var template = new Template(patientDatum.PepId, i,
-                    Convert.FromBase64String(patientDatum.FingerPrintData));
+                    Convert.FromBase64String(patientDatum.FingerPrintData), patientDatum);
                 Add(template);
                 i++;
             }
@@ -45,13 +47,25 @@ namespace Codesistance.UniqueBioSearchSecugen
 
         public Template GetTemplate(int index)
         {
-            return (Template)_templates[index];
+            return _templates[index];
         }
 
         private void Add(Template template)
         {
             _templates.Add(template);
         }
+    }
+
+    public class MatchModel
+    {
+        public string Pivot { get; set; }
+        public List<SuspectedCandidate> SuspectedCandidates { get; set; }
+    }
+
+    public class SuspectedCandidate
+    {
+        public Template BioDataSuspect { get; set; }
+        public int MatchScore { get; set; }
     }
 
     public class PatientData

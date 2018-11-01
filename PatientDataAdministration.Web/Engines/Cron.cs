@@ -42,6 +42,19 @@ namespace PatientDataAdministration.Web.Engines
             }
 
             #endregion
+
+            #region Operation Engine
+
+            try
+            {
+                new EngineOperationManagement.EngineOperation();
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+
+            #endregion
         }
     }
 }

@@ -18,6 +18,8 @@ namespace PatientDataAdministration.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            ActivityLogger.LogFileName = "PDA_Web_Logs.txt";
+
             new Thread(() => {
                 var cron = new Cron();
                 ActivityLogger.Log("INFO", "Started Cron Manager");

@@ -38,6 +38,16 @@
           <Property Name="LastUpdate" Type="datetime" Nullable="false" />
           <Property Name="LastSync" Type="datetime" Nullable="false" />
           <Property Name="IsSync" Type="bit" Nullable="false" />
+          <Property Name="IsLocalPush" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_EndPointLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EndPointId" Type="int" Nullable="false" />
+          <Property Name="EndPointUrl" Type="varchar(max)" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ErrorLog">
@@ -116,9 +126,11 @@
           <Property Name="FolderLocation" Type="varchar(max)" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <Function Name="Sp_System_CleanUp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="LocalPDAModelStoreContainer">
           <EntitySet Name="Local_StaffInformation" EntityType="Self.Local_StaffInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_BioDataStore" EntityType="Self.System_BioDataStore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_EndPointLog" EntityType="Self.System_EndPointLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ErrorLog" EntityType="Self.System_ErrorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_Setting" EntityType="Self.System_Setting" Schema="dbo" store:Type="Tables" />
@@ -139,6 +151,8 @@
           <EntitySet Name="System_SiteData" EntityType="LocalPDAModel.System_SiteData" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
+          <EntitySet Name="System_EndPointLog" EntityType="LocalPDAModel.System_EndPointLog" />
+          <FunctionImport Name="Sp_System_CleanUp" />
         </EntityContainer>
         <EntityType Name="Local_StaffInformation">
           <Key>
@@ -174,6 +188,7 @@
           <Property Name="LastSync" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsSync" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsLocalPush" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ErrorLog">
           <Key>
@@ -251,6 +266,15 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_EndPointLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EndPointId" Type="Int32" Nullable="false" />
+          <Property Name="EndPointUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -279,6 +303,7 @@
           <EntitySetMapping Name="System_BioDataStore">
             <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore">
               <MappingFragment StoreEntitySet="System_BioDataStore">
+                <ScalarProperty Name="IsLocalPush" ColumnName="IsLocalPush" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsSync" ColumnName="IsSync" />
                 <ScalarProperty Name="LastSync" ColumnName="LastSync" />
@@ -376,6 +401,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="System_EndPointLog">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_EndPointLog">
+              <MappingFragment StoreEntitySet="System_EndPointLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EndPointUrl" ColumnName="EndPointUrl" />
+                <ScalarProperty Name="EndPointId" ColumnName="EndPointId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_System_CleanUp" FunctionName="LocalPDAModel.Store.Sp_System_CleanUp" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

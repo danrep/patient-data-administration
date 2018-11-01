@@ -7,7 +7,7 @@ namespace PatientDataAdministration.Core
     {
         public static string LogFilePath => System.Web.Hosting.HostingEnvironment.MapPath("~/logs") + "/";
 
-        public static string LogFileName => "PDA_Web_Logs.txt";
+        public static string LogFileName { get; set; }
 
         public static void Log(Exception exception)
         {
@@ -35,6 +35,12 @@ namespace PatientDataAdministration.Core
             try
             {
                 var location = LogFilePath;
+                if (LogFilePath == "/")
+                {
+                    location = Path.Combine(
+                                   Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location),
+                                   "Logs") + "/";
+                }
 
                 var dirInfo = new DirectoryInfo(location);
                 if (!dirInfo.Exists)

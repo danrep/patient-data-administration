@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
+using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 
@@ -18,8 +19,8 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
             if (EngineDuplicatePepId.DataIntegrityPepId == null)
                 EngineDuplicatePepId.DataIntegrityPepId = new List<Sp_System_DataIntegrity_PepId_Result>();
 
-            if (EngineDuplicateBioData.BioDataIntegrityCase == null)
-                EngineDuplicateBioData.BioDataIntegrityCase = new List<BioDataIntegrityCase>();
+            if (EngineDuplicateBioData.BioDataIntegrityCases == null)
+                EngineDuplicateBioData.BioDataIntegrityCases = new List<Patient_PatientBiometricIntegrityCase>();
 
             try
             {
@@ -78,7 +79,7 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
             {
                 if (EngineDuplicatePepId.DataIntegrityPepId.Any())
                     return true;
-                else if (EngineDuplicateBioData.BioDataIntegrityCase.Any())
+                else if (EngineDuplicateBioData.BioDataIntegrityCases.Any())
                     return true;
 
                 return false;
@@ -89,11 +90,5 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
                 return false;
             }
         }
-    }
-
-    public class TaskManager
-    {
-        public Thread ThreadEngine { get; set; }
-        public DateTime DateGenerated { get; set; }
     }
 }

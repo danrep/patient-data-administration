@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -44,14 +43,19 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 if (string.IsNullOrEmpty(clientId))
                     clientId = Request.UserHostAddress;
 
+                appVersion = appVersion.Replace('-', '.');
+
                 var currentUser = currentUsers.FirstOrDefault(x => x.ClientId == clientId);
                 if (currentUser != null)
                 {
                     if (DateTime.Now.Subtract(currentUser.CheckInPeriod).TotalSeconds > 1800)
                     {
                         currentUsers.Remove(currentUser);
+                        ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
                     }
-                }   
+                }
+                else
+                    ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
 
                 currentUser = new System_ClientPulse()
                 {
@@ -63,7 +67,6 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 };
 
                 currentUsers.Add(currentUser);
-                ActivityLogger.Log("CLIENT_PULSE", $"{clientId}:{Request.UserHostAddress}:{appVersion}");
                 LocalCache.Set("System_ClientPulse", currentUsers);
 
                 return

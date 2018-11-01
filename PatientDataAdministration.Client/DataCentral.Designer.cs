@@ -65,6 +65,8 @@ namespace PatientDataAdministration.Client
             this.tmrFreshPatient = new System.Windows.Forms.Timer(this.components);
             this.bgwSelfServer = new System.ComponentModel.BackgroundWorker();
             this.bgwContentManager = new System.ComponentModel.BackgroundWorker();
+            this.bgwLocalSync = new System.ComponentModel.BackgroundWorker();
+            this.tmrLocalSync = new System.Windows.Forms.Timer(this.components);
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
@@ -443,6 +445,19 @@ namespace PatientDataAdministration.Client
             this.bgwContentManager.WorkerSupportsCancellation = true;
             this.bgwContentManager.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwContentManager_DoWork);
             // 
+            // bgwLocalSync
+            // 
+            this.bgwLocalSync.WorkerReportsProgress = true;
+            this.bgwLocalSync.WorkerSupportsCancellation = true;
+            this.bgwLocalSync.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwLocalSync_DoWork);
+            // 
+            // tmrLocalSync
+            // 
+            this.tmrLocalSync.Enabled = true;
+            this.tmrLocalSync.Interval = 10000;
+            this.tmrLocalSync.Tag = "";
+            this.tmrLocalSync.Tick += new System.EventHandler(this.tmrLocalSync_Tick);
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
@@ -515,5 +530,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Timer tmrFreshPatient;
         private System.ComponentModel.BackgroundWorker bgwSelfServer;
         private System.ComponentModel.BackgroundWorker bgwContentManager;
+        private System.ComponentModel.BackgroundWorker bgwLocalSync;
+        private System.Windows.Forms.Timer tmrLocalSync;
     }
 }

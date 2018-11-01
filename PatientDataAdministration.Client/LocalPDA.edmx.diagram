@@ -13,6 +13,7 @@
         <EntityTypeShape EntityType="LocalPDAModel.System_SiteData" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="LocalPDAModel.System_State" Width="1.5" PointX="6.75" PointY="5.75" />
         <EntityTypeShape EntityType="LocalPDAModel.System_UpdateLog" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="LocalPDAModel.System_EndPointLog" Width="1.5" PointX="5.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

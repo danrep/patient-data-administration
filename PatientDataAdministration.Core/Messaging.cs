@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text;
+using PatientDataAdministration.Core.Processor.MessageProcessors;
 
 namespace PatientDataAdministration.Core
 {
@@ -88,6 +89,21 @@ namespace PatientDataAdministration.Core
                 };
 
                 smClient.Send(myMessage);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                ActivityLogger.Log(exception);
+                return false;
+            }
+        }
+
+        public static bool SendSms(string destination, string message)
+        {
+            try
+            {
+                //ProcessorXwireless.SendResponse(destination, message);
+                ProcessorInfoBip.SendResponse(destination, message);
                 return true;
             }
             catch (Exception exception)

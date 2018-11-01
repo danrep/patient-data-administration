@@ -26,5 +26,6 @@ namespace PatientDataAdministration.Client
         public System.DateTime LastSync { get; set; }
         public bool IsSync { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsLocalPush { get; set; }
     }
 }

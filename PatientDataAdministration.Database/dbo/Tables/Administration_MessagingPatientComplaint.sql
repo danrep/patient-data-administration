@@ -1,6 +1,6 @@
-﻿CREATE TABLE [dbo].[Administration_Messaging_PatientComplaint] (
+﻿CREATE TABLE [dbo].[Administration_MessagingPatientComplaint] (
     [Id]                BIGINT        IDENTITY (1, 1) NOT NULL,
-    [MessageId]         VARCHAR (MAX) NOT NULL,
+    [MessageId]         VARCHAR (100) NOT NULL,
     [SentDate]          DATETIME      NOT NULL,
     [SentByNumber]      VARCHAR (20)  NOT NULL,
     [SentByPatient]     VARCHAR (20)  NULL,
