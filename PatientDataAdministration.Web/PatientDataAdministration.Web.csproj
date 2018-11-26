@@ -1087,6 +1087,7 @@
     <Content Include="Areas\Integration\Views\web.config" />
     <Content Include="Assets\plugins\d3\d3-procesor.js" />
     <Content Include="Engines\EngineOperationManagement\DataHealthMessages.json" />
+    <Content Include="Areas\DataDelivery\Views\web.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
@@ -1140,9 +1141,11 @@
     <Compile Include="Areas\ClientCommunication\Controllers\MiscController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\SyncController.cs" />
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
+    <Compile Include="Areas\DataDelivery\DataDeliveryAreaRegistration.cs" />
     <Compile Include="Areas\Integration\Controllers\BaseIntegrationController.cs" />
+    <Compile Include="Areas\Integration\Controllers\LabDataController.cs" />
     <Compile Include="Areas\Integration\IntegrationAreaRegistration.cs" />
-    <Compile Include="Areas\Integration\Controllers\MessagingIngressController.cs" />
+    <Compile Include="Areas\DataDelivery\Controllers\MessagingIngressController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataIntegrityController.cs" />
@@ -1187,6 +1190,8 @@
     <Folder Include="Areas\ClientCommunication\Views\Shared\" />
     <Folder Include="Areas\ClientCommunication\Views\Sync\" />
     <Folder Include="Areas\ClientCommunication\Views\User\" />
+    <Folder Include="Areas\DataDelivery\Models\" />
+    <Folder Include="Areas\DataDelivery\Views\Shared\" />
     <Folder Include="Areas\Integration\Models\" />
     <Folder Include="Areas\Integration\Views\Shared\" />
     <Folder Include="Areas\ServerCommunication\Models\" />

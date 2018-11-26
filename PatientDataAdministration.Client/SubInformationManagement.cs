@@ -384,7 +384,19 @@ namespace PatientDataAdministration.Client
 
         private void btnNfcData_Click(object sender, EventArgs e)
         {
-            //
+            if (string.IsNullOrEmpty(_nfcUid))
+            {
+                try
+                {
+                    var mifare = new MiFareCardProg();
+                    _nfcUid = RemoveSpaces(mifare.GetUID(_selectedReader).Trim());
+                }
+                catch 
+                {
+                    MessageBox.Show(@"Please Place a Tag to Use");
+                }
+            }
+            else _nfcUid = "";
         }
 
         private void persistLoad_Tick(object sender, EventArgs e)
@@ -864,6 +876,8 @@ namespace PatientDataAdministration.Client
                     lblNfcStatus.Text = @"NFC Device Connected";
                     lblNfcStatus.ForeColor = Color.SteelBlue;
                     lblTagUid.Text = @"No Card Found";
+
+                    _nfcUid = "";
                 }
                 else if ((readerState & SCARD.STATE_UNAVAILABLE) != 0)
                 {

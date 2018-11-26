@@ -321,6 +321,9 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
         {
             try
             {
+                if (!EngineDataIntegrity.EngineDuplicateBioData.BioDataIntegrityCases.Any())
+                    return;
+
                 var message = "Dear Administrator(s)<br />";
                 message +=
                     $"There are {EngineDataIntegrity.EngineDuplicateBioData.BioDataIntegrityCases.Count} unresolved case around Biometric Data Integrity. Kindly Log In to Resolve them.<br/>";

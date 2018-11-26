@@ -1010,14 +1010,28 @@ namespace PatientDataAdministration.Client
 
         private void tmrLocalSync_Tick(object sender, EventArgs e)
         {
-            if (!bgwLocalSync.IsBusy)
+            try
             {
-                bgwLocalSync.RunWorkerAsync();
-            }
+                if (!bgwLocalSync.IsBusy)
+                {
+                    bgwLocalSync.RunWorkerAsync();
+                }
 
-            if (_threadPullAppointment.ThreadState != ThreadState.Running)
+                if (_threadPullAppointment != null)
+                    if (_threadPullAppointment.ThreadState != ThreadState.Running)
+                    {
+                        _threadPullAppointment = new Thread(PullAppointments);
+                        _threadPullAppointment.Start();
+                    }
+            }
+            catch (Exception ex)
             {
-                _threadPullAppointment.Start();
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Local Sync Encountered an Error. " + ex.ToString()
+                });
             }
         }
     }

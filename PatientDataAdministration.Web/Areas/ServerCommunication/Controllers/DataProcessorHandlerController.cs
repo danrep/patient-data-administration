@@ -104,12 +104,29 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                         var stream = System.IO.File.Open(path, FileMode.Open, FileAccess.Read);
                         var reader = ExcelReaderFactory.CreateReader(stream);
+
                         if ((int)FileProcessingMethod.ExPat == fileProcessingMethod)
                         {
                             var dataSet = reader.AsDataSet();
                             dataSet.DataSetName = file;
 
                             ProcessPatientRecords(dataSet, forceReplace, notifyDestination);
+                        }
+
+                        if ((int)FileProcessingMethod.PhoneNumberUpdate == fileProcessingMethod)
+                        {
+                            var dataSet = reader.AsDataSet();
+                            dataSet.DataSetName = file;
+
+                            UpdatePatientPhoneNumber(dataSet, notifyDestination);
+                        }
+
+                        if ((int)FileProcessingMethod.DateBirthUpdate == fileProcessingMethod)
+                        {
+                            var dataSet = reader.AsDataSet();
+                            dataSet.DataSetName = file;
+
+                            UpdatePatientDateOfBirth(dataSet, notifyDestination);
                         }
 
                         reader.Close();
@@ -300,6 +317,149 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         {
                             ActivityLogger.Log(ex);
                             innerentities = new Entities();
+                            TreatProcessingError(ex, dataRow.ItemArray);
+                        }
+                    }
+
+                    returnData.Add(_returnDataPerTable);
+                }
+
+                innerentities.Sp_System_CleanUp();
+
+                var messageBody =
+                    System.IO.File.ReadAllText(
+                        $"{HostingEnvironment.ApplicationPhysicalPath}Assets\\message\\fileprocesscomplete.html");
+                messageBody = messageBody.Replace("{{file_name}}", dataSet.DataSetName);
+
+                if (returnData.Count > 0)
+                {
+                    var errors = "";
+                    foreach (var returnDatum in returnData)
+                    {
+                        foreach (var returnDatumItem in returnDatum)
+                        {
+                            errors += $"{returnDatumItem}<br />";
+                        }
+                    }
+                    messageBody = messageBody.Replace("{{table_other_info}}", errors);
+                }
+                else
+                    messageBody = messageBody.Replace("{{table_other_info}}", "No Notable Errors");
+
+                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private void UpdatePatientPhoneNumber(DataSet dataSet, string notifyDestination)
+        {
+            try
+            {
+                var innerentities = new Entities();
+                var returnData = new List<List<string>>();
+
+                foreach (DataTable table in dataSet.Tables)
+                {
+                    _returnDataPerTable = new List<string>();
+
+                    foreach (DataRow dataRow in table.Rows)
+                    {
+                        var pepId = dataRow[1].ToString().Trim().ToUpper();
+
+                        if (!pepId.Contains('-'))
+                            continue;
+
+                        try
+                        {
+                            var patientInformation =
+                                innerentities.Patient_PatientInformation.FirstOrDefault(x => x.PepId == pepId);
+
+                            if (patientInformation == null)
+                                continue;
+
+                            patientInformation.PhoneNumber = Transforms.NormalizePhoneNumber(dataRow[2].ToString().Trim());
+                            innerentities.Entry(patientInformation).State = EntityState.Modified;
+                            innerentities.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            innerentities = new Entities();
+                            ActivityLogger.Log(ex);
+                            TreatProcessingError(ex, dataRow.ItemArray);
+                        }
+                    }
+
+                    returnData.Add(_returnDataPerTable);
+                }
+
+                innerentities.Sp_System_CleanUp();
+
+                var messageBody =
+                    System.IO.File.ReadAllText(
+                        $"{HostingEnvironment.ApplicationPhysicalPath}Assets\\message\\fileprocesscomplete.html");
+                messageBody = messageBody.Replace("{{file_name}}", dataSet.DataSetName);
+
+                if (returnData.Count > 0)
+                {
+                    var errors = "";
+                    foreach (var returnDatum in returnData)
+                    {
+                        foreach (var returnDatumItem in returnDatum)
+                        {
+                            errors += $"{returnDatumItem}<br />";
+                        }
+                    }
+                    messageBody = messageBody.Replace("{{table_other_info}}", errors);
+                }
+                else
+                    messageBody = messageBody.Replace("{{table_other_info}}", "No Notable Errors");
+
+                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private void UpdatePatientDateOfBirth(DataSet dataSet, string notifyDestination)
+        {
+            try
+            {
+                var innerentities = new Entities();
+                var returnData = new List<List<string>>();
+
+                foreach (DataTable table in dataSet.Tables)
+                {
+                    _returnDataPerTable = new List<string>();
+
+                    foreach (DataRow dataRow in table.Rows)
+                    {
+                        var pepId = dataRow[1].ToString().Trim().ToUpper();
+
+                        if (!pepId.Contains('-'))
+                            continue;
+
+                        try
+                        {
+                            var patientInformation =
+                                innerentities.Patient_PatientInformation.FirstOrDefault(x => x.PepId == pepId);
+
+                            if (patientInformation == null)
+                                continue;
+
+                            patientInformation.DateOfBirth =
+                                Transforms.NormalizeDate(dataRow[2].ToString().Trim().Split(' ')[0].Trim());
+                            innerentities.Entry(patientInformation).State = EntityState.Modified;
+                            innerentities.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            innerentities = new Entities();
+                            ActivityLogger.Log(ex);
                             TreatProcessingError(ex, dataRow.ItemArray);
                         }
                     }
