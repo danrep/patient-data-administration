@@ -84,11 +84,10 @@ namespace PatientDataAdministration.Client
             this.lstBoxInfoLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lstBoxInfoLog.ForeColor = System.Drawing.Color.Black;
             this.lstBoxInfoLog.FormattingEnabled = true;
-            this.lstBoxInfoLog.ItemHeight = 17;
             this.lstBoxInfoLog.Location = new System.Drawing.Point(20, 295);
             this.lstBoxInfoLog.Name = "lstBoxInfoLog";
             this.lstBoxInfoLog.ScrollAlwaysVisible = true;
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(557, 104);
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(557, 93);
             this.lstBoxInfoLog.TabIndex = 12;
             // 
             // flowLayoutPanel1
@@ -351,7 +350,7 @@ namespace PatientDataAdministration.Client
             this.lblUserInformation.ForeColor = System.Drawing.Color.White;
             this.lblUserInformation.Location = new System.Drawing.Point(3, 13);
             this.lblUserInformation.Name = "lblUserInformation";
-            this.lblUserInformation.Size = new System.Drawing.Size(0, 18);
+            this.lblUserInformation.Size = new System.Drawing.Size(0, 15);
             this.lblUserInformation.TabIndex = 9;
             // 
             // metroToolTip1
@@ -460,7 +459,7 @@ namespace PatientDataAdministration.Client
             // 
             // DataCentral
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(822, 467);
             this.ControlBox = false;

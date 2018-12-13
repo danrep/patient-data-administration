@@ -8,7 +8,6 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.Web.Engines.EngineModels;
-using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
 {
@@ -244,6 +243,10 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                     //Stage 3 7 Days 
                     SendAppointment(processedManifest
                         .Where(x => x.TotalDays == -7).Select(x => x.ManifestItem).ToList(), 7);
+
+                    //Stage 4 30 Days 
+                    SendAppointment(processedManifest
+                        .Where(x => x.TotalDays == -30).Select(x => x.ManifestItem).ToList(), 1);
                 }
             }
             catch (Exception e)
@@ -351,12 +354,28 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                         if (patientInfo == null)
                             continue;
 
-                        var message = RecurrentData.HealthMessages[new Random().Next(RecurrentData.HealthMessages.Length)];
+                        //dynamic content generator
+                        //var message = RecurrentData.HealthMessages[new Random().Next(RecurrentData.HealthMessages.Length)];
+                        var message = "Stay Healthy! See your health care provider regularly. ";
+
                         var appointmentDataItemPayload =
                             Newtonsoft.Json.JsonConvert.DeserializeObject<AppointmentDataItem[]>(appointmentDataItem
                                 .AppointmentData);
 
-                        message += $" [{appointmentDataItem.DateAppointment:yyyyMMdd}|{appointmentDataItem.AppointmentOffice.Trim().ToUpper()}";
+                        switch (appointmentDataItem.AppointmentOffice.Trim().ToUpper())
+                        {
+                            case "C":
+                                message += "CD_";
+                                break;
+                            case "L":
+                                message += "VL_";
+                                break;
+                            case "P":
+                                message += "DP_";
+                                break;
+                        }
+
+                        message += $"{appointmentDataItem.DateAppointment:MMMyy}";
 
                         if (appointmentDataItemPayload != null)
                             message = appointmentDataItemPayload.Aggregate(message,
@@ -364,11 +383,12 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                                     current + (appointmentDatumItemPayload.ItemValue + " "));
 
                         message = message.Trim();
-                        message += "]";
+                        message += ". Get your FinVite today";
 
                         var appointment =
                             entity.Integration_AppointmentDataItem.FirstOrDefault(x => x.Id == appointmentDataItem.Id);
 
+                        // just to check that there is an appointment
                         if (appointment == null)
                             continue;
 

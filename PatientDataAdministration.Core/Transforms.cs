@@ -77,7 +77,7 @@ namespace PatientDataAdministration.Core
                     case RecurrenceInterval.Day:
                         if (DateTime.Now.Date.Subtract(lastProcessDate.Date).TotalDays > 0)
                         {
-                            lowerBound = DateTime.Now.Date;
+                            lowerBound = lastProcessDate;
                             return lowerBound.AddDays(1);
                         }
                         break;

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
+using PatientDataAdministration.Core;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using Exception = System.Exception;
@@ -382,6 +385,34 @@ namespace PatientDataAdministration.Client
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, 0);
+            }
+        }
+
+        private void btnExportLogs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                folderBrowserDialog.ShowDialog();
+                var location = folderBrowserDialog.SelectedPath;
+
+                new Thread(() =>
+                {
+                    using (var entities = new LocalPDAEntities())
+                    {
+                        var error = entities.System_ErrorLog.ToList();
+
+                        File.WriteAllText(
+                            Path.Combine(location, $"{DateTime.Now:yyyyMMddhhmmssfff}.txt"),
+                            JsonConvert.SerializeObject(error, Formatting.Indented));
+
+                        error = null;
+                        entities.Database.ExecuteSqlCommand("Truncate Table System_ErrorLog");
+                    }
+                }).Start();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0, false);
             }
         }
     }

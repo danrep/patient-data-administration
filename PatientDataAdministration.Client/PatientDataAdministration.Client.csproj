@@ -306,6 +306,7 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Add_Database_24px.png" />
     <None Include="Resources\DatabaseMigrateScript.txt" />
     <None Include="Resources\DatabaseInstallScript.txt" />
     <None Include="Resources\800px_COLOURBOX18331728.jpg" />

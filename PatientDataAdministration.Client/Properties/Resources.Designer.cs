@@ -101,27 +101,16 @@ namespace PatientDataAdministration.Client.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to USE [master]
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULL_DEFAULT OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULLS OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_PADDING OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_WARNINGS OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ARITHABORT OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_CLOSE ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_SHRINK ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_UPDATE_STATISTICS ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET CURSOR_CLOSE_ON_COMMIT OFF 
-        ///GO
-        ///A [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to USE [master];
+        ///CREATE DATABASE [{dbLocation}\LOCALPDA.MDF]
+        /// CONTAINMENT = NONE
+        /// ON  PRIMARY 
+        ///( NAME = N&apos;LocalPDA&apos;, FILENAME = N&apos;{dbLocation}\LocalPDA.mdf&apos; , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+        /// LOG ON 
+        ///( NAME = N&apos;LocalPDA_log&apos;, FILENAME = N&apos;{dbLocation}\LocalPDA_log.ldf&apos; , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB );
+        ///
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.mdf] SET READ_WRITE WITH NO_WAIT;
+        ///.
         /// </summary>
         internal static string DatabaseInstallScript {
             get {
@@ -132,25 +121,20 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized string similar to USE [master]
         ///GO
-        ///CREATE DATABASE [LOCALPDA]
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET COMPATIBILITY_LEVEL = 110
         ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULL_DEFAULT OFF 
+        ///IF (1 = FULLTEXTSERVICEPROPERTY(&apos;IsFullTextInstalled&apos;))
+        ///begin
+        ///EXEC [{dbLocation}\LOCALPDA.MDF].[dbo].[sp_fulltext_database] @action = &apos;enable&apos;
+        ///end
         ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_NULLS OFF 
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_NULL_DEFAULT OFF 
         ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_PADDING OFF 
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_NULLS OFF 
         ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ANSI_WARNINGS OFF 
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET ANSI_PADDING OFF 
         ///GO
-        ///ALTER DATABASE [LOCALPDA] SET ARITHABORT OFF 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_CLOSE ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_SHRINK ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET AUTO_UPDATE_STATISTICS ON 
-        ///GO
-        ///ALTER DATABASE [LOCALPDA] SET CU [rest of string was truncated]&quot;;.
+        ///ALTER DATABASE [{dbLocation}\LOCALPDA.MDF] SET A [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string DatabaseMigrateScript {
             get {
@@ -174,6 +158,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static System.Drawing.Bitmap HelpResource {
             get {
                 object obj = ResourceManager.GetObject("HelpResource", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_Add_Database_24px {
+            get {
+                object obj = ResourceManager.GetObject("icons8_Add_Database_24px", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

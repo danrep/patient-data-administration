@@ -23,6 +23,7 @@ namespace PatientDataAdministration.Client
         public static DialogResult TreatError(Exception exception, int userCredentialId, bool canDisplayError = false)
         {
             LocalCore._userCredentialId = userCredentialId;
+            TreatError(exception);
             return canDisplayError
                 ? MessageBox.Show(exception.Message + @" " + exception.InnerException?.Message)
                 : DialogResult.OK;
@@ -30,22 +31,28 @@ namespace PatientDataAdministration.Client
 
         private static void TreatError(Exception exception)
         {
-            try
+            _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
             {
+                IsDeleted = false,
+                ErrorDate = DateTime.Now,
+                ErrorMessage = exception.Message,
+                ErrorString = exception.ToString(),
+                SyncStatus = false,
+                UserId = _userCredentialId
+            });
+
+            if (exception.InnerException != null)
                 _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
                 {
                     IsDeleted = false,
                     ErrorDate = DateTime.Now,
-                    ErrorMessage = exception.Message,
-                    ErrorString = exception.ToString(),
+                    ErrorMessage = exception.InnerException.Message,
+                    ErrorString = exception.InnerException.ToString(),
                     SyncStatus = false,
                     UserId = _userCredentialId
                 });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
+            _pdaEntities.SaveChanges();
         }
 
         #region Remote Processors
