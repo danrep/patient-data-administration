@@ -10,7 +10,7 @@ namespace PatientDataAdministration.Service
     public partial class PatientDataAdministrationService : ServiceBase
     {
         System.Timers.Timer _timer;
-        TaskManager _taskManagerEngineDuplicateBioData;
+        private TaskManager _taskManagerEngineDuplicateBioData;
 
         public PatientDataAdministrationService()
         {

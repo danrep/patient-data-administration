@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Controllers
 {
@@ -68,6 +69,23 @@ namespace PatientDataAdministration.Web.Controllers
                     Status = true,
                     Message = "Successful",
                     Data = sites
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult CheckIfSessionIsValid()
+        {
+            try
+            {
+                return Json(new
+                {
+                    Status = SecurityModel.IsUserSessionActive,
+                    Message = "Successful"
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

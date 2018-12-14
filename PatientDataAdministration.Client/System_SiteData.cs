@@ -15,6 +15,7 @@ namespace PatientDataAdministration.Client
     public partial class System_SiteData
     {
         public int Id { get; set; }
+        public int RemoteSiteId { get; set; }
         public int StateId { get; set; }
         public string SiteCode { get; set; }
         public string SiteCodeExposedInfants { get; set; }
@@ -26,6 +27,5 @@ namespace PatientDataAdministration.Client
         public bool IsCurrent { get; set; }
         public System.DateTime LastUpdate { get; set; }
         public bool IsDeleted { get; set; }
-        public int RemoteSiteId { get; set; }
     }
 }

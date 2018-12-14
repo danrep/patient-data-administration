@@ -31,17 +31,22 @@ namespace PatientDataAdministration.Client
 
         private static void TreatError(Exception exception)
         {
-            _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
+            try
             {
-                IsDeleted = false,
-                ErrorDate = DateTime.Now,
-                ErrorMessage = exception.Message,
-                ErrorString = exception.ToString(),
-                SyncStatus = false,
-                UserId = _userCredentialId
-            });
+                _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
+                {
+                    IsDeleted = false,
+                    ErrorDate = DateTime.Now,
+                    ErrorMessage = exception.Message,
+                    ErrorString = exception.ToString(),
+                    SyncStatus = false,
+                    UserId = _userCredentialId
+                });
+                _pdaEntities.SaveChanges();
 
-            if (exception.InnerException != null)
+                if (exception.InnerException == null)
+                    return;
+
                 _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
                 {
                     IsDeleted = false,
@@ -51,8 +56,12 @@ namespace PatientDataAdministration.Client
                     SyncStatus = false,
                     UserId = _userCredentialId
                 });
-
-            _pdaEntities.SaveChanges();
+                _pdaEntities.SaveChanges();
+            }
+            catch
+            {
+                //
+            }
         }
 
         #region Remote Processors
@@ -127,6 +136,14 @@ namespace PatientDataAdministration.Client
 
                 var response = request.GetResponse();
                 dataStream = response.GetResponseStream();
+
+                if (dataStream == null)
+                    return new ResponseData
+                    {
+                        Message = "No Response",
+                        Status = false
+                    };
+
                 var reader = new StreamReader(dataStream);
                 var responseFromServer = reader.ReadToEnd();
                 reader.Close();
@@ -169,7 +186,11 @@ namespace PatientDataAdministration.Client
                 var response = request.GetResponse();
                 dataStream = response.GetResponseStream();
 
+                if (dataStream == null)
+                    return false;
+
                 var reader = new StreamReader(dataStream);
+
                 var responseFromServer = reader.ReadToEnd();
 
                 reader.Close();

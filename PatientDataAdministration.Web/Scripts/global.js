@@ -20,24 +20,43 @@ function api(apiConnectType, url, data, asyncMode, callback, feedBack = false) {
             "user-auth": $("#auth").val()
         }
     })
-    .success(function (remoteData) {
-        if (remoteData.Status === true) {
-            if (callback != null && typeof callback === "function") {
-                if (feedBack) {
-                    swalSuccess(remoteData.Message);
-                    setTimeout(function () {
+        .success(function (remoteData) {
+            if (remoteData.Status === true) {
+                if (callback !== null && typeof callback === "function") {
+                    if (feedBack) {
+                        swalSuccess(remoteData.Message);
+                        setTimeout(function () {
+                            callback(remoteData.Data);
+                        }, 2000);
+                    } else
                         callback(remoteData.Data);
-                    }, 2000);
-                } else
-                    callback(remoteData.Data);
+                }
+            } else {
+                swalWarning(remoteData.Message);
             }
-        } else {
-            swalWarning(remoteData.Message);
-        }
-    })
-    .error(function () {
-        swalEx();
-    });
+        })
+        .error(function () {
+            $.ajax({
+                    type: 'GET',
+                    url: '/Common/CheckIfSessionIsValid',
+                    async: true,
+                    dataType: "json"
+                })
+                .success(function (remoteData) {
+                    if (remoteData.Status !== true) {
+                        swalWarning("This session is expired. Please log in!");
+
+                        setTimeout(function () {
+                                window.location = "/";
+                            },
+                            2000);
+                        return;
+                    }
+                })
+                .error(function () {
+                    swalEx();
+                });
+        });
 };
 
 /*
@@ -67,7 +86,7 @@ function reInitializeTable(table, scrollX = false) {
  */
 function emptyForm(form) {
     form.find("input:text").val("");
-    
+
     form.find(":input").each(function () {
         switch (this.type) {
             case "password":
@@ -237,7 +256,7 @@ function swalEngineCallBack(title, message, type, buttonClass, callback) {
 };
 
 // ReSharper disable once NativeTypePrototypeExtending
-Number.prototype.format = function(n, x) {
+Number.prototype.format = function (n, x) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
     return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
 };

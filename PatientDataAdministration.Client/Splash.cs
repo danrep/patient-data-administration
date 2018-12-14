@@ -195,7 +195,7 @@ namespace PatientDataAdministration.Client
             catch (Exception e)
             {
                 LocalCore.TreatError(e, 0, true);
-               this.Close();
+                this.Close();
             }
         }
 

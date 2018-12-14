@@ -38,7 +38,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
         {
             try
             {
-                var currentUsers = LocalCache.Get<List<System_ClientPulse>>("System_ClientPulse");
+                var currentUsers = LocalCache.Get<List<System_ClientPulse>>("System_ClientPulse") ??
+                                   new List<System_ClientPulse>();
 
                 if (string.IsNullOrEmpty(clientId))
                     clientId = Request.UserHostAddress;

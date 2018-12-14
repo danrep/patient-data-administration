@@ -159,8 +159,8 @@ CREATE TABLE [dbo].[System_ErrorLog](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[UserId] [int] NOT NULL,
 	[ErrorDate] [datetime] NOT NULL,
-	[ErrorString] [varchar](100) NULL,
-	[ErrorMessage] [varchar](1000) NULL,
+	[ErrorString] [varchar](MAX) NULL,
+	[ErrorMessage] [varchar](MAX) NULL,
 	[SyncStatus] [bit] NOT NULL,
 	[IsDeleted] [bit] NOT NULL,
 PRIMARY KEY CLUSTERED 

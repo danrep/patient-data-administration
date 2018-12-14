@@ -5,6 +5,9 @@ namespace PatientDataAdministration.Web.Engines
 {
     public class Cron
     {
+        private static bool _isTriggered;
+        private static int _currentHour;
+
         public Cron()
         {
             var timer = new System.Timers.Timer(60000)
@@ -13,10 +16,21 @@ namespace PatientDataAdministration.Web.Engines
             };
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
+
+            _currentHour = 0;
+            _isTriggered = false;
         }
 
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            if (_isTriggered)
+                return;
+
+            if (_currentHour == DateTime.Now.Hour)
+                return;
+
+            _currentHour = DateTime.Now.Hour;
+
             #region Data Integrity Engine
 
             try
@@ -55,6 +69,9 @@ namespace PatientDataAdministration.Web.Engines
             }
 
             #endregion
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
     }
 }

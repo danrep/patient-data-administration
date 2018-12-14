@@ -57,8 +57,8 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="ErrorDate" Type="datetime" Nullable="false" />
-          <Property Name="ErrorString" Type="varchar" MaxLength="100" />
-          <Property Name="ErrorMessage" Type="varchar" MaxLength="1000" />
+          <Property Name="ErrorString" Type="varchar(max)" />
+          <Property Name="ErrorMessage" Type="varchar(max)" />
           <Property Name="SyncStatus" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
@@ -143,16 +143,16 @@
     <edmx:ConceptualModels>
       <Schema Namespace="LocalPDAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="LocalPDAEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="Sp_System_CleanUp" />
           <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
           <EntitySet Name="System_BioDataStore" EntityType="LocalPDAModel.System_BioDataStore" />
+          <EntitySet Name="System_EndPointLog" EntityType="LocalPDAModel.System_EndPointLog" />
           <EntitySet Name="System_ErrorLog" EntityType="LocalPDAModel.System_ErrorLog" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="LocalPDAModel.System_LocalGovermentArea" />
           <EntitySet Name="System_Setting" EntityType="LocalPDAModel.System_Setting" />
           <EntitySet Name="System_SiteData" EntityType="LocalPDAModel.System_SiteData" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
-          <EntitySet Name="System_EndPointLog" EntityType="LocalPDAModel.System_EndPointLog" />
-          <FunctionImport Name="Sp_System_CleanUp" />
         </EntityContainer>
         <EntityType Name="Local_StaffInformation">
           <Key>
@@ -187,8 +187,17 @@
           <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastSync" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsSync" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="IsLocalPush" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_EndPointLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EndPointId" Type="Int32" Nullable="false" />
+          <Property Name="EndPointUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ErrorLog">
           <Key>
@@ -197,8 +206,8 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="ErrorDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ErrorString" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorString" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SyncStatus" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
@@ -227,6 +236,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RemoteSiteId" Type="Int32" Nullable="false" />
           <Property Name="StateId" Type="Int32" Nullable="false" />
           <Property Name="SiteCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="SiteCodeExposedInfants" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
@@ -238,7 +248,6 @@
           <Property Name="IsCurrent" Type="Boolean" Nullable="false" />
           <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="RemoteSiteId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="System_State">
           <Key>
@@ -266,21 +275,13 @@
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
-        <EntityType Name="System_EndPointLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EndPointId" Type="Int32" Nullable="false" />
-          <Property Name="EndPointUrl" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="LocalPDAModelStoreContainer" CdmEntityContainer="LocalPDAEntities" >
+          <FunctionImportMapping FunctionImportName="Sp_System_CleanUp" FunctionName="LocalPDAModel.Store.Sp_System_CleanUp" />
           <EntitySetMapping Name="Local_StaffInformation">
             <EntityTypeMapping TypeName="LocalPDAModel.Local_StaffInformation">
               <MappingFragment StoreEntitySet="Local_StaffInformation">
@@ -303,8 +304,8 @@
           <EntitySetMapping Name="System_BioDataStore">
             <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore">
               <MappingFragment StoreEntitySet="System_BioDataStore">
-                <ScalarProperty Name="IsLocalPush" ColumnName="IsLocalPush" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsLocalPush" ColumnName="IsLocalPush" />
                 <ScalarProperty Name="IsSync" ColumnName="IsSync" />
                 <ScalarProperty Name="LastSync" ColumnName="LastSync" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
@@ -315,6 +316,16 @@
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_EndPointLog">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_EndPointLog">
+              <MappingFragment StoreEntitySet="System_EndPointLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EndPointUrl" ColumnName="EndPointUrl" />
+                <ScalarProperty Name="EndPointId" ColumnName="EndPointId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -357,7 +368,6 @@
           <EntitySetMapping Name="System_SiteData">
             <EntityTypeMapping TypeName="LocalPDAModel.System_SiteData">
               <MappingFragment StoreEntitySet="System_SiteData">
-                <ScalarProperty Name="RemoteSiteId" ColumnName="RemoteSiteId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
                 <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
@@ -369,6 +379,7 @@
                 <ScalarProperty Name="SiteCodeExposedInfants" ColumnName="SiteCodeExposedInfants" />
                 <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
                 <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="RemoteSiteId" ColumnName="RemoteSiteId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -401,17 +412,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="System_EndPointLog">
-            <EntityTypeMapping TypeName="LocalPDAModel.System_EndPointLog">
-              <MappingFragment StoreEntitySet="System_EndPointLog">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="EndPointUrl" ColumnName="EndPointUrl" />
-                <ScalarProperty Name="EndPointId" ColumnName="EndPointId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="Sp_System_CleanUp" FunctionName="LocalPDAModel.Store.Sp_System_CleanUp" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

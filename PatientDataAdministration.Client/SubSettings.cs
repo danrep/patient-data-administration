@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
-using PatientDataAdministration.Core;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using Exception = System.Exception;
@@ -278,6 +277,9 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                if (ddlState.SelectedValue == null)
+                    return;
+
                 // TODO: This line of code loads data into the 'localPDADataSet.System_SiteData' table. You can move, or remove it, as needed.
                 this.system_SiteDataTableAdapter.FillByState(this.localPDADataSet.System_SiteData,
                     (int)ddlState.SelectedValue);
@@ -374,6 +376,9 @@ namespace PatientDataAdministration.Client
         {
             try
             {
+                if (cmbEndPoint.SelectedValue == null)
+                    return;
+
                 using (var entities = new LocalPDAEntities())
                 {
                     var endPointId = Convert.ToInt32(cmbEndPoint.SelectedValue.ToString());
