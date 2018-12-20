@@ -19,7 +19,9 @@ namespace PatientDataAdministration.Client
         public int SiteId { get; set; }
         public string FullName { get; set; }
         public string PrimaryFinger { get; set; }
+        public string PrimaryFingerPosition { get; set; }
         public string SecondaryFinger { get; set; }
+        public string SecondaryFingerPosition { get; set; }
         public string NfcUid { get; set; }
         public string PatientData { get; set; }
         public System.DateTime LastUpdate { get; set; }

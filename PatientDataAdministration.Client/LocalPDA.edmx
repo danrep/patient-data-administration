@@ -32,8 +32,29 @@
           <Property Name="SiteId" Type="int" Nullable="false" />
           <Property Name="FullName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PrimaryFinger" Type="varchar(max)" />
+          <Property Name="PrimaryFingerPosition" Type="varchar" MaxLength="20" />
           <Property Name="SecondaryFinger" Type="varchar(max)" />
+          <Property Name="SecondaryFingerPosition" Type="varchar" MaxLength="20" />
           <Property Name="NfcUid" Type="varchar" MaxLength="100" />
+          <Property Name="PatientData" Type="varchar(max)" />
+          <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+          <Property Name="LastSync" Type="datetime" Nullable="false" />
+          <Property Name="IsSync" Type="bit" Nullable="false" />
+          <Property Name="IsLocalPush" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_BioDataStore_PopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HtsId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TestResult" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="PrimaryFinger" Type="varchar(max)" />
+          <Property Name="PrimaryFingerPosition" Type="varchar" MaxLength="20" />
+          <Property Name="SecondaryFinger" Type="varchar(max)" />
+          <Property Name="SecondaryFingerPosition" Type="varchar" MaxLength="20" />
           <Property Name="PatientData" Type="varchar(max)" />
           <Property Name="LastUpdate" Type="datetime" Nullable="false" />
           <Property Name="LastSync" Type="datetime" Nullable="false" />
@@ -130,6 +151,7 @@
         <EntityContainer Name="LocalPDAModelStoreContainer">
           <EntitySet Name="Local_StaffInformation" EntityType="Self.Local_StaffInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_BioDataStore" EntityType="Self.System_BioDataStore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_BioDataStore_PopulationRegister" EntityType="Self.System_BioDataStore_PopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_EndPointLog" EntityType="Self.System_EndPointLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ErrorLog" EntityType="Self.System_ErrorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
@@ -146,6 +168,7 @@
           <FunctionImport Name="Sp_System_CleanUp" />
           <EntitySet Name="Local_StaffInformation" EntityType="LocalPDAModel.Local_StaffInformation" />
           <EntitySet Name="System_BioDataStore" EntityType="LocalPDAModel.System_BioDataStore" />
+          <EntitySet Name="System_BioDataStore_PopulationRegister" EntityType="LocalPDAModel.System_BioDataStore_PopulationRegister" />
           <EntitySet Name="System_EndPointLog" EntityType="LocalPDAModel.System_EndPointLog" />
           <EntitySet Name="System_ErrorLog" EntityType="LocalPDAModel.System_ErrorLog" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="LocalPDAModel.System_LocalGovermentArea" />
@@ -153,7 +176,7 @@
           <EntitySet Name="System_SiteData" EntityType="LocalPDAModel.System_SiteData" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="Local_StaffInformation">
           <Key>
             <PropertyRef Name="Id" />
@@ -181,8 +204,29 @@
           <Property Name="SiteId" Type="Int32" Nullable="false" />
           <Property Name="FullName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="PrimaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryFingerPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="SecondaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SecondaryFingerPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="NfcUid" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PatientData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastSync" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsSync" Type="Boolean" Nullable="false" />
+          <Property Name="IsLocalPush" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_BioDataStore_PopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HtsId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TestResult" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="PrimaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryFingerPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SecondaryFinger" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SecondaryFingerPosition" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PatientData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastSync" Type="DateTime" Nullable="false" Precision="3" />
@@ -311,11 +355,33 @@
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
                 <ScalarProperty Name="PatientData" ColumnName="PatientData" />
                 <ScalarProperty Name="NfcUid" ColumnName="NfcUid" />
+                <ScalarProperty Name="SecondaryFingerPosition" ColumnName="SecondaryFingerPosition" />
                 <ScalarProperty Name="SecondaryFinger" ColumnName="SecondaryFinger" />
+                <ScalarProperty Name="PrimaryFingerPosition" ColumnName="PrimaryFingerPosition" />
                 <ScalarProperty Name="PrimaryFinger" ColumnName="PrimaryFinger" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="SiteId" ColumnName="SiteId" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_BioDataStore_PopulationRegister">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_BioDataStore_PopulationRegister">
+              <MappingFragment StoreEntitySet="System_BioDataStore_PopulationRegister">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsLocalPush" ColumnName="IsLocalPush" />
+                <ScalarProperty Name="IsSync" ColumnName="IsSync" />
+                <ScalarProperty Name="LastSync" ColumnName="LastSync" />
+                <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
+                <ScalarProperty Name="PatientData" ColumnName="PatientData" />
+                <ScalarProperty Name="SecondaryFingerPosition" ColumnName="SecondaryFingerPosition" />
+                <ScalarProperty Name="SecondaryFinger" ColumnName="SecondaryFinger" />
+                <ScalarProperty Name="PrimaryFingerPosition" ColumnName="PrimaryFingerPosition" />
+                <ScalarProperty Name="PrimaryFinger" ColumnName="PrimaryFinger" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="TestResult" ColumnName="TestResult" />
+                <ScalarProperty Name="HtsId" ColumnName="HtsId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -412,7 +478,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-        </EntityContainerMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

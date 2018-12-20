@@ -183,7 +183,7 @@ namespace PatientDataAdministration.Client
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
 
-                var response = request.GetResponse();
+                var response = (HttpWebResponse)request.GetResponse();
                 dataStream = response.GetResponseStream();
 
                 if (dataStream == null)
@@ -197,12 +197,40 @@ namespace PatientDataAdministration.Client
                 dataStream.Close();
                 response.Close();
 
-                return responseFromServer.Contains("200");
+                return Convert.ToBoolean(responseFromServer);
             }
             catch (Exception e)
             {
                 TreatError(e);
                 return false;
+            }
+        }
+
+        public static async Task<object> GetLocal(string url)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var response = client.GetAsync(url).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<object>(json);
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception e)
+            {
+                TreatError(e);
+                return null;
             }
         }
 

@@ -110,7 +110,9 @@ CREATE TABLE [dbo].[System_BioDataStore](
 	[SiteId] [int] NOT NULL,
 	[FullName] [varchar](100) NOT NULL,
 	[PrimaryFinger] [varchar](max) NULL,
-	[SecondaryFinger] [varchar](max) NULL,
+    [PrimaryFingerPosition]   VARCHAR (20) NULL,
+    [SecondaryFinger] VARCHAR (MAX) NULL,
+    [SecondaryFingerPosition] VARCHAR (20) NULL,
 	[NfcUid] [varchar](100) NULL,
 	[PatientData] [varchar](max) NULL,
 	[LastUpdate] [datetime] NOT NULL,
@@ -291,6 +293,24 @@ PRIMARY KEY CLUSTERED
 
 GO
 SET ANSI_PADDING OFF
+GO
+CREATE TABLE [dbo].[System_BioDataStore_PopulationRegister] (
+    [Id]              INT           IDENTITY (1, 1) NOT NULL,
+    [HtsId]           VARCHAR (100) NOT NULL,
+    [TestResult]      VARCHAR (100) NOT NULL,
+    [SiteId]          INT           NOT NULL,
+    [PrimaryFinger]   VARCHAR (MAX) NULL,
+    [PrimaryFingerPosition]   VARCHAR (20) NULL,
+    [SecondaryFinger] VARCHAR (MAX) NULL,
+    [SecondaryFingerPosition] VARCHAR (20) NULL,
+    [PatientData]     VARCHAR (MAX) NULL,
+    [LastUpdate]      DATETIME      DEFAULT (getdate()) NOT NULL,
+    [LastSync]        DATETIME      DEFAULT (getdate()) NOT NULL,
+    [IsSync]          BIT           NOT NULL,
+    [IsLocalPush]     BIT           DEFAULT ((0)) NOT NULL,
+    [IsDeleted]       BIT           NOT NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
 GO
 SET IDENTITY_INSERT [dbo].[System_LocalGovermentArea] ON 
 

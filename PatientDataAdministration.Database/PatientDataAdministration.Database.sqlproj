@@ -110,6 +110,8 @@
     <Build Include="dbo\Tables\Patient_PatientBiometricIntegrityCaseMember.sql" />
     <Build Include="dbo\Tables\Patient_PatientBiometricIntegrityCase.sql" />
     <Build Include="dbo\Tables\Administration_MessagingPatientComplaint.sql" />
+    <Build Include="dbo\Tables\Patient_PatientInformationPopulationRegister.sql" />
+    <Build Include="dbo\Tables\Patient_PatientBiometricDataPopulationRegister.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />

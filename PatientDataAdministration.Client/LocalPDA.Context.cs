@@ -29,6 +29,7 @@ namespace PatientDataAdministration.Client
     
         public virtual DbSet<Local_StaffInformation> Local_StaffInformation { get; set; }
         public virtual DbSet<System_BioDataStore> System_BioDataStore { get; set; }
+        public virtual DbSet<System_BioDataStore_PopulationRegister> System_BioDataStore_PopulationRegister { get; set; }
         public virtual DbSet<System_EndPointLog> System_EndPointLog { get; set; }
         public virtual DbSet<System_ErrorLog> System_ErrorLog { get; set; }
         public virtual DbSet<System_LocalGovermentArea> System_LocalGovermentArea { get; set; }

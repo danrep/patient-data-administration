@@ -32,17 +32,13 @@ namespace PatientDataAdministration.Client
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataCentral));
-            this.lstBoxInfoLog = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.btnPatientManagement = new System.Windows.Forms.Button();
-            this.btnDispensationHistory = new System.Windows.Forms.Button();
-            this.btnSchedule = new System.Windows.Forms.Button();
+            this.btnPopulationStatusRegister = new System.Windows.Forms.Button();
             this.btnSync = new System.Windows.Forms.Button();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.tmrPostInfoLogs = new System.Windows.Forms.Timer(this.components);
             this.tmrSync = new System.Windows.Forms.Timer(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnProfile = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -60,15 +56,16 @@ namespace PatientDataAdministration.Client
             this.bgwNewPatient = new System.ComponentModel.BackgroundWorker();
             this.btnCancelSync = new System.Windows.Forms.Button();
             this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnClearDump = new System.Windows.Forms.Button();
             this.bgwPing = new System.ComponentModel.BackgroundWorker();
             this.bgwFreshPatient = new System.ComponentModel.BackgroundWorker();
             this.tmrFreshPatient = new System.Windows.Forms.Timer(this.components);
             this.bgwSelfServer = new System.ComponentModel.BackgroundWorker();
             this.bgwContentManager = new System.ComponentModel.BackgroundWorker();
-            this.bgwLocalSync = new System.ComponentModel.BackgroundWorker();
-            this.tmrLocalSync = new System.Windows.Forms.Timer(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lstBoxInfoLog = new System.Windows.Forms.TextBox();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.flowLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picConnectionAvailable)).BeginInit();
@@ -77,33 +74,21 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picDataReady)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDataWait)).BeginInit();
             this.flowLayoutPanel3.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // lstBoxInfoLog
-            // 
-            this.lstBoxInfoLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lstBoxInfoLog.ForeColor = System.Drawing.Color.Black;
-            this.lstBoxInfoLog.FormattingEnabled = true;
-            this.lstBoxInfoLog.Location = new System.Drawing.Point(20, 295);
-            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
-            this.lstBoxInfoLog.ScrollAlwaysVisible = true;
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(557, 93);
-            this.lstBoxInfoLog.TabIndex = 12;
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.btnPatientManagement);
-            this.flowLayoutPanel1.Controls.Add(this.btnDispensationHistory);
-            this.flowLayoutPanel1.Controls.Add(this.btnSchedule);
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 63);
+            this.flowLayoutPanel1.Controls.Add(this.btnPopulationStatusRegister);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 70);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(555, 211);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(746, 203);
             this.flowLayoutPanel1.TabIndex = 15;
             // 
             // btnPatientManagement
             // 
-            this.btnPatientManagement.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnPatientManagement.BackColor = System.Drawing.Color.Black;
             this.btnPatientManagement.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnPatientManagement.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPatientManagement.FlatAppearance.BorderColor = System.Drawing.Color.Black;
@@ -117,63 +102,46 @@ namespace PatientDataAdministration.Client
             this.btnPatientManagement.Name = "btnPatientManagement";
             this.btnPatientManagement.Size = new System.Drawing.Size(106, 195);
             this.btnPatientManagement.TabIndex = 2;
-            this.btnPatientManagement.Text = "Information Management\r\n\r\n";
+            this.btnPatientManagement.Text = "Patient Information Management\r\n\r\n";
             this.btnPatientManagement.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnPatientManagement.UseVisualStyleBackColor = true;
+            this.btnPatientManagement.UseVisualStyleBackColor = false;
             this.btnPatientManagement.Click += new System.EventHandler(this.btnPatientManagement_Click);
             // 
-            // btnDispensationHistory
+            // btnPopulationStatusRegister
             // 
-            this.btnDispensationHistory.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
-            this.btnDispensationHistory.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnDispensationHistory.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDispensationHistory.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnDispensationHistory.FlatAppearance.BorderSize = 2;
-            this.btnDispensationHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDispensationHistory.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDispensationHistory.ForeColor = System.Drawing.Color.White;
-            this.btnDispensationHistory.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Pill_Bottle_96px;
-            this.btnDispensationHistory.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnDispensationHistory.Location = new System.Drawing.Point(115, 3);
-            this.btnDispensationHistory.Name = "btnDispensationHistory";
-            this.btnDispensationHistory.Size = new System.Drawing.Size(106, 195);
-            this.btnDispensationHistory.TabIndex = 3;
-            this.btnDispensationHistory.Text = "Consultation and Dispensation Register\r\n\r\n";
-            this.btnDispensationHistory.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnDispensationHistory.UseVisualStyleBackColor = true;
-            // 
-            // btnSchedule
-            // 
-            this.btnSchedule.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
-            this.btnSchedule.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.btnSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSchedule.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnSchedule.FlatAppearance.BorderSize = 2;
-            this.btnSchedule.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSchedule.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSchedule.ForeColor = System.Drawing.Color.White;
-            this.btnSchedule.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Calendar_96px;
-            this.btnSchedule.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnSchedule.Location = new System.Drawing.Point(227, 3);
-            this.btnSchedule.Name = "btnSchedule";
-            this.btnSchedule.Size = new System.Drawing.Size(106, 195);
-            this.btnSchedule.TabIndex = 4;
-            this.btnSchedule.Text = "Appointments and Messaging \r\n";
-            this.btnSchedule.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSchedule.UseVisualStyleBackColor = true;
+            this.btnPopulationStatusRegister.BackColor = System.Drawing.Color.Black;
+            this.btnPopulationStatusRegister.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnPopulationStatusRegister.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPopulationStatusRegister.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnPopulationStatusRegister.FlatAppearance.BorderSize = 2;
+            this.btnPopulationStatusRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPopulationStatusRegister.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPopulationStatusRegister.ForeColor = System.Drawing.Color.White;
+            this.btnPopulationStatusRegister.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_AIDS_Ribbon_96px;
+            this.btnPopulationStatusRegister.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnPopulationStatusRegister.Location = new System.Drawing.Point(115, 3);
+            this.btnPopulationStatusRegister.Name = "btnPopulationStatusRegister";
+            this.btnPopulationStatusRegister.Size = new System.Drawing.Size(106, 195);
+            this.btnPopulationStatusRegister.TabIndex = 5;
+            this.btnPopulationStatusRegister.Text = "HIV Testing && Counselling Register\r\n \r\n";
+            this.btnPopulationStatusRegister.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnPopulationStatusRegister.UseVisualStyleBackColor = false;
+            this.btnPopulationStatusRegister.Click += new System.EventHandler(this.btnPopulationStatusRegister_Click);
             // 
             // btnSync
             // 
             this.btnSync.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSync.BackColor = System.Drawing.Color.White;
-            this.btnSync.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnSync.BackColor = System.Drawing.Color.Silver;
             this.btnSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSync.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSync.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.ForeColor = System.Drawing.Color.White;
             this.btnSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
-            this.btnSync.Location = new System.Drawing.Point(98, 3);
+            this.btnSync.Location = new System.Drawing.Point(467, 3);
             this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(41, 41);
+            this.btnSync.Size = new System.Drawing.Size(40, 40);
             this.btnSync.TabIndex = 16;
             this.btnSync.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSync.UseVisualStyleBackColor = false;
@@ -198,42 +166,20 @@ namespace PatientDataAdministration.Client
             this.tmrSync.Tag = "";
             this.tmrSync.Tick += new System.EventHandler(this.tmrSync_Tick);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::PatientDataAdministration.Client.Properties.Resources.VOnwNgeg;
-            this.pictureBox1.Location = new System.Drawing.Point(584, 63);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(218, 338);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 9;
-            this.pictureBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Info_16px;
-            this.label2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label2.Location = new System.Drawing.Point(17, 277);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(137, 15);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Information and Logs";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // btnProfile
             // 
             this.btnProfile.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnProfile.BackColor = System.Drawing.Color.White;
+            this.btnProfile.BackColor = System.Drawing.Color.Silver;
             this.btnProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnProfile.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Person_24px;
-            this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProfile.Location = new System.Drawing.Point(145, 3);
+            this.btnProfile.Location = new System.Drawing.Point(513, 3);
             this.btnProfile.Name = "btnProfile";
-            this.btnProfile.Size = new System.Drawing.Size(106, 41);
+            this.btnProfile.Size = new System.Drawing.Size(40, 40);
             this.btnProfile.TabIndex = 7;
-            this.btnProfile.Text = "Profile";
             this.btnProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnProfile.UseVisualStyleBackColor = false;
             this.btnProfile.Visible = false;
@@ -244,14 +190,15 @@ namespace PatientDataAdministration.Client
             this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnClose.BackColor = System.Drawing.Color.White;
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnClose.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClose.Location = new System.Drawing.Point(257, 3);
+            this.btnClose.Location = new System.Drawing.Point(559, 3);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(106, 41);
+            this.btnClose.Size = new System.Drawing.Size(40, 40);
             this.btnClose.TabIndex = 6;
-            this.btnClose.Text = "Close";
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -259,13 +206,12 @@ namespace PatientDataAdministration.Client
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.Black;
-            this.panel2.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
             this.panel2.Controls.Add(this.flowLayoutPanel2);
             this.panel2.Controls.Add(this.lblUserInformation);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(20, 409);
+            this.panel2.Location = new System.Drawing.Point(20, 390);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(782, 38);
+            this.panel2.Size = new System.Drawing.Size(748, 38);
             this.panel2.TabIndex = 11;
             // 
             // flowLayoutPanel2
@@ -277,15 +223,15 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel2.Controls.Add(this.picDataReady);
             this.flowLayoutPanel2.Controls.Add(this.picDataWait);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(564, 3);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(581, 3);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(215, 32);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(162, 32);
             this.flowLayoutPanel2.TabIndex = 10;
             // 
             // picConnectionAvailable
             // 
             this.picConnectionAvailable.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Server_20px;
-            this.picConnectionAvailable.Location = new System.Drawing.Point(188, 3);
+            this.picConnectionAvailable.Location = new System.Drawing.Point(135, 3);
             this.picConnectionAvailable.Name = "picConnectionAvailable";
             this.picConnectionAvailable.Size = new System.Drawing.Size(24, 24);
             this.picConnectionAvailable.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -297,7 +243,7 @@ namespace PatientDataAdministration.Client
             // picSyncInProcess
             // 
             this.picSyncInProcess.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
-            this.picSyncInProcess.Location = new System.Drawing.Point(158, 3);
+            this.picSyncInProcess.Location = new System.Drawing.Point(105, 3);
             this.picSyncInProcess.Name = "picSyncInProcess";
             this.picSyncInProcess.Size = new System.Drawing.Size(24, 24);
             this.picSyncInProcess.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -309,7 +255,7 @@ namespace PatientDataAdministration.Client
             // picIndUpdate
             // 
             this.picIndUpdate.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Download_20px;
-            this.picIndUpdate.Location = new System.Drawing.Point(128, 3);
+            this.picIndUpdate.Location = new System.Drawing.Point(75, 3);
             this.picIndUpdate.Name = "picIndUpdate";
             this.picIndUpdate.Size = new System.Drawing.Size(24, 24);
             this.picIndUpdate.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -321,7 +267,7 @@ namespace PatientDataAdministration.Client
             // picDataReady
             // 
             this.picDataReady.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
-            this.picDataReady.Location = new System.Drawing.Point(98, 3);
+            this.picDataReady.Location = new System.Drawing.Point(45, 3);
             this.picDataReady.Name = "picDataReady";
             this.picDataReady.Size = new System.Drawing.Size(24, 24);
             this.picDataReady.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -332,8 +278,8 @@ namespace PatientDataAdministration.Client
             // 
             // picDataWait
             // 
-            this.picDataWait.Image = global::PatientDataAdministration.Client.Properties.Resources._800px_COLOURBOX18331728;
-            this.picDataWait.Location = new System.Drawing.Point(68, 3);
+            this.picDataWait.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
+            this.picDataWait.Location = new System.Drawing.Point(15, 3);
             this.picDataWait.Name = "picDataWait";
             this.picDataWait.Size = new System.Drawing.Size(24, 24);
             this.picDataWait.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -387,14 +333,17 @@ namespace PatientDataAdministration.Client
             // btnCancelSync
             // 
             this.btnCancelSync.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnCancelSync.BackColor = System.Drawing.Color.Maroon;
+            this.btnCancelSync.BackColor = System.Drawing.Color.Black;
             this.btnCancelSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnCancelSync.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnCancelSync.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnCancelSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelSync.ForeColor = System.Drawing.Color.White;
             this.btnCancelSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnCancelSync.Location = new System.Drawing.Point(51, 3);
+            this.btnCancelSync.Location = new System.Drawing.Point(421, 3);
             this.btnCancelSync.Name = "btnCancelSync";
-            this.btnCancelSync.Size = new System.Drawing.Size(41, 41);
+            this.btnCancelSync.Size = new System.Drawing.Size(40, 40);
             this.btnCancelSync.TabIndex = 17;
             this.btnCancelSync.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnCancelSync.UseVisualStyleBackColor = false;
@@ -407,11 +356,30 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel3.Controls.Add(this.btnProfile);
             this.flowLayoutPanel3.Controls.Add(this.btnSync);
             this.flowLayoutPanel3.Controls.Add(this.btnCancelSync);
+            this.flowLayoutPanel3.Controls.Add(this.btnClearDump);
             this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(436, 10);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(164, 17);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(366, 47);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(602, 47);
             this.flowLayoutPanel3.TabIndex = 18;
+            // 
+            // btnClearDump
+            // 
+            this.btnClearDump.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnClearDump.BackColor = System.Drawing.Color.Silver;
+            this.btnClearDump.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClearDump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnClearDump.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnClearDump.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearDump.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearDump.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Page_24px;
+            this.btnClearDump.Location = new System.Drawing.Point(375, 3);
+            this.btnClearDump.Name = "btnClearDump";
+            this.btnClearDump.Size = new System.Drawing.Size(40, 40);
+            this.btnClearDump.TabIndex = 18;
+            this.btnClearDump.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClearDump.UseVisualStyleBackColor = false;
+            this.btnClearDump.Click += new System.EventHandler(this.btnClearDump_Click);
             // 
             // bgwPing
             // 
@@ -444,30 +412,36 @@ namespace PatientDataAdministration.Client
             this.bgwContentManager.WorkerSupportsCancellation = true;
             this.bgwContentManager.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwContentManager_DoWork);
             // 
-            // bgwLocalSync
+            // groupBox1
             // 
-            this.bgwLocalSync.WorkerReportsProgress = true;
-            this.bgwLocalSync.WorkerSupportsCancellation = true;
-            this.bgwLocalSync.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwLocalSync_DoWork);
+            this.groupBox1.Controls.Add(this.lstBoxInfoLog);
+            this.groupBox1.Location = new System.Drawing.Point(20, 280);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(748, 104);
+            this.groupBox1.TabIndex = 19;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Logs and Information";
             // 
-            // tmrLocalSync
+            // lstBoxInfoLog
             // 
-            this.tmrLocalSync.Enabled = true;
-            this.tmrLocalSync.Interval = 10000;
-            this.tmrLocalSync.Tag = "";
-            this.tmrLocalSync.Tick += new System.EventHandler(this.tmrLocalSync_Tick);
+            this.lstBoxInfoLog.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 20);
+            this.lstBoxInfoLog.Multiline = true;
+            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
+            this.lstBoxInfoLog.ReadOnly = true;
+            this.lstBoxInfoLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(737, 78);
+            this.lstBoxInfoLog.TabIndex = 0;
             // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(822, 467);
+            this.ClientSize = new System.Drawing.Size(788, 448);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.flowLayoutPanel3);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.lstBoxInfoLog);
             this.Controls.Add(this.panel2);
             this.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -476,12 +450,11 @@ namespace PatientDataAdministration.Client
             this.Name = "DataCentral";
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Blue;
-            this.Text = "APIN Patient Data Manager";
+            this.Text = "Data Central";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.DataCentral_FormClosing);
             this.Load += new System.EventHandler(this.DataCentral_Load);
             this.Shown += new System.EventHandler(this.DataCentral_Shown);
             this.flowLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -491,21 +464,18 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picDataReady)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picDataWait)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.Button btnPatientManagement;
-        private System.Windows.Forms.Button btnDispensationHistory;
-        private System.Windows.Forms.Button btnSchedule;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnProfile;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label lblUserInformation;
-        private System.Windows.Forms.ListBox lstBoxInfoLog;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.PictureBox picConnectionAvailable;
@@ -529,7 +499,10 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Timer tmrFreshPatient;
         private System.ComponentModel.BackgroundWorker bgwSelfServer;
         private System.ComponentModel.BackgroundWorker bgwContentManager;
-        private System.ComponentModel.BackgroundWorker bgwLocalSync;
-        private System.Windows.Forms.Timer tmrLocalSync;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btnPopulationStatusRegister;
+        private System.Windows.Forms.Button btnClearDump;
+        private System.Windows.Forms.TextBox lstBoxInfoLog;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }

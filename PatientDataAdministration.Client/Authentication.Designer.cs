@@ -36,47 +36,46 @@ namespace PatientDataAdministration.Client
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.btnSetting = new System.Windows.Forms.Button();
             this.btnLogIn = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tmrFeedBack = new System.Windows.Forms.Timer(this.components);
-            this.picLoader = new System.Windows.Forms.Panel();
+            this.pnlWaiting = new System.Windows.Forms.Panel();
             this.label13 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.picLoader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.pnlWaiting.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtUserName
             // 
             this.txtUserName.Font = new System.Drawing.Font("Lato", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUserName.Location = new System.Drawing.Point(34, 69);
+            this.txtUserName.Location = new System.Drawing.Point(28, 75);
             this.txtUserName.Margin = new System.Windows.Forms.Padding(4);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(445, 39);
+            this.txtUserName.Size = new System.Drawing.Size(461, 39);
             this.txtUserName.TabIndex = 10;
             // 
             // label1
             // 
-            this.label1.BackColor = System.Drawing.Color.SteelBlue;
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.White;
             this.label1.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(410, 69);
+            this.label1.ForeColor = System.Drawing.Color.SteelBlue;
+            this.label1.Location = new System.Drawing.Point(31, 117);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 39);
+            this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 11;
             this.label1.Text = "Username";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label2
             // 
-            this.label2.BackColor = System.Drawing.Color.SteelBlue;
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.White;
             this.label2.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label2.Location = new System.Drawing.Point(410, 133);
+            this.label2.ForeColor = System.Drawing.Color.SteelBlue;
+            this.label2.Location = new System.Drawing.Point(31, 175);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 39);
+            this.label2.Size = new System.Drawing.Size(55, 13);
             this.label2.TabIndex = 13;
             this.label2.Text = "Password";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -84,35 +83,26 @@ namespace PatientDataAdministration.Client
             // txtPassword
             // 
             this.txtPassword.Font = new System.Drawing.Font("Lato", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.Location = new System.Drawing.Point(34, 133);
+            this.txtPassword.Location = new System.Drawing.Point(28, 134);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(4);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(445, 39);
+            this.txtPassword.Size = new System.Drawing.Size(461, 39);
             this.txtPassword.TabIndex = 12;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Gray;
-            this.label3.Location = new System.Drawing.Point(237, 31);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(243, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Property of AIDS Prevention Initiative in Nigeria";
-            // 
             // btnSetting
             // 
-            this.btnSetting.BackColor = System.Drawing.Color.White;
+            this.btnSetting.BackColor = System.Drawing.Color.Silver;
             this.btnSetting.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSetting.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnSetting.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSetting.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSetting.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSetting.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Administrative_Tools_24px;
-            this.btnSetting.Location = new System.Drawing.Point(76, 197);
+            this.btnSetting.Location = new System.Drawing.Point(335, 181);
             this.btnSetting.Margin = new System.Windows.Forms.Padding(4);
             this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(34, 32);
+            this.btnSetting.Size = new System.Drawing.Size(40, 40);
             this.btnSetting.TabIndex = 16;
             this.btnSetting.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSetting.UseVisualStyleBackColor = false;
@@ -120,16 +110,18 @@ namespace PatientDataAdministration.Client
             // 
             // btnLogIn
             // 
-            this.btnLogIn.BackColor = System.Drawing.Color.White;
+            this.btnLogIn.BackColor = System.Drawing.Color.Silver;
             this.btnLogIn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogIn.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnLogIn.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnLogIn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnLogIn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLogIn.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogIn.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Key_24px;
             this.btnLogIn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnLogIn.Location = new System.Drawing.Point(367, 197);
+            this.btnLogIn.Location = new System.Drawing.Point(382, 181);
             this.btnLogIn.Margin = new System.Windows.Forms.Padding(4);
             this.btnLogIn.Name = "btnLogIn";
-            this.btnLogIn.Size = new System.Drawing.Size(113, 32);
+            this.btnLogIn.Size = new System.Drawing.Size(107, 40);
             this.btnLogIn.TabIndex = 17;
             this.btnLogIn.Text = "Log In";
             this.btnLogIn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -140,13 +132,15 @@ namespace PatientDataAdministration.Client
             // 
             this.btnClose.BackColor = System.Drawing.Color.White;
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnClose.Location = new System.Drawing.Point(34, 197);
+            this.btnClose.Location = new System.Drawing.Point(449, 17);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(34, 32);
+            this.btnClose.Size = new System.Drawing.Size(40, 40);
             this.btnClose.TabIndex = 9;
             this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnClose.UseVisualStyleBackColor = false;
@@ -158,50 +152,38 @@ namespace PatientDataAdministration.Client
             this.tmrFeedBack.Interval = 500;
             this.tmrFeedBack.Tick += new System.EventHandler(this.tmrFeedBack_Tick);
             // 
-            // picLoader
+            // pnlWaiting
             // 
-            this.picLoader.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
-            this.picLoader.Controls.Add(this.label13);
-            this.picLoader.Controls.Add(this.pictureBox2);
-            this.picLoader.Location = new System.Drawing.Point(-15, 82);
-            this.picLoader.Name = "picLoader";
-            this.picLoader.Size = new System.Drawing.Size(542, 75);
-            this.picLoader.TabIndex = 137;
-            this.picLoader.Visible = false;
+            this.pnlWaiting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.pnlWaiting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlWaiting.Controls.Add(this.label13);
+            this.pnlWaiting.Location = new System.Drawing.Point(0, 101);
+            this.pnlWaiting.Name = "pnlWaiting";
+            this.pnlWaiting.Size = new System.Drawing.Size(514, 34);
+            this.pnlWaiting.TabIndex = 137;
+            this.pnlWaiting.Visible = false;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.White;
-            this.label13.Location = new System.Drawing.Point(176, 54);
+            this.label13.Location = new System.Drawing.Point(169, 10);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(190, 15);
+            this.label13.Size = new System.Drawing.Size(177, 13);
             this.label13.TabIndex = 106;
             this.label13.Text = "Operation In Progress. Please Wait";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox2.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Load_96px;
-            this.pictureBox2.Location = new System.Drawing.Point(247, 6);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(48, 43);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 63;
-            this.pictureBox2.TabStop = false;
             // 
             // Authentication
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(513, 239);
+            this.ClientSize = new System.Drawing.Size(513, 237);
             this.ControlBox = false;
-            this.Controls.Add(this.picLoader);
+            this.Controls.Add(this.pnlWaiting);
             this.Controls.Add(this.btnSetting);
             this.Controls.Add(this.btnLogIn);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.label1);
@@ -219,9 +201,8 @@ namespace PatientDataAdministration.Client
             this.Text = "Authentication";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Authentication_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Authentication_KeyDown);
-            this.picLoader.ResumeLayout(false);
-            this.picLoader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.pnlWaiting.ResumeLayout(false);
+            this.pnlWaiting.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -234,12 +215,10 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPassword;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button btnLogIn;
         private System.Windows.Forms.Button btnSetting;
         private System.Windows.Forms.Timer tmrFeedBack;
-        private System.Windows.Forms.Panel picLoader;
+        private System.Windows.Forms.Panel pnlWaiting;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

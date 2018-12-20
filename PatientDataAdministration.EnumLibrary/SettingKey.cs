@@ -12,9 +12,13 @@ namespace PatientDataAdministration.EnumLibrary
 
     public enum LocalEndPoint : int
     {
-        [EnumDisplayName(DisplayName = "CISPro EndPoint")]
-        EndPointCisPro = 1,
-        [EnumDisplayName(DisplayName = "Appointment Data EndPoint")]
-        EndPointAppointment
+        [EnumDisplayName(DisplayName = "CISPro EndPoint Pull API")]
+        EndPointCisProPull = 1,
+        [EnumDisplayName(DisplayName = "OpenMRS EndPoint Pull API")]
+        EndPointOpenMrsPull,
+        [EnumDisplayName(DisplayName = "CISPro EndPoint Push API")]
+        EndPointCisProPush,
+        [EnumDisplayName(DisplayName = "OpenMRS EndPoint Push API")]
+        EndPointOpenMrsPush
     }
 }

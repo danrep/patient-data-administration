@@ -85,8 +85,8 @@ namespace PatientDataAdministration.Client
             // metroTabControl1
             // 
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
-            this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
+            this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Location = new System.Drawing.Point(30, 65);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 0;
@@ -116,14 +116,13 @@ namespace PatientDataAdministration.Client
             // 
             this.btnSyncSystemData.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnSyncSystemData.BackColor = System.Drawing.Color.White;
-            this.btnSyncSystemData.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources._800px_COLOURBOX18331728;
             this.btnSyncSystemData.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnSyncSystemData.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSyncSystemData.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSyncSystemData.ForeColor = System.Drawing.Color.White;
             this.btnSyncSystemData.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
             this.btnSyncSystemData.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSyncSystemData.Location = new System.Drawing.Point(-1006, -511);
+            this.btnSyncSystemData.Location = new System.Drawing.Point(-1200, -597);
             this.btnSyncSystemData.Name = "btnSyncSystemData";
             this.btnSyncSystemData.Size = new System.Drawing.Size(218, 32);
             this.btnSyncSystemData.TabIndex = 59;
@@ -135,28 +134,28 @@ namespace PatientDataAdministration.Client
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
             this.groupBox1.Controls.Add(this.btnSaveConnections);
-            this.groupBox1.Location = new System.Drawing.Point(7, 169);
+            this.groupBox1.Location = new System.Drawing.Point(7, 164);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(569, 58);
+            this.groupBox1.Size = new System.Drawing.Size(569, 63);
             this.groupBox1.TabIndex = 62;
             this.groupBox1.TabStop = false;
             // 
             // btnSaveConnections
             // 
             this.btnSaveConnections.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSaveConnections.BackColor = System.Drawing.Color.White;
-            this.btnSaveConnections.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnSaveConnections.BackColor = System.Drawing.Color.Silver;
             this.btnSaveConnections.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveConnections.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSaveConnections.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnSaveConnections.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveConnections.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveConnections.ForeColor = System.Drawing.Color.White;
             this.btnSaveConnections.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
-            this.btnSaveConnections.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveConnections.Location = new System.Drawing.Point(457, 17);
+            this.btnSaveConnections.Location = new System.Drawing.Point(523, 15);
             this.btnSaveConnections.Name = "btnSaveConnections";
-            this.btnSaveConnections.Size = new System.Drawing.Size(106, 32);
+            this.btnSaveConnections.Size = new System.Drawing.Size(40, 40);
             this.btnSaveConnections.TabIndex = 58;
-            this.btnSaveConnections.Text = "Save";
-            this.btnSaveConnections.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSaveConnections.Text = " ";
             this.btnSaveConnections.UseVisualStyleBackColor = false;
             this.btnSaveConnections.Click += new System.EventHandler(this.btnSaveConnections_Click);
             // 
@@ -311,9 +310,9 @@ namespace PatientDataAdministration.Client
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.btnSaveSite);
             this.groupBox2.Controls.Add(this.btnRefresh);
-            this.groupBox2.Location = new System.Drawing.Point(0, 171);
+            this.groupBox2.Location = new System.Drawing.Point(0, 167);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(577, 58);
+            this.groupBox2.Size = new System.Drawing.Size(577, 62);
             this.groupBox2.TabIndex = 63;
             this.groupBox2.TabStop = false;
             // 
@@ -322,8 +321,8 @@ namespace PatientDataAdministration.Client
             this.label3.AutoSize = true;
             this.label3.BackColor = System.Drawing.Color.Transparent;
             this.label3.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.SaddleBrown;
-            this.label3.Location = new System.Drawing.Point(44, 19);
+            this.label3.ForeColor = System.Drawing.Color.SteelBlue;
+            this.label3.Location = new System.Drawing.Point(52, 19);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(208, 26);
             this.label3.TabIndex = 64;
@@ -332,36 +331,38 @@ namespace PatientDataAdministration.Client
             // btnSaveSite
             // 
             this.btnSaveSite.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSaveSite.BackColor = System.Drawing.Color.White;
-            this.btnSaveSite.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnSaveSite.BackColor = System.Drawing.Color.Silver;
             this.btnSaveSite.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveSite.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSaveSite.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnSaveSite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveSite.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveSite.ForeColor = System.Drawing.Color.White;
             this.btnSaveSite.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
-            this.btnSaveSite.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveSite.Location = new System.Drawing.Point(461, 17);
+            this.btnSaveSite.Location = new System.Drawing.Point(531, 14);
             this.btnSaveSite.Name = "btnSaveSite";
-            this.btnSaveSite.Size = new System.Drawing.Size(106, 32);
+            this.btnSaveSite.Size = new System.Drawing.Size(40, 40);
             this.btnSaveSite.TabIndex = 58;
-            this.btnSaveSite.Text = "Save Site";
-            this.btnSaveSite.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSaveSite.Text = " ";
             this.btnSaveSite.UseVisualStyleBackColor = false;
             this.btnSaveSite.Click += new System.EventHandler(this.btnSaveSite_Click);
             // 
             // btnRefresh
             // 
             this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnRefresh.BackColor = System.Drawing.Color.White;
-            this.btnRefresh.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnRefresh.BackColor = System.Drawing.Color.Silver;
             this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnRefresh.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnRefresh.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnRefresh.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
             this.btnRefresh.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
-            this.btnRefresh.Location = new System.Drawing.Point(6, 17);
+            this.btnRefresh.Location = new System.Drawing.Point(6, 14);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(32, 32);
+            this.btnRefresh.Size = new System.Drawing.Size(40, 40);
             this.btnRefresh.TabIndex = 59;
-            this.btnRefresh.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnRefresh.Text = " ";
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
@@ -402,28 +403,27 @@ namespace PatientDataAdministration.Client
             // 
             this.groupBox3.BackColor = System.Drawing.Color.Transparent;
             this.groupBox3.Controls.Add(this.btnSaveEndPoints);
-            this.groupBox3.Location = new System.Drawing.Point(3, 170);
+            this.groupBox3.Location = new System.Drawing.Point(3, 168);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(577, 58);
+            this.groupBox3.Size = new System.Drawing.Size(577, 60);
             this.groupBox3.TabIndex = 71;
             this.groupBox3.TabStop = false;
             // 
             // btnSaveEndPoints
             // 
             this.btnSaveEndPoints.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnSaveEndPoints.BackColor = System.Drawing.Color.White;
-            this.btnSaveEndPoints.BackgroundImage = global::PatientDataAdministration.Client.Properties.Resources.W6Fuk;
+            this.btnSaveEndPoints.BackColor = System.Drawing.Color.Silver;
             this.btnSaveEndPoints.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSaveEndPoints.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSaveEndPoints.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnSaveEndPoints.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveEndPoints.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSaveEndPoints.ForeColor = System.Drawing.Color.White;
             this.btnSaveEndPoints.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
-            this.btnSaveEndPoints.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSaveEndPoints.Location = new System.Drawing.Point(436, 17);
+            this.btnSaveEndPoints.Location = new System.Drawing.Point(531, 13);
             this.btnSaveEndPoints.Name = "btnSaveEndPoints";
-            this.btnSaveEndPoints.Size = new System.Drawing.Size(131, 32);
+            this.btnSaveEndPoints.Size = new System.Drawing.Size(40, 40);
             this.btnSaveEndPoints.TabIndex = 58;
-            this.btnSaveEndPoints.Text = "Save End Points";
-            this.btnSaveEndPoints.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSaveEndPoints.UseVisualStyleBackColor = false;
             this.btnSaveEndPoints.Click += new System.EventHandler(this.btnSaveEndPoints_Click);
             // 
@@ -486,13 +486,16 @@ namespace PatientDataAdministration.Client
             this.btnClose.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnClose.BackColor = System.Drawing.Color.White;
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
+            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.Location = new System.Drawing.Point(583, 16);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(35, 35);
+            this.btnClose.Size = new System.Drawing.Size(40, 40);
             this.btnClose.TabIndex = 7;
-            this.btnClose.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClose.Text = " ";
             this.infoMsgTip.SetToolTip(this.btnClose, "Click Here to Close");
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -508,15 +511,18 @@ namespace PatientDataAdministration.Client
             // btnExportLogs
             // 
             this.btnExportLogs.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnExportLogs.BackColor = System.Drawing.Color.White;
+            this.btnExportLogs.BackColor = System.Drawing.Color.Silver;
             this.btnExportLogs.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnExportLogs.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnExportLogs.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnExportLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnExportLogs.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportLogs.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Add_Database_24px;
+            this.btnExportLogs.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Page_24px;
             this.btnExportLogs.Location = new System.Drawing.Point(542, 16);
             this.btnExportLogs.Name = "btnExportLogs";
-            this.btnExportLogs.Size = new System.Drawing.Size(35, 35);
+            this.btnExportLogs.Size = new System.Drawing.Size(40, 40);
             this.btnExportLogs.TabIndex = 58;
-            this.btnExportLogs.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnExportLogs.Text = " ";
             this.infoMsgTip.SetToolTip(this.btnExportLogs, "Export Saved Logs");
             this.btnExportLogs.UseVisualStyleBackColor = false;
             this.btnExportLogs.Click += new System.EventHandler(this.btnExportLogs_Click);

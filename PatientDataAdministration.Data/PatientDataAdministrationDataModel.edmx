@@ -106,7 +106,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="AppointmentDataManifestId" Type="bigint" Nullable="false" />
-          <Property Name="PepId" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PepId" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="DateVisit" Type="datetime" Nullable="false" />
           <Property Name="DateAppointment" Type="datetime" Nullable="false" />
           <Property Name="AppointmentOffice" Type="varchar" MaxLength="5" Nullable="false" />
@@ -131,6 +131,19 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PepId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="FingerPrimary" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerSecondary" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerDataHash" Type="varchar(max)" />
+          <Property Name="DateRegistered" Type="datetime" Nullable="false" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricDataPopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HtsId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FingerPrimary" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerSecondary" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerDataHash" Type="varchar(max)" />
@@ -186,6 +199,19 @@
           <Property Name="HouseAddresLga" Type="int" Nullable="false" />
           <Property Name="HospitalNumber" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="PassportData" Type="image" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="WhenCreated" Type="datetime" />
+          <Property Name="LastUpdated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Patient_PatientInformationPopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HtsId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="SiteId" Type="int" Nullable="false" />
+          <Property Name="Sex" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="WhenCreated" Type="datetime" />
           <Property Name="LastUpdated" Type="datetime" />
@@ -369,9 +395,11 @@
           <EntitySet Name="Integration_AppointmentDataItem" EntityType="Self.Integration_AppointmentDataItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_AppointmentDataManifest" EntityType="Self.Integration_AppointmentDataManifest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="Self.Patient_PatientBiometricDataPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="Self.Patient_PatientBiometricIntegrityCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCaseMember" EntityType="Self.Patient_PatientBiometricIntegrityCaseMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientInformation" EntityType="Self.Patient_PatientInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="Self.Patient_PatientInformationPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="Self.Patient_PatientNearFieldCommunicationData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientTransferHistory" EntityType="Self.Patient_PatientTransferHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ClientPulse" EntityType="Self.System_ClientPulse" Schema="dbo" store:Type="Tables" />
@@ -436,7 +464,6 @@
           <EntitySet Name="Administration_PatientRegistrationLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog" />
           <EntitySet Name="Administration_SiteInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" />
           <EntitySet Name="Administration_StaffInformation" EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" />
-          <EntitySet Name="Integration_AppointmentDataItem" EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" />
           <EntitySet Name="Integration_AppointmentDataManifest" EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataManifest" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricIntegrityCase" />
@@ -452,6 +479,9 @@
           <EntitySet Name="System_ReportingLog" EntityType="PatientDataAdministration.DatabaseModel.System_ReportingLog" />
           <EntitySet Name="System_State" EntityType="PatientDataAdministration.DatabaseModel.System_State" />
           <EntitySet Name="System_Update" EntityType="PatientDataAdministration.DatabaseModel.System_Update" />
+          <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister" />
+          <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" />
+          <EntitySet Name="Integration_AppointmentDataItem" EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" />
           </EntityContainer>
         <ComplexType Name="Sp_Administration_GetAgeDistro_Result">
           <Property Type="String" Name="RangeOfValues" Nullable="false" MaxLength="8" />
@@ -629,20 +659,6 @@
           <Property Name="AuthenticationState" Type="Int32" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="RoleId" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Integration_AppointmentDataItem">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AppointmentDataManifestId" Type="Int64" Nullable="false" />
-          <Property Name="PepId" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="DateVisit" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateAppointment" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="AppointmentOffice" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
-          <Property Name="AppointmentData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="IsValid" Type="Boolean" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Integration_AppointmentDataManifest">
           <Key>
@@ -836,6 +852,46 @@
           <Property Name="ServerPassword" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDbRefreshRequired" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricDataPopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HtsId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FingerPrimary" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FingerSecondary" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FingerDataHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientInformationPopulationRegister">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HtsId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="SiteId" Type="Int32" Nullable="false" />
+          <Property Name="Sex" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="WhenCreated" Type="DateTime" Precision="3" />
+          <Property Name="LastUpdated" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Integration_AppointmentDataItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AppointmentDataManifestId" Type="Int64" Nullable="false" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DateVisit" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateAppointment" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AppointmentOffice" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="AppointmentData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
@@ -1078,21 +1134,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Integration_AppointmentDataItem">
-            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem">
-              <MappingFragment StoreEntitySet="Integration_AppointmentDataItem">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
-                <ScalarProperty Name="AppointmentData" ColumnName="AppointmentData" />
-                <ScalarProperty Name="AppointmentOffice" ColumnName="AppointmentOffice" />
-                <ScalarProperty Name="DateAppointment" ColumnName="DateAppointment" />
-                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
-                <ScalarProperty Name="PepId" ColumnName="PepId" />
-                <ScalarProperty Name="AppointmentDataManifestId" ColumnName="AppointmentDataManifestId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Integration_AppointmentDataManifest">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataManifest">
               <MappingFragment StoreEntitySet="Integration_AppointmentDataManifest">
@@ -1298,6 +1339,49 @@
                 <ScalarProperty Name="IsNew" ColumnName="IsNew" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patient_PatientBiometricDataPopulationRegister">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister">
+              <MappingFragment StoreEntitySet="Patient_PatientBiometricDataPopulationRegister">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+                <ScalarProperty Name="FingerDataHash" ColumnName="FingerDataHash" />
+                <ScalarProperty Name="FingerSecondary" ColumnName="FingerSecondary" />
+                <ScalarProperty Name="FingerPrimary" ColumnName="FingerPrimary" />
+                <ScalarProperty Name="HtsId" ColumnName="HtsId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patient_PatientInformationPopulationRegister">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister">
+              <MappingFragment StoreEntitySet="Patient_PatientInformationPopulationRegister">
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="HtsId" ColumnName="HtsId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Integration_AppointmentDataItem">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem">
+              <MappingFragment StoreEntitySet="Integration_AppointmentDataItem">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+                <ScalarProperty Name="AppointmentData" ColumnName="AppointmentData" />
+                <ScalarProperty Name="AppointmentOffice" ColumnName="AppointmentOffice" />
+                <ScalarProperty Name="DateAppointment" ColumnName="DateAppointment" />
+                <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="AppointmentDataManifestId" ColumnName="AppointmentDataManifestId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

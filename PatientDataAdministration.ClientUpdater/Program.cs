@@ -14,7 +14,7 @@ using PatientDataAdministration.Data.InterchangeModels;
 
 namespace PatientDataAdministration.ClientUpdater
 {
-    class Program
+    class Program 
     {
         static int _retries = 0;
         private static System_Update _systemUpdate = new System_Update();
@@ -25,12 +25,13 @@ namespace PatientDataAdministration.ClientUpdater
         {
             _storeLocation = string.Empty;
 
-            if (args.Length == 0)
-                return;
+            if (args.Length > 0)
+                _url = args[0];
 
-            _url = args[0];
+            _storeLocation = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DownloadedUpdate");
 
-            _storeLocation = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "DownloadedUpdate");
+            if (string.IsNullOrEmpty(_url))
+                _url = "http://pbs.apin.org.ng";
 
             if (_url == "U")
             {
@@ -191,6 +192,8 @@ namespace PatientDataAdministration.ClientUpdater
                                     Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
                                         Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
+                                Console.WriteLine(
+                                    $"APIN PDA Client Update Utility. Do not close this application until there is an error or it's task is completed successfully.");
                                 Console.WriteLine($"Found New Update >> {_systemUpdate.VersionNumber}");
                                 return true;
                             }
@@ -228,7 +231,7 @@ namespace PatientDataAdministration.ClientUpdater
                 ftpRequest.Credentials = new NetworkCredential(_systemUpdate.ServerUsername, _systemUpdate.ServerPassword);
                 ftpRequest.Method = WebRequestMethods.Ftp.ListDirectory;
                 ftpRequest.EnableSsl = true;
-                ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateServerCertificate);
+                ServicePointManager.ServerCertificateValidationCallback += ValidateServerCertificate;
 
                 var response = (FtpWebResponse)ftpRequest.GetResponse();
                 var streamReader = new StreamReader(response.GetResponseStream());
@@ -242,18 +245,27 @@ namespace PatientDataAdministration.ClientUpdater
                 }
                 streamReader.Close();
 
+                Console.WriteLine($@"Downloading Update.");
 
                 using (var ftpClient = new WebClient())
                 {
-                    ftpClient.Credentials = new System.Net.NetworkCredential(_systemUpdate.ServerUsername, _systemUpdate.ServerPassword);
-                    ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateServerCertificate);
+                    ftpClient.Credentials = new NetworkCredential(_systemUpdate.ServerUsername, _systemUpdate.ServerPassword);
+                    
+                    ServicePointManager.ServerCertificateValidationCallback += ValidateServerCertificate;
+                    ftpClient.DownloadProgressChanged += DownloadProgressChanged;
+                    ftpClient.DownloadDataCompleted += DownloadDataCompleted;
 
                     foreach (var file in files)
                     {
-                        var path = $@"{remoteLocation}/{file}";
-                        string trnsfrpth = $@"{_storeLocation}\\{file}";
 
-                        ftpClient.DownloadFile(path, trnsfrpth);
+                        while (ftpClient.IsBusy) { }
+
+                        Console.WriteLine($"\nCurrent File: {file}.");
+
+                        var path = $@"{remoteLocation}/{file}";
+                        var trnsfrpth = $@"{_storeLocation}\\{file}";
+                        
+                        ftpClient.DownloadFileAsync(new Uri(path), trnsfrpth);
                     }
                 }
 
@@ -264,6 +276,18 @@ namespace PatientDataAdministration.ClientUpdater
                 WriteException(e);
                 return false;
             }
+        }
+
+        static void DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            var bytesIn = double.Parse(e.BytesReceived.ToString());
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write("Downloaded " + bytesIn + " bytes so far");
+        }
+
+        static void DownloadDataCompleted(object sender, DownloadDataCompletedEventArgs e)
+        {
+            Console.Write("Success");
         }
 
         public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)

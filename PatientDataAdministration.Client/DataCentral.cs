@@ -11,17 +11,17 @@ using System.Web.Http.SelfHost;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
+using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Client
 {
     public partial class DataCentral : MetroFramework.Forms.MetroForm
     {
-        readonly LocalPDAEntities _localPdaEntities = new LocalPDAEntities();
-
         private bool _isSyncNewInProgress;
         private bool _isSyncUpdateInProgress;
         private bool _onDemandSyncEnabled;
@@ -34,10 +34,13 @@ namespace PatientDataAdministration.Client
         private static List<OperationQueue> _operationQueue;
 
         private SubInformationManagement _subInfoMan;
-        private HttpSelfHostServer _selfServer;
-        private Process _process = new Process();
+        private SubHtc _subPopReg;
 
-        private Thread _threadPullAppointment;
+        private HttpSelfHostServer _selfServer;
+        private readonly Process _process = new Process();
+
+        private Thread _threadPullDataAppointment;
+        private Thread _threadPushDataBiometrics;
 
         public DataCentral(Administration_StaffInformation administrationStaffInformation)
         {
@@ -48,7 +51,11 @@ namespace PatientDataAdministration.Client
 
                 this._administrationStaffInformation = administrationStaffInformation;
 
-                this._systemSiteData = _localPdaEntities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
+                using (var entities = new LocalPDAEntities())
+                {
+                    this._systemSiteData = entities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
+                }
+
                 if (_systemSiteData != null)
                     _operationQueue.Add(new OperationQueue() { Param = "Settings Loaded" });
 
@@ -87,13 +94,17 @@ namespace PatientDataAdministration.Client
                 ExecuteSync();
 
                 _operationQueue.Add(new OperationQueue() { Param = "Initializing Patient Data Management" });
+
                 _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
+                _subPopReg = new SubHtc(_administrationStaffInformation);
+
                 _operationQueue.Add(new OperationQueue() { Param = "Patient Data Management Initialization Complete" });
 
                 btnSync.Visible = !_onDemandSyncEnabled;
 
                 _operationQueue.Add(new OperationQueue() { Param = "Starting Patient Data Pre Load" });
                 _subInfoMan.UpdatePersistedData();
+                _subPopReg.UpdatePersistedData();
 
                 CheckForUpdates();
 
@@ -103,16 +114,26 @@ namespace PatientDataAdministration.Client
                     {
 
                     }
-                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load Completed Sucessfully" });
+                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load for Patient Information Completed Sucessfully" });
+                }).Start();
+
+                new Thread(() =>
+                {
+                    while (_subPopReg.UpdatePersistenceStatus == ThreadState.Running)
+                    {
+
+                    }
+                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load for Population Register Completed Sucessfully" });
                 }).Start();
 
                 _operationQueue.Add(new OperationQueue() { Param = "Starting Application Server" });
                 bgwSelfServer.RunWorkerAsync();
                 _operationQueue.Add(new OperationQueue() {Param = "Application Server Started Successfully"});
 
-                _operationQueue.Add(new OperationQueue() { Param = "Initializing Content Operations" });
-                _operationQueue.Add(new OperationQueue() { Param = "Initializing Pull for Appointments" });
-                _threadPullAppointment = new Thread(PullAppointments);
+                _operationQueue.Add(new OperationQueue() { Param = "Initializing Pull/Push for 3rd Party Data" });
+                _threadPullDataAppointment = new Thread(PullAppointments);
+                _threadPushDataBiometrics = new Thread(PushAppointments);
+                _operationQueue.Add(new OperationQueue() { Param = "Initialization for Pull/Push for 3rd Party Data Complete" });
 
                 _operationQueue.Add(new OperationQueue() { Param = "All Done" });
             }
@@ -156,6 +177,7 @@ namespace PatientDataAdministration.Client
 
             SiteInfo();
             InitiateSync();
+            PushPullOperations();
         }
 
         private void btnPatientManagement_Click(object sender, EventArgs e)
@@ -188,6 +210,37 @@ namespace PatientDataAdministration.Client
             //
         }
 
+        private void btnPopulationStatusRegister_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _subPopReg.Show();
+                _subPopReg.BringToFront();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
+        }
+
+        private void btnClearDump_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                folderBrowserDialog.ShowDialog();
+
+                if (string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
+                    return;
+
+                File.WriteAllText(Path.Combine(folderBrowserDialog.SelectedPath, $"{DateTime.Now:yyyyMMddHHmmssfff}"),
+                    lstBoxInfoLog.Text);
+                lstBoxInfoLog.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
+        }
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
@@ -204,6 +257,8 @@ namespace PatientDataAdministration.Client
         private void tmrSync_Tick(object sender, EventArgs e)
         {
             ExecuteSync();
+
+            PushPullOperations();
         }
 
         private void tmrPostInfoLogs_Tick(object sender, EventArgs e)
@@ -216,8 +271,8 @@ namespace PatientDataAdministration.Client
                 var listOfEvents = _operationQueue.Where(x => x.TimeStamp < timeBar).ToList();
                 foreach (var eventItem in listOfEvents.OrderBy(x => x.TimeStamp))
                 {
-                    lstBoxInfoLog.Items.Add($"{eventItem.TimeStamp:yyyyMMddHHmmss}: {eventItem.Param}");
-                    lstBoxInfoLog.SelectedIndex = lstBoxInfoLog.Items.Count - 1;
+                    lstBoxInfoLog.AppendText($"{eventItem.TimeStamp:yyyyMMddHHmmss}: {eventItem.Param}\n");
+                    lstBoxInfoLog.ScrollToCaret();
                     Application.DoEvents();
                 }
 
@@ -271,269 +326,6 @@ namespace PatientDataAdministration.Client
                 bgwFreshPatient.RunWorkerAsync();
         }
 
-
-        private static int GenerateVersionCode(string version)
-        {
-            return Convert.ToInt32(version.Replace(".", "").Replace("_", "").Replace("v", "").Trim());
-        }
-
-        private void InitiateSync()
-        {
-            try
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Running Local Clean Up"
-                });
-
-                _localPdaEntities.Sp_System_CleanUp();
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _administrationStaffInformation.Id);
-            }
-
-            try
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Initiating Synchronization Tasks"
-                });
-
-                if (!bgwNewPatient.IsBusy)
-                    bgwNewPatient.RunWorkerAsync();
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _administrationStaffInformation.Id);
-            }
-
-            try
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Initiating 3rd Party Integrations"
-                });
-
-                if (!bgwContentManager.IsBusy)
-                    bgwContentManager.RunWorkerAsync();
-            }
-            catch (Exception ex)
-            {
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
-            }
-
-            CheckForUpdates();
-        }
-
-        private void ExecuteSync()
-        {
-            if (!_onDemandSyncEnabled)
-                return;
-
-            InitiateSync();
-        }
-
-        private void SaveUpdate(PatientInformation patientInformation)
-        {
-            var localPdaEntitiesPatientUpdateSync = new LocalPDAEntities();
-            if (
-                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Any(
-                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId))
-            {
-
-                var existingPatient = localPdaEntitiesPatientUpdateSync.System_BioDataStore.FirstOrDefault(
-                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId);
-
-                if (existingPatient == null)
-                    return;
-
-                existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
-                                           patientInformation.Patient_PatientInformation.Othername;
-                existingPatient.IsSync = true;
-                existingPatient.LastUpdate = DateTime.Now;
-                existingPatient.LastSync = DateTime.Now;
-                existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
-
-                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
-                    existingPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
-
-                if (patientInformation.Patient_PatientBiometricData != null)
-                {
-                    existingPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
-                    existingPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
-                }
-
-                existingPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
-
-                localPdaEntitiesPatientUpdateSync.Entry(existingPatient).State = EntityState.Modified;
-                localPdaEntitiesPatientUpdateSync.SaveChanges();
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
-                });
-            }
-            else
-            {
-                var newPatient = new System_BioDataStore
-                {
-                    PepId = patientInformation.Patient_PatientInformation.PepId,
-                    FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
-                               patientInformation.Patient_PatientInformation.Othername,
-                    IsSync = true,
-                    LastUpdate = DateTime.Now,
-                    LastSync = DateTime.Now, 
-                    SiteId = patientInformation.Patient_PatientInformation.SiteId
-                };
-
-                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
-                    newPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
-
-                if (patientInformation.Patient_PatientBiometricData != null)
-                {
-                    newPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
-                    newPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
-                }
-
-                newPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
-
-                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
-                localPdaEntitiesPatientUpdateSync.SaveChanges();
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
-                });
-            }
-        }
-
-        private void CheckForUpdates()
-        {
-            try
-            {
-                new Thread(() =>
-                {
-                    var responseData = LocalCore.Get($@"/ClientCommunication/Misc/GetUpdateData").Result;
-                    if (!responseData.Status)
-                        return;
-
-                    if (responseData.Data == null)
-                        return;
-
-                    var update =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                    if (GenerateVersionCode(update.VersionNumber) <=
-                        GenerateVersionCode(AppSetting.Version))
-                        return;
-
-                    _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
-
-                    var startInfo = new ProcessStartInfo
-                    {
-                        FileName = "PatientDataAdministration.ClientUpdater.exe",
-                        Arguments = _localPdaEntities.System_Setting.FirstOrDefault(
-                                        x => x.SettingKey == (int)EnumLibrary.SyncMode.RemoteApi)?.SettingValue ?? "",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true
-                    };
-
-                    _process.StartInfo = startInfo;
-                    _process.EnableRaisingEvents = true;
-                    _process.Start();
-
-                    tmrLaunchUpdate.Enabled = true;
-                    tmrLaunchUpdate.Start();
-
-                    _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
-                }).Start();
-            }
-            catch (Exception ex)
-            {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
-            }
-        }
-
-        public void SiteInfo()
-        {
-            _operationQueue.Add(new OperationQueue()
-            {
-                Param = $"Current Site is {_systemSiteData.SiteNameOfficial}"
-            });
-        }
-
-        public bool CheckConnection()
-        {
-            if (!_pingResult)
-            {
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Cannot Reach the Server at the moment. Please try again later"
-                });
-            }
-
-            return _pingResult;
-        }
-
-        public void PullAppointments()
-        {
-            try
-            {
-                var appointmentDataEndPoint =
-                    _localPdaEntities.System_EndPointLog.FirstOrDefault(x =>
-                        x.EndPointId == (int)LocalEndPoint.EndPointAppointment);
-
-                if (appointmentDataEndPoint == null)
-                    return;
-
-                var appointmentDataResponse = LocalCore.Get(appointmentDataEndPoint.EndPointUrl);
-
-                if (!appointmentDataResponse.Result.Status)
-                    return;
-
-                var appointmentData = JsonConvert.DeserializeObject<List<IntegrationAppointmentDataIngress>>(
-                    JsonConvert.SerializeObject(appointmentDataResponse.Result.Data));
-
-                if (appointmentData.Any())
-                    _operationQueue.Add(new OperationQueue()
-                    {
-                        Param = "Initiating Synchronization Task: 3rd Party Data >> Appointment Data Pull"
-                    });
-                
-                var basePath = AppSetting.PathAppointmentDataIngress;
-
-                if (!Directory.Exists(basePath))
-                    Directory.CreateDirectory(basePath);
-
-                long size = 0;
-                foreach (var chunk in Core.Transforms.ListChunk(appointmentData, 100))
-                {
-                    var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".pda";
-
-                    File.WriteAllText(Path.Combine(basePath, fileName),
-                        JsonConvert.SerializeObject(chunk));
-
-                    size += new FileInfo(Path.Combine(basePath, fileName)).Length;
-                }
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param =
-                        $"Completing Synchronization Task: 3rd Party Data >> Appointment Data Pull. Total Size {size:#,##0} bytes"
-                });
-            }
-            catch (Exception ex)
-            {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
-            }
-        }
-
-
         private void bgwNewPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             try
@@ -554,81 +346,7 @@ namespace PatientDataAdministration.Client
                     if (!CheckConnection())
                         break;
 
-                    var innerEntity = new LocalPDAEntities();
-
-                    if (_killCommandReceived)
-                    {
-                        _operationQueue.Add(new OperationQueue()
-                        {
-                            Param = $"STOP Command Received"
-                        });
-                        break;
-                    }
-
-                    var listOfPepId = "";
-
-                    if (innerEntity.System_BioDataStore.Any())
-                    {
-                        var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
-
-                        listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
-                            (current, patientInfo) => current + $"{patientInfo},");
-                        listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
-
-                        patientInformation.Clear();
-                    }
-
-                    var data = Encoding.ASCII.GetBytes(listOfPepId);
-
-                    var payLoad = new
-                    {
-                        encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        siteId = _systemSiteData.RemoteSiteId
-                    };
-
-                    var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
-                        Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
-
-                    if (!responseData.Status)
-                    {
-                        if (blankResult == 5)
-                        {
-                            _operationQueue.Add(new OperationQueue()
-                            {
-                                Param = $"Processing"
-                            });
-                            blankResult = 1;
-                        }
-
-                        blankResult++;
-                        continue;
-                    }
-
-                    _isSyncNewInProgress = true;
-
-                    _operationQueue.Add(new OperationQueue()
-                    {
-                        Param = responseData.Message
-                    });
-
-                    var returnedPatients =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
-
-                    if (returnedPatients.Count == 0)
-                    {
-                        if (!_onDemandSyncEnabled)
-                            _operationQueue.Add(new OperationQueue()
-                            {
-                                Param = $"No New Patients found this time. Please Try the Synchronization Later"
-                            });
-
-                        break;
-                    }
-
-                    pulled += returnedPatients.Count;
-
-                    foreach (var patient in returnedPatients)
+                    using (var innerEntity = new LocalPDAEntities())
                     {
                         if (_killCommandReceived)
                         {
@@ -639,22 +357,98 @@ namespace PatientDataAdministration.Client
                             break;
                         }
 
-                        SaveUpdate(patient);
-                    }
+                        var listOfPepId = "";
 
-                    if (_onDemandSyncEnabled)
-                        _subInfoMan.UpdatePersistedData();
-                    else
+                        if (innerEntity.System_BioDataStore.Any())
+                        {
+                            var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
+
+                            listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
+                                (current, patientInfo) => current + $"{patientInfo},");
+                            listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
+
+                            patientInformation.Clear();
+                            patientInformation = null;
+                        }
+
+                        var data = Encoding.ASCII.GetBytes(listOfPepId);
+
+                        var payLoad = new
+                        {
+                            encodedListOfAvailablePepId = Convert.ToBase64String(data),
+                            siteId = _systemSiteData.RemoteSiteId
+                        };
+
+                        var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
+                            Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
+
+                        if (!responseData.Status)
+                        {
+                            if (blankResult == 5)
+                            {
+                                _operationQueue.Add(new OperationQueue()
+                                {
+                                    Param = $"Processing"
+                                });
+                                blankResult = 1;
+                            }
+
+                            blankResult++;
+                            continue;
+                        }
+
+                        _isSyncNewInProgress = true;
+
                         _operationQueue.Add(new OperationQueue()
                         {
-                            Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
+                            Param = responseData.Message
                         });
 
-                    _isSyncNewInProgress = false;
+                        var returnedPatients =
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
+                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
 
-                    if (returnedPatients.Count < 100)
-                    {
-                        break;
+                        if (returnedPatients.Count == 0)
+                        {
+                            if (!_onDemandSyncEnabled)
+                                _operationQueue.Add(new OperationQueue()
+                                {
+                                    Param = $"No New Patients found this time. Please Try the Synchronization Later"
+                                });
+
+                            break;
+                        }
+
+                        pulled += returnedPatients.Count;
+
+                        foreach (var patient in returnedPatients)
+                        {
+                            if (_killCommandReceived)
+                            {
+                                _operationQueue.Add(new OperationQueue()
+                                {
+                                    Param = $"STOP Command Received"
+                                });
+                                break;
+                            }
+
+                            SaveUpdate(patient);
+                        }
+
+                        if (_onDemandSyncEnabled)
+                            _subInfoMan.UpdatePersistedData();
+                        else
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
+                            });
+
+                        _isSyncNewInProgress = false;
+
+                        if (returnedPatients.Count < 100)
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -816,31 +610,34 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                var patientData =
-                    _localPdaEntities.System_BioDataStore.Where(x => !x.IsDeleted && !x.IsSync).ToList();
-
-                foreach (var patientDatum in patientData)
+                using (var entities = new LocalPDAEntities())
                 {
-                    if (!CheckConnection())
-                        break;
+                    var patientData =
+                        entities.System_BioDataStore.Where(x => !x.IsDeleted && !x.IsSync).ToList();
 
-                    var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", patientDatum.PatientData);
-
-                    if (result.Status)
+                    foreach (var patientDatum in patientData)
                     {
-                        _operationQueue.Add(new OperationQueue()
+                        if (!CheckConnection())
+                            break;
+
+                        var result = LocalCore.Post(@"/ClientCommunication/Patient/PostPatient", patientDatum.PatientData);
+
+                        if (result.Status)
                         {
-                            Param = $"Patient with Pep Id {patientDatum.PepId} was pushed Successfully"
-                        });
-                        patientDatum.IsSync = true;
-                        _localPdaEntities.Entry(patientDatum).State = EntityState.Modified;
-                        _localPdaEntities.SaveChanges();
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"Patient with Pep Id {patientDatum.PepId} was pushed Successfully"
+                            });
+                            patientDatum.IsSync = true;
+                            entities.Entry(patientDatum).State = EntityState.Modified;
+                            entities.SaveChanges();
+                        }
+                        else
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param = $"Local Registry Sync encountered an Error. "
+                            });
                     }
-                    else
-                        _operationQueue.Add(new OperationQueue()
-                        {
-                            Param = $"Local Registry Sync encountered an Error. "
-                        });
                 }
             }
             catch (Exception ex)
@@ -883,8 +680,12 @@ namespace PatientDataAdministration.Client
                     Param = "Initiating Synchronization Task: 3rd Party Data >> Appointment Data Push"
                 });
 
-                var readyFiles = new DirectoryInfo(AppSetting.PathAppointmentDataIngress)
-                    .EnumerateFiles().ToList();
+                var directoryInfo = new DirectoryInfo(AppSetting.PathAppointmentDataIngress);
+
+                if (!directoryInfo.Exists)
+                    directoryInfo.Create();
+
+                var readyFiles = directoryInfo.EnumerateFiles().ToList();
 
                 foreach (var readyFile in readyFiles)
                 {
@@ -952,48 +753,402 @@ namespace PatientDataAdministration.Client
 
         private void bgwUpdatePatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            
+
         }
 
-        private void bgwLocalSync_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+
+        private static int GenerateVersionCode(string version)
         {
-            //CISPro Push
+            return Convert.ToInt32(version.Replace(".", "").Replace("_", "").Replace("v", "").Trim());
+        }
+
+        private void InitiateSync()
+        {
             try
             {
-                var cisProEndPoint =
-                    _localPdaEntities.System_EndPointLog.FirstOrDefault(x =>
-                        x.EndPointId == (int) LocalEndPoint.EndPointCisPro);
+                using (var entities = new LocalPDAEntities())
+                {
+                    _operationQueue.Add(new OperationQueue()
+                    {
+                        Param = "Running Local Clean Up"
+                    });
 
-                if (cisProEndPoint == null)
+                    entities.Sp_System_CleanUp();
+                }
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
+            }
+
+            try
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Initiating Synchronization Tasks"
+                });
+
+                if (!bgwNewPatient.IsBusy)
+                    bgwNewPatient.RunWorkerAsync();
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
+            }
+
+            try
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Initiating 3rd Party Integrations"
+                });
+
+                if (!bgwContentManager.IsBusy)
+                    bgwContentManager.RunWorkerAsync();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
+
+            CheckForUpdates();
+        }
+
+        private void ExecuteSync()
+        {
+            if (!_onDemandSyncEnabled)
+                return;
+
+            InitiateSync();
+        }
+
+        private void SaveUpdate(PatientInformation patientInformation)
+        {
+            var localPdaEntitiesPatientUpdateSync = new LocalPDAEntities();
+            if (
+                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Any(
+                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId))
+            {
+
+                var existingPatient = localPdaEntitiesPatientUpdateSync.System_BioDataStore.FirstOrDefault(
+                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId);
+
+                if (existingPatient == null)
                     return;
 
-                while (_localPdaEntities.System_BioDataStore.Any(x =>
-                    !x.IsLocalPush && !x.IsDeleted && !string.IsNullOrEmpty(x.PrimaryFinger) &&
-                    !string.IsNullOrEmpty(x.SecondaryFinger)))
+                existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
+                                           patientInformation.Patient_PatientInformation.Othername;
+                existingPatient.IsSync = true;
+                existingPatient.LastUpdate = DateTime.Now;
+                existingPatient.LastSync = DateTime.Now;
+                existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
+
+                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
+                    existingPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
+
+                if (patientInformation.Patient_PatientBiometricData != null)
                 {
-                    var pendingPush = _localPdaEntities.System_BioDataStore
+                    existingPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
+                    existingPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
+                }
+
+                existingPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
+
+                localPdaEntitiesPatientUpdateSync.Entry(existingPatient).State = EntityState.Modified;
+                localPdaEntitiesPatientUpdateSync.SaveChanges();
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
+                });
+            }
+            else
+            {
+                var newPatient = new System_BioDataStore
+                {
+                    PepId = patientInformation.Patient_PatientInformation.PepId,
+                    FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
+                               patientInformation.Patient_PatientInformation.Othername,
+                    IsSync = true,
+                    LastUpdate = DateTime.Now,
+                    LastSync = DateTime.Now, 
+                    SiteId = patientInformation.Patient_PatientInformation.SiteId
+                };
+
+                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
+                    newPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
+
+                if (patientInformation.Patient_PatientBiometricData != null)
+                {
+                    newPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
+                    newPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
+                }
+
+                newPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
+
+                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
+                localPdaEntitiesPatientUpdateSync.SaveChanges();
+
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
+                });
+            }
+        }
+
+        private void CheckForUpdates()
+        {
+            try
+            {
+                new Thread(() =>
+                {
+                    using (var entities = new LocalPDAEntities())
+                    {
+                        var responseData = LocalCore.Get($@"/ClientCommunication/Misc/GetUpdateData").Result;
+                        if (!responseData.Status)
+                            return;
+
+                        if (responseData.Data == null)
+                            return;
+
+                        var update =
+                            Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
+                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+
+                        if (GenerateVersionCode(update.VersionNumber) <=
+                            GenerateVersionCode(AppSetting.Version))
+                            return;
+
+                        _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
+
+                        var startInfo = new ProcessStartInfo
+                        {
+                            FileName = "PatientDataAdministration.ClientUpdater.exe",
+                            Arguments = entities.System_Setting.FirstOrDefault(
+                                            x => x.SettingKey == (int)EnumLibrary.SyncMode.RemoteApi)?.SettingValue ?? "",
+                            RedirectStandardOutput = true,
+                            RedirectStandardError = true,
+                            UseShellExecute = false,
+                            CreateNoWindow = true
+                        };
+
+                        _process.StartInfo = startInfo;
+                        _process.EnableRaisingEvents = true;
+                        _process.Start();
+
+                        tmrLaunchUpdate.Enabled = true;
+                        tmrLaunchUpdate.Start();
+
+                        _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
+                    }
+                }).Start();
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
+            }
+        }
+
+        public void SiteInfo()
+        {
+            _operationQueue.Add(new OperationQueue()
+            {
+                Param = $"Current Site is {_systemSiteData.SiteNameOfficial}"
+            });
+        }
+
+        public bool CheckConnection()
+        {
+            if (!_pingResult)
+            {
+                _operationQueue.Add(new OperationQueue()
+                {
+                    Param = "Cannot Reach the Server at the moment. Please try again later"
+                });
+            }
+
+            return _pingResult;
+        }
+
+        private void PushPullOperations()
+        {
+            try
+            {
+                if (_threadPushDataBiometrics.ThreadState != ThreadState.Running)
+                    _threadPushDataBiometrics.Start();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+
+                _threadPushDataBiometrics = new Thread(PushAppointments);
+                _threadPushDataBiometrics.Start();
+            }
+
+
+            try
+            {
+                if (_threadPullDataAppointment.ThreadState != ThreadState.Running)
+                    _threadPullDataAppointment.Start();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+
+                _threadPullDataAppointment = new Thread(PullAppointments);
+                _threadPullDataAppointment.Start();
+            }
+        }
+
+        /// <summary>
+        /// Pull Data from End Points on Network
+        /// </summary>
+        public void PullAppointments()
+        {
+            try
+            {
+                using (var entities = new LocalPDAEntities())
+                {
+                    var endPoints = EnumDictionary.GetList<LocalEndPoint>()
+                        .Where(y => y.ItemName.ToLower().Contains("pull api")).Select(y => y.ItemId).ToList();
+
+                    var appointmentDataEndPoints =
+                        entities.System_EndPointLog.Where(x => endPoints.Contains(x.EndPointId)).ToList();
+
+                    foreach (var appointmentDataEndPoint in appointmentDataEndPoints)
+                    {
+                        if (string.IsNullOrEmpty(appointmentDataEndPoint.EndPointUrl))
+                            continue;
+
+                        var appointmentDataResponse = LocalCore.GetLocal(appointmentDataEndPoint.EndPointUrl);
+
+                        if (appointmentDataResponse.Result == null)
+                            continue;
+
+                        var appointmentData = JsonConvert.DeserializeObject<List<IntegrationAppointmentDataIngress>>(
+                            JsonConvert.SerializeObject(appointmentDataResponse.Result));
+
+                        if (appointmentData.Any())
+                            _operationQueue.Add(new OperationQueue()
+                            {
+                                Param =
+                                    $"Initiating Synchronization Task: 3rd Party Data >> Appointment Data Pull from {((LocalEndPoint) appointmentDataEndPoint.EndPointId).DisplayName()}"
+                            });
+
+                        var basePath = AppSetting.PathAppointmentDataIngress;
+
+                        if (!Directory.Exists(basePath))
+                            Directory.CreateDirectory(basePath);
+
+                        long size = 0;
+                        foreach (var chunk in Transforms.ListChunk(appointmentData, 100))
+                        {
+                            var fileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".pda";
+
+                            File.WriteAllText(Path.Combine(basePath, fileName),
+                                JsonConvert.SerializeObject(chunk));
+
+                            size += new FileInfo(Path.Combine(basePath, fileName)).Length;
+                        }
+
+                        _operationQueue.Add(new OperationQueue()
+                        {
+                            Param =
+                                $"Completing Synchronization Task: 3rd Party Data >> Appointment Data Pull from {((LocalEndPoint)appointmentDataEndPoint.EndPointId).DisplayName()}. Total Size {size:#,##0} bytes"
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id, false);
+            }
+        }
+
+        /// <summary>
+        /// Push Data to End Points on the Network
+        /// </summary>
+        public void PushAppointments()
+        {
+            try
+            {
+                using (var innerEntity = new LocalPDAEntities())
+                {
+                    var endPoints =
+                    EnumDictionary.GetList<LocalEndPoint>().Where(y => y.ItemName.ToLower().Contains("push api"))
+                        .Select(y => y.ItemId).ToList();
+
+                    var clinicalDataEndPoints =
+                        innerEntity.System_EndPointLog.Where(x => endPoints
+                                .Contains(x.EndPointId)).ToList();
+
+                    if (!clinicalDataEndPoints.Any())
+                        return;
+
+                    var pendingPush = innerEntity.System_BioDataStore
                         .Where(x => !x.IsLocalPush && !x.IsDeleted && !string.IsNullOrEmpty(x.PrimaryFinger) &&
                                     !string.IsNullOrEmpty(x.SecondaryFinger))
                         .Take(100)
                         .ToList();
 
-                    if (pendingPush.Any())
-                        _operationQueue.Add(new OperationQueue()
-                        {
-                            Param = $"Local Sync: CISPro Data Push is Processing {pendingPush.Count} records at this time."
-                        });
-
-                    foreach (var pending in pendingPush)
+                    while (innerEntity.System_BioDataStore.Any(x =>
+                        !x.IsLocalPush && !x.IsDeleted && !string.IsNullOrEmpty(x.PrimaryFinger) &&
+                        !string.IsNullOrEmpty(x.SecondaryFinger)))
                     {
-                        pending.IsLocalPush = LocalCore.PostLocal(cisProEndPoint.EndPointUrl,
-                            JsonConvert.SerializeObject(new
+                        if (pendingPush.Any())
+                            _operationQueue.Add(new OperationQueue()
                             {
-                                pepId = pending.PepId,
-                                pda1 = pending.PrimaryFinger,
-                                pda2 = pending.SecondaryFinger
-                            }));
-                        _localPdaEntities.Entry(pending).State = EntityState.Modified;
-                        _localPdaEntities.SaveChanges();
+                                Param =
+                                    $"Local Data Push: Processing {pendingPush.Count} records at this time."
+                            });
+
+                        foreach (var pending in pendingPush)
+                        {
+                            foreach (var clinicalDataEndPoint in clinicalDataEndPoints)
+                            {
+                                if (string.IsNullOrEmpty(clinicalDataEndPoint.EndPointUrl))
+                                    continue;
+
+                                pending.IsLocalPush = LocalCore.PostLocal(clinicalDataEndPoint.EndPointUrl,
+                                    JsonConvert.SerializeObject(new[]
+                                    {
+                                        new
+                                        {
+                                            pepId = pending.PepId,
+                                            pda1 = pending.PrimaryFinger,
+                                            pda2 = pending.SecondaryFinger,
+                                            mobile = "",
+                                            address = ""
+                                        }
+                                    }));
+
+                                if (pending.IsLocalPush)
+                                    continue;
+
+                                var message =
+                                    $"Failed to Push Data to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint)clinicalDataEndPoint.EndPointId).DisplayName()}.";
+                                _operationQueue.Add(new OperationQueue()
+                                {
+                                    Param = message
+                                });
+
+                                var dialog = MessageBox.Show(
+                                    message +
+                                    @". Do you wish to STOP pushing data so that you can either investigate or contact Support?",
+                                    @" Please Decide", MessageBoxButtons.YesNo,
+                                    MessageBoxIcon.Question);
+
+                                if (dialog == DialogResult.Yes)
+                                    return;
+                            }
+
+                            if (!pending.IsLocalPush)
+                                continue;
+
+                            innerEntity.Entry(pending).State = EntityState.Modified;
+                            innerEntity.SaveChanges();
+                        }
                     }
                 }
             }
@@ -1003,34 +1158,7 @@ namespace PatientDataAdministration.Client
 
                 _operationQueue.Add(new OperationQueue()
                 {
-                    Param = "Local Sync Encountered an Error. " + ex.ToString()
-                });
-            }
-        }
-
-        private void tmrLocalSync_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!bgwLocalSync.IsBusy)
-                {
-                    bgwLocalSync.RunWorkerAsync();
-                }
-
-                if (_threadPullAppointment != null)
-                    if (_threadPullAppointment.ThreadState != ThreadState.Running)
-                    {
-                        _threadPullAppointment = new Thread(PullAppointments);
-                        _threadPullAppointment.Start();
-                    }
-            }
-            catch (Exception ex)
-            {
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Local Sync Encountered an Error. " + ex.ToString()
+                    Param = "Local Data Push Encountered an Error. " + ex
                 });
             }
         }

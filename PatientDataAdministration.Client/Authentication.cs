@@ -217,7 +217,7 @@ namespace PatientDataAdministration.Client
         private void tmrFeedBack_Tick(object sender, EventArgs e)
         {
             btnLogIn.Enabled = _status;
-            picLoader.Visible = !_status;
+            pnlWaiting.Visible = !_status;
         }
     }
 }

@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_PatientRegistrationLog" Width="1.5" PointX="4.75" PointY="4.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_SiteInformation" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_StaffInformation" Width="1.5" PointX="0.75" PointY="6.75" />
-        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" Width="1.5" PointX="6.75" PointY="4.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataManifest" Width="1.5" PointX="8.75" PointY="0.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData" Width="1.5" PointX="2.75" PointY="8.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricIntegrityCase" Width="1.5" PointX="8.75" PointY="3.75" />
@@ -28,6 +27,9 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_ReportingLog" Width="1.5" PointX="2.75" PointY="12.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_State" Width="1.5" PointX="12.75" PointY="3.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_Update" Width="1.5" PointX="12.75" PointY="6.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister" Width="1.5" PointX="9.375" PointY="13.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" Width="1.5" PointX="13.375" PointY="10.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" Width="1.5" PointX="5.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

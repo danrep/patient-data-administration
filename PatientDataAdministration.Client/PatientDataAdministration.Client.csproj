@@ -102,6 +102,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Device" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
@@ -144,11 +145,20 @@
     <Compile Include="LocalPDADataSet.cs">
       <DependentUpon>LocalPDADataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Local_StaffInformation.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="Splash.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubHtc.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubHtc.Designer.cs">
+      <DependentUpon>SubHtc.cs</DependentUpon>
     </Compile>
     <Compile Include="SubSettings.cs">
       <SubType>Form</SubType>
@@ -195,12 +205,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalPDA.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Local_StaffInformation.cs">
-      <DependentUpon>LocalPDA.tt</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System_BioDataStore.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_BioDataStore_PopulationRegister.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>
     <Compile Include="System_EndPointLog.cs">
@@ -231,6 +241,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubHtc.resx">
+      <DependentUpon>SubHtc.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SubSettings.resx">
       <DependentUpon>SubSettings.cs</DependentUpon>
@@ -306,17 +319,20 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Page_24px.png" />
+    <None Include="Resources\icons8_Download_From_FTP_48px_1.png" />
+    <None Include="Resources\bg_wave.png" />
+    <None Include="Resources\PDA_Assets.png" />
+    <None Include="Resources\icons8_NFC_30px.png" />
+    <None Include="Resources\icons8_Fingerprint_Scan_30px.png" />
+    <None Include="Resources\icons8_AIDS_Ribbon_96px.png" />
+    <None Include="Resources\icons8_AIDS_Ribbon_48px.png" />
     <None Include="Resources\icons8_Add_Database_24px.png" />
     <None Include="Resources\DatabaseMigrateScript.txt" />
     <None Include="Resources\DatabaseInstallScript.txt" />
-    <None Include="Resources\800px_COLOURBOX18331728.jpg" />
     <None Include="Resources\icons8_Load_96px.png" />
     <None Include="Resources\icons8_Waiting_Room_96px.png" />
     <None Include="Resources\icons8_Checked_Checkbox_24px.png" />
-    <None Include="Resources\Downloading Updates_96px.png" />
-    <None Include="Resources\loadingBackground.jpg" />
-    <None Include="Resources\ajax-loader.gif" />
-    <None Include="Resources\HelpResource.jpeg" />
     <None Include="Resources\icons8_Download_20px.png" />
     <None Include="Resources\icons8_Sync_20px.png" />
     <None Include="Resources\icons8_Server_20px.png" />
@@ -331,11 +347,9 @@
     <None Include="Resources\icons8_Calendar_96px.png" />
     <None Include="Resources\icons8_Pill_Bottle_96px.png" />
     <None Include="Resources\icons8_Counselor_96px.png" />
-    <None Include="Resources\W6Fuk.png" />
     <None Include="Resources\icons8_Person_24px.png" />
     <None Include="Resources\icons8_Close_Window_24px.png" />
     <None Include="Resources\icons8_Administrative_Tools_24px.png" />
-    <None Include="Resources\VOnwNgeg.jpg" />
     <None Include="Resources\icons8_Shutdown_48px.png" />
     <None Include="Resources\icons8_Settings_48px.png" />
     <None Include="Resources\icons8_Save_48px.png" />
@@ -350,8 +364,6 @@
     <None Include="Resources\icons8_Contact_48px.png" />
     <None Include="Resources\icons8_Close_Window_48px.png" />
     <None Include="Resources\icons8_Cancel_48px.png" />
-    <None Include="Resources\apin-weblogo.png" />
-    <None Include="Resources\1D-bar-code.jpeg" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

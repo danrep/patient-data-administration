@@ -228,8 +228,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                                 CultureInfo.InvariantCulture),
                             DateVisit = DateTime.ParseExact(item.VisitDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                             PepId = item.PepId,
-                            IsValid = DateTime.ParseExact(item.AppointmentDate, "yyyy-MM-dd",
-                                CultureInfo.InvariantCulture) > DateTime.Now
+                            IsValid = item.SendMessage
                         }));
                 _entities.SaveChanges();
 

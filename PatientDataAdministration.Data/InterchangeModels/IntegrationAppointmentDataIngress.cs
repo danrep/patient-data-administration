@@ -14,6 +14,7 @@ namespace PatientDataAdministration.Data.InterchangeModels
         public string VisitDate { get; set; }
         public string AppointmentDate { get; set; }
         public string AppointmentOffice { get; set; }
+        public bool SendMessage { get; set; }
         public  AppointmentDataItem[] AppointmentDataItems { get; set; }
     }
 

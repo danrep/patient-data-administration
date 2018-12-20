@@ -214,8 +214,8 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
             {
                 using (var entity = new Entities())
                 {
-                    var pendingManifestItems = entity.Integration_AppointmentDataItem.Where(x =>
-                        x.DateAppointment > DbFunctions.TruncateTime(DateTime.Now) && x.IsValid && !x.IsDeleted).ToList();
+                    var pendingManifestItems = entity.Integration_AppointmentDataItem
+                        .Where(x => x.IsValid && !x.IsDeleted).ToList();
 
                     if (!pendingManifestItems.Any())
                     {
@@ -225,28 +225,7 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
 
                     ActivityLogger.Log("INFO", $"Loaded {pendingManifestItems.Count} Pending Appointments");
 
-                    var processedManifest = pendingManifestItems.Select(x =>
-                        new
-                        {
-                            ManifestItem = x,
-                            TotalDays = Convert.ToInt32(DateTime.Now.Date.Subtract(x.DateAppointment).TotalDays)
-                        }).ToList();
-
-                    //Stage 1 Next Day 
-                    SendAppointment(processedManifest
-                        .Where(x => x.TotalDays == -1).Select(x => x.ManifestItem).ToList(), 1);
-
-                    //Stage 2 3 Days 
-                    SendAppointment(processedManifest
-                        .Where(x => x.TotalDays == -3).Select(x => x.ManifestItem).ToList(), 3);
-
-                    //Stage 3 7 Days 
-                    SendAppointment(processedManifest
-                        .Where(x => x.TotalDays == -7).Select(x => x.ManifestItem).ToList(), 7);
-
-                    //Stage 4 30 Days 
-                    SendAppointment(processedManifest
-                        .Where(x => x.TotalDays == -30).Select(x => x.ManifestItem).ToList(), 1);
+                    SendAppointment(pendingManifestItems);
                 }
             }
             catch (Exception e)
@@ -340,7 +319,7 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
             }
         }
 
-        private static void SendAppointment(List<Integration_AppointmentDataItem> appointmentDataItems, int eta)
+        private static void SendAppointment(List<Integration_AppointmentDataItem> appointmentDataItems)
         {
             try
             {
