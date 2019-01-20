@@ -33,30 +33,33 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
+                using (var entities = new LocalPDAEntities())
                 {
-                    IsDeleted = false,
-                    ErrorDate = DateTime.Now,
-                    ErrorMessage = exception.Message,
-                    ErrorString = exception.ToString(),
-                    SyncStatus = false,
-                    UserId = _userCredentialId
-                });
-                _pdaEntities.SaveChanges();
+                    entities.System_ErrorLog.Add(new System_ErrorLog()
+                    {
+                        IsDeleted = false,
+                        ErrorDate = DateTime.Now,
+                        ErrorMessage = exception.Message,
+                        ErrorString = exception.ToString(),
+                        SyncStatus = false,
+                        UserId = _userCredentialId
+                    });
+                    entities.SaveChanges();
 
-                if (exception.InnerException == null)
-                    return;
+                    if (exception.InnerException == null)
+                        return;
 
-                _pdaEntities.System_ErrorLog.Add(new System_ErrorLog()
-                {
-                    IsDeleted = false,
-                    ErrorDate = DateTime.Now,
-                    ErrorMessage = exception.InnerException.Message,
-                    ErrorString = exception.InnerException.ToString(),
-                    SyncStatus = false,
-                    UserId = _userCredentialId
-                });
-                _pdaEntities.SaveChanges();
+                    entities.System_ErrorLog.Add(new System_ErrorLog()
+                    {
+                        IsDeleted = false,
+                        ErrorDate = DateTime.Now,
+                        ErrorMessage = exception.InnerException.Message,
+                        ErrorString = exception.InnerException.ToString(),
+                        SyncStatus = false,
+                        UserId = _userCredentialId
+                    });
+                    entities.SaveChanges();
+                }
             }
             catch
             {
@@ -385,6 +388,32 @@ namespace PatientDataAdministration.Client
 
             var coord = watcher;
             return watcher.Position.Location.IsUnknown == false ? coord.Position.Location : null;
+        }
+
+        public static void LogAudit(string actionPerformed, bool isRestrcitedOperation = false)
+        {
+            try
+            {
+                var userCredential =
+                    _pdaEntities.Local_StaffInformation.FirstOrDefault(x => !x.IsDeleted && x.Id == _userCredentialId);
+
+                if (userCredential == null)
+                    return;
+
+                _pdaEntities.System_AuditTrail.Add(new System_AuditTrail()
+                {
+                    IsDeleted = false, 
+                    ActionPerformed = actionPerformed, 
+                    AuditTimeStamp = DateTime.Now, 
+                    IsRestrcitedOperation = isRestrcitedOperation, 
+                    UserPerformed = Newtonsoft.Json.JsonConvert.SerializeObject(userCredential)
+                });
+                _pdaEntities.SaveChanges();
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
     }
 }

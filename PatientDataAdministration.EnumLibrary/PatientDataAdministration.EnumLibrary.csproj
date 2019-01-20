@@ -46,6 +46,7 @@
     <Compile Include="DataIntegrityIssue.cs" />
     <Compile Include="OperationType.cs" />
     <Compile Include="BiometricIntegrity.cs" />
+    <Compile Include="AuditCategory.cs" />
     <Compile Include="ReportingType.cs" />
     <Compile Include="RecurrenceInterval.cs" />
     <Compile Include="ActionTypeDataIntegrity.cs" />

@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
+using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
+using PatientDataAdministration.EnumLibrary;
 
 namespace PatientDataAdministration.Web.Models
 {
@@ -20,6 +23,46 @@ namespace PatientDataAdministration.Web.Models
         {
             HttpContext.Current.Session.Clear();
             HttpContext.Current.Session.RemoveAll();
+        }
+
+        public static bool CheckIfUserIsValid(int userId)
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    return entities.Administration_StaffInformation.FirstOrDefault(x =>
+                        !x.IsDeleted && x.Id == userId && x.AuthenticationState == (int) Status.Banned) != null;
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return false;
+            }
+        }
+
+        public static void LogAudit(AuditCategory auditCategory, string auditDetail, int userId, object auditData = null )
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    entities.System_AuditTrail.Add(new System_AuditTrail()
+                    {
+                        AuditCategory = (int)auditCategory, 
+                        AuditData = auditData != null ? Newtonsoft.Json.JsonConvert.SerializeObject(auditData) : null, 
+                        AuditDetail = auditDetail, 
+                        AuditimeStamp = DateTime.Now, 
+                        UserId = userId
+                    });
+                    entities.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
         }
     }
 

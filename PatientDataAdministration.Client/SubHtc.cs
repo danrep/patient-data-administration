@@ -43,9 +43,17 @@ namespace PatientDataAdministration.Client
 
         public SubHtc(Administration_StaffInformation administrationStaffInformation)
         {
-            this._administrationStaffInformation = administrationStaffInformation;
-            InitializeComponent();
-            _fingerPrintManager = new SGFingerPrintManager();
+            try
+            {
+
+                this._administrationStaffInformation = administrationStaffInformation;
+                InitializeComponent();
+                _fingerPrintManager = new SGFingerPrintManager();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
         }
 
         private void SubInformationManagement_Load(object sender, EventArgs e)
@@ -160,9 +168,17 @@ namespace PatientDataAdministration.Client
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            ClearContents();
-            txtPhoneNumber.Text = txtHtsId.Text = txtSearch.Text = "";
-            txtSex.SelectedIndex = txtTestResult.SelectedIndex = -1;
+            try
+            {
+
+                ClearContents();
+                txtPhoneNumber.Text = txtHtsId.Text = txtSearch.Text = "";
+                txtSex.SelectedIndex = txtTestResult.SelectedIndex = -1;
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -172,9 +188,16 @@ namespace PatientDataAdministration.Client
 
         private void btnRefreshBioDevice_Click(object sender, EventArgs e)
         {
-            _deviceName = "";
-            persistLoad.Enabled = true;
-            persistLoad.Start();
+            try
+            {
+                _deviceName = "";
+                persistLoad.Enabled = true;
+                persistLoad.Start();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -184,6 +207,7 @@ namespace PatientDataAdministration.Client
                 var textBoxes = pnlPersonalInformation.Controls.OfType<TextBox>().ToList();
                 if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
+                    textBoxes.OrderBy(x => x.TabIndex).FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
                     MessageBox.Show(@"Please ensure that all text fields have been chosen");
                     return;
                 }
@@ -191,6 +215,15 @@ namespace PatientDataAdministration.Client
                 var comboBoxes = pnlPersonalInformation.Controls.OfType<ComboBox>().ToList();
                 if (comboBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
+                    comboBoxes.OrderBy(x => x.TabIndex).FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
+                    MessageBox.Show(@"Please ensure that all select fields have been chosen");
+                    return;
+                }
+
+                comboBoxes = grpBoxSpecialInformation.Controls.OfType<ComboBox>().ToList();
+                if (comboBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
+                {
+                    comboBoxes.OrderBy(x => x.TabIndex).FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
                     MessageBox.Show(@"Please ensure that all select fields have been chosen");
                     return;
                 }
@@ -218,9 +251,11 @@ namespace PatientDataAdministration.Client
                         IsDeleted = false,
                         Sex = txtSex.Text,
                         SiteId = _administrationStaffInformation.SiteId,
-                        PhoneNumber = txtPhoneNumber.Text, 
-                        Id = 0,  
-                        HtsId = txtHtsId.Text.ToUpper()
+                        PhoneNumber = txtPhoneNumber.Text,
+                        Id = 0,
+                        HtsId = txtHtsId.Text.ToUpper(),
+                        LastUpdated = DateTime.Now,
+                        WhenCreated = DateTime.Now
                     }
                 };
 
@@ -228,8 +263,8 @@ namespace PatientDataAdministration.Client
                 {
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
                     {
-                        MessageBox.Show(@"The Captured Biodata have a match and that's not proper. Please confirm");
                         pnlWaiting.Visible = false;
+                        //MessageBox.Show(@"The Captured Biodata are either a match or a match with some other Biometric Data and that's not proper. Please confirm");
                         return;
                     }
 
@@ -238,7 +273,9 @@ namespace PatientDataAdministration.Client
                         FingerPrimary = _bioDataPrimary,
                         FingerSecondary = _bioDataSecondary,
                         IsDeleted = false,
-                        IsValid = true
+                        IsValid = true, 
+                        FingerPrimaryPosition = cmbDataFingerSelector1.SelectedText, 
+                        FingerSecondaryPosition = cmbDataFingerSelector2.SelectedText
                     };
 
                     if (_systemBioDataStorePopulationRegister.Id == 0)
@@ -269,6 +306,8 @@ namespace PatientDataAdministration.Client
                         LastUpdate = DateTime.Now,
                         PrimaryFinger = _bioDataPrimary ?? "",
                         SecondaryFinger = _bioDataSecondary ?? "",
+                        PrimaryFingerPosition = cmbDataFingerSelector1.SelectedText,
+                        SecondaryFingerPosition = cmbDataFingerSelector2.SelectedText,
                         SiteId = _administrationStaffInformation.SiteId, 
                         HtsId = txtHtsId.Text, 
                         TestResult = txtTestResult.Text
@@ -296,6 +335,8 @@ namespace PatientDataAdministration.Client
                         LastUpdate = DateTime.Now,
                         PrimaryFinger = _bioDataPrimary ?? "",
                         SecondaryFinger = _bioDataSecondary ?? "",
+                        PrimaryFingerPosition = cmbDataFingerSelector1.SelectedText,
+                        SecondaryFingerPosition = cmbDataFingerSelector2.SelectedText,
                         SiteId = _administrationStaffInformation.SiteId,
                         HtsId = txtHtsId.Text,
                         TestResult = txtTestResult.SelectedText
@@ -457,45 +498,45 @@ namespace PatientDataAdministration.Client
 
         public void UpdatePersistedData()
         {
-            try
+            if (_isBusy)
+                return;
+
+            _dataLoadthread = new Thread(() =>
             {
-                if (!_isBusy)
+                try
                 {
-                    _dataLoadthread = new Thread(() =>
+                    _isBusy = true;
+                    _systemBioDataStorePopulationRegisters = new List<System_BioDataStore_PopulationRegister>();
+
+                    _lblInformationText = "Data is Updating";
+                    _lblInformationForeColor = Color.DarkOrange;
+
+                    var totalPatients = _localPdaEntities.System_BioDataStore_PopulationRegister.Count();
+                    var orderedSystemBioDataStore =
+                        _localPdaEntities.System_BioDataStore_PopulationRegister.OrderBy(x => x.Id).ToList();
+                    for (var i = 0; i < totalPatients; i += 100)
                     {
-                        _isBusy = true;
-                        _systemBioDataStorePopulationRegisters = new List<System_BioDataStore_PopulationRegister>();
+                        _systemBioDataStorePopulationRegisters.AddRange(
+                            orderedSystemBioDataStore.Skip(i).Take(100).ToList());
+                    }
 
-                        _lblInformationText = "Data is Updating";
-                        _lblInformationForeColor = Color.DarkOrange;
+                    _lblInformationText =
+                        $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
+                    _lblInformationForeColor = Color.DarkGreen;
 
-                        var totalPatients = _localPdaEntities.System_BioDataStore_PopulationRegister.Count();
-                        var orderedSystemBioDataStore =
-                            _localPdaEntities.System_BioDataStore_PopulationRegister.OrderBy(x => x.Id).ToList();
-                        for (var i = 0; i < totalPatients; i += 100)
-                        {
-                            _systemBioDataStorePopulationRegisters.AddRange(
-                                orderedSystemBioDataStore.Skip(i).Take(100).ToList());
-                        }
+                    _isBusy = false;
 
-                        _lblInformationText =
-                            $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
-                        _lblInformationForeColor = Color.DarkGreen;
+                    orderedSystemBioDataStore.Clear();
+                    orderedSystemBioDataStore.TrimExcess();
 
-                        _isBusy = false;
-
-                        orderedSystemBioDataStore.Clear();
-                        orderedSystemBioDataStore.TrimExcess();
-
-                        GC.Collect();
-                    });
-                    _dataLoadthread.Start();
+                    GC.Collect();
                 }
-            }
-            catch (Exception e)
-            {
-                LocalCore.TreatError(e, _administrationStaffInformation.Id);
-            }
+                catch (Exception e)
+                {
+                    LocalCore.TreatError(e, _administrationStaffInformation.Id);
+                }
+            });
+            _dataLoadthread.Start();
         }
 
         public ThreadState UpdatePersistenceStatus => _dataLoadthread.ThreadState;
@@ -527,45 +568,60 @@ namespace PatientDataAdministration.Client
 
         private bool CheckForDevice()
         {
-            var deviceFound = false;
-            if (_fingerPrintManager.EnumerateDevice() != (int)SGFPMError.ERROR_NONE)
-                return false;
-
-            if (_fingerPrintManager.NumberOfDevice == 0)
-                return false;
-
-            // Get enumeration info into SGFPMDeviceList
-            _device = new SGFPMDeviceList();
-            _deviceName = "";
-
-            for (var i = 0; i < _fingerPrintManager.NumberOfDevice; i++)
+            try
             {
-                if (_fingerPrintManager.GetEnumDeviceInfo(i, _device) != (int)SGFPMError.ERROR_NONE)
-                    continue;
+                var deviceFound = false;
+                if (_fingerPrintManager.EnumerateDevice() != (int)SGFPMError.ERROR_NONE)
+                    return false;
 
-                _deviceName = _device.DevName + " : " + _device.DevID;
-                deviceFound = true;
-                break;
+                if (_fingerPrintManager.NumberOfDevice == 0)
+                    return false;
+
+                // Get enumeration info into SGFPMDeviceList
+                _device = new SGFPMDeviceList();
+                _deviceName = "";
+
+                for (var i = 0; i < _fingerPrintManager.NumberOfDevice; i++)
+                {
+                    if (_fingerPrintManager.GetEnumDeviceInfo(i, _device) != (int)SGFPMError.ERROR_NONE)
+                        continue;
+
+                    _deviceName = _device.DevName + " : " + _device.DevID;
+                    deviceFound = true;
+                    break;
+                }
+
+                return deviceFound;
             }
-
-            return deviceFound;
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
+                return false;
+            }
         }
 
         private bool InitializeBioDevice()
         {
+            try
+            {
+                var sgDeviceName = _device.DevName;
+                _deviceId = _device.DevID;
 
-            var sgDeviceName = _device.DevName;
-            _deviceId = _device.DevID;
+                if (_fingerPrintManager.Init(sgDeviceName) != (int)SGFPMError.ERROR_NONE)
+                    return false;
 
-            if (_fingerPrintManager.Init(sgDeviceName) != (int)SGFPMError.ERROR_NONE)
+                if (_fingerPrintManager.OpenDevice(_deviceId) != (int)SGFPMError.ERROR_NONE)
+                    return false;
+
+                _deviceInfoParam = new SGFPMDeviceInfoParam();
+
+                return _fingerPrintManager.GetDeviceInfo(_deviceInfoParam) == (int)SGFPMError.ERROR_NONE;
+            }
+            catch (Exception e)
+            {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
                 return false;
-
-            if (_fingerPrintManager.OpenDevice(_deviceId) != (int)SGFPMError.ERROR_NONE)
-                return false;
-
-            _deviceInfoParam = new SGFPMDeviceInfoParam();
-
-            return _fingerPrintManager.GetDeviceInfo(_deviceInfoParam) == (int)SGFPMError.ERROR_NONE;
+            }
         }
        
 
@@ -719,6 +775,25 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void txtStateOfResidence_SelectedValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtStateOfResidence.SelectedValue == null)
+                    return;
+
+                var selectedValue = (System.Convert.ChangeType(txtStateOfResidence.SelectedValue, typeof(int)));
+
+                if (selectedValue != null)
+                    this.system_LocalGovermentAreaTableAdapter.FillBy(this.localPDADataSet.System_LocalGovermentArea,
+                        ((int)selectedValue));
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
+        }
+
         private string GetBioData()
         {
             try
@@ -764,8 +839,14 @@ namespace PatientDataAdministration.Client
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
+
+                _lblBioDeviceInfoForeColor = Color.DarkRed;
+                _lblBioDeviceInfoText = @"Unrecognised Error. Please Re-attach.";
+                picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
+
                 return string.Empty;
             }
         }
@@ -791,6 +872,7 @@ namespace PatientDataAdministration.Client
             catch (Exception e)
             {
                 LocalCore.TreatError(e, _administrationStaffInformation.Id);
+                picBoxFingerPrint.Image = PatientDataAdministration.Client.Properties.Resources.icons8_Fingerprint_48px;
             }
         }
 

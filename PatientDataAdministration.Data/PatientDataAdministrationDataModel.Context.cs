@@ -27,7 +27,6 @@ namespace PatientDataAdministration.Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
         public virtual DbSet<Administration_ClientMap> Administration_ClientMap { get; set; }
         public virtual DbSet<Administration_ClientRegistry> Administration_ClientRegistry { get; set; }
         public virtual DbSet<Administration_MessagingPatientComplaint> Administration_MessagingPatientComplaint { get; set; }
@@ -52,19 +51,11 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Patient_PatientBiometricDataPopulationRegister> Patient_PatientBiometricDataPopulationRegister { get; set; }
         public virtual DbSet<Patient_PatientInformationPopulationRegister> Patient_PatientInformationPopulationRegister { get; set; }
         public virtual DbSet<Integration_AppointmentDataItem> Integration_AppointmentDataItem { get; set; }
+        public virtual DbSet<System_AuditTrail> System_AuditTrail { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetAgeDistro_Result>("Sp_Administration_GetAgeDistro");
-        }
-    
-        public virtual ObjectResult<Sp_Administration_GetInActiveUsers_Result> Sp_Administration_GetInActiveUsers(Nullable<int> inactiveBar)
-        {
-            var inactiveBarParameter = inactiveBar.HasValue ?
-                new ObjectParameter("inactiveBar", inactiveBar) :
-                new ObjectParameter("inactiveBar", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetInActiveUsers_Result>("Sp_Administration_GetInActiveUsers", inactiveBarParameter);
         }
     
         public virtual ObjectResult<string> Sp_Administration_GetPatientCompliance()

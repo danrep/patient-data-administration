@@ -53,9 +53,16 @@ namespace PatientDataAdministration.Client
 
         public SubInformationManagement(Administration_StaffInformation administrationStaffInformation)
         {
-            this._administrationStaffInformation = administrationStaffInformation;
-            InitializeComponent();
-            _fingerPrintManager = new SGFingerPrintManager();
+            try
+            {
+                this._administrationStaffInformation = administrationStaffInformation;
+                InitializeComponent();
+                _fingerPrintManager = new SGFingerPrintManager();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
         }
 
         private void SubInformationManagement_Load(object sender, EventArgs e)
@@ -203,6 +210,14 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
+                var comboBoxes = grpDataControl.Controls.OfType<ComboBox>().ToList();
+                if (comboBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
+                {
+                    comboBoxes.FirstOrDefault(x => string.IsNullOrEmpty(x.SelectedText))?.Focus();
+                    MessageBox.Show(@"Please ensure that all select fields have been chosen");
+                    return;
+                }
+
                 textBoxes = pnlPersonalInformation.Controls.OfType<TextBox>().ToList();
                 if (textBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
@@ -211,10 +226,10 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
-                var comboBoxes = pnlPersonalInformation.Controls.OfType<ComboBox>().ToList();
+                comboBoxes = pnlPersonalInformation.Controls.OfType<ComboBox>().ToList();
                 if (comboBoxes.Any(x => string.IsNullOrEmpty(x.Text)))
                 {
-                    textBoxes.FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
+                    comboBoxes.FirstOrDefault(x => string.IsNullOrEmpty(x.Text))?.Focus();
                     MessageBox.Show(@"Please ensure that all select fields have been chosen");
                     return;
                 }
@@ -273,7 +288,9 @@ namespace PatientDataAdministration.Client
                     {
                         PepId = txtPepId.Text,
                         FingerPrimary = _bioDataPrimary,
+                        FingerPrimaryPosition = cmbDataFingerSelector1.SelectedText,
                         FingerSecondary = _bioDataSecondary,
+                        FingerSecondaryPosition = cmbDataFingerSelector2.SelectedText,
                         IsDeleted = false,
                         IsValid = true
                     };
@@ -284,6 +301,34 @@ namespace PatientDataAdministration.Client
 
                 if (!string.IsNullOrEmpty(_nfcUid))
                 {
+                    if (_tag.Content.Count > 0)
+                    {
+                        var content = (RtdSmartPoster)_tag.Content.FirstOrDefault();
+
+                        if (content != null)
+                        {
+                            if (content.Title.FirstOrDefault()?.Value != txtPepId.Text.Trim())
+                            {
+                                var dialogueResult = MessageBox.Show(
+                                    @"A differernt patient has been assigned this Tag. Do you want to reassign it?",
+                                    @"Please Decide",
+                                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                if (dialogueResult != DialogResult.Yes)
+                                    return;
+                            }
+                        }
+                    }
+
+                    var smartPoster = new RtdSmartPoster();
+                    smartPoster.Title.Add(new RtdText(txtPepId.Text.Trim(), "US"));
+                    Ndef ndefData = smartPoster;
+
+                    _tag.Content.Clear();
+                    _tag.Content.Add(ndefData);
+
+                    Card_write_proc();
+
                     patientData.Patient_PatientNearFieldCommunicationData =
                         new Patient_PatientNearFieldCommunicationData
                         {
@@ -699,7 +744,7 @@ namespace PatientDataAdministration.Client
                 else
                 {
                     lblNfcStatus.Text = @"No NFC Device Connected";
-                    lblNfcStatus.ForeColor = Color.Brown;
+                    lblNfcStatus.ForeColor = Color.Maroon;
                     _selectedReader = null;
                 }
             }
@@ -777,7 +822,7 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void Card_write_proc(object tagParam)
+        private void Card_write_proc()
         {
             try
             {
@@ -797,29 +842,14 @@ namespace PatientDataAdministration.Client
                     else
                     {
                         lblNfcStatus.Text = @"Tag Write Failure. Please try again or contact Support.";
-                        lblNfcStatus.ForeColor = Color.Brown;
+                        lblNfcStatus.ForeColor = Color.Maroon;
                     }
                 }
                 else
                 {
                     lblNfcStatus.Text = @"Tag Write Failure. Please try again or contact Support.";
-                    lblNfcStatus.ForeColor = Color.Brown;
+                    lblNfcStatus.ForeColor = Color.Maroon;
                 }
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
-            }
-        }
-
-        private void Card_format_proc(object tagParam)
-        {
-            try
-            {
-                if (_tag.Format())
-                    this.BeginInvoke(new OnTagFormatInvoker(OnTagFormat), _tag);
-                else
-                    MessageBox.Show(@"Tag Format Error. Please try again");
             }
             catch (Exception exception)
             {
@@ -914,7 +944,7 @@ namespace PatientDataAdministration.Client
                         else
                         {
                             lblNfcStatus.Text = @"NearField failed to connect to the card in the reader";
-                            lblNfcStatus.ForeColor = Color.Brown;
+                            lblNfcStatus.ForeColor = Color.Maroon;
 
                             _cardchannel = null;
                         }
@@ -927,27 +957,13 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        delegate void OnTagWriteInvoker(NfcTag _tag);
-        void OnTagWrite(NfcTag _tag)
+        delegate void OnTagWriteInvoker(NfcTag tag);
+        void OnTagWrite(NfcTag tag)
         {
             try
             {
-                MessageBox.Show(@"Tag Write Successful.");
-                Card_read_proc();
-            }
-            catch (Exception exception)
-            {
-                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
-            }
-        }
-
-        delegate void OnTagFormatInvoker(NfcTag _tag);
-        void OnTagFormat(NfcTag _tag)
-        {
-            try
-            {
-                lblNfcStatus.Text = @"Tag Successfully Formatted";
-                lblNfcStatus.ForeColor = Color.Green;
+                lblNfcStatus.Text = @"Tag Write Successful.";
+                lblNfcStatus.ForeColor = Color.DarkGreen;
                 Card_read_proc();
             }
             catch (Exception exception)
@@ -972,16 +988,17 @@ namespace PatientDataAdministration.Client
 
                 if ((this._tag.Content != null) && (this._tag.Content.Count != 0))
                 {
-                    foreach (var ndef in this._tag.Content)
+                    var smart = new RtdSmartPoster();
+
+                    if ((this._tag.Content != null) && (this._tag.Content.Count != 0))
                     {
-                        if (!(ndef is RtdVCard))
-                            continue;
-
-                        var smart = (RtdVCard)ndef;
-                        lblInformation.Text = smart.Family_name + @" " + smart.First_name;
+                        var ndef = this._tag.Content.FirstOrDefault() ?? new RtdSmartPoster();
+                        smart = (RtdSmartPoster)ndef;
                     }
+                    else
+                    { lblInformation.Text = @"This Tag is Empty. You can proceed with attaching a Patient to it!";}
 
-                    var patientData = _systemBioDataStores.FirstOrDefault(x => x.NfcUid == _nfcUid);
+                    var patientData = _systemBioDataStores.FirstOrDefault(x => x.NfcUid == _nfcUid && x.PepId == smart.Title.FirstOrDefault()?.Value);
                     
                     if (patientData != null)
                         LoadPatientData(patientData);
@@ -990,7 +1007,7 @@ namespace PatientDataAdministration.Client
                         lblNfcStatus.Text = @"No Patient Information Found";
                         lblNfcStatus.ForeColor = Color.SteelBlue;
 
-                        lblInformation.Text = $@"Tag {_nfcUid} is from a different State. Please Use Query";
+                        lblInformation.Text = $@"Tag {_nfcUid} is from a different State. Please Use Live Query";
                     }
                 }
                 else
@@ -1015,7 +1032,8 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
-                var patientDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformation>(patientData.PatientData);
+                var patientDataResolved =
+                    Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformation>(patientData.PatientData);
 
                 txtAddress.Text = patientDataResolved.Patient_PatientInformation.HouseAddress;
                 txtDateOfBirth.Value = patientDataResolved.Patient_PatientInformation.DateOfBirth ?? DateTime.Now.Date;
@@ -1038,23 +1056,26 @@ namespace PatientDataAdministration.Client
                     _bioDataPrimary = patientDataResolved.Patient_PatientBiometricData.FingerPrimary;
                     _bioDataSecondary = patientDataResolved.Patient_PatientBiometricData.FingerSecondary;
 
-                    if (!string.IsNullOrEmpty(_bioDataPrimary))
-                        chkPriFin.Checked = true;
-                    if (!string.IsNullOrEmpty(_bioDataSecondary))
-                        chkSecFin.Checked = true;
+                    chkPriFin.Checked = !string.IsNullOrEmpty(_bioDataPrimary);
+                    chkSecFin.Checked = !string.IsNullOrEmpty(_bioDataSecondary);
+
+                    cmbDataFingerSelector1.Text =
+                        patientDataResolved.Patient_PatientBiometricData.FingerPrimaryPosition ?? "Left Thumb";
+                    cmbDataFingerSelector2.Text =
+                        patientDataResolved.Patient_PatientBiometricData.FingerSecondaryPosition ?? "Right Thumb";
                 }
 
                 if (patientDataResolved.Patient_PatientNearFieldCommunicationData != null)
                 {
                     _nfcUid = patientDataResolved.Patient_PatientNearFieldCommunicationData.CardId;
-
-                    if (!string.IsNullOrEmpty(_nfcUid))
-                        chkNfc.Checked = true;
+                    chkNfc.Checked = !string.IsNullOrEmpty(_nfcUid);
                 }
+                else _nfcUid = "";
 
                 _systemBioDataStore =
                     _localPdaEntities.System_BioDataStore.FirstOrDefault(
-                        x => x.PepId == patientDataResolved.Patient_PatientInformation.PepId) ?? new System_BioDataStore();
+                        x => x.PepId == patientDataResolved.Patient_PatientInformation.PepId) ??
+                    new System_BioDataStore();
             }
             catch (Exception e)
             {
@@ -1167,6 +1188,11 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void lstBoxSearchResult_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private string GetBioData()
         {
             try
@@ -1212,8 +1238,14 @@ namespace PatientDataAdministration.Client
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
+
+                _lblBioDeviceInfoForeColor = Color.DarkRed;
+                _lblBioDeviceInfoText = @"Unrecognised Error. Please Re-attach.";
+                picBoxFingerPrint.Image = Resources.icons8_Cancel_48px;
+
                 return string.Empty;
             }
         }

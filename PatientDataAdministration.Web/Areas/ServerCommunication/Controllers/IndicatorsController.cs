@@ -27,13 +27,10 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         .Select(x => x.ClientId)
                         .Distinct()
                         .Count();
-                var checkedIn =
-                    _entities.Administration_ClientLog.Where(
-                            x => !x.IsDeleted && DbFunctions.TruncateTime(x.DateLog) >= DbFunctions.TruncateTime(DateTime.Now))
-                        .Select(x => x.CurrentUserId)
-                        .Distinct()
-                        .Count();
-                var inactive = _entities.Sp_Administration_GetInActiveUsers(7).ToList().Count;
+                var currentUsers = LocalCache.Get<List<System_ClientPulse>>("System_ClientPulse") ??
+                                   new List<System_ClientPulse>();
+
+                var currentlyLoggedOn = currentUsers.Count();
 
                 return
                     Json(
@@ -45,8 +42,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                             {
                                 TotalUsers = users,
                                 ActiveToday = activeToday, 
-                                CheckedIn = checkedIn,
-                                Inactive = inactive
+                                CurrentlyLoggedOn = currentlyLoggedOn
                             }
                         },
                         JsonRequestBehavior.AllowGet);

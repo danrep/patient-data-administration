@@ -23,6 +23,17 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="AuthPayLoad" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="System_AuditTrail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuditTimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="IsRestrcitedOperation" Type="bit" Nullable="false" />
+          <Property Name="UserPerformed" Type="varchar(max)" Nullable="false" />
+          <Property Name="ActionPerformed" Type="varchar(max)" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="System_BioDataStore">
           <Key>
             <PropertyRef Name="Id" />
@@ -150,6 +161,7 @@
         <Function Name="Sp_System_CleanUp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="LocalPDAModelStoreContainer">
           <EntitySet Name="Local_StaffInformation" EntityType="Self.Local_StaffInformation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_AuditTrail" EntityType="Self.System_AuditTrail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_BioDataStore" EntityType="Self.System_BioDataStore" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_BioDataStore_PopulationRegister" EntityType="Self.System_BioDataStore_PopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_EndPointLog" EntityType="Self.System_EndPointLog" Schema="dbo" store:Type="Tables" />
@@ -176,6 +188,7 @@
           <EntitySet Name="System_SiteData" EntityType="LocalPDAModel.System_SiteData" />
           <EntitySet Name="System_State" EntityType="LocalPDAModel.System_State" />
           <EntitySet Name="System_UpdateLog" EntityType="LocalPDAModel.System_UpdateLog" />
+          <EntitySet Name="System_AuditTrail" EntityType="LocalPDAModel.System_AuditTrail" />
           </EntityContainer>
         <EntityType Name="Local_StaffInformation">
           <Key>
@@ -317,6 +330,17 @@
           <Property Name="ServerUsername" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="ServerPassword" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="FolderLocation" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_AuditTrail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuditTimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsRestrcitedOperation" Type="Boolean" Nullable="false" />
+          <Property Name="UserPerformed" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ActionPerformed" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
@@ -474,6 +498,18 @@
                 <ScalarProperty Name="IsDownloaded" ColumnName="IsDownloaded" />
                 <ScalarProperty Name="DateDownloaded" ColumnName="DateDownloaded" />
                 <ScalarProperty Name="DateProvided" ColumnName="DateProvided" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_AuditTrail">
+            <EntityTypeMapping TypeName="LocalPDAModel.System_AuditTrail">
+              <MappingFragment StoreEntitySet="System_AuditTrail">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ActionPerformed" ColumnName="ActionPerformed" />
+                <ScalarProperty Name="UserPerformed" ColumnName="UserPerformed" />
+                <ScalarProperty Name="IsRestrcitedOperation" ColumnName="IsRestrcitedOperation" />
+                <ScalarProperty Name="AuditTimeStamp" ColumnName="AuditTimeStamp" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

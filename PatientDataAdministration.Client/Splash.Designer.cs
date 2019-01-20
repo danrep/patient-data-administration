@@ -34,10 +34,10 @@
             this.tmrStartUp = new System.Windows.Forms.Timer(this.components);
             this.label2 = new System.Windows.Forms.Label();
             this.pnlUpdate = new System.Windows.Forms.Panel();
-            this.lblUpdateInfo = new System.Windows.Forms.Label();
-            this.lblUpdateInfoHead = new System.Windows.Forms.Label();
             this.btnProfile = new System.Windows.Forms.Button();
             this.btnYes = new System.Windows.Forms.Button();
+            this.lblUpdateInfo = new System.Windows.Forms.Label();
+            this.lblUpdateInfoHead = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
@@ -66,7 +66,7 @@
             this.label1.BackColor = System.Drawing.Color.Black;
             this.label1.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(12, 6);
+            this.label1.Location = new System.Drawing.Point(12, 8);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label1.Size = new System.Drawing.Size(16, 13);
@@ -86,7 +86,7 @@
             this.label2.BackColor = System.Drawing.Color.Black;
             this.label2.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(12, 27);
+            this.label2.Location = new System.Drawing.Point(12, 25);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label2.Size = new System.Drawing.Size(16, 13);
@@ -107,6 +107,46 @@
             this.pnlUpdate.Size = new System.Drawing.Size(349, 133);
             this.pnlUpdate.TabIndex = 3;
             this.pnlUpdate.Visible = false;
+            // 
+            // btnProfile
+            // 
+            this.btnProfile.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnProfile.BackColor = System.Drawing.Color.White;
+            this.btnProfile.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btnProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.ForeColor = System.Drawing.Color.Black;
+            this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
+            this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnProfile.Location = new System.Drawing.Point(-1, -1);
+            this.btnProfile.Name = "btnProfile";
+            this.btnProfile.Size = new System.Drawing.Size(76, 29);
+            this.btnProfile.TabIndex = 9;
+            this.btnProfile.Text = "No";
+            this.btnProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnProfile.UseVisualStyleBackColor = false;
+            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
+            // 
+            // btnYes
+            // 
+            this.btnYes.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnYes.BackColor = System.Drawing.Color.White;
+            this.btnYes.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnYes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
+            this.btnYes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnYes.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnYes.ForeColor = System.Drawing.Color.Black;
+            this.btnYes.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
+            this.btnYes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnYes.Location = new System.Drawing.Point(272, -1);
+            this.btnYes.Name = "btnYes";
+            this.btnYes.Size = new System.Drawing.Size(76, 29);
+            this.btnYes.TabIndex = 8;
+            this.btnYes.Text = "Yes";
+            this.btnYes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnYes.UseVisualStyleBackColor = false;
+            this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
             // 
             // lblUpdateInfo
             // 
@@ -134,48 +174,6 @@
             this.lblUpdateInfoHead.TabIndex = 4;
             this.lblUpdateInfoHead.Text = "New Update";
             this.lblUpdateInfoHead.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnProfile
-            // 
-            this.btnProfile.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnProfile.BackColor = System.Drawing.Color.White;
-            this.btnProfile.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnProfile.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.btnProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProfile.ForeColor = System.Drawing.Color.Black;
-            this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
-            this.btnProfile.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnProfile.Location = new System.Drawing.Point(-1, -1);
-            this.btnProfile.Name = "btnProfile";
-            this.btnProfile.Size = new System.Drawing.Size(76, 29);
-            this.btnProfile.TabIndex = 9;
-            this.btnProfile.Text = "No";
-            this.btnProfile.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnProfile.UseVisualStyleBackColor = false;
-            this.btnProfile.Click += new System.EventHandler(this.btnProfile_Click);
-            // 
-            // btnYes
-            // 
-            this.btnYes.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btnYes.BackColor = System.Drawing.Color.White;
-            this.btnYes.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnYes.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnYes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.SteelBlue;
-            this.btnYes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnYes.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnYes.ForeColor = System.Drawing.Color.Black;
-            this.btnYes.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Checked_Checkbox_24px;
-            this.btnYes.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnYes.Location = new System.Drawing.Point(272, -1);
-            this.btnYes.Name = "btnYes";
-            this.btnYes.Size = new System.Drawing.Size(76, 29);
-            this.btnYes.TabIndex = 8;
-            this.btnYes.Text = "Yes";
-            this.btnYes.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnYes.UseVisualStyleBackColor = false;
-            this.btnYes.Click += new System.EventHandler(this.btnYes_Click);
             // 
             // pictureBox2
             // 

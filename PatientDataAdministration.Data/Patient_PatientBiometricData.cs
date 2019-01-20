@@ -22,5 +22,7 @@ namespace PatientDataAdministration.Data
         public System.DateTime DateRegistered { get; set; }
         public bool IsValid { get; set; }
         public bool IsDeleted { get; set; }
+        public string FingerPrimaryPosition { get; set; }
+        public string FingerSecondaryPosition { get; set; }
     }
 }

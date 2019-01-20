@@ -43,7 +43,11 @@ namespace PatientDataAdministration.Client
             this.lblNfcStatus = new System.Windows.Forms.Label();
             this.lblTagUid = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.btnSave = new System.Windows.Forms.Button();
+            this.btnRefreshNfcDevice = new System.Windows.Forms.Button();
+            this.btnRefreshBioDevice = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.pnlPersonalInformation = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -67,7 +71,7 @@ namespace PatientDataAdministration.Client
             this.txtOtherNames = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.pnlDataControl = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.grpDataControl = new System.Windows.Forms.GroupBox();
             this.cmbDataFingerSelector2 = new System.Windows.Forms.ComboBox();
             this.cmbDataFingerSelector1 = new System.Windows.Forms.ComboBox();
             this.btnDataFinger1 = new System.Windows.Forms.Button();
@@ -78,9 +82,6 @@ namespace PatientDataAdministration.Client
             this.chkSecFin = new System.Windows.Forms.CheckBox();
             this.chkPriFin = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.btnClear = new System.Windows.Forms.Button();
-            this.btnRefreshNfcDevice = new System.Windows.Forms.Button();
-            this.btnRefreshBioDevice = new System.Windows.Forms.Button();
             this.pnlOfficialInformation = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -108,12 +109,13 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.pnlPersonalInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSourceResidence)).BeginInit();
             this.pnlDataControl.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.grpDataControl.SuspendLayout();
             this.pnlOfficialInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSource)).BeginInit();
@@ -126,7 +128,7 @@ namespace PatientDataAdministration.Client
             this.groupBox1.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(30, 64);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(182, 414);
+            this.groupBox1.Size = new System.Drawing.Size(182, 409);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Quick Actions";
@@ -144,7 +146,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 25);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 376);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(170, 364);
             this.flowLayoutPanel1.TabIndex = 137;
             // 
             // label2
@@ -182,6 +184,7 @@ namespace PatientDataAdministration.Client
             this.lstBoxSearchResult.TabIndex = 136;
             this.lstBoxSearchResult.Visible = false;
             this.lstBoxSearchResult.Click += new System.EventHandler(this.lstBoxSearchResult_Click);
+            this.lstBoxSearchResult.SelectedIndexChanged += new System.EventHandler(this.lstBoxSearchResult_SelectedIndexChanged);
             // 
             // picBoxFingerPrint
             // 
@@ -237,20 +240,29 @@ namespace PatientDataAdministration.Client
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.btnSave);
+            this.groupBox2.Controls.Add(this.panel1);
             this.groupBox2.Controls.Add(this.pnlPersonalInformation);
             this.groupBox2.Controls.Add(this.pnlDataControl);
-            this.groupBox2.Controls.Add(this.btnClear);
-            this.groupBox2.Controls.Add(this.btnRefreshNfcDevice);
-            this.groupBox2.Controls.Add(this.btnRefreshBioDevice);
             this.groupBox2.Controls.Add(this.pnlOfficialInformation);
             this.groupBox2.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(218, 64);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(721, 414);
+            this.groupBox2.Size = new System.Drawing.Size(721, 409);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Patient Information";
+            // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.btnSave);
+            this.panel1.Controls.Add(this.btnRefreshNfcDevice);
+            this.panel1.Controls.Add(this.btnRefreshBioDevice);
+            this.panel1.Controls.Add(this.btnClear);
+            this.panel1.Location = new System.Drawing.Point(551, 165);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(163, 236);
+            this.panel1.TabIndex = 136;
             // 
             // btnSave
             // 
@@ -262,7 +274,7 @@ namespace PatientDataAdministration.Client
             this.btnSave.ForeColor = System.Drawing.Color.Black;
             this.btnSave.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.Location = new System.Drawing.Point(575, 222);
+            this.btnSave.Location = new System.Drawing.Point(10, 7);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(140, 40);
             this.btnSave.TabIndex = 129;
@@ -270,6 +282,63 @@ namespace PatientDataAdministration.Client
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnRefreshNfcDevice
+            // 
+            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.Silver;
+            this.btnRefreshNfcDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnRefreshNfcDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnRefreshNfcDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshNfcDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.Black;
+            this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
+            this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(10, 65);
+            this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
+            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(140, 40);
+            this.btnRefreshNfcDevice.TabIndex = 133;
+            this.btnRefreshNfcDevice.Text = "Refreah NFC Tag\r\nDevice";
+            this.btnRefreshNfcDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnRefreshNfcDevice.UseVisualStyleBackColor = false;
+            this.btnRefreshNfcDevice.Click += new System.EventHandler(this.btnRefreshNfcDevice_Click);
+            // 
+            // btnRefreshBioDevice
+            // 
+            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.Silver;
+            this.btnRefreshBioDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnRefreshBioDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnRefreshBioDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshBioDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.Black;
+            this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
+            this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnRefreshBioDevice.Location = new System.Drawing.Point(10, 123);
+            this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
+            this.btnRefreshBioDevice.Size = new System.Drawing.Size(140, 40);
+            this.btnRefreshBioDevice.TabIndex = 134;
+            this.btnRefreshBioDevice.Text = "Refresh Fingerprint \r\nDevice";
+            this.btnRefreshBioDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnRefreshBioDevice.UseVisualStyleBackColor = false;
+            this.btnRefreshBioDevice.Click += new System.EventHandler(this.btnRefreshBioDevice_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.BackColor = System.Drawing.Color.Silver;
+            this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClear.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.ForeColor = System.Drawing.Color.Black;
+            this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
+            this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClear.Location = new System.Drawing.Point(10, 181);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(140, 40);
+            this.btnClear.TabIndex = 131;
+            this.btnClear.Text = "Clear all Inputs";
+            this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnClear.UseVisualStyleBackColor = false;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // pnlPersonalInformation
             // 
@@ -294,7 +363,7 @@ namespace PatientDataAdministration.Client
             this.pnlPersonalInformation.Controls.Add(this.label16);
             this.pnlPersonalInformation.Location = new System.Drawing.Point(6, 165);
             this.pnlPersonalInformation.Name = "pnlPersonalInformation";
-            this.pnlPersonalInformation.Size = new System.Drawing.Size(563, 236);
+            this.pnlPersonalInformation.Size = new System.Drawing.Size(539, 236);
             this.pnlPersonalInformation.TabIndex = 75;
             // 
             // label10
@@ -302,7 +371,7 @@ namespace PatientDataAdministration.Client
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.Maroon;
-            this.label10.Location = new System.Drawing.Point(367, 9);
+            this.label10.Location = new System.Drawing.Point(344, 10);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(190, 13);
             this.label10.TabIndex = 135;
@@ -312,7 +381,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(283, 180);
+            this.label7.Location = new System.Drawing.Point(278, 180);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(94, 13);
             this.label7.TabIndex = 105;
@@ -326,9 +395,9 @@ namespace PatientDataAdministration.Client
             this.txtLgaOfResidence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.txtLgaOfResidence.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLgaOfResidence.FormattingEnabled = true;
-            this.txtLgaOfResidence.Location = new System.Drawing.Point(286, 196);
+            this.txtLgaOfResidence.Location = new System.Drawing.Point(281, 196);
             this.txtLgaOfResidence.Name = "txtLgaOfResidence";
-            this.txtLgaOfResidence.Size = new System.Drawing.Size(271, 27);
+            this.txtLgaOfResidence.Size = new System.Drawing.Size(253, 27);
             this.txtLgaOfResidence.TabIndex = 104;
             this.txtLgaOfResidence.ValueMember = "Id";
             // 
@@ -362,7 +431,7 @@ namespace PatientDataAdministration.Client
             this.txtStateOfResidence.FormattingEnabled = true;
             this.txtStateOfResidence.Location = new System.Drawing.Point(4, 196);
             this.txtStateOfResidence.Name = "txtStateOfResidence";
-            this.txtStateOfResidence.Size = new System.Drawing.Size(276, 27);
+            this.txtStateOfResidence.Size = new System.Drawing.Size(252, 27);
             this.txtStateOfResidence.TabIndex = 102;
             this.txtStateOfResidence.ValueMember = "Id";
             this.txtStateOfResidence.SelectedValueChanged += new System.EventHandler(this.txtStateOfResidence_SelectedValueChanged);
@@ -389,14 +458,14 @@ namespace PatientDataAdministration.Client
             this.txtAddress.Font = new System.Drawing.Font("Lato", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAddress.Location = new System.Drawing.Point(3, 144);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(554, 30);
+            this.txtAddress.Size = new System.Drawing.Size(531, 30);
             this.txtAddress.TabIndex = 101;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(3, 82);
+            this.label17.Location = new System.Drawing.Point(136, 85);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(80, 13);
             this.label17.TabIndex = 62;
@@ -407,16 +476,16 @@ namespace PatientDataAdministration.Client
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPhoneNumber.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhoneNumber.Location = new System.Drawing.Point(3, 98);
+            this.txtPhoneNumber.Location = new System.Drawing.Point(136, 101);
             this.txtPhoneNumber.Name = "txtPhoneNumber";
-            this.txtPhoneNumber.Size = new System.Drawing.Size(228, 27);
+            this.txtPhoneNumber.Size = new System.Drawing.Size(240, 27);
             this.txtPhoneNumber.TabIndex = 63;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(233, 83);
+            this.label12.Location = new System.Drawing.Point(379, 86);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(70, 13);
             this.label12.TabIndex = 74;
@@ -426,7 +495,7 @@ namespace PatientDataAdministration.Client
             // 
             this.txtDateOfBirth.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDateOfBirth.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.txtDateOfBirth.Location = new System.Drawing.Point(236, 98);
+            this.txtDateOfBirth.Location = new System.Drawing.Point(382, 101);
             this.txtDateOfBirth.Name = "txtDateOfBirth";
             this.txtDateOfBirth.ShowCheckBox = true;
             this.txtDateOfBirth.Size = new System.Drawing.Size(152, 27);
@@ -441,9 +510,9 @@ namespace PatientDataAdministration.Client
             this.txtSex.Items.AddRange(new object[] {
             "Male",
             "Female"});
-            this.txtSex.Location = new System.Drawing.Point(467, 49);
+            this.txtSex.Location = new System.Drawing.Point(4, 101);
             this.txtSex.Name = "txtSex";
-            this.txtSex.Size = new System.Drawing.Size(91, 27);
+            this.txtSex.Size = new System.Drawing.Size(126, 27);
             this.txtSex.TabIndex = 70;
             // 
             // label14
@@ -471,7 +540,7 @@ namespace PatientDataAdministration.Client
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(467, 34);
+            this.label15.Location = new System.Drawing.Point(3, 86);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(24, 13);
             this.label15.TabIndex = 58;
@@ -484,7 +553,7 @@ namespace PatientDataAdministration.Client
             this.txtSurname.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSurname.Location = new System.Drawing.Point(4, 50);
             this.txtSurname.Name = "txtSurname";
-            this.txtSurname.Size = new System.Drawing.Size(227, 27);
+            this.txtSurname.Size = new System.Drawing.Size(260, 27);
             this.txtSurname.TabIndex = 55;
             // 
             // txtOtherNames
@@ -492,9 +561,9 @@ namespace PatientDataAdministration.Client
             this.txtOtherNames.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtOtherNames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtOtherNames.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtOtherNames.Location = new System.Drawing.Point(236, 50);
+            this.txtOtherNames.Location = new System.Drawing.Point(270, 50);
             this.txtOtherNames.Name = "txtOtherNames";
-            this.txtOtherNames.Size = new System.Drawing.Size(227, 27);
+            this.txtOtherNames.Size = new System.Drawing.Size(264, 27);
             this.txtOtherNames.TabIndex = 57;
             // 
             // label16
@@ -502,7 +571,7 @@ namespace PatientDataAdministration.Client
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label16.Location = new System.Drawing.Point(233, 34);
+            this.label16.Location = new System.Drawing.Point(265, 34);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(72, 13);
             this.label16.TabIndex = 56;
@@ -511,7 +580,7 @@ namespace PatientDataAdministration.Client
             // pnlDataControl
             // 
             this.pnlDataControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlDataControl.Controls.Add(this.groupBox3);
+            this.pnlDataControl.Controls.Add(this.grpDataControl);
             this.pnlDataControl.Controls.Add(this.label9);
             this.pnlDataControl.Controls.Add(this.chkNfc);
             this.pnlDataControl.Controls.Add(this.chkSecFin);
@@ -522,18 +591,18 @@ namespace PatientDataAdministration.Client
             this.pnlDataControl.Size = new System.Drawing.Size(466, 136);
             this.pnlDataControl.TabIndex = 76;
             // 
-            // groupBox3
+            // grpDataControl
             // 
-            this.groupBox3.Controls.Add(this.cmbDataFingerSelector2);
-            this.groupBox3.Controls.Add(this.cmbDataFingerSelector1);
-            this.groupBox3.Controls.Add(this.btnDataFinger1);
-            this.groupBox3.Controls.Add(this.btnNfcData);
-            this.groupBox3.Controls.Add(this.btnDataFinger2);
-            this.groupBox3.Location = new System.Drawing.Point(3, 25);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(250, 106);
-            this.groupBox3.TabIndex = 135;
-            this.groupBox3.TabStop = false;
+            this.grpDataControl.Controls.Add(this.cmbDataFingerSelector2);
+            this.grpDataControl.Controls.Add(this.cmbDataFingerSelector1);
+            this.grpDataControl.Controls.Add(this.btnDataFinger1);
+            this.grpDataControl.Controls.Add(this.btnNfcData);
+            this.grpDataControl.Controls.Add(this.btnDataFinger2);
+            this.grpDataControl.Location = new System.Drawing.Point(3, 25);
+            this.grpDataControl.Name = "grpDataControl";
+            this.grpDataControl.Size = new System.Drawing.Size(250, 106);
+            this.grpDataControl.TabIndex = 135;
+            this.grpDataControl.TabStop = false;
             // 
             // cmbDataFingerSelector2
             // 
@@ -688,63 +757,6 @@ namespace PatientDataAdministration.Client
             this.label8.TabIndex = 60;
             this.label8.Text = "Data Control";
             // 
-            // btnClear
-            // 
-            this.btnClear.BackColor = System.Drawing.Color.Silver;
-            this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.ForeColor = System.Drawing.Color.Black;
-            this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
-            this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClear.Location = new System.Drawing.Point(575, 361);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(140, 40);
-            this.btnClear.TabIndex = 131;
-            this.btnClear.Text = "Clear all Inputs";
-            this.btnClear.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // btnRefreshNfcDevice
-            // 
-            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.Silver;
-            this.btnRefreshNfcDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnRefreshNfcDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnRefreshNfcDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshNfcDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
-            this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshNfcDevice.Location = new System.Drawing.Point(575, 268);
-            this.btnRefreshNfcDevice.Name = "btnRefreshNfcDevice";
-            this.btnRefreshNfcDevice.Size = new System.Drawing.Size(140, 40);
-            this.btnRefreshNfcDevice.TabIndex = 133;
-            this.btnRefreshNfcDevice.Text = "Refreah NFC Tag\r\nDevice";
-            this.btnRefreshNfcDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRefreshNfcDevice.UseVisualStyleBackColor = false;
-            this.btnRefreshNfcDevice.Click += new System.EventHandler(this.btnRefreshNfcDevice_Click);
-            // 
-            // btnRefreshBioDevice
-            // 
-            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.Silver;
-            this.btnRefreshBioDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnRefreshBioDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.btnRefreshBioDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshBioDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.Black;
-            this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
-            this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnRefreshBioDevice.Location = new System.Drawing.Point(575, 314);
-            this.btnRefreshBioDevice.Name = "btnRefreshBioDevice";
-            this.btnRefreshBioDevice.Size = new System.Drawing.Size(140, 40);
-            this.btnRefreshBioDevice.TabIndex = 134;
-            this.btnRefreshBioDevice.Text = "Refresh Fingerprint \r\nDevice";
-            this.btnRefreshBioDevice.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnRefreshBioDevice.UseVisualStyleBackColor = false;
-            this.btnRefreshBioDevice.Click += new System.EventHandler(this.btnRefreshBioDevice_Click);
-            // 
             // pnlOfficialInformation
             // 
             this.pnlOfficialInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -853,7 +865,7 @@ namespace PatientDataAdministration.Client
             // 
             this.lblInformation.AutoSize = true;
             this.lblInformation.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInformation.Location = new System.Drawing.Point(30, 490);
+            this.lblInformation.Location = new System.Drawing.Point(30, 483);
             this.lblInformation.Name = "lblInformation";
             this.lblInformation.Size = new System.Drawing.Size(16, 15);
             this.lblInformation.TabIndex = 132;
@@ -892,7 +904,6 @@ namespace PatientDataAdministration.Client
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.Color.White;
-            this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -921,7 +932,7 @@ namespace PatientDataAdministration.Client
             // 
             this.lblDataState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDataState.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDataState.Location = new System.Drawing.Point(463, 490);
+            this.lblDataState.Location = new System.Drawing.Point(463, 483);
             this.lblDataState.Name = "lblDataState";
             this.lblDataState.Size = new System.Drawing.Size(476, 15);
             this.lblDataState.TabIndex = 136;
@@ -933,7 +944,7 @@ namespace PatientDataAdministration.Client
             this.pnlWaiting.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.pnlWaiting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlWaiting.Controls.Add(this.label13);
-            this.pnlWaiting.Location = new System.Drawing.Point(0, 243);
+            this.pnlWaiting.Location = new System.Drawing.Point(0, 241);
             this.pnlWaiting.Name = "pnlWaiting";
             this.pnlWaiting.Size = new System.Drawing.Size(970, 34);
             this.pnlWaiting.TabIndex = 137;
@@ -955,7 +966,7 @@ namespace PatientDataAdministration.Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(969, 520);
+            this.ClientSize = new System.Drawing.Size(969, 517);
             this.ControlBox = false;
             this.Controls.Add(this.pnlWaiting);
             this.Controls.Add(this.lblDataState);
@@ -981,6 +992,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.pnlPersonalInformation.ResumeLayout(false);
             this.pnlPersonalInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).EndInit();
@@ -988,7 +1000,7 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.systemStateBindingSourceResidence)).EndInit();
             this.pnlDataControl.ResumeLayout(false);
             this.pnlDataControl.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
+            this.grpDataControl.ResumeLayout(false);
             this.pnlOfficialInformation.ResumeLayout(false);
             this.pnlOfficialInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1054,7 +1066,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Button btnRefreshBioDevice;
         private System.Windows.Forms.Timer persistLoad;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox grpDataControl;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Timer persistPatientElectronicData;
         private LocalPDADataSet localPDADataSet;
@@ -1074,5 +1086,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox cmbDataFingerSelector2;
         private System.Windows.Forms.ComboBox cmbDataFingerSelector1;
+        private System.Windows.Forms.Panel panel1;
     }
 }

@@ -312,6 +312,16 @@ CREATE TABLE [dbo].[System_BioDataStore_PopulationRegister] (
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 GO
+CREATE TABLE [dbo].[System_AuditTrail]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY(1,1), 
+	AuditTimeStamp DATETIME NOT NULL DEFAULT(GETDATE()), 
+	IsRestrcitedOperation BIT NOT NULL, 
+	UserPerformed VARCHAR(MAX) NOT NULL, 
+	ActionPerformed VARCHAR(MAX) NOT NULL,
+	IsDeleted BIT NOT NULL
+);
+GO
 SET IDENTITY_INSERT [dbo].[System_LocalGovermentArea] ON 
 
 GO

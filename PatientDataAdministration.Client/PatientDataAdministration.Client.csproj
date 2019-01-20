@@ -134,6 +134,12 @@
     <Compile Include="Authentication.Designer.cs">
       <DependentUpon>Authentication.cs</DependentUpon>
     </Compile>
+    <Compile Include="SubAdminSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SubAdminSettings.Designer.cs">
+      <DependentUpon>SubAdminSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstallerClass.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -207,6 +213,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System_AuditTrail.cs">
+      <DependentUpon>LocalPDA.tt</DependentUpon>
+    </Compile>
     <Compile Include="System_BioDataStore.cs">
       <DependentUpon>LocalPDA.tt</DependentUpon>
     </Compile>
@@ -238,6 +247,9 @@
     <Compile Include="Web\Controllers\HomeController.cs" />
     <EmbeddedResource Include="Authentication.resx">
       <DependentUpon>Authentication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SubAdminSettings.resx">
+      <DependentUpon>SubAdminSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Splash.resx">
       <DependentUpon>Splash.cs</DependentUpon>
@@ -319,6 +331,10 @@
       <DependentUpon>LocalPDA.mdf</DependentUpon>
     </Content>
     <Content Include="MetroFramework.txt" />
+    <None Include="Resources\icons8_Download_From_FTP_24px.png" />
+    <None Include="Resources\icons8_Todo_List_24px.png" />
+    <None Include="Resources\icons8_NFC_96px.png" />
+    <None Include="Resources\icons8_Protect_96px.png" />
     <None Include="Resources\icons8_Page_24px.png" />
     <None Include="Resources\icons8_Download_From_FTP_48px_1.png" />
     <None Include="Resources\bg_wave.png" />

@@ -28,6 +28,10 @@ namespace PatientDataAdministration.Client
         private bool _killCommandReceived;
         private bool _pingResult;
 
+        private int _endPointId = 0;
+
+        private CheckState _checkState = CheckState.Checked;
+
         private readonly Administration_StaffInformation _administrationStaffInformation;
         private readonly System_SiteData _systemSiteData;
 
@@ -47,6 +51,7 @@ namespace PatientDataAdministration.Client
             try
             {
                 InitializeComponent();
+
                 _operationQueue = new List<OperationQueue> { new OperationQueue() { Param = "PDA Initializing" } };
 
                 this._administrationStaffInformation = administrationStaffInformation;
@@ -70,6 +75,11 @@ namespace PatientDataAdministration.Client
                 });
 
                 SiteInfo();
+
+                if ((UserRole) administrationStaffInformation.RoleId == UserRole.SiteAdministrator)
+                {
+                    btnForceUpdate.Visible = btnAdminSettings.Visible = false;
+                }
             }
             catch (Exception ex)
             {
@@ -131,6 +141,26 @@ namespace PatientDataAdministration.Client
                 _operationQueue.Add(new OperationQueue() {Param = "Application Server Started Successfully"});
 
                 _operationQueue.Add(new OperationQueue() { Param = "Initializing Pull/Push for 3rd Party Data" });
+
+                using (var entities = new LocalPDAEntities())
+                {
+                    var allEndPoints = EnumDictionary.GetList<LocalEndPoint>().Select(x => x.ItemId).ToList();
+                    var savedEndPoints = entities.System_EndPointLog.Where(x =>
+                        allEndPoints.Contains(x.EndPointId) && !string.IsNullOrEmpty(x.EndPointUrl)).ToList();
+
+                    chkEndPointExecutionControl.DisplayMember = "Text";
+                    chkEndPointExecutionControl.ValueMember = "Value";
+                    foreach (var savedEndPoint in savedEndPoints)
+                    {
+                        chkEndPointExecutionControl.Items.Add(
+                            new
+                            {
+                                Text = ((LocalEndPoint) savedEndPoint.EndPointId).DisplayName(),
+                                Value = savedEndPoint.EndPointId
+                            }, CheckState.Checked);
+                    }
+                }
+
                 _threadPullDataAppointment = new Thread(PullAppointments);
                 _threadPushDataBiometrics = new Thread(PushAppointments);
                 _operationQueue.Add(new OperationQueue() { Param = "Initialization for Pull/Push for 3rd Party Data Complete" });
@@ -162,6 +192,8 @@ namespace PatientDataAdministration.Client
                 bgwNewPatient.CancelAsync();
                 bgwUpdatePatient.CancelAsync();
                 bgwSelfServer.CancelAsync();
+                bgwContentManager.CancelAsync();
+                bgwPing.CancelAsync();
 
                 this.Close();
             }
@@ -195,14 +227,22 @@ namespace PatientDataAdministration.Client
 
         private void btnCancelSync_Click(object sender, EventArgs e)
         {
-            _killCommandReceived = true;
+            try
+            {
+                _killCommandReceived = true;
 
-            bgwNewPatient.CancelAsync();
-            bgwUpdatePatient.CancelAsync();
+                bgwNewPatient.CancelAsync();
+                bgwUpdatePatient.CancelAsync();
 
-            _isSyncNewInProgress = _isSyncUpdateInProgress = false;
+                _isSyncNewInProgress = _isSyncUpdateInProgress = false;
 
-            _subInfoMan.UpdatePersistedData();
+                _subInfoMan.UpdatePersistedData();
+                _subPopReg.UpdatePersistedData();
+            }
+            catch (Exception ex)
+            {
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+            }
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
@@ -223,6 +263,19 @@ namespace PatientDataAdministration.Client
             }
         }
 
+        private void btnAdministratorSettings_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var adminSettings = new SubAdminSettings(_administrationStaffInformation);
+                adminSettings.ShowDialog();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
+        }
+
         private void btnClearDump_Click(object sender, EventArgs e)
         {
             try
@@ -234,6 +287,7 @@ namespace PatientDataAdministration.Client
 
                 File.WriteAllText(Path.Combine(folderBrowserDialog.SelectedPath, $"{DateTime.Now:yyyyMMddHHmmssfff}"),
                     lstBoxInfoLog.Text);
+
                 lstBoxInfoLog.Text = string.Empty;
             }
             catch (Exception ex)
@@ -247,6 +301,7 @@ namespace PatientDataAdministration.Client
             picConnectionAvailable.Visible = _pingResult;
 
             picSyncInProcess.Visible = _isSyncNewInProgress;
+
             if (_isSyncNewInProgress)
                 return;
 
@@ -292,11 +347,37 @@ namespace PatientDataAdministration.Client
                     btnSync.Visible = !bgwNewPatient.IsBusy;
                 }
 
-                picDataReady.Visible = !_subInfoMan._isBusy;
-                picDataWait.Visible = _subInfoMan._isBusy;
+                picDataReady.Visible = !_subInfoMan?._isBusy ?? false;
+                picDataWait.Visible = _subInfoMan?._isBusy ?? false;
                 listOfEvents = new List<OperationQueue>();
-
+                
                 Application.DoEvents();
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+            }
+        }
+
+        private void tmrEndPointExecutionEffect_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_endPointId == 0)
+                    return;
+
+                tmrEndPointExecutionEffect.Enabled = false;
+
+                var indexOfItem = chkEndPointExecutionControl.Items.IndexOf(new
+                {
+                    Text = ((LocalEndPoint)_endPointId).DisplayName(),
+                    Value = _endPointId
+                });
+
+                chkEndPointExecutionControl.SetItemCheckState(indexOfItem, _checkState);
+                _endPointId = 0;
+
+                tmrEndPointExecutionEffect.Enabled = true;
             }
             catch (Exception exception)
             {
@@ -522,8 +603,8 @@ namespace PatientDataAdministration.Client
                     });
 
                     var returnedPatients =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+                        JsonConvert.DeserializeObject<List<PatientInformation>>(
+                            JsonConvert.SerializeObject(responseData.Data));
 
                     foreach (var patient in returnedPatients)
                     {
@@ -756,6 +837,11 @@ namespace PatientDataAdministration.Client
 
         }
 
+        private void btnTogglePushPull_Click(object sender, EventArgs e)
+        {
+            grpSyncController.Visible = !grpSyncController.Visible;
+        }
+
 
         private static int GenerateVersionCode(string version)
         {
@@ -824,82 +910,89 @@ namespace PatientDataAdministration.Client
 
         private void SaveUpdate(PatientInformation patientInformation)
         {
-            var localPdaEntitiesPatientUpdateSync = new LocalPDAEntities();
-            if (
-                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Any(
-                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId))
+            try
             {
-
-                var existingPatient = localPdaEntitiesPatientUpdateSync.System_BioDataStore.FirstOrDefault(
-                    x => x.PepId == patientInformation.Patient_PatientInformation.PepId);
-
-                if (existingPatient == null)
-                    return;
-
-                existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
-                                           patientInformation.Patient_PatientInformation.Othername;
-                existingPatient.IsSync = true;
-                existingPatient.LastUpdate = DateTime.Now;
-                existingPatient.LastSync = DateTime.Now;
-                existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
-
-                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
-                    existingPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
-
-                if (patientInformation.Patient_PatientBiometricData != null)
+                var localPdaEntitiesPatientUpdateSync = new LocalPDAEntities();
+                if (
+                    localPdaEntitiesPatientUpdateSync.System_BioDataStore.Any(
+                        x => x.PepId == patientInformation.Patient_PatientInformation.PepId))
                 {
-                    existingPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
-                    existingPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
+
+                    var existingPatient = localPdaEntitiesPatientUpdateSync.System_BioDataStore.FirstOrDefault(
+                        x => x.PepId == patientInformation.Patient_PatientInformation.PepId);
+
+                    if (existingPatient == null)
+                        return;
+
+                    existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
+                                               patientInformation.Patient_PatientInformation.Othername;
+                    existingPatient.IsSync = true;
+                    existingPatient.LastUpdate = DateTime.Now;
+                    existingPatient.LastSync = DateTime.Now;
+                    existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
+
+                    if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
+                        existingPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
+
+                    if (patientInformation.Patient_PatientBiometricData != null)
+                    {
+                        existingPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
+                        existingPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
+                    }
+
+                    existingPatient.PatientData = JsonConvert.SerializeObject(patientInformation);
+
+                    localPdaEntitiesPatientUpdateSync.Entry(existingPatient).State = EntityState.Modified;
+                    localPdaEntitiesPatientUpdateSync.SaveChanges();
+                    _operationQueue.Add(new OperationQueue()
+                    {
+                        Param = "Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
+                    });
                 }
-
-                existingPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
-
-                localPdaEntitiesPatientUpdateSync.Entry(existingPatient).State = EntityState.Modified;
-                localPdaEntitiesPatientUpdateSync.SaveChanges();
-                _operationQueue.Add(new OperationQueue()
+                else
                 {
-                    Param = "Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
-                });
+                    var newPatient = new System_BioDataStore
+                    {
+                        PepId = patientInformation.Patient_PatientInformation.PepId,
+                        FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
+                                   patientInformation.Patient_PatientInformation.Othername,
+                        IsSync = true,
+                        LastUpdate = DateTime.Now,
+                        LastSync = DateTime.Now, 
+                        SiteId = patientInformation.Patient_PatientInformation.SiteId
+                    };
+
+                    if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
+                        newPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
+
+                    if (patientInformation.Patient_PatientBiometricData != null)
+                    {
+                        newPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
+                        newPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
+                    }
+
+                    newPatient.PatientData = JsonConvert.SerializeObject(patientInformation);
+
+                    localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
+                    localPdaEntitiesPatientUpdateSync.SaveChanges();
+
+                    _operationQueue.Add(new OperationQueue()
+                    {
+                        Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
+                    });
+                }
             }
-            else
+            catch (Exception e)
             {
-                var newPatient = new System_BioDataStore
-                {
-                    PepId = patientInformation.Patient_PatientInformation.PepId,
-                    FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
-                               patientInformation.Patient_PatientInformation.Othername,
-                    IsSync = true,
-                    LastUpdate = DateTime.Now,
-                    LastSync = DateTime.Now, 
-                    SiteId = patientInformation.Patient_PatientInformation.SiteId
-                };
-
-                if (patientInformation.Patient_PatientNearFieldCommunicationData != null)
-                    newPatient.NfcUid = patientInformation.Patient_PatientNearFieldCommunicationData.CardId;
-
-                if (patientInformation.Patient_PatientBiometricData != null)
-                {
-                    newPatient.PrimaryFinger = patientInformation.Patient_PatientBiometricData.FingerPrimary;
-                    newPatient.SecondaryFinger = patientInformation.Patient_PatientBiometricData.FingerSecondary;
-                }
-
-                newPatient.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientInformation);
-
-                localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
-                localPdaEntitiesPatientUpdateSync.SaveChanges();
-
-                _operationQueue.Add(new OperationQueue()
-                {
-                    Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
-                });
+                LocalCore.TreatError(e, _administrationStaffInformation.Id);
             }
         }
 
         private void CheckForUpdates()
         {
-            try
+            new Thread(() =>
             {
-                new Thread(() =>
+                try
                 {
                     using (var entities = new LocalPDAEntities())
                     {
@@ -916,7 +1009,10 @@ namespace PatientDataAdministration.Client
 
                         if (GenerateVersionCode(update.VersionNumber) <=
                             GenerateVersionCode(AppSetting.Version))
+                        {
+                            _operationQueue.Add(new OperationQueue() { Param = $"Your Version {AppSetting.Version} is the latest" });
                             return;
+                        }
 
                         _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
 
@@ -940,13 +1036,13 @@ namespace PatientDataAdministration.Client
 
                         _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
                     }
-                }).Start();
-            }
-            catch (Exception ex)
-            {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
-            }
+                }
+                catch (Exception ex)
+                {
+                    _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                    LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
+                }
+            }).Start();
         }
 
         public void SiteInfo()
@@ -1017,6 +1113,9 @@ namespace PatientDataAdministration.Client
 
                     foreach (var appointmentDataEndPoint in appointmentDataEndPoints)
                     {
+                        if (!CheckIfEndPointEnabled(appointmentDataEndPoint.EndPointId))
+                            continue;
+
                         if (string.IsNullOrEmpty(appointmentDataEndPoint.EndPointUrl))
                             continue;
 
@@ -1096,19 +1195,22 @@ namespace PatientDataAdministration.Client
                         !x.IsLocalPush && !x.IsDeleted && !string.IsNullOrEmpty(x.PrimaryFinger) &&
                         !string.IsNullOrEmpty(x.SecondaryFinger)))
                     {
-                        if (pendingPush.Any())
-                            _operationQueue.Add(new OperationQueue()
-                            {
-                                Param =
-                                    $"Local Data Push: Processing {pendingPush.Count} records at this time."
-                            });
-
                         foreach (var pending in pendingPush)
                         {
                             foreach (var clinicalDataEndPoint in clinicalDataEndPoints)
                             {
+                                if (!CheckIfEndPointEnabled(clinicalDataEndPoint.EndPointId))
+                                    continue;
+
                                 if (string.IsNullOrEmpty(clinicalDataEndPoint.EndPointUrl))
                                     continue;
+
+                                if (pendingPush.Any())
+                                    _operationQueue.Add(new OperationQueue()
+                                    {
+                                        Param =
+                                            $"Local Data Push: Processing {pendingPush.Count} records at this time to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint) clinicalDataEndPoint.EndPointId).DisplayName()}."
+                                    });
 
                                 pending.IsLocalPush = LocalCore.PostLocal(clinicalDataEndPoint.EndPointUrl,
                                     JsonConvert.SerializeObject(new[]
@@ -1127,20 +1229,24 @@ namespace PatientDataAdministration.Client
                                     continue;
 
                                 var message =
-                                    $"Failed to Push Data to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint)clinicalDataEndPoint.EndPointId).DisplayName()}.";
+                                    $"Failed to Push Data to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint)clinicalDataEndPoint.EndPointId).DisplayName()}. ";
                                 _operationQueue.Add(new OperationQueue()
                                 {
-                                    Param = message
+                                    Param = message.Trim()
                                 });
 
                                 var dialog = MessageBox.Show(
                                     message +
-                                    @". Do you wish to STOP pushing data so that you can either investigate or contact Support?",
+                                    @"Do you wish to STOP pushing data so that you can either investigate or contact Support?",
                                     @" Please Decide", MessageBoxButtons.YesNo,
                                     MessageBoxIcon.Question);
 
                                 if (dialog == DialogResult.Yes)
+                                {
+                                    _endPointId = clinicalDataEndPoint.EndPointId;
+                                    _checkState = CheckState.Unchecked;
                                     return;
+                                }
                             }
 
                             if (!pending.IsLocalPush)
@@ -1161,6 +1267,22 @@ namespace PatientDataAdministration.Client
                     Param = "Local Data Push Encountered an Error. " + ex
                 });
             }
+        }
+
+        private bool CheckIfEndPointEnabled(int endPointId)
+        {
+            var indexOfItem = chkEndPointExecutionControl.Items.IndexOf(new
+            {
+                Text = ((LocalEndPoint) endPointId).DisplayName(),
+                Value = endPointId
+            });
+
+            return chkEndPointExecutionControl.GetItemCheckState(indexOfItem) == CheckState.Checked;
+        }
+
+        private void btnForceUpdate_Click(object sender, EventArgs e)
+        {
+            CheckForUpdates();
         }
     }
 }

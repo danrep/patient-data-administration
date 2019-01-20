@@ -1,5 +1,4 @@
-﻿@using PatientDataAdministration.Data
-@using PatientDataAdministration.EnumLibrary
+﻿@using PatientDataAdministration.EnumLibrary
 @using PatientDataAdministration.EnumLibrary.Dictionary
 @using PatientDataAdministration.Web.Models
 
@@ -10,7 +9,7 @@
 }
 
 <div class="row">
-    <div class="col-md-3 col-sm-6">
+    <div class="col-md-4 col-sm-12">
         <div class="widget widget-stats bg-black-darker">
             <div class="stats-icon"><i class="fa fa-users"></i></div>
             <div class="stats-info">
@@ -23,7 +22,7 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-sm-6">
+    <div class="col-md-4 col-sm-12">
         <div class="widget widget-stats bg-green-darker">
             <div class="stats-icon"><i class="fa fa-tasks"></i></div>
             <div class="stats-info">
@@ -36,28 +35,15 @@
         </div>
     </div>
 
-    <div class="col-md-3 col-sm-6">
+    <div class="col-md-4 col-sm-12">
         <div class="widget widget-stats bg-blue-darker">
             <div class="stats-icon"><i class="fa fa-laptop"></i></div>
             <div class="stats-info">
-                <h4>CHECKED IN TODAY</h4>
-                <p id="checkedInToday_p">00</p>
+                <h4>CONNECTED</h4>
+                <p id="currentlyLoggedOn_p">00</p>
             </div>
             <div class="stats-link">
-                <a>Have at least logged in today <i class="fa fa-info"></i></a>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-3 col-sm-6">
-        <div class="widget widget-stats bg-red-darker">
-            <div class="stats-icon"><i class="fa fa-user-times"></i></div>
-            <div class="stats-info">
-                <h4>IN-ACTIVE (7 Days or More)</h4>
-                <p id="inactive7_p">00</p>
-            </div>
-            <div class="stats-link">
-                <a>Have not been seen for 7 days now&nbsp;<i class="fa fa-info"></i></a>
+                <a>Are currently connected at the moment <i class="fa fa-info"></i></a>
             </div>
         </div>
     </div>
@@ -290,8 +276,7 @@
         function loadTiles(data) {
             $('#totalUsers_p').text(data.TotalUsers.format());
             $('#activeToday_p').text(data.ActiveToday.format());
-            $('#checkedInToday_p').text(data.CheckedIn.format());
-            $('#inactive7_p').text(data.Inactive.format());
+            $('#currentlyLoggedOn_p').text(data.CurrentlyLoggedOn.format());
         };
 
         function loadTable(data) {

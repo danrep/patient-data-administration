@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Administration_ClientLog.cs">
-      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Administration_ClientMap.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
@@ -159,6 +156,9 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Sp_System_Reporting_PopulationDataSite_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="System_AuditTrail.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="System_ClientPulse.cs">

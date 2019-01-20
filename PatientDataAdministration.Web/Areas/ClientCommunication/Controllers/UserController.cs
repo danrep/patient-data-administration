@@ -52,19 +52,6 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                                 _entities.SaveChanges();
                             }
 
-                        _entities.Administration_ClientLog.Add(new Administration_ClientLog()
-                        {
-                            ChipData = string.Empty, 
-                            ClientId = client?.Id ?? 0,
-                            CurrentUserId = userInformation.Id,
-                            DateLog = DateTime.Now,
-                            IsDeleted = false,
-                            LocationLat = clientInformation != null ? clientInformation.LocationLat : string.Empty, 
-                            LocationLong = clientInformation != null ? clientInformation.LocationLong : string.Empty,
-                            ClientIpAddress = Request.UserHostAddress ?? ""
-                        });
-                        _entities.SaveChanges();
-
                         return Json(new
                             {
                                 Status = true,

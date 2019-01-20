@@ -344,22 +344,22 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                         switch (appointmentDataItem.AppointmentOffice.Trim().ToUpper())
                         {
                             case "C":
-                                message += "CD_";
+                                message += "CD";
                                 break;
                             case "L":
-                                message += "VL_";
+                                message += "VL";
                                 break;
                             case "P":
-                                message += "DP_";
+                                message += "DP";
                                 break;
                         }
 
-                        message += $"{appointmentDataItem.DateAppointment:MMMyy}";
+                        //message += $"{appointmentDataItem.DateAppointment:MMMyy}";
 
-                        if (appointmentDataItemPayload != null)
-                            message = appointmentDataItemPayload.Aggregate(message,
-                                (current, appointmentDatumItemPayload) =>
-                                    current + (appointmentDatumItemPayload.ItemValue + " "));
+                        //if (appointmentDataItemPayload != null)
+                        //    message = appointmentDataItemPayload.Aggregate(message,
+                        //        (current, appointmentDatumItemPayload) =>
+                        //            current + (appointmentDatumItemPayload.ItemValue + " "));
 
                         message = message.Trim();
                         message += ". Get your FinVite today";

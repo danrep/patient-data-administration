@@ -37,6 +37,7 @@ namespace PatientDataAdministration.Client
         public virtual DbSet<System_SiteData> System_SiteData { get; set; }
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_UpdateLog> System_UpdateLog { get; set; }
+        public virtual DbSet<System_AuditTrail> System_AuditTrail { get; set; }
     
         public virtual int Sp_System_CleanUp()
         {

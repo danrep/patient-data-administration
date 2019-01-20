@@ -45,7 +45,7 @@ namespace PatientDataAdministration.Client
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.pnlDataControl = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.grpBoxSpecialInformation = new System.Windows.Forms.GroupBox();
             this.cmbDataFingerSelector2 = new System.Windows.Forms.ComboBox();
             this.cmbDataFingerSelector1 = new System.Windows.Forms.ComboBox();
             this.btnDataFinger1 = new System.Windows.Forms.Button();
@@ -99,7 +99,7 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picBoxFingerPrint)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.pnlDataControl.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            this.grpBoxSpecialInformation.SuspendLayout();
             this.pnlPersonalInformation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.localPDADataSet)).BeginInit();
@@ -261,7 +261,7 @@ namespace PatientDataAdministration.Client
             // pnlDataControl
             // 
             this.pnlDataControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlDataControl.Controls.Add(this.groupBox3);
+            this.pnlDataControl.Controls.Add(this.grpBoxSpecialInformation);
             this.pnlDataControl.Controls.Add(this.label9);
             this.pnlDataControl.Controls.Add(this.chkSecFin);
             this.pnlDataControl.Controls.Add(this.chkPriFin);
@@ -271,17 +271,17 @@ namespace PatientDataAdministration.Client
             this.pnlDataControl.Size = new System.Drawing.Size(234, 190);
             this.pnlDataControl.TabIndex = 76;
             // 
-            // groupBox3
+            // grpBoxSpecialInformation
             // 
-            this.groupBox3.Controls.Add(this.cmbDataFingerSelector2);
-            this.groupBox3.Controls.Add(this.cmbDataFingerSelector1);
-            this.groupBox3.Controls.Add(this.btnDataFinger1);
-            this.groupBox3.Controls.Add(this.btnDataFinger2);
-            this.groupBox3.Location = new System.Drawing.Point(3, 27);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(224, 98);
-            this.groupBox3.TabIndex = 135;
-            this.groupBox3.TabStop = false;
+            this.grpBoxSpecialInformation.Controls.Add(this.cmbDataFingerSelector2);
+            this.grpBoxSpecialInformation.Controls.Add(this.cmbDataFingerSelector1);
+            this.grpBoxSpecialInformation.Controls.Add(this.btnDataFinger1);
+            this.grpBoxSpecialInformation.Controls.Add(this.btnDataFinger2);
+            this.grpBoxSpecialInformation.Location = new System.Drawing.Point(3, 27);
+            this.grpBoxSpecialInformation.Name = "grpBoxSpecialInformation";
+            this.grpBoxSpecialInformation.Size = new System.Drawing.Size(224, 98);
+            this.grpBoxSpecialInformation.TabIndex = 135;
+            this.grpBoxSpecialInformation.TabStop = false;
             // 
             // cmbDataFingerSelector2
             // 
@@ -304,7 +304,6 @@ namespace PatientDataAdministration.Client
             this.cmbDataFingerSelector2.Name = "cmbDataFingerSelector2";
             this.cmbDataFingerSelector2.Size = new System.Drawing.Size(170, 27);
             this.cmbDataFingerSelector2.TabIndex = 138;
-            this.cmbDataFingerSelector2.Visible = false;
             // 
             // cmbDataFingerSelector1
             // 
@@ -327,7 +326,6 @@ namespace PatientDataAdministration.Client
             this.cmbDataFingerSelector1.Name = "cmbDataFingerSelector1";
             this.cmbDataFingerSelector1.Size = new System.Drawing.Size(170, 27);
             this.cmbDataFingerSelector1.TabIndex = 71;
-            this.cmbDataFingerSelector1.Visible = false;
             // 
             // btnDataFinger1
             // 
@@ -547,6 +545,7 @@ namespace PatientDataAdministration.Client
             this.txtStateOfResidence.Size = new System.Drawing.Size(177, 27);
             this.txtStateOfResidence.TabIndex = 112;
             this.txtStateOfResidence.ValueMember = "Id";
+            this.txtStateOfResidence.SelectedValueChanged += new System.EventHandler(this.txtStateOfResidence_SelectedValueChanged);
             // 
             // systemStateBindingSourceResidence
             // 
@@ -835,8 +834,8 @@ namespace PatientDataAdministration.Client
             this.Controls.Add(this.lblDataState);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblInformation);
-            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox2);
             this.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -857,7 +856,7 @@ namespace PatientDataAdministration.Client
             this.groupBox2.ResumeLayout(false);
             this.pnlDataControl.ResumeLayout(false);
             this.pnlDataControl.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
+            this.grpBoxSpecialInformation.ResumeLayout(false);
             this.pnlPersonalInformation.ResumeLayout(false);
             this.pnlPersonalInformation.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.systemLocalGovermentAreaBindingSource)).EndInit();
@@ -902,7 +901,7 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Button btnRefreshBioDevice;
         private System.Windows.Forms.Timer persistLoad;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox grpBoxSpecialInformation;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Timer persistPatientElectronicData;
         private LocalPDADataSet localPDADataSet;

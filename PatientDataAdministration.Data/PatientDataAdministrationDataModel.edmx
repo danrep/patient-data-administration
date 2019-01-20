@@ -5,20 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PatientDataAdministration.DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Administration_ClientLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ClientId" Type="int" Nullable="false" />
-          <Property Name="CurrentUserId" Type="int" Nullable="false" />
-          <Property Name="DateLog" Type="datetime" Nullable="false" />
-          <Property Name="LocationLat" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="LocationLong" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="ChipData" Type="varchar(max)" Nullable="false" />
-          <Property Name="ClientIpAddress" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="IsDeleted" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="Administration_ClientMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -133,6 +119,8 @@
           <Property Name="PepId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FingerPrimary" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerSecondary" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerPrimaryPosition" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerSecondaryPosition" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerDataHash" Type="varchar(max)" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="IsValid" Type="bit" Nullable="false" />
@@ -146,6 +134,8 @@
           <Property Name="HtsId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="FingerPrimary" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerSecondary" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerPrimaryPosition" Type="varchar(max)" Nullable="false" />
+          <Property Name="FingerSecondaryPosition" Type="varchar(max)" Nullable="false" />
           <Property Name="FingerDataHash" Type="varchar(max)" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="IsValid" Type="bit" Nullable="false" />
@@ -237,6 +227,18 @@
           <Property Name="PreviousSiteId" Type="int" Nullable="false" />
           <Property Name="NewSiteId" Type="int" Nullable="false" />
           <Property Name="DateMoved" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="System_AuditTrail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AuditimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="AuditCategory" Type="int" Nullable="false" />
+          <Property Name="AuditDetail" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="AuditData" Type="varchar(max)" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="System_ClientPulse">
@@ -344,9 +346,6 @@
           <Parameter Name="site_code" Type="varchar" Mode="In" />
         </Function>
         <Function Name="Sp_Administration_GetAgeDistro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="Sp_Administration_GetInActiveUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="inactiveBar" Type="int" Mode="In" />
-        </Function>
         <Function Name="Sp_Administration_GetPatientCompliance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Sp_Administration_GetPatients" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="query" Type="varchar" Mode="In" />
@@ -385,7 +384,6 @@
           <Parameter Name="upperDate" Type="datetime" Mode="In" />
         </Function>
         <EntityContainer Name="PatientDataAdministrationDatabaseModelStoreContainer">
-          <EntitySet Name="Administration_ClientLog" EntityType="Self.Administration_ClientLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientMap" EntityType="Self.Administration_ClientMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="Self.Administration_ClientRegistry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_MessagingPatientComplaint" EntityType="Self.Administration_MessagingPatientComplaint" Schema="dbo" store:Type="Tables" />
@@ -402,6 +400,7 @@
           <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="Self.Patient_PatientInformationPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="Self.Patient_PatientNearFieldCommunicationData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientTransferHistory" EntityType="Self.Patient_PatientTransferHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="System_AuditTrail" EntityType="Self.System_AuditTrail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_ClientPulse" EntityType="Self.System_ClientPulse" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_DataIntegrityActionLog" EntityType="Self.System_DataIntegrityActionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="System_LocalGovermentArea" EntityType="Self.System_LocalGovermentArea" Schema="dbo" store:Type="Tables" />
@@ -417,9 +416,6 @@
       <Schema Namespace="PatientDataAdministration.DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true" >
           <FunctionImport Name="Sp_Administration_GetAgeDistro" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetAgeDistro_Result)" />
-          <FunctionImport Name="Sp_Administration_GetInActiveUsers" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetInActiveUsers_Result)">
-          <Parameter Name="inactiveBar" Mode="In" Type="Int32" />
-          </FunctionImport>
           <FunctionImport Name="Sp_Administration_GetPatientCompliance" ReturnType="Collection(String)" />
           <FunctionImport Name="Sp_Administration_GetPatients" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetPatients_Result)">
             <Parameter Name="query" Mode="In" Type="String" />
@@ -457,7 +453,6 @@
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
             <Parameter Name="toDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <EntitySet Name="Administration_ClientLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" />
           <EntitySet Name="Administration_ClientMap" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientMap" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientRegistry" />
           <EntitySet Name="Administration_MessagingPatientComplaint" EntityType="PatientDataAdministration.DatabaseModel.Administration_MessagingPatientComplaint" />
@@ -482,6 +477,7 @@
           <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister" />
           <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" />
           <EntitySet Name="Integration_AppointmentDataItem" EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" />
+          <EntitySet Name="System_AuditTrail" EntityType="PatientDataAdministration.DatabaseModel.System_AuditTrail" />
           </EntityContainer>
         <ComplexType Name="Sp_Administration_GetAgeDistro_Result">
           <Property Type="String" Name="RangeOfValues" Nullable="false" MaxLength="8" />
@@ -565,20 +561,6 @@
           <Property Type="String" Name="StateAbbreviation" Nullable="true" MaxLength="4" />
           <Property Type="String" Name="StateCode" Nullable="true" MaxLength="4" />
         </ComplexType>
-        <EntityType Name="Administration_ClientLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientId" Type="Int32" Nullable="false" />
-          <Property Name="CurrentUserId" Type="Int32" Nullable="false" />
-          <Property Name="DateLog" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LocationLat" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="LocationLong" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ChipData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="ClientIpAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-        </EntityType>
         <EntityType Name="Administration_ClientMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -683,6 +665,8 @@
           <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsValid" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="FingerPrimaryPosition" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FingerSecondaryPosition" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricIntegrityCase">
           <Key>
@@ -866,6 +850,8 @@
           <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsValid" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="FingerPrimaryPosition" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FingerSecondaryPosition" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Patient_PatientInformationPopulationRegister">
           <Key>
@@ -894,6 +880,18 @@
           <Property Name="IsValid" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
+        <EntityType Name="System_AuditTrail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AuditimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AuditCategory" Type="Int32" Nullable="false" />
+          <Property Name="AuditDetail" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="AuditData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -905,14 +903,6 @@
               <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetAgeDistro_Result">
                 <ScalarProperty Name="RangeOfValues" ColumnName="RangeOfValues" />
                 <ScalarProperty Name="NumberOfOccurences" ColumnName="NumberOfOccurences" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="Sp_Administration_GetInActiveUsers" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetInActiveUsers">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetInActiveUsers_Result">
-                <ScalarProperty Name="CurrentUserId" ColumnName="CurrentUserId" />
-                <ScalarProperty Name="DateLog" ColumnName="DateLog" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -1032,21 +1022,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <EntitySetMapping Name="Administration_ClientLog">
-            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_ClientLog">
-              <MappingFragment StoreEntitySet="Administration_ClientLog">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="ClientIpAddress" ColumnName="ClientIpAddress" />
-                <ScalarProperty Name="ChipData" ColumnName="ChipData" />
-                <ScalarProperty Name="LocationLong" ColumnName="LocationLong" />
-                <ScalarProperty Name="LocationLat" ColumnName="LocationLat" />
-                <ScalarProperty Name="DateLog" ColumnName="DateLog" />
-                <ScalarProperty Name="CurrentUserId" ColumnName="CurrentUserId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Administration_ClientMap">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_ClientMap">
               <MappingFragment StoreEntitySet="Administration_ClientMap">
@@ -1149,6 +1124,8 @@
           <EntitySetMapping Name="Patient_PatientBiometricData">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricData">
               <MappingFragment StoreEntitySet="Patient_PatientBiometricData">
+                <ScalarProperty Name="FingerSecondaryPosition" ColumnName="FingerSecondaryPosition" />
+                <ScalarProperty Name="FingerPrimaryPosition" ColumnName="FingerPrimaryPosition" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
@@ -1346,6 +1323,8 @@
           <EntitySetMapping Name="Patient_PatientBiometricDataPopulationRegister">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister">
               <MappingFragment StoreEntitySet="Patient_PatientBiometricDataPopulationRegister">
+                <ScalarProperty Name="FingerSecondaryPosition" ColumnName="FingerSecondaryPosition" />
+                <ScalarProperty Name="FingerPrimaryPosition" ColumnName="FingerPrimaryPosition" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsValid" ColumnName="IsValid" />
                 <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
@@ -1382,6 +1361,19 @@
                 <ScalarProperty Name="DateVisit" ColumnName="DateVisit" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
                 <ScalarProperty Name="AppointmentDataManifestId" ColumnName="AppointmentDataManifestId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="System_AuditTrail">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.System_AuditTrail">
+              <MappingFragment StoreEntitySet="System_AuditTrail">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="AuditData" ColumnName="AuditData" />
+                <ScalarProperty Name="AuditDetail" ColumnName="AuditDetail" />
+                <ScalarProperty Name="AuditCategory" ColumnName="AuditCategory" />
+                <ScalarProperty Name="AuditimeStamp" ColumnName="AuditimeStamp" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -7,6 +7,8 @@ using System.Text;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {
@@ -239,6 +241,32 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult DetatchPatientTag(string tagUid, int userId)
+        {
+            try
+            {
+                if (!SecurityModel.CheckIfUserIsValid(userId))
+                    return
+                        Json(ResponseData.SendFailMsg("You are not authorised to perform this action"),
+                            JsonRequestBehavior.AllowGet);
+
+                SecurityModel.LogAudit(AuditCategory.TagReInit, $@"Formatted Tag with UID {tagUid}", userId);
+
+                _entities.Patient_PatientNearFieldCommunicationData.RemoveRange(
+                    _entities.Patient_PatientNearFieldCommunicationData.Where(x => x.CardId == tagUid).ToList());
+
+                _entities.SaveChanges();
+
+                return
+                    Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }
