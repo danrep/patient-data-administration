@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
 using System.Windows.Forms;
+using MetroFramework.Forms;
 using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Core;
@@ -20,7 +22,7 @@ using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Client
 {
-    public partial class DataCentral : MetroFramework.Forms.MetroForm
+    public partial class DataCentral : MetroForm
     {
         private bool _isSyncNewInProgress;
         private bool _isSyncUpdateInProgress;
@@ -28,7 +30,7 @@ namespace PatientDataAdministration.Client
         private bool _killCommandReceived;
         private bool _pingResult;
 
-        private int _endPointId = 0;
+        private int _endPointId;
 
         private CheckState _checkState = CheckState.Checked;
 
@@ -52,24 +54,24 @@ namespace PatientDataAdministration.Client
             {
                 InitializeComponent();
 
-                _operationQueue = new List<OperationQueue> { new OperationQueue() { Param = "PDA Initializing" } };
+                _operationQueue = new List<OperationQueue> { new OperationQueue { Param = "PDA Initializing" } };
 
-                this._administrationStaffInformation = administrationStaffInformation;
+                _administrationStaffInformation = administrationStaffInformation;
 
                 using (var entities = new LocalPDAEntities())
                 {
-                    this._systemSiteData = entities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
+                    _systemSiteData = entities.System_SiteData.FirstOrDefault(x => x.IsCurrent && !x.IsDeleted);
                 }
 
                 if (_systemSiteData != null)
-                    _operationQueue.Add(new OperationQueue() { Param = "Settings Loaded" });
+                    _operationQueue.Add(new OperationQueue { Param = "Settings Loaded" });
 
                 _onDemandSyncEnabled = Convert.ToBoolean(
                     LocalCache.Get<List<System_Setting>>("System_Setting")
-                        .FirstOrDefault(x => x.SettingKey == (int)EnumLibrary.SyncMode.OnDemandSync)?
+                        .FirstOrDefault(x => x.SettingKey == (int)SyncMode.OnDemandSync)?
                         .SettingValue ?? "false");
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Real Time Synchronization " + (_onDemandSyncEnabled ? "Enabled" : "Disabled")
                 });
@@ -83,7 +85,7 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                _operationQueue.Add(new OperationQueue { Param = ex.Message });
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
             }
         }
@@ -103,16 +105,16 @@ namespace PatientDataAdministration.Client
             {
                 ExecuteSync();
 
-                _operationQueue.Add(new OperationQueue() { Param = "Initializing Patient Data Management" });
+                _operationQueue.Add(new OperationQueue { Param = "Initializing Patient Data Management" });
 
                 _subInfoMan = new SubInformationManagement(_administrationStaffInformation);
                 _subPopReg = new SubHtc(_administrationStaffInformation);
 
-                _operationQueue.Add(new OperationQueue() { Param = "Patient Data Management Initialization Complete" });
+                _operationQueue.Add(new OperationQueue { Param = "Patient Data Management Initialization Complete" });
 
                 btnSync.Visible = !_onDemandSyncEnabled;
 
-                _operationQueue.Add(new OperationQueue() { Param = "Starting Patient Data Pre Load" });
+                _operationQueue.Add(new OperationQueue { Param = "Starting Patient Data Pre Load" });
                 _subInfoMan.UpdatePersistedData();
                 _subPopReg.UpdatePersistedData();
 
@@ -124,7 +126,7 @@ namespace PatientDataAdministration.Client
                     {
 
                     }
-                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load for Patient Information Completed Sucessfully" });
+                    _operationQueue.Add(new OperationQueue { Param = "Patient Data Pre Load for Patient Information Completed Sucessfully" });
                 }).Start();
 
                 new Thread(() =>
@@ -133,14 +135,14 @@ namespace PatientDataAdministration.Client
                     {
 
                     }
-                    _operationQueue.Add(new OperationQueue() { Param = "Patient Data Pre Load for Population Register Completed Sucessfully" });
+                    _operationQueue.Add(new OperationQueue { Param = "Patient Data Pre Load for Population Register Completed Sucessfully" });
                 }).Start();
 
-                _operationQueue.Add(new OperationQueue() { Param = "Starting Application Server" });
+                _operationQueue.Add(new OperationQueue { Param = "Starting Application Server" });
                 bgwSelfServer.RunWorkerAsync();
-                _operationQueue.Add(new OperationQueue() {Param = "Application Server Started Successfully"});
+                _operationQueue.Add(new OperationQueue {Param = "Application Server Started Successfully"});
 
-                _operationQueue.Add(new OperationQueue() { Param = "Initializing Pull/Push for 3rd Party Data" });
+                _operationQueue.Add(new OperationQueue { Param = "Initializing Pull/Push for 3rd Party Data" });
 
                 using (var entities = new LocalPDAEntities())
                 {
@@ -163,13 +165,13 @@ namespace PatientDataAdministration.Client
 
                 _threadPullDataAppointment = new Thread(PullAppointments);
                 _threadPushDataBiometrics = new Thread(PushAppointments);
-                _operationQueue.Add(new OperationQueue() { Param = "Initialization for Pull/Push for 3rd Party Data Complete" });
+                _operationQueue.Add(new OperationQueue { Param = "Initialization for Pull/Push for 3rd Party Data Complete" });
 
-                _operationQueue.Add(new OperationQueue() { Param = "All Done" });
+                _operationQueue.Add(new OperationQueue { Param = "All Done" });
             }
             catch (Exception ex)
             {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                _operationQueue.Add(new OperationQueue { Param = ex.Message });
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
             }
         }
@@ -195,7 +197,7 @@ namespace PatientDataAdministration.Client
                 bgwContentManager.CancelAsync();
                 bgwPing.CancelAsync();
 
-                this.Close();
+                Close();
             }
             catch (Exception exception)
             {
@@ -349,7 +351,8 @@ namespace PatientDataAdministration.Client
 
                 picDataReady.Visible = !_subInfoMan?._isBusy ?? false;
                 picDataWait.Visible = _subInfoMan?._isBusy ?? false;
-                listOfEvents = new List<OperationQueue>();
+
+                listOfEvents.Clear();
                 
                 Application.DoEvents();
             }
@@ -395,7 +398,7 @@ namespace PatientDataAdministration.Client
         {
             if (_process.HasExited)
             {
-                _operationQueue.Add(new OperationQueue() { Param = $"Download of New Update is complete." });
+                _operationQueue.Add(new OperationQueue { Param = "Download of New Update is complete." });
                 picIndUpdate.Visible = false;
                 tmrLaunchUpdate.Enabled = false;
             }
@@ -407,14 +410,14 @@ namespace PatientDataAdministration.Client
                 bgwFreshPatient.RunWorkerAsync();
         }
 
-        private void bgwNewPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwNewPatient_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
                 if (_isSyncNewInProgress)
                     return;
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Initiating Synchronization Task: New Entries from Partner Sites"
                 });
@@ -431,9 +434,9 @@ namespace PatientDataAdministration.Client
                     {
                         if (_killCommandReceived)
                         {
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
-                                Param = $"STOP Command Received"
+                                Param = "STOP Command Received"
                             });
                             break;
                         }
@@ -449,7 +452,7 @@ namespace PatientDataAdministration.Client
                             listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
 
                             patientInformation.Clear();
-                            patientInformation = null;
+                            GC.Collect();
                         }
 
                         var data = Encoding.ASCII.GetBytes(listOfPepId);
@@ -460,16 +463,16 @@ namespace PatientDataAdministration.Client
                             siteId = _systemSiteData.RemoteSiteId
                         };
 
-                        var responseData = LocalCore.Post($@"/ClientCommunication/Sync/PullNew",
-                            Newtonsoft.Json.JsonConvert.SerializeObject(payLoad));
+                        var responseData = LocalCore.Post(@"/ClientCommunication/Sync/PullNew",
+                            JsonConvert.SerializeObject(payLoad));
 
                         if (!responseData.Status)
                         {
                             if (blankResult == 5)
                             {
-                                _operationQueue.Add(new OperationQueue()
+                                _operationQueue.Add(new OperationQueue
                                 {
-                                    Param = $"Processing"
+                                    Param = "Processing"
                                 });
                                 blankResult = 1;
                             }
@@ -480,21 +483,21 @@ namespace PatientDataAdministration.Client
 
                         _isSyncNewInProgress = true;
 
-                        _operationQueue.Add(new OperationQueue()
+                        _operationQueue.Add(new OperationQueue
                         {
                             Param = responseData.Message
                         });
 
                         var returnedPatients =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<List<PatientInformation>>(
-                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+                            JsonConvert.DeserializeObject<List<PatientInformation>>(
+                                JsonConvert.SerializeObject(responseData.Data));
 
                         if (returnedPatients.Count == 0)
                         {
                             if (!_onDemandSyncEnabled)
-                                _operationQueue.Add(new OperationQueue()
+                                _operationQueue.Add(new OperationQueue
                                 {
-                                    Param = $"No New Patients found this time. Please Try the Synchronization Later"
+                                    Param = "No New Patients found this time. Please Try the Synchronization Later"
                                 });
 
                             break;
@@ -506,9 +509,9 @@ namespace PatientDataAdministration.Client
                         {
                             if (_killCommandReceived)
                             {
-                                _operationQueue.Add(new OperationQueue()
+                                _operationQueue.Add(new OperationQueue
                                 {
-                                    Param = $"STOP Command Received"
+                                    Param = "STOP Command Received"
                                 });
                                 break;
                             }
@@ -519,7 +522,7 @@ namespace PatientDataAdministration.Client
                         if (_onDemandSyncEnabled)
                             _subInfoMan.UpdatePersistedData();
                         else
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
                                 Param = $"New Patient Pull in Progress ... Pulled {pulled} so far"
                             });
@@ -536,14 +539,14 @@ namespace PatientDataAdministration.Client
                 if (!_onDemandSyncEnabled)
                     _subInfoMan.UpdatePersistedData();
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Completing Synchronization Task: New Entries from Partner Sites"
                 });
             }
             catch (InvalidOperationException)
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Please wait. System is stil loading. Try again shortly!"
                 });
@@ -551,7 +554,7 @@ namespace PatientDataAdministration.Client
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "ERROR >> Please retry the last action"
                 });
@@ -560,11 +563,11 @@ namespace PatientDataAdministration.Client
             _isSyncNewInProgress = false;
         }
 
-        private void bgwUpdatePatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwUpdatePatient_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Initiating Synchronization Task: Modified Entries from Partner Sites"
                 });
@@ -576,9 +579,9 @@ namespace PatientDataAdministration.Client
                 {
                     if (_killCommandReceived)
                     {
-                        _operationQueue.Add(new OperationQueue()
+                        _operationQueue.Add(new OperationQueue
                         {
-                            Param = $"STOP Command Received"
+                            Param = "STOP Command Received"
                         });
                         break;
                     }
@@ -588,16 +591,16 @@ namespace PatientDataAdministration.Client
 
                     var patientsMatching =
                         innerEntity.System_BioDataStore.OrderBy(x => x.Id).Skip(i).Take(100).Select(
-                            x => new PatientMatching() { PepId = x.PepId, LastUpdate = x.LastUpdate }).ToList();
+                            x => new PatientMatching { PepId = x.PepId, LastUpdate = x.LastUpdate }).ToList();
 
-                    var responseData = LocalCore.Post($@"/ClientCommunication/Sync/CheckIfUpdated",
-                        Newtonsoft.Json.JsonConvert.SerializeObject(patientsMatching ?? new List<PatientMatching>()));
+                    var responseData = LocalCore.Post(@"/ClientCommunication/Sync/CheckIfUpdated",
+                        JsonConvert.SerializeObject(patientsMatching));
 
                     if (!responseData.Status)
                         continue;
 
                     _isSyncUpdateInProgress = true;
-                    _operationQueue.Add(new OperationQueue()
+                    _operationQueue.Add(new OperationQueue
                     {
                         Param = responseData.Message
                     });
@@ -610,9 +613,9 @@ namespace PatientDataAdministration.Client
                     {
                         if (_killCommandReceived)
                         {
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
-                                Param = $"STOP Command Received"
+                                Param = "STOP Command Received"
                             });
                             break;
                         }
@@ -622,7 +625,7 @@ namespace PatientDataAdministration.Client
 
                     if (_onDemandSyncEnabled)
                         _subInfoMan.UpdatePersistedData();
-                    else _operationQueue.Add(new OperationQueue()
+                    else _operationQueue.Add(new OperationQueue
                     {
                         Param = $"Existing Patient Pull in Progress ... Completed {i + patientsMatching.Count} of {totalCount}"
                     });
@@ -633,14 +636,14 @@ namespace PatientDataAdministration.Client
                 if (!_onDemandSyncEnabled)
                     _subInfoMan.UpdatePersistedData();
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Completing Synchronization Task: Modified Entries from Partner Sites"
                 });
             }
             catch (InvalidOperationException)
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Please wait. System is stil loading. Try again shortly!"
                 });
@@ -648,7 +651,7 @@ namespace PatientDataAdministration.Client
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "ERROR >> Please retry the last action"
                 });
@@ -657,7 +660,7 @@ namespace PatientDataAdministration.Client
             _isSyncUpdateInProgress = false;
         }
 
-        private void bgwNewPatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void bgwNewPatient_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             try
             {
@@ -670,7 +673,7 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void bgwPing_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwPing_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -687,7 +690,7 @@ namespace PatientDataAdministration.Client
             }
         }
 
-        private void bgwFreshPatient_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwFreshPatient_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -705,7 +708,7 @@ namespace PatientDataAdministration.Client
 
                         if (result.Status)
                         {
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
                                 Param = $"Patient with Pep Id {patientDatum.PepId} was pushed Successfully"
                             });
@@ -714,23 +717,23 @@ namespace PatientDataAdministration.Client
                             entities.SaveChanges();
                         }
                         else
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
-                                Param = $"Local Registry Sync encountered an Error. "
+                                Param = "Local Registry Sync encountered an Error. "
                             });
                     }
                 }
             }
             catch (Exception ex)
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
-                    Param = "Local Registry Sync encountered an Error. " + ex.ToString()
+                    Param = "Local Registry Sync encountered an Error. " + ex
                 });
             }
         }
 
-        private void bgwSelfServer_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwSelfServer_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
@@ -745,18 +748,18 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
-                    Param = "Local Server Operation Encountered an Error. " + ex.ToString()
+                    Param = "Local Server Operation Encountered an Error. " + ex
                 });
             }
         }
 
-        private void bgwContentManager_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void bgwContentManager_DoWork(object sender, DoWorkEventArgs e)
         {
             try
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Initiating Synchronization Task: 3rd Party Data >> Appointment Data Push"
                 });
@@ -779,7 +782,7 @@ namespace PatientDataAdministration.Client
                             JsonConvert.DeserializeObject<List<IntegrationAppointmentDataIngress>>(
                                 File.ReadAllText(readyFile.FullName));
 
-                        var integrationAppointmentDataIngressPayLoad = new IntegrationAppointmentDataIngressPayLoad()
+                        var integrationAppointmentDataIngressPayLoad = new IntegrationAppointmentDataIngressPayLoad
                         {
                             SiteId = _systemSiteData.RemoteSiteId,
                             IntegrationAppointmentDataIngresses = fileData,
@@ -792,7 +795,7 @@ namespace PatientDataAdministration.Client
 
                         if (result.Status)
                         {
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
                                 Param = $"File {readyFile.Name} has been uploaded Successfully"
                             });
@@ -800,7 +803,7 @@ namespace PatientDataAdministration.Client
                             File.Delete(readyFile.FullName);
                         }
                         else
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
                                 Param = $"File {readyFile.Name} Failed this time. Reason: {result.Message}"
                             });
@@ -809,14 +812,14 @@ namespace PatientDataAdministration.Client
                     {
                         LocalCore.TreatError(exception, _administrationStaffInformation.Id);
 
-                        _operationQueue.Add(new OperationQueue()
+                        _operationQueue.Add(new OperationQueue
                         {
-                            Param = $"File {readyFile.Name} Failed this time. Reason: {exception.ToString()}"
+                            Param = $"File {readyFile.Name} Failed this time. Reason: {exception}"
                         });
                     }
                 }
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Completing Synchronization Task: 3rd Party Data >> Appointment Data Push"
                 });
@@ -825,14 +828,14 @@ namespace PatientDataAdministration.Client
             {
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id);
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
-                    Param = "Content Manager Encountered an Error. " + ex.ToString()
+                    Param = "Content Manager Encountered an Error. " + ex
                 });
             }
         }
 
-        private void bgwUpdatePatient_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void bgwUpdatePatient_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
         }
@@ -854,7 +857,7 @@ namespace PatientDataAdministration.Client
             {
                 using (var entities = new LocalPDAEntities())
                 {
-                    _operationQueue.Add(new OperationQueue()
+                    _operationQueue.Add(new OperationQueue
                     {
                         Param = "Running Local Clean Up"
                     });
@@ -869,7 +872,7 @@ namespace PatientDataAdministration.Client
 
             try
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Initiating Synchronization Tasks"
                 });
@@ -884,7 +887,7 @@ namespace PatientDataAdministration.Client
 
             try
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Initiating 3rd Party Integrations"
                 });
@@ -944,7 +947,7 @@ namespace PatientDataAdministration.Client
 
                     localPdaEntitiesPatientUpdateSync.Entry(existingPatient).State = EntityState.Modified;
                     localPdaEntitiesPatientUpdateSync.SaveChanges();
-                    _operationQueue.Add(new OperationQueue()
+                    _operationQueue.Add(new OperationQueue
                     {
                         Param = "Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
                     });
@@ -976,7 +979,7 @@ namespace PatientDataAdministration.Client
                     localPdaEntitiesPatientUpdateSync.System_BioDataStore.Add(newPatient);
                     localPdaEntitiesPatientUpdateSync.SaveChanges();
 
-                    _operationQueue.Add(new OperationQueue()
+                    _operationQueue.Add(new OperationQueue
                     {
                         Param = "Added Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
                     });
@@ -996,7 +999,7 @@ namespace PatientDataAdministration.Client
                 {
                     using (var entities = new LocalPDAEntities())
                     {
-                        var responseData = LocalCore.Get($@"/ClientCommunication/Misc/GetUpdateData").Result;
+                        var responseData = LocalCore.Get(@"/ClientCommunication/Misc/GetUpdateData").Result;
                         if (!responseData.Status)
                             return;
 
@@ -1004,23 +1007,23 @@ namespace PatientDataAdministration.Client
                             return;
 
                         var update =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<System_Update>(
-                                Newtonsoft.Json.JsonConvert.SerializeObject(responseData.Data));
+                            JsonConvert.DeserializeObject<System_Update>(
+                                JsonConvert.SerializeObject(responseData.Data));
 
                         if (GenerateVersionCode(update.VersionNumber) <=
                             GenerateVersionCode(AppSetting.Version))
                         {
-                            _operationQueue.Add(new OperationQueue() { Param = $"Your Version {AppSetting.Version} is the latest" });
+                            _operationQueue.Add(new OperationQueue { Param = $"Your Version {AppSetting.Version} is the latest" });
                             return;
                         }
 
-                        _operationQueue.Add(new OperationQueue() { Param = $"Detected Update {update.VersionNumber}" });
+                        _operationQueue.Add(new OperationQueue { Param = $"Detected Update {update.VersionNumber}" });
 
                         var startInfo = new ProcessStartInfo
                         {
                             FileName = "PatientDataAdministration.ClientUpdater.exe",
                             Arguments = entities.System_Setting.FirstOrDefault(
-                                            x => x.SettingKey == (int)EnumLibrary.SyncMode.RemoteApi)?.SettingValue ?? "",
+                                            x => x.SettingKey == (int)SyncMode.RemoteApi)?.SettingValue ?? "",
                             RedirectStandardOutput = true,
                             RedirectStandardError = true,
                             UseShellExecute = false,
@@ -1034,12 +1037,12 @@ namespace PatientDataAdministration.Client
                         tmrLaunchUpdate.Enabled = true;
                         tmrLaunchUpdate.Start();
 
-                        _operationQueue.Add(new OperationQueue() { Param = $"Download of Update {update.VersionNumber} is running" });
+                        _operationQueue.Add(new OperationQueue { Param = $"Download of Update {update.VersionNumber} is running" });
                     }
                 }
                 catch (Exception ex)
                 {
-                    _operationQueue.Add(new OperationQueue() { Param = ex.Message });
+                    _operationQueue.Add(new OperationQueue { Param = ex.Message });
                     LocalCore.TreatError(ex, _administrationStaffInformation.Id, true);
                 }
             }).Start();
@@ -1047,7 +1050,7 @@ namespace PatientDataAdministration.Client
 
         public void SiteInfo()
         {
-            _operationQueue.Add(new OperationQueue()
+            _operationQueue.Add(new OperationQueue
             {
                 Param = $"Current Site is {_systemSiteData.SiteNameOfficial}"
             });
@@ -1057,7 +1060,7 @@ namespace PatientDataAdministration.Client
         {
             if (!_pingResult)
             {
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Cannot Reach the Server at the moment. Please try again later"
                 });
@@ -1128,7 +1131,7 @@ namespace PatientDataAdministration.Client
                             JsonConvert.SerializeObject(appointmentDataResponse.Result));
 
                         if (appointmentData.Any())
-                            _operationQueue.Add(new OperationQueue()
+                            _operationQueue.Add(new OperationQueue
                             {
                                 Param =
                                     $"Initiating Synchronization Task: 3rd Party Data >> Appointment Data Pull from {((LocalEndPoint) appointmentDataEndPoint.EndPointId).DisplayName()}"
@@ -1150,7 +1153,7 @@ namespace PatientDataAdministration.Client
                             size += new FileInfo(Path.Combine(basePath, fileName)).Length;
                         }
 
-                        _operationQueue.Add(new OperationQueue()
+                        _operationQueue.Add(new OperationQueue
                         {
                             Param =
                                 $"Completing Synchronization Task: 3rd Party Data >> Appointment Data Pull from {((LocalEndPoint)appointmentDataEndPoint.EndPointId).DisplayName()}. Total Size {size:#,##0} bytes"
@@ -1160,8 +1163,8 @@ namespace PatientDataAdministration.Client
             }
             catch (Exception ex)
             {
-                _operationQueue.Add(new OperationQueue() { Param = ex.Message });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id, false);
+                _operationQueue.Add(new OperationQueue { Param = ex.Message });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
         }
 
@@ -1206,7 +1209,7 @@ namespace PatientDataAdministration.Client
                                     continue;
 
                                 if (pendingPush.Any())
-                                    _operationQueue.Add(new OperationQueue()
+                                    _operationQueue.Add(new OperationQueue
                                     {
                                         Param =
                                             $"Local Data Push: Processing {pendingPush.Count} records at this time to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint) clinicalDataEndPoint.EndPointId).DisplayName()}."
@@ -1230,7 +1233,7 @@ namespace PatientDataAdministration.Client
 
                                 var message =
                                     $"Failed to Push Data to {clinicalDataEndPoint.EndPointUrl} for {((LocalEndPoint)clinicalDataEndPoint.EndPointId).DisplayName()}. ";
-                                _operationQueue.Add(new OperationQueue()
+                                _operationQueue.Add(new OperationQueue
                                 {
                                     Param = message.Trim()
                                 });
@@ -1262,7 +1265,7 @@ namespace PatientDataAdministration.Client
             {
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id);
 
-                _operationQueue.Add(new OperationQueue()
+                _operationQueue.Add(new OperationQueue
                 {
                     Param = "Local Data Push Encountered an Error. " + ex
                 });

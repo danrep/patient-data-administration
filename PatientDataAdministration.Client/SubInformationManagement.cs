@@ -1266,7 +1266,7 @@ namespace PatientDataAdministration.Client
                     }
                 }
                 picBoxFingerPrint.Refresh();
-                bmp.Dispose();
+                GC.Collect();
             }
             catch (Exception e)
             {

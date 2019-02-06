@@ -16,6 +16,9 @@ namespace PatientDataAdministration.Data
     {
         public int Id { get; set; }
         public string HtsId { get; set; }
+        public string Surname { get; set; }
+        public string OtherName { get; set; }
+        public string HouseAddress { get; set; }
         public int SiteId { get; set; }
         public string Sex { get; set; }
         public string PhoneNumber { get; set; }

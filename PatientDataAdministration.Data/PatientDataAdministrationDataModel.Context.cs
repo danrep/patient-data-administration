@@ -49,9 +49,9 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<System_State> System_State { get; set; }
         public virtual DbSet<System_Update> System_Update { get; set; }
         public virtual DbSet<Patient_PatientBiometricDataPopulationRegister> Patient_PatientBiometricDataPopulationRegister { get; set; }
-        public virtual DbSet<Patient_PatientInformationPopulationRegister> Patient_PatientInformationPopulationRegister { get; set; }
         public virtual DbSet<Integration_AppointmentDataItem> Integration_AppointmentDataItem { get; set; }
         public virtual DbSet<System_AuditTrail> System_AuditTrail { get; set; }
+        public virtual DbSet<Patient_PatientInformationPopulationRegister> Patient_PatientInformationPopulationRegister { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {

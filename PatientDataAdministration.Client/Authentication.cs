@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Device.Location;
 using System.Globalization;
 using System.Linq;
+using System.Security.Principal;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -31,7 +32,7 @@ namespace PatientDataAdministration.Client
             {
                 _status = false;
 
-                System.Windows.Forms.Application.DoEvents();
+                Application.DoEvents();
 
                 if (!_localPdaEntities.System_SiteData.Any(x => !x.IsDeleted && x.IsCurrent))
                 {
@@ -46,7 +47,7 @@ namespace PatientDataAdministration.Client
 
                 if (credential == null)
                 {
-                    if (CheckCredentialServer(out Administration_StaffInformation userData))
+                    if (CheckCredentialServer(out var userData))
                     {
                         GainAccess(userData);
                         _status = true;
@@ -57,7 +58,7 @@ namespace PatientDataAdministration.Client
                     if (Core.Encryption.IsSaltEncryptValid(txtPassword.Text.Trim(), credential.PasswordData,
                         credential.PasswordSalt))
                         GainAccess(
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(
+                            JsonConvert.DeserializeObject<Administration_StaffInformation>(
                                 credential.AuthPayLoad));
                     else
                     {
@@ -146,55 +147,64 @@ namespace PatientDataAdministration.Client
 
         private bool CheckCredentialServer(out Administration_StaffInformation administrationStaffInformation)
         {
-            var authData = $@"{txtUserName.Text.Trim()}*{txtPassword.Text.Trim()}";
-            //var result = LocalCore.Get($@"/ClientCommunication/User/Authenticate?authData={authData}");
-
-            var clientCoordinates = LocalCore.GetLocationProperty();
-
-            var payload = new
-            {
-                authData,
-                clientInformation = new ClientInformation()
-                {
-                    ClientGuid = LocalCache.Get<string>("ClientId") ?? "NA",
-                    LocationLong = clientCoordinates?.Longitude.ToString(CultureInfo.InvariantCulture) ?? "0",
-                    ClientName = System.Security.Principal.WindowsIdentity.GetCurrent().Name, 
-                    LocationLat = clientCoordinates?.Latitude.ToString(CultureInfo.InvariantCulture) ?? "0",
-                    CurrentUser = 0
-                }
-            };
-            var result = LocalCore.Post(@"/ClientCommunication/User/Authenticate",
-                Newtonsoft.Json.JsonConvert.SerializeObject(payload));
-
             administrationStaffInformation = new Administration_StaffInformation();
-            if (result.Status)
+
+            try
             {
-                if (result.Data != null)
+                var authData = $@"{txtUserName.Text.Trim()}*{txtPassword.Text.Trim()}";
+                //var result = LocalCore.Get($@"/ClientCommunication/User/Authenticate?authData={authData}");
+
+                var clientCoordinates = LocalCore.GetLocationProperty();
+
+                var payload = new
                 {
-                    var data =
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<Administration_StaffInformation>(
-                            Newtonsoft.Json.JsonConvert.SerializeObject(result.Data));
-
-                    administrationStaffInformation = data;
-
-                    _localPdaEntities.Local_StaffInformation.Add(new Local_StaffInformation()
+                    authData,
+                    clientInformation = new ClientInformation()
                     {
-                         AuthenticationState = data.AuthenticationState,
-                         IsDeleted = false, 
-                         Surname = data.Surname, 
-                         AuthPayLoad = Newtonsoft.Json.JsonConvert.SerializeObject(result.Data),
-                         DateRegistered = data.DateRegistered,
-                         Email = data.Email,
-                         FirstName = data.FirstName, 
-                         PasswordData = data.PasswordData,
-                         PasswordSalt = data.PasswordSalt,
-                         RemoteId = data.Id,
-                         SiteId = data.SiteId,
-                         StaffId = data.StaffId
-                    });
+                        ClientGuid = LocalCache.Get<string>("ClientId") ?? "NA",
+                        LocationLong = clientCoordinates?.Longitude.ToString(CultureInfo.InvariantCulture) ?? "0",
+                        ClientName = WindowsIdentity.GetCurrent().Name, 
+                        LocationLat = clientCoordinates?.Latitude.ToString(CultureInfo.InvariantCulture) ?? "0",
+                        CurrentUser = 0
+                    }
+                };
+                var result = LocalCore.Post(@"/ClientCommunication/User/Authenticate",
+                    JsonConvert.SerializeObject(payload));
 
-                    _localPdaEntities.SaveChanges();
-                    return true;
+                if (result.Status)
+                {
+                    if (result.Data != null)
+                    {
+                        var data =
+                            JsonConvert.DeserializeObject<Administration_StaffInformation>(
+                                JsonConvert.SerializeObject(result.Data));
+
+                        administrationStaffInformation = data;
+
+                        _localPdaEntities.Local_StaffInformation.Add(new Local_StaffInformation()
+                        {
+                            AuthenticationState = data.AuthenticationState,
+                            IsDeleted = false, 
+                            Surname = data.Surname, 
+                            AuthPayLoad = JsonConvert.SerializeObject(result.Data),
+                            DateRegistered = data.DateRegistered,
+                            Email = data.Email,
+                            FirstName = data.FirstName, 
+                            PasswordData = data.PasswordData,
+                            PasswordSalt = data.PasswordSalt,
+                            RemoteId = data.Id,
+                            SiteId = data.SiteId,
+                            StaffId = data.StaffId
+                        });
+
+                        _localPdaEntities.SaveChanges();
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(result.Message);
+                        return false;
+                    }
                 }
                 else
                 {
@@ -202,9 +212,9 @@ namespace PatientDataAdministration.Client
                     return false;
                 }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show(result.Message);
+                LocalCore.TreatError(e, 0);
                 return false;
             }
         }

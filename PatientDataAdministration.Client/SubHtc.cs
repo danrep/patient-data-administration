@@ -255,7 +255,10 @@ namespace PatientDataAdministration.Client
                         Id = 0,
                         HtsId = txtHtsId.Text.ToUpper(),
                         LastUpdated = DateTime.Now,
-                        WhenCreated = DateTime.Now
+                        WhenCreated = DateTime.Now,
+                        HouseAddress = txtAddress.Text,
+                        OtherName = txtOtherNames.Text,
+                        Surname = txtSurname.Text
                     }
                 };
 
@@ -264,7 +267,7 @@ namespace PatientDataAdministration.Client
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
                     {
                         pnlWaiting.Visible = false;
-                        //MessageBox.Show(@"The Captured Biodata are either a match or a match with some other Biometric Data and that's not proper. Please confirm");
+                        MessageBox.Show(@"The Captured Biodata are either a match or a match with some other Biometric Data and that's not proper. Please confirm!");
                         return;
                     }
 
@@ -623,7 +626,7 @@ namespace PatientDataAdministration.Client
                 return false;
             }
         }
-       
+
 
         private void LoadPatientData(System_BioDataStore_PopulationRegister patientData)
         {
@@ -638,16 +641,26 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
-                var patientDataResolved = Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformationPatientPopulationRegister>(patientData.PatientData);
+                var patientDataResolved =
+                    Newtonsoft.Json.JsonConvert.DeserializeObject<PatientInformationPatientPopulationRegister>(
+                        patientData.PatientData);
 
                 txtPhoneNumber.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.PhoneNumber;
                 txtSex.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.Sex;
                 txtHtsId.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.HtsId;
-                
+                txtSurname.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.Surname;
+                txtOtherNames.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.OtherName;
+                txtAddress.Text = patientDataResolved.Patient_PatientInformationPopulationRegister.HouseAddress;
+
                 if (patientDataResolved.Patient_PatientBiometricDataPopulationRegister != null)
                 {
                     _bioDataPrimary = patientDataResolved.Patient_PatientBiometricDataPopulationRegister.FingerPrimary;
-                    _bioDataSecondary = patientDataResolved.Patient_PatientBiometricDataPopulationRegister.FingerSecondary;
+                    _bioDataSecondary = patientDataResolved.Patient_PatientBiometricDataPopulationRegister
+                        .FingerSecondary;
+                    cmbDataFingerSelector1.Text = patientDataResolved.Patient_PatientBiometricDataPopulationRegister
+                        .FingerPrimaryPosition;
+                    cmbDataFingerSelector2.Text = patientDataResolved.Patient_PatientBiometricDataPopulationRegister
+                        .FingerSecondaryPosition;
 
                     if (!string.IsNullOrEmpty(_bioDataPrimary))
                         chkPriFin.Checked = true;
@@ -656,8 +669,9 @@ namespace PatientDataAdministration.Client
                 }
 
                 txtTestResult.Text = _systemBioDataStorePopulationRegisters.FirstOrDefault(x =>
-                                                 x.HtsId.ToLower() == patientDataResolved
-                                                     .Patient_PatientInformationPopulationRegister.HtsId.ToLower())?.TestResult ?? "";
+                                             x.HtsId.ToLower() == patientDataResolved
+                                                 .Patient_PatientInformationPopulationRegister.HtsId.ToLower())
+                                         ?.TestResult ?? "";
 
                 _systemBioDataStorePopulationRegister =
                     _localPdaEntities.System_BioDataStore_PopulationRegister.FirstOrDefault(
@@ -867,7 +881,7 @@ namespace PatientDataAdministration.Client
                     }
                 }
                 picBoxFingerPrint.Refresh();
-                bmp.Dispose();
+                GC.Collect();
             }
             catch (Exception e)
             {

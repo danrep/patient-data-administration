@@ -27,9 +27,9 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_State" Width="1.5" PointX="12.75" PointY="3.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_Update" Width="1.5" PointX="12.75" PointY="6.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataPopulationRegister" Width="1.5" PointX="9.375" PointY="13.75" />
-        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" Width="1.5" PointX="13.375" PointY="10.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" Width="1.5" PointX="5.375" PointY="14.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_AuditTrail" Width="1.5" PointX="11.375" PointY="14.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" Width="1.5" PointX="13.375" PointY="10.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
