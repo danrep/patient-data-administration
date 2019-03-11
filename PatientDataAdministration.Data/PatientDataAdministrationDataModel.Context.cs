@@ -181,5 +181,31 @@ namespace PatientDataAdministration.Data
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Indicators_PopulationDistro_SexSiteState_Result>("Sp_System_Indicators_PopulationDistro_SexSiteState", fromDateParameter, toDateParameter);
         }
+    
+        public virtual ObjectResult<Sp_Administration_GetRegBioDataSummary_Result> Sp_Administration_GetRegBioDataSummary(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetRegBioDataSummary_Result>("Sp_Administration_GetRegBioDataSummary", startDateParameter, endDateParameter);
+        }
+    
+        public virtual ObjectResult<Sp_Administration_GetRegDataSummary_Result> Sp_Administration_GetRegDataSummary(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetRegDataSummary_Result>("Sp_Administration_GetRegDataSummary", startDateParameter, endDateParameter);
+        }
     }
 }

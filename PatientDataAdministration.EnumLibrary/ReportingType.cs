@@ -2,15 +2,19 @@
 
 namespace PatientDataAdministration.EnumLibrary
 {
-    public enum ReportingType : int
+    public enum ReportingType
     {
-        [EnumDisplayName(DisplayName = "Synchronization Compliance Failure")]
+        [EnumDisplayName(DisplayName = "System Synchronization Compliance Failure")]
         SyncComplianceFail = 1,
-        [EnumDisplayName(DisplayName = "Data Summary: Country")]
+        [EnumDisplayName(DisplayName = "System Data Summary: Country")]
         DataSummaryCountry,
-        [EnumDisplayName(DisplayName = "Data Summary: State")]
+        [EnumDisplayName(DisplayName = "System Data Summary: State")]
         DataSummaryState,
-        [EnumDisplayName(DisplayName = "Data Summary: Site")]
-        DataSummarySite
+        [EnumDisplayName(DisplayName = "System Data Summary: Site")]
+        DataSummarySite,
+        [EnumDisplayName(DisplayName = "Patient Data: Registered Biometrics")]
+        PatientDataRegBio,
+        [EnumDisplayName(DisplayName = "Patient Data: Default")]
+        PatientDataPopulation
     }
 }

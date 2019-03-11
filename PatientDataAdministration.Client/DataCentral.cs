@@ -719,7 +719,7 @@ namespace PatientDataAdministration.Client
                         else
                             _operationQueue.Add(new OperationQueue
                             {
-                                Param = "Local Registry Sync encountered an Error. "
+                                Param = "Synchronization Error: " + result.Message
                             });
                     }
                 }
@@ -728,8 +728,9 @@ namespace PatientDataAdministration.Client
             {
                 _operationQueue.Add(new OperationQueue
                 {
-                    Param = "Local Registry Sync encountered an Error. " + ex
+                    Param = "Synchronization Error: " + ex
                 });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
         }
 
@@ -752,6 +753,7 @@ namespace PatientDataAdministration.Client
                 {
                     Param = "Local Server Operation Encountered an Error. " + ex
                 });
+                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }
         }
 

@@ -357,6 +357,14 @@
           <Parameter Name="hasBio" Type="bit" Mode="In" />
           <Parameter Name="hasNfc" Type="bit" Mode="In" />
         </Function>
+        <Function Name="Sp_Administration_GetRegBioDataSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="datetime" Mode="In" />
+          <Parameter Name="endDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="Sp_Administration_GetRegDataSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startDate" Type="datetime" Mode="In" />
+          <Parameter Name="endDate" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="Sp_System_CleanUp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Sp_System_DataIntegrity_Opr_CreateNew" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="rowId" Type="int" Mode="In" />
@@ -481,6 +489,14 @@
           <EntitySet Name="Integration_AppointmentDataItem" EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" />
           <EntitySet Name="System_AuditTrail" EntityType="PatientDataAdministration.DatabaseModel.System_AuditTrail" />
           <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" />
+          <FunctionImport Name="Sp_Administration_GetRegBioDataSummary" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetRegBioDataSummary_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_Administration_GetRegDataSummary" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetRegDataSummary_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="Sp_Administration_GetAgeDistro_Result">
           <Property Type="String" Name="RangeOfValues" Nullable="false" MaxLength="8" />
@@ -898,6 +914,20 @@
           <Property Name="WhenCreated" Type="DateTime" Precision="3" />
           <Property Name="LastUpdated" Type="DateTime" Precision="3" />
         </EntityType>
+        <ComplexType Name="Sp_Administration_GetRegBioDataSummary_Result">
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="StateAbbreviation" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="SiteNameOfficial" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="SiteCode" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="PatientPopulation" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Sp_Administration_GetRegDataSummary_Result">
+          <Property Type="String" Name="StateName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="StateAbbreviation" Nullable="true" MaxLength="4" />
+          <Property Type="String" Name="SiteNameOfficial" Nullable="true" MaxLength="255" />
+          <Property Type="String" Name="SiteCode" Nullable="true" MaxLength="255" />
+          <Property Type="Int32" Name="PatientPopulation" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1387,6 +1417,28 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetRegBioDataSummary" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetRegBioDataSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetRegBioDataSummary_Result">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateAbbreviation" ColumnName="StateAbbreviation" />
+                <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="PatientPopulation" ColumnName="PatientPopulation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetRegDataSummary" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetRegDataSummary">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetRegDataSummary_Result">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateAbbreviation" ColumnName="StateAbbreviation" />
+                <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
+                <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
+                <ScalarProperty Name="PatientPopulation" ColumnName="PatientPopulation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

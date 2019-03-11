@@ -76,6 +76,7 @@
     <Compile Include="InterchangeModels\ClientInformation.cs" />
     <Compile Include="InterchangeModels\IntegrationAppointmentDataIngress.cs" />
     <Compile Include="InterchangeModels\PatientInformationPatientPopulationRegister.cs" />
+    <Compile Include="InterchangeModels\PatientDataRequestConfig.cs" />
     <Compile Include="InterchangeModels\PatientSearch.cs" />
     <Compile Include="InterchangeModels\PatientMatching.cs" />
     <Compile Include="InterchangeModels\PatientInformation.cs" />
@@ -129,6 +130,12 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Sp_Administration_GetPatients_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_Administration_GetRegBioDataSummary_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Sp_Administration_GetRegDataSummary_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Sp_System_DataIntegrity_Opr_CreateNew_Result.cs">

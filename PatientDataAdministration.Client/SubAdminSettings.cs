@@ -185,8 +185,8 @@ namespace PatientDataAdministration.Client
             {
                 if (_tag.Content.Count() != 0)
                 {
-                    var dialogResult = MessageBox.Show(@"Please Decide",
-                        $@"This Tag has data on it. Do you want to continue with the Formatting? All Data will be lost!",
+                    var dialogResult = MessageBox.Show(
+                        $@"This Tag has data on it. Do you want to continue with the Formatting? All Data will be lost!", @"Please Decide",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (dialogResult != DialogResult.Yes)

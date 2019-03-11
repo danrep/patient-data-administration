@@ -1,0 +1,51 @@
+﻿StateName,StateAbbreviation,SiteNameOfficial,SiteCode,PatientPopulation
+Benue,BE,Abiam Family Support Program Clinic,AM,2
+Benue,BE,"Federal Medical Center, Makurdi ",FM,1
+Benue,BE,Sahara Clinic,SA,9
+Ekiti,EK,"Federal Medical Center, Ido-Ekiti",DE,73
+Ekiti,EK,Ekiti State University Teaching Hospital,EK,349
+Enugu,EN,University of Nigeria Teaching Hospital,UN,1
+Lagos,LA,General Hospital Ifako Ijaiye,IF,120
+Lagos,LA,General Hospital Ibeju Lekki,IL,1
+Lagos,LA,Ipaja Primary Health Centre,IP,2
+Lagos,LA,Lagos State University Teaching Hospital,LG,12
+Lagos,LA,Lagos University Teaching Hospital,LU,2205
+Lagos,LA,"General Hospital, Mushin",MU,1
+Lagos,LA,National Institute of Medical Research,NM,1
+Lagos,LA,"Primary Health Care Center, Ojodu",OJ,163
+Lagos,LA,"Aregbesola Primary Health Centre ",RB,1
+Ogun,OG,"General Hospital, Ifo",FO,73
+Ogun,OG,"Federal Medical center, Abeokuta",FT,1
+Ogun,OG,"General Hospital, Ijebu-Ode",IJ,21
+Ondo,ON,"State Specialist Hospital, Akure",KU,51
+Ondo,ON,"State Specialist Hospital, Ondo",OD,11
+Ondo,ON,"General Hospital, Ore",OR,31
+Ondo,ON,"Federal Medical Centre, Owo",OW,120
+Oyo,OY,Adeoyo Maternity Hospital,AD,1283
+Oyo,OY,"St. Annes Anglican Hospital, Ibadan",AS,221
+Oyo,OY,Baptist Medical Center Saki,BM,1
+Oyo,OY,"St. Mary's Catholic Hospital, Eleta",EH,169
+Oyo,OY,"General Hospital, Okeho",HO,2
+Oyo,OY,"General Hospital, Igbeti",IT,4
+Oyo,OY,"General Hospital, Kisi",KS,2
+Oyo,OY,Ladoke Akintola University Teaching Hospital (LAUTH),LD,87
+Oyo,OY,"State Hospital, Ogbomoso",OG,104
+Oyo,OY,University College Hospital,UC,55
+Plateau,PL,Barkin Ladi General Hospital,BL,17
+Plateau,PL,Bingham University Teaching Hospital,BU,1914
+Plateau,PL,"Comprehensive Health Centre, Dadin Kowa",DK,151
+Plateau,PL,ECWA Bukuru,EC,188
+Plateau,PL,Faith Alive Foundation,FA,1908
+Plateau,PL,Jos University Teaching Hospital,JU,125
+Plateau,PL,"General Hospital, Mangu",MG,3
+Plateau,PL,"Our Lady of Apostles, Jos",OL,781
+Plateau,PL,Pankshin General Hospital,PK,10
+Plateau,PL,Plateau State Specialist Hospital,PS,3153
+Plateau,PL,Panyam Maternity Hospital,PY,3
+Plateau,PL,"Church of Christ in Nigeria (COCIN) Hospital and Rehabilitation Center, Mangu",RC,5
+Plateau,PL,"Seventh Day Adventist Hospital, Jengre",SD,7
+Plateau,PL,"General Hospital, Shendam",SH,5
+Plateau,PL,Solat Women Hospital,SL,272
+Plateau,PL,St. Virgilus Clinic,VC,3
+Plateau,PL,Vom Christian Hospital,VH,350
+Plateau,PL,"Comprehensive Health Centre, Zamko",ZK,3

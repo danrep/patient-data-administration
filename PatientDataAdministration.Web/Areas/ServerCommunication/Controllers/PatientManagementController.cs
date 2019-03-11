@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.Web.Engines;
+using PatientDataAdministration.Web.Engines.EngineModels;
+using PatientDataAdministration.Web.Engines.EngineReporting;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
@@ -52,6 +56,30 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetPatientData(PatientDataRequestConfig patientDataRequestConfig)
+        {
+            try
+            {
+                new Thread(() =>
+                {
+                    if ((ReportingType) patientDataRequestConfig.ReportType == ReportingType.PatientDataRegBio)
+                        EngineReporting.PatientDataRegBio(new ReportReadiness()
+                        {
+                            UpperBound = DateTime.ParseExact(patientDataRequestConfig.EndDate, "dd/MM/yyyy",
+                                CultureInfo.InvariantCulture),
+                            LowerBound = DateTime.ParseExact(patientDataRequestConfig.StartDate, "dd/MM/yyyy",
+                                CultureInfo.InvariantCulture)
+                        }, patientDataRequestConfig.Reciepients);
+                }).Start();
+                return Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

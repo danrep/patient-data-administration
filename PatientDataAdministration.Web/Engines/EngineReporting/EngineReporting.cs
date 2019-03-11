@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.Hosting;
+using CsvHelper;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
@@ -168,6 +171,18 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                             SyncCompliance();
                         }
                         break;
+                    case ReportingType.PatientDataRegBio:
+                        if (recurrenceInterval == (int)RecurrenceInterval.Day)
+                        {
+                            PatientDataRegBio();
+                        }
+                        break;
+                    case ReportingType.PatientDataPopulation:
+                        if (recurrenceInterval == (int)RecurrenceInterval.Day)
+                        {
+                            PatientDataReg();
+                        }
+                        break;
                 }
             }
             catch (Exception e)
@@ -309,6 +324,24 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     entity.SaveChanges();
 
                     LocalCache.RefreshCache("System_ReportingLog");
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private static void WriteToFile(IEnumerable<dynamic> list, string expectedFileName)
+        {
+            try
+            {
+                using (TextWriter writer =
+                    new StreamWriter(expectedFileName, false, System.Text.Encoding.UTF8))
+                {
+                    var csv = new CsvWriter(writer);
+                    csv.WriteRecords(list);
+                    csv.Dispose();
                 }
             }
             catch (Exception e)
@@ -488,6 +521,114 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
 
                         ActivityLogger.Log("INFO", $"{intervalDescription} Operation Summary Successfully Executed");
                     }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        public static void PatientDataRegBio(ReportReadiness reportReadiness = null, string recepients = "")
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    entity.Database.CommandTimeout = 0;
+
+                    var bioDataSummary = new List<Sp_Administration_GetRegBioDataSummary_Result>();
+                    var fileNameSuffix = "";
+
+                    var msg = "Dear Administrator(s)<br />";
+
+                    if (reportReadiness == null)
+                    {
+                        bioDataSummary = entity.Sp_Administration_GetRegBioDataSummary(null, null).ToList();
+                        fileNameSuffix = "INI_" + DateTime.Now.Date.ToString("yyyyMMdd");
+
+                        msg +=
+                            $"Find Below the Biometric Registration summary as at {DateTime.Now.Date.ToLongDateString()}";
+                    }
+                    else
+                    {
+                        bioDataSummary = entity
+                            .Sp_Administration_GetRegBioDataSummary(reportReadiness.LowerBound,
+                                reportReadiness.UpperBound).ToList();
+
+                        fileNameSuffix =
+                            $"RNG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
+                        msg +=
+                            $"Find attached the Biometric Registration summary from {reportReadiness.LowerBound.ToLongDateString()} till {reportReadiness.UpperBound.AddDays(-1).ToLongDateString()}";
+                    }
+
+                    var localDirectory =
+                        new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+
+                    if(!localDirectory.Exists)
+                        localDirectory.Create();
+
+                    var expectedFile = Path.Combine(localDirectory.FullName, $"{fileNameSuffix}.csv");
+
+                    WriteToFile(bioDataSummary, expectedFile);
+
+                    Messaging.SendMail(
+                        string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
+                        null, null, "Registered Bio Data Summary: " + fileNameSuffix, msg, expectedFile);
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        public static void PatientDataReg(ReportReadiness reportReadiness = null, string recepients = "")
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    entity.Database.CommandTimeout = 0;
+
+                    var dataSummary = new List<Sp_Administration_GetRegDataSummary_Result>();
+                    var fileNameSuffix = "";
+
+                    var msg = "Dear Administrator(s)<br />";
+
+                    if (reportReadiness == null)
+                    {
+                        dataSummary = entity.Sp_Administration_GetRegDataSummary(null, null).ToList();
+                        fileNameSuffix = "INI_" + DateTime.Now.Date.ToString("yyyyMMdd");
+
+                        msg +=
+                            $"Find Below the Biometric Registration summary as at {DateTime.Now.Date.ToLongDateString()}";
+                    }
+                    else
+                    {
+                        dataSummary = entity
+                            .Sp_Administration_GetRegDataSummary(reportReadiness.LowerBound,
+                                reportReadiness.UpperBound).ToList();
+
+                        fileNameSuffix =
+                            $"RNG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
+                        msg +=
+                            $"Find attached the Biometric Registration summary from {reportReadiness.LowerBound.ToLongDateString()} till {reportReadiness.UpperBound.AddDays(-1).ToLongDateString()}";
+                    }
+
+                    var localDirectory =
+                        new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+
+                    if (!localDirectory.Exists)
+                        localDirectory.Create();
+
+                    var expectedFile = Path.Combine(localDirectory.FullName, $"{fileNameSuffix}.csv");
+
+                    WriteToFile(dataSummary, expectedFile);
+
+                    Messaging.SendMail(
+                        string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
+                        null, null, "Registered Data Summary: " + fileNameSuffix, msg, expectedFile);
+                }
             }
             catch (Exception e)
             {

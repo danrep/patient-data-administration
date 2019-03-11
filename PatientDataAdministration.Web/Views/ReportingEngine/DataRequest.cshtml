@@ -1,0 +1,107 @@
+﻿@using PatientDataAdministration.EnumLibrary
+@using PatientDataAdministration.EnumLibrary.Dictionary
+
+@{
+    ViewBag.Title = "Data Request";
+    ViewBag.TitleDesc = "Make a Request for Datasets in the System";
+    Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <h4 class="panel-title"><i class="fa fa-cogs"></i>&nbsp;Request Configuration</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:executeReportRequest();">
+                    <div class="form-group">
+                        <div class="col-md-4 col-sm-12 col-xs-12">
+                            <label class="control-label" for="reportType">Report Type * :</label>
+                            <select class="form-control" id="reportType" name="reportType"
+                                    data-parsley-required="true">
+                                <option value="0">Please Select a Report Type</option>
+                                @foreach (var report in EnumDictionary.GetList<ReportingType>().Where(x => !x.ItemName.ToLower().Contains("system")))
+                                {
+                                    <option value="@report.ItemId">@report.ItemName</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Date of Birth * </label>
+                            <div>
+                                <div class="input-group date datepicker-default" id="startDate">
+                                    <input type="text" class="form-control" placeholder="Data Start Date" data-parsley-required="true" id="startDateInput" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label">Date of Birth * </label>
+                            <div>
+                                <div class="input-group date datepicker-default" id="endDate">
+                                    <input type="text" class="form-control" placeholder="Data End Date" data-parsley-required="true" id="endDateInput" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <label class="control-label" for="mailAddress">Destination Emails * :</label>
+                            <input class="form-control" type="text" id="mailAddress" name="mailAddress"
+                                   placeholder="Address" data-parsley-required="true" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-sm btn-success pull-right">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+        });
+
+        pdaWeb.controller('pdaWebCtrlr',
+            function($scope) {
+                });
+
+        function executeReportRequest() {
+            window.swalInfo('Processing... Please Wait');
+
+            const postData = {
+                StartDate: $('#startDateInput').val(),
+                EndDate: $('#endDateInput').val(),
+                ReportType: $('#reportType').val(),
+                Reciepients: $('#mailAddress').val()
+            };
+
+            window.api("POST",
+                "@Url.Action("GetPatientData", "PatientManagement", new {area = "ServerCommunication"})",
+                postData,
+                true,
+                executeReportResponse);
+        };
+
+        function executeReportResponse(data) {
+            window.swalSuccess('Report is being processed. An email will be sent shortly');
+
+            $('#startDateInput').val('');
+            $('#endDateInput').val('');
+            $('#reportType').val('');
+            $('#mailAddress').val('');
+        };
+    </script>
+}
