@@ -342,6 +342,8 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     var csv = new CsvWriter(writer);
                     csv.WriteRecords(list);
                     csv.Dispose();
+
+                    writer.Close();
                 }
             }
             catch (Exception e)
@@ -544,7 +546,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     if (reportReadiness == null)
                     {
                         bioDataSummary = entity.Sp_Administration_GetRegBioDataSummary(null, null).ToList();
-                        fileNameSuffix = "INI_" + DateTime.Now.Date.ToString("yyyyMMdd");
+                        fileNameSuffix = "SYS_PATIENTDATABIOREG_" + DateTime.Now.Date.ToString("yyyyMMdd");
 
                         msg +=
                             $"Find Below the Biometric Registration summary as at {DateTime.Now.Date.ToLongDateString()}";
@@ -556,7 +558,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                                 reportReadiness.UpperBound).ToList();
 
                         fileNameSuffix =
-                            $"RNG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
+                            $"USR_PATIENTDATABIOREG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
                         msg +=
                             $"Find attached the Biometric Registration summary from {reportReadiness.LowerBound.ToLongDateString()} till {reportReadiness.UpperBound.AddDays(-1).ToLongDateString()}";
                     }
@@ -574,6 +576,9 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     Messaging.SendMail(
                         string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
                         null, null, "Registered Bio Data Summary: " + fileNameSuffix, msg, expectedFile);
+
+                    if (reportReadiness == null)
+                        LogOperation(RecurrenceInterval.Day, ReportingType.PatientDataRegBio);
                 }
             }
             catch (Exception e)
@@ -598,7 +603,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     if (reportReadiness == null)
                     {
                         dataSummary = entity.Sp_Administration_GetRegDataSummary(null, null).ToList();
-                        fileNameSuffix = "INI_" + DateTime.Now.Date.ToString("yyyyMMdd");
+                        fileNameSuffix = "SYS_PATIENTDATAREG_" + DateTime.Now.Date.ToString("yyyyMMdd");
 
                         msg +=
                             $"Find Below the Biometric Registration summary as at {DateTime.Now.Date.ToLongDateString()}";
@@ -610,7 +615,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                                 reportReadiness.UpperBound).ToList();
 
                         fileNameSuffix =
-                            $"RNG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
+                            $"USR_PATIENTDATAREG_{reportReadiness.LowerBound:yyyyMMdd}_{reportReadiness.UpperBound:yyyyMMdd}";
                         msg +=
                             $"Find attached the Biometric Registration summary from {reportReadiness.LowerBound.ToLongDateString()} till {reportReadiness.UpperBound.AddDays(-1).ToLongDateString()}";
                     }
@@ -628,6 +633,9 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     Messaging.SendMail(
                         string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
                         null, null, "Registered Data Summary: " + fileNameSuffix, msg, expectedFile);
+
+                    if (reportReadiness == null)
+                        LogOperation(RecurrenceInterval.Day, ReportingType.PatientDataPopulation);
                 }
             }
             catch (Exception e)

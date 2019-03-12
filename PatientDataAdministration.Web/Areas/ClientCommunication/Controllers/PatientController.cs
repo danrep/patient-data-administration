@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
@@ -195,6 +196,9 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         existingPatient.Title = patientInformation.Patient_PatientInformation.Title ?? string.Empty;
                         existingPatient.LastUpdated = DateTime.Now;
 
+                        _entities.Entry(existingPatient).State = EntityState.Modified;
+                        _entities.SaveChanges();
+
                         returnPatient = existingPatient;
                     }
                 }
@@ -208,7 +212,16 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 
                     patientInformation.Patient_PatientBiometricData.PepId = pepId;
                     patientInformation.Patient_PatientBiometricData.DateRegistered = DateTime.Now;
-                    patientInformation.Patient_PatientBiometricData.FingerDataHash = Sha512Engine.GenerateSHA512String(patientInformation.Patient_PatientBiometricData.FingerPrimary + "|" + patientInformation.Patient_PatientBiometricData.FingerSecondary);
+                    patientInformation.Patient_PatientBiometricData.FingerDataHash = Sha512Engine.GenerateSHA512String(
+                        patientInformation.Patient_PatientBiometricData.FingerPrimary + "|" +
+                        patientInformation.Patient_PatientBiometricData.FingerSecondary);
+
+                    if (patientInformation.Patient_PatientBiometricData.FingerPrimaryPosition == null)
+                        patientInformation.Patient_PatientBiometricData.FingerPrimaryPosition = "Right Thumb";
+
+                    if (patientInformation.Patient_PatientBiometricData.FingerSecondaryPosition == null)
+                        patientInformation.Patient_PatientBiometricData.FingerSecondaryPosition = "Left Thumb";
+
                     _entities.Patient_PatientBiometricData.Add(patientInformation.Patient_PatientBiometricData);
                 }
 

@@ -119,7 +119,7 @@ namespace PatientDataAdministration.Core
                     Log($"DB_ERROR_NODE: {trackingGuid}", Newtonsoft.Json.JsonConvert.SerializeObject(eve));
 
                     foreach (var ve in eve.ValidationErrors)
-                        Log($"DB_ERROR_ITEM: {trackingGuid}", Newtonsoft.Json.JsonConvert.SerializeObject(eve));
+                        Log($"DB_ERROR_ITEM: {trackingGuid}", Newtonsoft.Json.JsonConvert.SerializeObject(ve));
                 }
             }
             catch

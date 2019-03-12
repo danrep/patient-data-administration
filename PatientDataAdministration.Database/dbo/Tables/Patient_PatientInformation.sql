@@ -24,3 +24,40 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientInformation_On_SiteId_IsDeleted_Include_LastUpdated]
+    ON [dbo].[Patient_PatientInformation]([SiteId] ASC, [IsDeleted] ASC)
+    INCLUDE([LastUpdated]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientInformation_On_IsDeleted_Include_PepId_WhenCreated_LastUpdated]
+    ON [dbo].[Patient_PatientInformation]([IsDeleted] ASC)
+    INCLUDE([PepId], [WhenCreated], [LastUpdated]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientInformation_On_IsDeleted_Include_PepId_SiteId_Sex_WhenCreated_LastUpdated]
+    ON [dbo].[Patient_PatientInformation]([IsDeleted] ASC)
+    INCLUDE([PepId], [SiteId], [Sex], [WhenCreated], [LastUpdated]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientInformation_On_IsDeleted_Include_PepId]
+    ON [dbo].[Patient_PatientInformation]([IsDeleted] ASC)
+    INCLUDE([PepId]);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientInformation_On_DateOfBirth]
+    ON [dbo].[Patient_PatientInformation]([DateOfBirth] ASC);
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientBiometricData_On_IsDeleted_Include_PepId_WhenCreated]
+    ON [dbo].[Patient_PatientInformation]([IsDeleted] ASC)
+    INCLUDE([PepId], [WhenCreated]);
+
