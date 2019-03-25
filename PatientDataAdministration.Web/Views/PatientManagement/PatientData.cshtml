@@ -120,6 +120,7 @@
                                 }
                                 else
                                 {
+                                    <!--If the hash has not been generated before now-->
                                     if (string.IsNullOrEmpty(bioData.FingerDataHash))
                                     {
                                         bioData.FingerDataHash = Sha512Engine.GenerateSHA512String(bioData.FingerPrimary + "|" + bioData.FingerSecondary);
@@ -127,16 +128,20 @@
                                         pdaEntities.SaveChanges();
                                     }
 
-                                    var pdf512Code = bioData.FingerPrimary + "|" + bioData.FingerDataHash;
+                                    var pdf512Code = bioData.FingerDataHash;
 
                                     <div class="col-md-6 col-xs-12">
-                                        <img src="/assets/img/pda/icons8_Fingerprint_Scan_96px.png" alt="" />
+                                        <img src="/assets/img/pda/icons8_Fingerprint_Scan_96px.png" alt="@Model.PepId" />
                                         <h5 class="text text-success">Biometric Data has been Captured</h5>
                                         <p>@bioData.DateRegistered.ToLongDateString() @bioData.DateRegistered.ToLongTimeString()</p>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
-                                        <h5 class="text text-white pull-right"><i class="fa fa-lock"></i>&nbsp;Patient Identity Barcode: <span class="text text-success">@bioData.FingerDataHash.Substring(0, 10).ToUpper()</span></h5>
-                                        <img alt="@Model.PepId" class="pull-right" style="max-width:100%" src="data:image/png;base64,@BarCodeRender.GeneratePdf417BarCode(pdf512Code)" />
+                                        <div class="col-md-12">
+                                            <h5 class="text text-white pull-right"><i class="fa fa-lock"></i>&nbsp;Patient Identity Barcode: <span class="text text-success">@bioData.FingerDataHash.Substring(0, 10).ToUpper()</span></h5>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <img alt="@Model.PepId" class="pull-right" style="max-width: 100%" src="data:image/png;base64,@BarCodeRender.GeneratePdf417BarCode(pdf512Code)" />
+                                        </div>
                                     </div>
                                 }
                             </div>

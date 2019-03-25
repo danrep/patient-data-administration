@@ -350,6 +350,13 @@
         </Function>
         <Function Name="Sp_Administration_GetAgeDistro" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Sp_Administration_GetPatientCompliance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="Sp_Administration_GetPatientDataManifest" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="stateId" Type="int" Mode="In" />
+          <Parameter Name="siteId" Type="int" Mode="In" />
+          <Parameter Name="restrictOnBiometrics" Type="bit" Mode="In" />
+          <Parameter Name="startDate" Type="datetime" Mode="In" />
+          <Parameter Name="endDate" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="Sp_Administration_GetPatients" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="query" Type="varchar" Mode="In" />
           <Parameter Name="stateId" Type="int" Mode="In" />
@@ -494,6 +501,13 @@
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="Sp_Administration_GetRegDataSummary" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetRegDataSummary_Result)">
+            <Parameter Name="startDate" Mode="In" Type="DateTime" />
+            <Parameter Name="endDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_Administration_GetPatientDataManifest" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetPatientDataManifest_Result)">
+            <Parameter Name="stateId" Mode="In" Type="Int32" />
+            <Parameter Name="siteId" Mode="In" Type="Int32" />
+            <Parameter Name="restrictOnBiometrics" Mode="In" Type="Boolean" />
             <Parameter Name="startDate" Mode="In" Type="DateTime" />
             <Parameter Name="endDate" Mode="In" Type="DateTime" />
           </FunctionImport>
@@ -927,6 +941,30 @@
           <Property Type="String" Name="SiteNameOfficial" Nullable="true" MaxLength="255" />
           <Property Type="String" Name="SiteCode" Nullable="true" MaxLength="255" />
           <Property Type="Int32" Name="PatientPopulation" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="Sp_Administration_GetPatientDataManifest_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="PepId" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="PreviousId" Nullable="false" MaxLength="100" />
+          <Property Type="Int32" Name="SiteId" Nullable="false" />
+          <Property Type="String" Name="Title" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Othername" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Sex" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="PhoneNumber" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="MaritalStatus" Nullable="false" MaxLength="10" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="StateOfOrigin" Nullable="false" />
+          <Property Type="String" Name="HouseAddress" Nullable="false" />
+          <Property Type="Int32" Name="HouseAddressState" Nullable="false" />
+          <Property Type="Int32" Name="HouseAddresLga" Nullable="false" />
+          <Property Type="String" Name="HospitalNumber" Nullable="false" MaxLength="100" />
+          <Property Type="Binary" Name="PassportData" Nullable="true" MaxLength="Max" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="DateTime" Name="WhenCreated" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="LastUpdated" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="BiometricRegistrationDate" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="HasBioMetrics" Nullable="true" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1436,6 +1474,34 @@
                 <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />
                 <ScalarProperty Name="SiteCode" ColumnName="SiteCode" />
                 <ScalarProperty Name="PatientPopulation" ColumnName="PatientPopulation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Administration_GetPatientDataManifest" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Administration_GetPatientDataManifest">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Sp_Administration_GetPatientDataManifest_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="PreviousId" ColumnName="PreviousId" />
+                <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Othername" ColumnName="Othername" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="MaritalStatus" ColumnName="MaritalStatus" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="StateOfOrigin" ColumnName="StateOfOrigin" />
+                <ScalarProperty Name="HouseAddress" ColumnName="HouseAddress" />
+                <ScalarProperty Name="HouseAddressState" ColumnName="HouseAddressState" />
+                <ScalarProperty Name="HouseAddresLga" ColumnName="HouseAddresLga" />
+                <ScalarProperty Name="HospitalNumber" ColumnName="HospitalNumber" />
+                <ScalarProperty Name="PassportData" ColumnName="PassportData" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="WhenCreated" ColumnName="WhenCreated" />
+                <ScalarProperty Name="LastUpdated" ColumnName="LastUpdated" />
+                <ScalarProperty Name="BiometricRegistrationDate" ColumnName="BiometricRegistrationDate" />
+                <ScalarProperty Name="HasBioMetrics" ColumnName="HasBioMetrics" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

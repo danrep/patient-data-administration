@@ -207,5 +207,30 @@ namespace PatientDataAdministration.Data
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetRegDataSummary_Result>("Sp_Administration_GetRegDataSummary", startDateParameter, endDateParameter);
         }
+    
+        public virtual ObjectResult<Sp_Administration_GetPatientDataManifest_Result> Sp_Administration_GetPatientDataManifest(Nullable<int> stateId, Nullable<int> siteId, Nullable<bool> restrictOnBiometrics, Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate)
+        {
+            var stateIdParameter = stateId.HasValue ?
+                new ObjectParameter("stateId", stateId) :
+                new ObjectParameter("stateId", typeof(int));
+    
+            var siteIdParameter = siteId.HasValue ?
+                new ObjectParameter("siteId", siteId) :
+                new ObjectParameter("siteId", typeof(int));
+    
+            var restrictOnBiometricsParameter = restrictOnBiometrics.HasValue ?
+                new ObjectParameter("restrictOnBiometrics", restrictOnBiometrics) :
+                new ObjectParameter("restrictOnBiometrics", typeof(bool));
+    
+            var startDateParameter = startDate.HasValue ?
+                new ObjectParameter("startDate", startDate) :
+                new ObjectParameter("startDate", typeof(System.DateTime));
+    
+            var endDateParameter = endDate.HasValue ?
+                new ObjectParameter("endDate", endDate) :
+                new ObjectParameter("endDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_Administration_GetPatientDataManifest_Result>("Sp_Administration_GetPatientDataManifest", stateIdParameter, siteIdParameter, restrictOnBiometricsParameter, startDateParameter, endDateParameter);
+        }
     }
 }

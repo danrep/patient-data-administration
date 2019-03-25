@@ -213,5 +213,80 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public JsonResult ProcessPatientData(int stateId, int siteId, string toDate = null, string fromDate = null,
+            bool chkOnlyBio = false)
+        {
+            try
+            {
+                var userInformation = SecurityModel.GetUserInSession.AdministrationStaffInformation;
+                new Thread(() =>
+                    {
+                        ProcessPatientDumpData(stateId, siteId, chkOnlyBio, toDate, fromDate,
+                            userInformation);
+                    })
+                    .Start();
+
+                return Json(new ResponseData
+                {
+                    Status = true,
+                    Message = "Your request has been received. You will get a Notification shortly"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private void ProcessPatientDumpData(int stateId, int siteId, bool chkOnlyBio, string toDate, string fromDate, Administration_StaffInformation administrationStaffInformation)
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    var sites = RecurrentData.Sites;
+
+                    var startDateValue = DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var endDateValue = DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
+                    var patientManifest =
+                        entities.Sp_Administration_GetPatientDataManifest(stateId, siteId, chkOnlyBio, startDateValue,
+                            endDateValue).ToList();
+
+                    var sitesInDataSet = patientManifest.Select(x => x.SiteId).Distinct().ToList();
+
+                    var fileData = sitesInDataSet.Select(x =>
+                        new ExcelWriter.ExcelPatientRecord()
+                        {
+                            SiteName = sites.FirstOrDefault(y => y.Id == x)?.SiteCode,
+                            PatientDataManifest = patientManifest.Where(y => y.SiteId == x).ToList()
+                        });
+
+                    var fileName =
+                        $"PATIENT_MANIFEST_{RecurrentData.States.FirstOrDefault(x => x.Id == stateId)?.StateName}_{startDateValue:yyyyMMdd}_{endDateValue:yyyyMMdd}_{(chkOnlyBio ? "BIOINTENSIVE" : "GENERAL")}"
+                            .ToUpper();
+
+                    fileName = ExcelWriter.GetFilePatientRecords(fileName, fileData.ToList());
+
+                    var msg = $"Dear {administrationStaffInformation.Surname} {administrationStaffInformation.FirstName}(s)<br />";
+                    msg += "You have Requested for a Patient Manifest. The details are below:<br /><br />";
+                    msg += $"State: {RecurrentData.States.FirstOrDefault(x => x.Id == stateId)?.StateName}<br />";
+                    msg += $"Site: {(siteId == 0 ? "ALL SITES" : RecurrentData.Sites.FirstOrDefault(x => x.Id == siteId)?.SiteNameOfficial)}<br />";
+                    msg += $"Start Date: {startDateValue.ToLongDateString()}<br />";
+                    msg += $"End Date: {endDateValue.ToLongDateString()}<br />";
+                    msg += $"Restrict Biometrics: {chkOnlyBio}";
+
+                    Messaging.SendMail(administrationStaffInformation.Email,
+                        null, null, "Requested Patient Manifest", msg, fileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+        }
     }
 }

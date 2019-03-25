@@ -132,8 +132,79 @@
                             <span>Home</span>
                         </a>
                     </li>
+                    <li class="nav-header">General Menus</li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-user-md"></i>
+                            <span>Patient Management</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-file"></i>
+                            <span>Reporting Engine</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("DataRequest", "ReportingEngine", new {area = ""})">Data Request</a></li>
+                            <li class="active"><a href="@Url.Action("PatientDataExport", "ReportingEngine", new {area = ""})">Patient Data Export</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-building"></i>
+                            <span>Site Management</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("Index", "SiteManagement", new {area = ""})">Overview</a></li>
+                        </ul>
+                    </li>
+                    <li class="has-sub">
+                        <a href="javascript:;">
+                            <b class="caret pull-right"></b>
+                            <i class="fa fa-users"></i>
+                            <span>User Management</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li class="active"><a href="@Url.Action("Index", "UserManagement", new {area = ""})">Overview</a></li>
+                        </ul>
+                    </li>
+
+                    @if (dataIntegrityIssues)
+                    {
+                        <li class="nav-header">Data Integrity</li>
+                        if (roleId == (int)UserRole.CountryAdministrator || roleId == (int)UserRole.SystemAdministrator)
+                        {
+                            <li class="has-sub active">
+                                <a href="javascript:;">
+                                    <b class="caret pull-right"></b>
+                                    <i class="fa fa-shield"></i>
+                                    <span>Data Integrity Overview</span>
+                                </a>
+                                <ul class="sub-menu">
+                                    <li class="active">
+                                        <div class="note note-warning">
+                                            <span class="fa fa-warning"></span> APIN PDA noticed some Data Integrity Issues. Please fix them as soon as possible.
+                                            <br />
+                                            <a class="btn btn-info btn-xs" href="@Url.Action("Index", "DataIntegrity", new {area = ""})">
+                                                View
+                                            </a>
+                                            <button class="btn btn-danger btn-xs" onclick="refreshDupData('@Url.Action("RefreshStaticData", "Home", new {area = ""})')">Refresh</button>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    }
+
                     @if (SecurityModel.GetUserInSession.AdministrationStaffInformation.Id == 0)
                     {
+                        <li class="nav-header">System Administration</li>
                         <li class="has-sub">
                             <a href="javascript:;">
                                 <b class="caret pull-right"></b>
@@ -165,73 +236,6 @@
                             </ul>
                         </li>
                     }
-
-                    @if (dataIntegrityIssues)
-                    {
-                        if (roleId == (int)UserRole.CountryAdministrator || roleId == (int)UserRole.SystemAdministrator)
-                        {
-                            <li class="has-sub active">
-                                <a href="javascript:;">
-                                    <b class="caret pull-right"></b>
-                                    <i class="fa fa-shield"></i>
-                                    <span>Data Integrity Overview</span>
-                                </a>
-                                <ul class="sub-menu">
-                                    <li class="active">
-                                        <div class="note note-warning">
-                                            <span class="fa fa-warning"></span> APIN PDA noticed some Data Integrity Issues. Please fix them as soon as possible.
-                                            <br />
-                                            <a class="btn btn-info btn-xs" href="@Url.Action("Index", "DataIntegrity", new {area = ""})">
-                                                View
-                                            </a>
-                                            <button class="btn btn-danger btn-xs" onclick="refreshDupData('@Url.Action("RefreshStaticData", "Home", new {area = ""})')">Refresh</button>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                    }
-
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-user-md"></i>
-                            <span>Patient Management</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-file"></i>
-                            <span>Reporting Engine</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("DataRequest", "ReportingEngine", new {area = ""})">Data Request</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-building"></i>
-                            <span>Site Management</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "SiteManagement", new {area = ""})">Overview</a></li>
-                        </ul>
-                    </li>
-                    <li class="has-sub">
-                        <a href="javascript:;">
-                            <b class="caret pull-right"></b>
-                            <i class="fa fa-users"></i>
-                            <span>User Management</span>
-                        </a>
-                        <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "UserManagement", new {area = ""})">Overview</a></li>
-                        </ul>
-                    </li>
                     <li>
                         <a href="javascript:;" class="sidebar-minify-btn" data-click="sidebar-minify">
                             <i class="fa fa-angle-double-left"></i>

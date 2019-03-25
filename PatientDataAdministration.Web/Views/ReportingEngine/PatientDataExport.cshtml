@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Patient Data Export";
+    ViewBag.TitleDesc = "Pull Patient Data";
+    Layout = "~/Views/Shared/_LayoutSecure.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-inverse">
+            <div class="panel-heading">
+                <h4 class="panel-title">Input Request Data</h4>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="control-label" for="state">State :</label>
+                            <select class="form-control" id="state" name="state"
+                                    data-parsley-required="true" onchange="selectSites()">
+                                <option value="0">Please Select a State</option>
+                                <option ng-repeat="option in allStates track by option.Id" value="{{option.Id}}">{{option.StateName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <label class="control-label" for="sites">Site :</label>
+                            <select class="form-control" id="sites" name="sites"
+                                    data-parsley-required="true">
+                                <option value="0">Please Select a Site</option>
+                                <option ng-repeat="option in sitesInStates track by option.Id" value="{{option.Id}}">{{option.SiteNameOfficial}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label" for="fromDate_input">From Date :</label>
+                            <div class="input-group date datepicker-default" id="fromDate">
+                                <input type="text" class="form-control" placeholder="From Date" data-parsley-required="true" id="fromDate_input" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <label class="control-label" for="toDate_input">To Date :</label>
+                            <div class="input-group date datepicker-default" id="toDate">
+                                <input type="text" class="form-control" placeholder="To Date" data-parsley-required="true" id="toDate_input" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="alert bg-black-darker p-5 m-t-10">
+                                <p class="text-white m-b-5">Captured Biometrics Only?</p>
+                                <input type="checkbox" data-render="switchery" data-theme="default" id="chkOnlyBio" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <button class="btn btn-success btn-block btn-sm pull-right m-t-10" onclick="requestData()">Request for Data</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function() {
+            pageLoad();
+            FormSliderSwitcher.init();
+        });
+
+        pdaWeb.controller('pdaWebCtrlr',
+            function($scope) {
+                $scope.allStates = [];
+                $scope.sitesInStates = [];
+            });
+
+        function resetForm() {
+            $('#search').val('');
+            $('#sites').val(0);
+            $('#state').val(0);
+        }
+
+        function pageLoad() {
+            window.api("GET",
+                "@Url.Action("GetStates", "Data", new {area = "ServerCommunication"})",
+                null,
+                true,
+                loadStates);
+        };
+
+        function loadStates(data) {
+            window.getNgScope().allStates = data;
+            window.getNgScope().$apply();
+        };
+
+        function selectSites() {
+            window.api("GET",
+                "@Url.Action("GetSites", "Data", new {area = "ServerCommunication"})?stateId=" + $('#state').val(),
+                null,
+                true,
+                loadSites);
+        };
+
+        function loadSites(data) {
+            if (data.length === 0) {
+                window.swalWarning('This state does not have any sites');
+            }
+            window.getNgScope().sitesInStates = data;
+            window.getNgScope().$apply();
+        };
+
+        function requestData() {
+
+            if ($('#state').val() === '0') {
+                window.swalWarning('You need to at least specify a State');
+                pageLoad();
+                $('#state').focus();
+                return;
+            }
+
+            if (window.getNgScope().sitesInStates.length === 0) {
+                window.swalWarning('There are no Sites for the specified State');
+                selectSites();
+                return;
+            }
+
+            if ($('#fromDate_input').val() === '') {
+                window.swalWarning('From when are we looking at?');
+                $('#fromDate_input').focus();
+                return;
+            }
+
+            if ($('#toDate_input').val() === '') {
+                window.swalWarning('Till when?');
+                $('#toDate_input').focus();
+                return;
+            }
+
+            const data = {
+                stateId: $('#state').val(), 
+                siteId: $('#sites').val(), 
+                chkOnlyBio: $('#chkHasNfc').prop("checked"),
+                toDate: $('#toDate_input').val(),
+                fromDate: $('#fromDate_input').val()
+            };
+
+            window.api("POST",
+                "@Url.Action("ProcessPatientData", "PatientManagement", new {area = "ServerCommunication"})",
+                data,
+                true,
+                requestDataResponse);
+        };
+
+        function requestDataResponse(data) {
+            window.swalInfo('Your request has been submitted. You will get an Email Shortly');
+            $('#state').val(0);
+            $('#sites').val(0);
+            $('#query').val('');
+
+            pageLoad();
+        }
+    </script>
+}

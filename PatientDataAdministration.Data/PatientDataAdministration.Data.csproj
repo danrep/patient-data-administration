@@ -129,6 +129,9 @@
     <Compile Include="Sp_Administration_GetInActiveUsers_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Sp_Administration_GetPatientDataManifest_Result.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Sp_Administration_GetPatients_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
