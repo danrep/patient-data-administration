@@ -113,6 +113,7 @@
     <Build Include="dbo\Tables\System_AuditTrail.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetRegDataSummary.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetRegBioDataSummary.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_Administration_GetPatientDataManifest.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />
