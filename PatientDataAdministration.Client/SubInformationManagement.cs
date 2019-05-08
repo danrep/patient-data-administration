@@ -307,7 +307,7 @@ namespace PatientDataAdministration.Client
 
                         if (content != null)
                         {
-                            if (content.Title.FirstOrDefault()?.Value != txtPepId.Text.Trim())
+                            if (content.Title[0].Value != txtPepId.Text.Trim())
                             {
                                 var dialogueResult = MessageBox.Show(
                                     @"A differernt patient has been assigned this Tag. Do you want to reassign it?",
@@ -326,6 +326,7 @@ namespace PatientDataAdministration.Client
 
                     _tag.Content.Clear();
                     _tag.Content.Add(ndefData);
+                    _tag.Content.Insert(0, ndefData);
 
                     Card_write_proc();
 
@@ -383,7 +384,7 @@ namespace PatientDataAdministration.Client
                     }
 
                     _systemBioDataStore.PatientData = Newtonsoft.Json.JsonConvert.SerializeObject(patientData);
-                    _systemBioDataStore.FullName = txtSurname.Text = @" " + txtOtherNames.Text;
+                    _systemBioDataStore.FullName = txtSurname.Text + @" " + txtOtherNames.Text;
                     _systemBioDataStore.IsSync = false;
                     _systemBioDataStore.LastUpdate = DateTime.Now;
                     _systemBioDataStore.NfcUid = _nfcUid ?? "";
@@ -998,7 +999,7 @@ namespace PatientDataAdministration.Client
                     else
                     { lblInformation.Text = @"This Tag is Empty. You can proceed with attaching a Patient to it!";}
 
-                    var patientData = _systemBioDataStores.FirstOrDefault(x => x.NfcUid == _nfcUid && x.PepId == smart.Title.FirstOrDefault()?.Value);
+                    var patientData = _systemBioDataStores.FirstOrDefault(x => x.NfcUid == _nfcUid && x.PepId == smart.Title[0].Value);
                     
                     if (patientData != null)
                         LoadPatientData(patientData);
@@ -1067,7 +1068,7 @@ namespace PatientDataAdministration.Client
 
                 if (patientDataResolved.Patient_PatientNearFieldCommunicationData != null)
                 {
-                    _nfcUid = patientDataResolved.Patient_PatientNearFieldCommunicationData.CardId;
+                    //_nfcUid = patientDataResolved.Patient_PatientNearFieldCommunicationData.CardId;
                     chkNfc.Checked = !string.IsNullOrEmpty(_nfcUid);
                 }
                 else _nfcUid = "";

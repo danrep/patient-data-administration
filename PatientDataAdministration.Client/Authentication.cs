@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Security.Principal;
@@ -62,8 +63,16 @@ namespace PatientDataAdministration.Client
                                 credential.AuthPayLoad));
                     else
                     {
-                        MessageBox.Show(@"Your Password is Incorrect");
-                        txtPassword.Text = "";
+                        if (CheckCredentialServer(out var userData))
+                        {
+                            GainAccess(userData);
+                            _status = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show(@"Your Password is Incorrect");
+                            txtPassword.Text = "";
+                        }
                     }
                 }
 
@@ -168,7 +177,7 @@ namespace PatientDataAdministration.Client
                         CurrentUser = 0
                     }
                 };
-                var result = LocalCore.Post(@"/ClientCommunication/User/Authenticate",
+                var result = LocalCore.Post($@"/ClientCommunication/User/Authenticate",
                     JsonConvert.SerializeObject(payload));
 
                 if (result.Status)
@@ -181,21 +190,40 @@ namespace PatientDataAdministration.Client
 
                         administrationStaffInformation = data;
 
-                        _localPdaEntities.Local_StaffInformation.Add(new Local_StaffInformation()
+                        var existingCredential =
+                            _localPdaEntities.Local_StaffInformation.FirstOrDefault(x =>
+                                !x.IsDeleted && x.Email == data.Email);
+
+                        if (existingCredential == null)
+                            _localPdaEntities.Local_StaffInformation.Add(new Local_StaffInformation()
+                            {
+                                AuthenticationState = data.AuthenticationState,
+                                IsDeleted = false,
+                                Surname = data.Surname,
+                                AuthPayLoad = JsonConvert.SerializeObject(result.Data),
+                                DateRegistered = data.DateRegistered,
+                                Email = data.Email,
+                                FirstName = data.FirstName,
+                                PasswordData = data.PasswordData,
+                                PasswordSalt = data.PasswordSalt,
+                                RemoteId = data.Id,
+                                SiteId = data.SiteId,
+                                StaffId = data.StaffId
+                            });
+                        else
                         {
-                            AuthenticationState = data.AuthenticationState,
-                            IsDeleted = false, 
-                            Surname = data.Surname, 
-                            AuthPayLoad = JsonConvert.SerializeObject(result.Data),
-                            DateRegistered = data.DateRegistered,
-                            Email = data.Email,
-                            FirstName = data.FirstName, 
-                            PasswordData = data.PasswordData,
-                            PasswordSalt = data.PasswordSalt,
-                            RemoteId = data.Id,
-                            SiteId = data.SiteId,
-                            StaffId = data.StaffId
-                        });
+                            existingCredential.PasswordSalt = data.PasswordSalt;
+                            existingCredential.AuthPayLoad = JsonConvert.SerializeObject(result.Data);
+                            existingCredential.AuthenticationState = data.AuthenticationState;
+                            existingCredential.FirstName = data.FirstName;
+                            existingCredential.Surname = data.Surname;
+                            existingCredential.PasswordData = data.PasswordData;
+                            existingCredential.RemoteId = data.Id;
+                            existingCredential.SiteId = data.SiteId;
+                            existingCredential.StaffId = data.StaffId;
+
+                            _localPdaEntities.Entry(existingCredential).State = EntityState.Modified;
+                        }
 
                         _localPdaEntities.SaveChanges();
                         return true;

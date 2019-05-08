@@ -32,7 +32,7 @@ namespace PatientDataAdministration.Web.Models
                 using (var entities = new Entities())
                 {
                     return entities.Administration_StaffInformation.FirstOrDefault(x =>
-                        !x.IsDeleted && x.Id == userId && x.AuthenticationState == (int) Status.Banned) != null;
+                        !x.IsDeleted && x.Id == userId && x.AuthenticationState == (int) Status.Active) != null;
                 }
             }
             catch (Exception e)

@@ -183,15 +183,17 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                if (_tag.Content.Count() != 0)
-                {
-                    var dialogResult = MessageBox.Show(
-                        $@"This Tag has data on it. Do you want to continue with the Formatting? All Data will be lost!", @"Please Decide",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (_tag != null)
+                    if (_tag.Content.Any())
+                    {
+                        var dialogResult = MessageBox.Show(
+                            $@"This Tag has data on it. Do you want to continue with the Formatting? All Data will be lost!",
+                            @"Please Decide",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                    if (dialogResult != DialogResult.Yes)
-                        return;
-                }
+                        if (dialogResult != DialogResult.Yes)
+                            return;
+                    }
 
                 if (DetachFromPatient(_nfcUid))
                 {
@@ -227,9 +229,9 @@ namespace PatientDataAdministration.Client
                     foreach (var matchingPatient in matchingPatients)
                     {
                         matchingPatient.NfcUid = string.Empty;
+                        entity.Entry(matchingPatient).State = EntityState.Modified;
                     }
 
-                    entity.Entry(matchingPatients).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
 
