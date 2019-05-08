@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Hosting;
-using CsvHelper;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
@@ -332,26 +331,6 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
             }
         }
 
-        private static void WriteToFile(IEnumerable<dynamic> list, string expectedFileName)
-        {
-            try
-            {
-                using (TextWriter writer =
-                    new StreamWriter(expectedFileName, false, System.Text.Encoding.UTF8))
-                {
-                    var csv = new CsvWriter(writer);
-                    csv.WriteRecords(list);
-                    csv.Dispose();
-
-                    writer.Close();
-                }
-            }
-            catch (Exception e)
-            {
-                ActivityLogger.Log(e);
-            }
-        }
-
         #region Reports
         
         public static void SyncCompliance(bool logOperation = true)
@@ -571,7 +550,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
 
                     var expectedFile = Path.Combine(localDirectory.FullName, $"{fileNameSuffix}.csv");
 
-                    WriteToFile(bioDataSummary, expectedFile);
+                    CommaSeparatedValuesWriter.WriteToFile(bioDataSummary, expectedFile);
 
                     Messaging.SendMail(
                         string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
@@ -628,7 +607,7 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
 
                     var expectedFile = Path.Combine(localDirectory.FullName, $"{fileNameSuffix}.csv");
 
-                    WriteToFile(dataSummary, expectedFile);
+                    CommaSeparatedValuesWriter.WriteToFile(dataSummary, expectedFile);
 
                     Messaging.SendMail(
                         string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,

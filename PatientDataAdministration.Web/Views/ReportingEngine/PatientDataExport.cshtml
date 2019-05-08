@@ -119,19 +119,6 @@
 
         function requestData() {
 
-            if ($('#state').val() === '0') {
-                window.swalWarning('You need to at least specify a State');
-                pageLoad();
-                $('#state').focus();
-                return;
-            }
-
-            if (window.getNgScope().sitesInStates.length === 0) {
-                window.swalWarning('There are no Sites for the specified State');
-                selectSites();
-                return;
-            }
-
             if ($('#fromDate_input').val() === '') {
                 window.swalWarning('From when are we looking at?');
                 $('#fromDate_input').focus();

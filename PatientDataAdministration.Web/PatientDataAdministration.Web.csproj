@@ -1163,6 +1163,7 @@
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataIntegrityController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataProcessorHandlerController.cs" />
+    <Compile Include="Areas\ServerCommunication\Controllers\FileDeliveryController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\IndicatorsController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\PatientManagementController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\SiteManagementController.cs" />

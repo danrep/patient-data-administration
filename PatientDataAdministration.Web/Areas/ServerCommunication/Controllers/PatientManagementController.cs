@@ -4,6 +4,8 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
@@ -33,23 +35,24 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
 
                 _db.Database.CommandTimeout = 0;
 
-                var sites = LocalCache.Get <List<Administration_SiteInformation>>("Administration_SiteInformation");
+                var sites = LocalCache.Get<List<Administration_SiteInformation>>("Administration_SiteInformation");
 
-                var patients = _db.Sp_Administration_GetPatients(patientSearch.Query, patientSearch.StateId, patientSearch.SiteId, patientSearch.HasBio, patientSearch.HasNfc);
+                var patients = _db.Sp_Administration_GetPatients(patientSearch.Query, patientSearch.StateId,
+                    patientSearch.SiteId, patientSearch.HasBio, patientSearch.HasNfc);
 
                 return Json(new ResponseData
                 {
                     Status = true,
                     Message = "Successful",
                     Data = patients.Select(p => new
+                    {
+                        PatientInfo = p,
+                        SiteInfo = sites.FirstOrDefault(x => x.Id == p.SiteId) ?? new Administration_SiteInformation()
                         {
-                            PatientInfo = p,
-                            SiteInfo = sites.FirstOrDefault(x => x.Id == p.SiteId) ?? new Administration_SiteInformation()
-                            {
-                                SiteNameOfficial = "[Unassigned]"
-                            },
-                            Age = (DateTime.Now.Subtract(p.DateOfBirth ?? DateTime.Now).TotalDays / 365)
-                        }).ToList()
+                            SiteNameOfficial = "[Unassigned]"
+                        },
+                        Age = (DateTime.Now.Subtract(p.DateOfBirth ?? DateTime.Now).TotalDays / 365)
+                    }).ToList()
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -79,7 +82,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -121,7 +124,8 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var biometricData =
                     _db.Patient_PatientBiometricData.FirstOrDefault(x => !x.IsDeleted && x.PepId == patient.PepId);
                 var nfcData =
-                    _db.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x => !x.IsDeleted && x.PepId == patient.PepId);
+                    _db.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x =>
+                        !x.IsDeleted && x.PepId == patient.PepId);
 
                 return Json(new ResponseData
                 {
@@ -133,11 +137,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         Site = site,
                         SiteState = siteState,
                         SiteOriginState = stateOfOriginState,
-                        AddressFull = $"{addressState}. {addressState.StateName} LGA. {addressLga.LocalGovermentAreaName} State",
+                        AddressFull =
+                            $"{addressState}. {addressState.StateName} LGA. {addressLga.LocalGovermentAreaName} State",
                         AddressState = addressState,
                         AddressLga = addressLga,
                         BiometricData = biometricData,
-                        NfcData = nfcData, 
+                        NfcData = nfcData,
                         Dob = patient.DateOfBirth?.ToString("MM/dd/yyyy") ?? ""
                     }
                 }, JsonRequestBehavior.AllowGet);
@@ -175,7 +180,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -184,10 +189,11 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
         {
             try
             {
-                var patient = _db.Patient_PatientInformation.FirstOrDefault(x => !x.IsDeleted && x.PepId == patientPatientInformation.PepId);
+                var patient = _db.Patient_PatientInformation.FirstOrDefault(x =>
+                    !x.IsDeleted && x.PepId == patientPatientInformation.PepId);
 
                 if (patient == null)
-                    return Json(new ResponseData { Status = false, Message = "Patient not Found" },
+                    return Json(new ResponseData {Status = false, Message = "Patient not Found"},
                         JsonRequestBehavior.AllowGet);
 
                 patient.DateOfBirth = DateTime.ParseExact(dob, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -210,7 +216,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -221,10 +227,20 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             try
             {
                 var userInformation = SecurityModel.GetUserInSession.AdministrationStaffInformation;
+                var downloadLink =
+                    this.Url.Action("DownloadFile", "FileDelivery",
+                        new
+                        {
+                            area = "",
+                            auth = SecurityModel.GetUserInSession.AdministrationStaffInformation.PasswordSalt,
+                            fileName = "generatedFileName"
+                        },
+                        Request.Url.Scheme);
+
                 new Thread(() =>
                     {
                         ProcessPatientDumpData(stateId, siteId, chkOnlyBio, toDate, fromDate,
-                            userInformation);
+                            userInformation, downloadLink);
                     })
                     .Start();
 
@@ -241,13 +257,15 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        private void ProcessPatientDumpData(int stateId, int siteId, bool chkOnlyBio, string toDate, string fromDate, Administration_StaffInformation administrationStaffInformation)
+        private void ProcessPatientDumpData(int stateId, int siteId, bool chkOnlyBio, string toDate, string fromDate,
+            Administration_StaffInformation administrationStaffInformation, string downloadUrl)
         {
             try
             {
                 using (var entities = new Entities())
                 {
                     var sites = RecurrentData.Sites;
+                    var states = RecurrentData.States;
 
                     var startDateValue = DateTime.ParseExact(fromDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     var endDateValue = DateTime.ParseExact(toDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -256,31 +274,67 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                         entities.Sp_Administration_GetPatientDataManifest(stateId, siteId, chkOnlyBio, startDateValue,
                             endDateValue).ToList();
 
-                    var sitesInDataSet = patientManifest.Select(x => x.SiteId).Distinct().ToList();
-
-                    var fileData = sitesInDataSet.Select(x =>
-                        new ExcelWriter.ExcelPatientRecord()
-                        {
-                            SiteName = sites.FirstOrDefault(y => y.Id == x)?.SiteCode,
-                            PatientDataManifest = patientManifest.Where(y => y.SiteId == x).ToList()
-                        });
-
                     var fileName =
                         $"PATIENT_MANIFEST_{RecurrentData.States.FirstOrDefault(x => x.Id == stateId)?.StateName}_{startDateValue:yyyyMMdd}_{endDateValue:yyyyMMdd}_{(chkOnlyBio ? "BIOINTENSIVE" : "GENERAL")}"
-                            .ToUpper();
+                            .ToUpper() + ".csv";
 
-                    fileName = ExcelWriter.GetFilePatientRecords(fileName, fileData.ToList());
+                    //var sitesInDataSet = patientManifest.Select(x => x.SiteId).Distinct().ToList();
+                    //var fileData = sitesInDataSet.Select(x =>
+                    //    new ExcelWriter.ExcelPatientRecord()
+                    //    {
+                    //        StateName = RecurrentData.States.FirstOrDefault(y => y.Id == sites.FirstOrDefault(z => z.Id == x)?.StateId)?.StateName,
+                    //        SiteName = sites.FirstOrDefault(y => y.Id == x)?.SiteNameOfficial,
+                    //        SiteCode = sites.FirstOrDefault(y => y.Id == x)?.SiteCode,
+                    //        PatientDataManifest = patientManifest.Where(y => y.SiteId == x).ToList()
+                    //    });
+                    //fileName = ExcelWriter.GetFilePatientRecords(fileName, fileData.ToList());
 
-                    var msg = $"Dear {administrationStaffInformation.Surname} {administrationStaffInformation.FirstName}(s)<br />";
+                    var fileData = patientManifest.Select(x =>
+                            new
+                            {
+                                states.FirstOrDefault(y => y.Id == sites.FirstOrDefault(z => z.Id == x.SiteId)?.StateId)
+                                    ?.StateName,
+                                SiteName = sites.FirstOrDefault(y => y.Id == x.SiteId)?.SiteNameOfficial,
+                                sites.FirstOrDefault(y => y.Id == x.SiteId)?.SiteCode,
+                                x.PepId,
+                                x.Surname,
+                                x.Othername,
+                                x.Sex,
+                                DateOfBirth = x.DateOfBirth?.ToLongDateString(),
+                                x.PhoneNumber,
+                                x.BiometricRegistrationDate,
+                                BiometricDataCode = x.FingerDataHash,
+                                x.HasBioMetrics
+                            })
+                        .OrderBy(x => x.StateName)
+                        .ThenBy(x => x.SiteCode)
+                        .ThenByDescending(x => x.HasBioMetrics)
+                        .ThenBy(x => x.Surname)
+                        .ThenBy(x => x.Othername)
+                        .ThenBy(x => x.PhoneNumber).ToList();
+
+                    CommaSeparatedValuesWriter.WriteToFile(fileData,
+                        $"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage\\{fileName}");
+
+                    var msg =
+                        $"Dear {administrationStaffInformation.Surname} {administrationStaffInformation.FirstName}(s)<br />";
                     msg += "You have Requested for a Patient Manifest. The details are below:<br /><br />";
-                    msg += $"State: {RecurrentData.States.FirstOrDefault(x => x.Id == stateId)?.StateName}<br />";
-                    msg += $"Site: {(siteId == 0 ? "ALL SITES" : RecurrentData.Sites.FirstOrDefault(x => x.Id == siteId)?.SiteNameOfficial)}<br />";
+
+                    if (stateId == 0)
+                        msg += $"State: ALL STATES<br />";
+                    else
+                        msg += $"State: {states.FirstOrDefault(x => x.Id == stateId)?.StateName}<br />";
+
+                    msg +=
+                        $"Site: {(siteId == 0 ? "ALL SITES<br />" : sites.FirstOrDefault(x => x.Id == siteId)?.SiteNameOfficial)}<br />";
+
                     msg += $"Start Date: {startDateValue.ToLongDateString()}<br />";
                     msg += $"End Date: {endDateValue.ToLongDateString()}<br />";
-                    msg += $"Restrict Biometrics: {chkOnlyBio}";
+                    msg += $"Restrict Biometrics: {chkOnlyBio}<br />";
+                    msg += $"Download Link: {downloadUrl.Replace("generatedFileName", fileName)}";
 
                     Messaging.SendMail(administrationStaffInformation.Email,
-                        null, null, "Requested Patient Manifest", msg, fileName);
+                        null, null, "Requested Patient Manifest", msg, null);
                 }
             }
             catch (Exception ex)

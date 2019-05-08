@@ -34,6 +34,7 @@ namespace PatientDataAdministration.Data
         public Nullable<System.DateTime> WhenCreated { get; set; }
         public Nullable<System.DateTime> LastUpdated { get; set; }
         public System.DateTime BiometricRegistrationDate { get; set; }
+        public string FingerDataHash { get; set; }
         public Nullable<bool> HasBioMetrics { get; set; }
     }
 }

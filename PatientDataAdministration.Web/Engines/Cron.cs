@@ -1,5 +1,7 @@
 ﻿using PatientDataAdministration.Core;
 using System;
+using System.Linq;
+using PatientDataAdministration.Data;
 
 namespace PatientDataAdministration.Web.Engines
 {
@@ -25,10 +27,10 @@ namespace PatientDataAdministration.Web.Engines
         {
             if (_isTriggered)
                 return;
+            _isTriggered = true;
 
             if (_currentHour == DateTime.Now.Hour)
                 return;
-
             _currentHour = DateTime.Now.Hour;
 
             #region Data Integrity Engine
@@ -70,8 +72,35 @@ namespace PatientDataAdministration.Web.Engines
 
             #endregion
 
+            #region Misc Operations
+
+            try
+            {
+                using (var pdaEntities = new Entities())
+                {
+                    var pendingHashes = pdaEntities.Patient_PatientBiometricData
+                        .Where(x => !x.IsDeleted && string.IsNullOrEmpty(x.FingerDataHash)).Take(100).ToList();
+
+                    foreach (var pendingHash in pendingHashes)
+                    {
+                        pendingHash.FingerDataHash =
+                            Sha512Engine.GenerateSHA512String(
+                                pendingHash.FingerPrimary + "|" + pendingHash.FingerSecondary);
+                        pdaEntities.Entry(pendingHash).State = System.Data.Entity.EntityState.Modified;
+                        pdaEntities.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+            #endregion
+
             GC.Collect();
             GC.WaitForPendingFinalizers();
+
+            _isTriggered = false;
         }
     }
 }

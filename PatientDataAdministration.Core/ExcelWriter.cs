@@ -16,13 +16,14 @@ namespace PatientDataAdministration.Core
             {
                 new[]
                 {
-                    "Pep Id", "SurName", "Other Names", "Sex", "Date of Birth", "Phone Number",
-                    "Date Biometric Recorded"
+                    "State Name", "Site Name", "Pep Id", "Surname", "Other Names", "Sex", "Date of Birth",
+                    "Phone Number", "Date Biometric Recorded", "Biometric Code"
                 }
             }, patientDataManifestList);
         }
 
-        private static string GetFile(string fileName, IReadOnlyList<string[]> headerRow, IEnumerable<ExcelPatientRecord> patientDataManifestList)
+        private static string GetFile(string fileName, IReadOnlyList<string[]> headerRow,
+            IEnumerable<ExcelPatientRecord> patientDataManifestList)
         {
             try
             {
@@ -39,10 +40,11 @@ namespace PatientDataAdministration.Core
                 {
                     foreach (var patientDataManifest in patientDataManifestList)
                     {
-                        excel.Workbook.Worksheets.Add(patientDataManifest.SiteName);
+                        var sheetName = $"{patientDataManifest.StateName}_{patientDataManifest.SiteCode}".ToUpper();
+                        excel.Workbook.Worksheets.Add(sheetName);
 
                         var headerRange = "A1:" + char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
-                        var worksheet = excel.Workbook.Worksheets[patientDataManifest.SiteName];
+                        var worksheet = excel.Workbook.Worksheets[sheetName];
                         worksheet.Cells[headerRange].LoadFromArrays(headerRow);
                         worksheet.Cells[headerRange].Style.Font.Bold = true;
                         worksheet.Cells[headerRange].Style.Font.Color.SetColor(System.Drawing.Color.SteelBlue);
@@ -50,9 +52,11 @@ namespace PatientDataAdministration.Core
                         var biometricRecords = patientDataManifest
                             .PatientDataManifest.Where(x => Convert.ToBoolean(x.HasBioMetrics)).Select(x => new object[]
                             {
-                                x.PepId, x.Surname, x.Othername, x.Sex, x.DateOfBirth?.ToLongDateString(),
-                                x.PhoneNumber, x.BiometricRegistrationDate.ToLongDateString()
+                                patientDataManifest.StateName, patientDataManifest.SiteName, x.PepId, x.Surname,
+                                x.Othername, x.Sex, x.DateOfBirth?.ToLongDateString(),
+                                x.PhoneNumber, x.BiometricRegistrationDate.ToLongDateString(), x.FingerDataHash
                             }).ToArray();
+
                         worksheet.Cells[2, 1].LoadFromArrays(new List<string[]>()
                         {
                             new[]
@@ -73,14 +77,17 @@ namespace PatientDataAdministration.Core
                             }
                         });
                         worksheet.Cells[biometricRecords.Length + 5, 1].Style.Font.Bold = true;
-                        worksheet.Cells[biometricRecords.Length + 5, 1].Style.Font.Color.SetColor(System.Drawing.Color.DarkRed);
+                        worksheet.Cells[biometricRecords.Length + 5, 1].Style.Font.Color
+                            .SetColor(System.Drawing.Color.DarkRed);
 
                         var nonBiometricRecords = patientDataManifest
-                            .PatientDataManifest.Where(x => !Convert.ToBoolean(x.HasBioMetrics)).Select(x => new object[]
-                            {
-                                x.PepId, x.Surname, x.Othername, x.Sex, x.DateOfBirth?.ToLongDateString(),
-                                x.PhoneNumber, "NOT_REGISTERED"
-                            }).ToArray();
+                            .PatientDataManifest.Where(x => !Convert.ToBoolean(x.HasBioMetrics)).Select(x =>
+                                new object[]
+                                {
+                                    patientDataManifest.StateName, patientDataManifest.SiteName, x.PepId, x.Surname,
+                                    x.Othername, x.Sex, x.DateOfBirth?.ToLongDateString(),
+                                    x.PhoneNumber, "NOT_REGISTERED", "NO_DATA"
+                                }).ToArray();
                         worksheet.Cells[6 + biometricRecords.Length, 1].LoadFromArrays(nonBiometricRecords);
                     }
 
@@ -99,8 +106,18 @@ namespace PatientDataAdministration.Core
 
         public class ExcelPatientRecord
         {
+            public string StateName { get; set; }
+            public string SiteCode { get; set; }
             public string SiteName { get; set; }
             public List<Sp_Administration_GetPatientDataManifest_Result> PatientDataManifest { get; set; }
+        }
+
+        public class ExcelPatientRecordLinear
+        {
+            public string StateName { get; set; }
+            public string SiteCode { get; set; }
+            public string SiteName { get; set; }
+            public Sp_Administration_GetPatientDataManifest_Result PatientInfo { get; set; }
         }
     }
 }
