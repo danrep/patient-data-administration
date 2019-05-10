@@ -257,7 +257,6 @@ namespace PatientDataAdministration.ClientUpdater
 
                     foreach (var file in files)
                     {
-
                         while (ftpClient.IsBusy) { }
 
                         Console.WriteLine($"\nCurrent File: {file}.");
@@ -267,6 +266,8 @@ namespace PatientDataAdministration.ClientUpdater
                         
                         ftpClient.DownloadFileAsync(new Uri(path), trnsfrpth);
                     }
+
+                    while (ftpClient.IsBusy) { }
                 }
 
                 return true;

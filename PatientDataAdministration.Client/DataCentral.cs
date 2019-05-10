@@ -126,7 +126,11 @@ namespace PatientDataAdministration.Client
                     {
 
                     }
-                    _operationQueue.Add(new OperationQueue { Param = "Patient Data Pre Load for Patient Information Completed Sucessfully" });
+
+                    _operationQueue.Add(new OperationQueue
+                    {
+                        Param = "Patient Data Pre Load for Patient Information Completed Sucessfully"
+                    });
                 }).Start();
 
                 new Thread(() =>
@@ -135,7 +139,11 @@ namespace PatientDataAdministration.Client
                     {
 
                     }
-                    _operationQueue.Add(new OperationQueue { Param = "Patient Data Pre Load for Population Register Completed Sucessfully" });
+
+                    _operationQueue.Add(new OperationQueue
+                    {
+                        Param = "Patient Data Pre Load for Population Register Completed Sucessfully"
+                    });
                 }).Start();
 
                 _operationQueue.Add(new OperationQueue { Param = "Starting Application Server" });
@@ -197,11 +205,13 @@ namespace PatientDataAdministration.Client
                 bgwContentManager.CancelAsync();
                 bgwPing.CancelAsync();
 
-                Close();
+                this.Close();
             }
             catch (Exception exception)
             {
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
+
+                this.Close();
             }
         }
 

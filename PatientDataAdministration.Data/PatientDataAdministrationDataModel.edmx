@@ -5,6 +5,37 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PatientDataAdministration.DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationLog">
+          <Key>
+            <PropertyRef Name="migration_id" />
+            <PropertyRef Name="script_checksum" />
+            <PropertyRef Name="complete_dt" />
+          </Key>
+          <Property Name="migration_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="script_checksum" Type="nvarchar" MaxLength="64" Nullable="false" />
+          <Property Name="script_filename" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="complete_dt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="applied_by" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="deployed" Type="tinyint" Nullable="false" />
+          <Property Name="version" Type="varchar" MaxLength="255" />
+          <Property Name="package_version" Type="varchar" MaxLength="255" />
+          <Property Name="release_version" Type="varchar" MaxLength="255" />
+          <Property Name="sequence_no" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Administration_ClientLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="CurrentUserId" Type="int" Nullable="false" />
+          <Property Name="DateLog" Type="datetime" Nullable="false" />
+          <Property Name="LocationLat" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="LocationLong" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ChipData" Type="varchar(max)" Nullable="false" />
+          <Property Name="ClientIpAddress" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Administration_ClientMap">
           <Key>
             <PropertyRef Name="Id" />
@@ -109,6 +140,20 @@
           <Property Name="SiteId" Type="int" Nullable="false" />
           <Property Name="ClientId" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemAppointmentDataItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateLogged" Type="datetime" Nullable="false" />
+          <Property Name="AppointmentOffice" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="AppointmentData" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
+          <Property Name="PepId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="GeneratedMessage" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="OperationStatus" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricData">
@@ -405,6 +450,8 @@
           <Parameter Name="upperDate" Type="datetime" Mode="In" />
         </Function>
         <EntityContainer Name="PatientDataAdministrationDatabaseModelStoreContainer">
+          <EntitySet Name="__MigrationLog" EntityType="Self.__MigrationLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Administration_ClientLog" EntityType="Self.Administration_ClientLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientMap" EntityType="Self.Administration_ClientMap" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_ClientRegistry" EntityType="Self.Administration_ClientRegistry" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Administration_MessagingPatientComplaint" EntityType="Self.Administration_MessagingPatientComplaint" Schema="dbo" store:Type="Tables" />
@@ -413,6 +460,7 @@
           <EntitySet Name="Administration_StaffInformation" EntityType="Self.Administration_StaffInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_AppointmentDataItem" EntityType="Self.Integration_AppointmentDataItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_AppointmentDataManifest" EntityType="Self.Integration_AppointmentDataManifest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Integration_SystemAppointmentDataItem" EntityType="Self.Integration_SystemAppointmentDataItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="Self.Patient_PatientBiometricDataPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="Self.Patient_PatientBiometricIntegrityCase" Schema="dbo" store:Type="Tables" />
@@ -463,7 +511,7 @@
           <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" />
           <FunctionImport Name="Sp_Administration_GetAgeDistro" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetAgeDistro_Result)" />
           <FunctionImport Name="Sp_Administration_GetInActiveUsers" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetInActiveUsers_Result)">
-            <Parameter Name="inactiveBar" Mode="In" Type="Int32" />
+          <Parameter Name="inactiveBar" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_Administration_GetPatientCompliance" ReturnType="Collection(String)" />
           <FunctionImport Name="Sp_Administration_GetPatientDataManifest" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_Administration_GetPatientDataManifest_Result)">
@@ -490,23 +538,23 @@
           </FunctionImport>
           <FunctionImport Name="Sp_System_CleanUp" />
           <FunctionImport Name="Sp_System_DataIntegrity_Opr_CreateNew" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_CreateNew_Result)">
-            <Parameter Name="rowId" Mode="In" Type="Int32" />
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_DataIntegrity_Opr_Delete" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Delete_Result)">
-            <Parameter Name="rowId" Mode="In" Type="Int32" />
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_DataIntegrity_Opr_Preffered" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_Opr_Preffered_Result)">
-            <Parameter Name="rowId" Mode="In" Type="Int32" />
+          <Parameter Name="rowId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_DataIntegrity_PepId" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_DataIntegrity_PepId_Result)" />
           <FunctionImport Name="Sp_System_Indicators_PopulationDistro_30DayStatePlotData" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_Indicators_PopulationDistro_30DayStatePlotData_Result)">
-            <Parameter Name="abbreviation" Mode="In" Type="String" />
+          <Parameter Name="abbreviation" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_Indicators_PopulationDistro_BioCount" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_Indicators_PopulationDistro_BioCount_Result)">
-            <Parameter Name="abbrevation" Mode="In" Type="String" />
+          <Parameter Name="abbrevation" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_Indicators_PopulationDistro_NfcCount" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_Indicators_PopulationDistro_NfcCount_Result)">
-            <Parameter Name="abbrevation" Mode="In" Type="String" />
+          <Parameter Name="abbrevation" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="Sp_System_Indicators_PopulationDistro_SexSiteState" ReturnType="Collection(PatientDataAdministration.DatabaseModel.Sp_System_Indicators_PopulationDistro_SexSiteState_Result)">
             <Parameter Name="fromDate" Mode="In" Type="DateTime" />
@@ -517,6 +565,9 @@
             <Parameter Name="lowerDate" Mode="In" Type="DateTime" />
             <Parameter Name="upperDate" Mode="In" Type="DateTime" />
           </FunctionImport>
+          <EntitySet Name="Integration_SystemAppointmentDataItem" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemAppointmentDataItem" />
+          <EntitySet Name="C__MigrationLog" EntityType="PatientDataAdministration.DatabaseModel.C__MigrationLog" />
+          <EntitySet Name="Administration_ClientLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" />
           </EntityContainer>
         <EntityType Name="Administration_ClientMap">
           <Key>
@@ -973,6 +1024,51 @@
           <Property Type="Int64" Name="PopulationCountBio" Nullable="false" />
           <Property Type="Int64" Name="PopulationCountNfc" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Integration_SystemAppointmentDataItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateLogged" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AppointmentOffice" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="GeneratedMessage" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OperationStatus" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="AppointmentData" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="AppointmentDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="C__MigrationLog">
+          <Key>
+            <PropertyRef Name="migration_id" />
+            <PropertyRef Name="script_checksum" />
+            <PropertyRef Name="complete_dt" />
+          </Key>
+          <Property Name="migration_id" Type="Guid" Nullable="false" />
+          <Property Name="script_checksum" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="script_filename" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="complete_dt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="applied_by" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="deployed" Type="Byte" Nullable="false" />
+          <Property Name="version" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="package_version" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="release_version" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sequence_no" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Administration_ClientLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="CurrentUserId" Type="Int32" Nullable="false" />
+          <Property Name="DateLog" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LocationLat" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LocationLong" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ChipData" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ClientIpAddress" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1521,6 +1617,52 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="Integration_SystemAppointmentDataItem">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_SystemAppointmentDataItem">
+              <MappingFragment StoreEntitySet="Integration_SystemAppointmentDataItem">
+                <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
+                <ScalarProperty Name="AppointmentData" ColumnName="AppointmentData" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OperationStatus" ColumnName="OperationStatus" />
+                <ScalarProperty Name="GeneratedMessage" ColumnName="GeneratedMessage" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="AppointmentOffice" ColumnName="AppointmentOffice" />
+                <ScalarProperty Name="DateLogged" ColumnName="DateLogged" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C__MigrationLog">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.C__MigrationLog">
+              <MappingFragment StoreEntitySet="__MigrationLog">
+                <ScalarProperty Name="sequence_no" ColumnName="sequence_no" />
+                <ScalarProperty Name="release_version" ColumnName="release_version" />
+                <ScalarProperty Name="package_version" ColumnName="package_version" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="deployed" ColumnName="deployed" />
+                <ScalarProperty Name="applied_by" ColumnName="applied_by" />
+                <ScalarProperty Name="complete_dt" ColumnName="complete_dt" />
+                <ScalarProperty Name="script_filename" ColumnName="script_filename" />
+                <ScalarProperty Name="script_checksum" ColumnName="script_checksum" />
+                <ScalarProperty Name="migration_id" ColumnName="migration_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Administration_ClientLog">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_ClientLog">
+              <MappingFragment StoreEntitySet="Administration_ClientLog">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ClientIpAddress" ColumnName="ClientIpAddress" />
+                <ScalarProperty Name="ChipData" ColumnName="ChipData" />
+                <ScalarProperty Name="LocationLong" ColumnName="LocationLong" />
+                <ScalarProperty Name="LocationLat" ColumnName="LocationLat" />
+                <ScalarProperty Name="DateLog" ColumnName="DateLog" />
+                <ScalarProperty Name="CurrentUserId" ColumnName="CurrentUserId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

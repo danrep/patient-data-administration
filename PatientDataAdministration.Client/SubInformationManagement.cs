@@ -267,7 +267,8 @@ namespace PatientDataAdministration.Client
                         PreviousId = txtPreviousNumber.Text,
                         Sex = txtSex.Text,
                         Title = string.Empty,
-                        SiteId = _administrationStaffInformation.SiteId,
+                        //SiteId = _administrationStaffInformation.SiteId,
+                        SiteId = LocalCore.GetCurrentSite().Id,
                         Surname = txtSurname.Text,
                         StateOfOrigin = 0,
                         PhoneNumber = txtPhoneNumber.Text, 
@@ -367,7 +368,8 @@ namespace PatientDataAdministration.Client
                         NfcUid = _nfcUid ?? "",
                         PrimaryFinger = _bioDataPrimary ?? "",
                         SecondaryFinger = _bioDataSecondary ?? "",
-                        SiteId = _administrationStaffInformation.SiteId
+                        //SiteId = _administrationStaffInformation.SiteId,
+                        SiteId = LocalCore.GetCurrentSite().Id,
                     };
                     _localPdaEntities.System_BioDataStore.Add(_systemBioDataStore);
                 }

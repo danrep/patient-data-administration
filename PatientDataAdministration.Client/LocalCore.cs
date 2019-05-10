@@ -29,6 +29,12 @@ namespace PatientDataAdministration.Client
                 : DialogResult.OK;
         }
 
+        public static System_SiteData GetCurrentSite()
+        {
+            return _pdaEntities.System_SiteData.FirstOrDefault(x => !x.IsDeleted && x.IsCurrent) ??
+                   new System_SiteData();
+        }
+
         private static void TreatError(Exception exception)
         {
             try

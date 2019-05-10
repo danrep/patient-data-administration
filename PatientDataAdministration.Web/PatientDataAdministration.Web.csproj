@@ -1156,9 +1156,10 @@
     <Compile Include="Areas\ClientCommunication\Controllers\UserController.cs" />
     <Compile Include="Areas\DataDelivery\DataDeliveryAreaRegistration.cs" />
     <Compile Include="Areas\Integration\Controllers\BaseIntegrationController.cs" />
-    <Compile Include="Areas\Integration\Controllers\LabDataController.cs" />
+    <Compile Include="Areas\Integration\Controllers\MessageDeliveryRequestController.cs" />
     <Compile Include="Areas\Integration\IntegrationAreaRegistration.cs" />
     <Compile Include="Areas\DataDelivery\Controllers\MessagingIngressController.cs" />
+    <Compile Include="Areas\Integration\Models\BaseIntegration\NextAppointment.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\BaseServerCommController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataController.cs" />
     <Compile Include="Areas\ServerCommunication\Controllers\DataIntegrityController.cs" />
@@ -1200,14 +1201,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\ClientCommunication\Models\" />
-    <Folder Include="Areas\ClientCommunication\Views\Base\" />
-    <Folder Include="Areas\ClientCommunication\Views\Patient\" />
-    <Folder Include="Areas\ClientCommunication\Views\Shared\" />
-    <Folder Include="Areas\ClientCommunication\Views\Sync\" />
-    <Folder Include="Areas\ClientCommunication\Views\User\" />
     <Folder Include="Areas\DataDelivery\Models\" />
     <Folder Include="Areas\DataDelivery\Views\Shared\" />
-    <Folder Include="Areas\Integration\Models\" />
     <Folder Include="Areas\Integration\Views\Shared\" />
     <Folder Include="Areas\ServerCommunication\Models\" />
     <Folder Include="Areas\ServerCommunication\Views\DataIntegrity\" />

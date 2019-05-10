@@ -319,6 +319,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="icons8_Facial_Recognition.ico" />
     <Content Include="LocalPDA.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

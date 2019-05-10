@@ -30,6 +30,9 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_AppointmentDataItem" Width="1.5" PointX="5.375" PointY="14.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.System_AuditTrail" Width="1.5" PointX="11.375" PointY="14.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientInformationPopulationRegister" Width="1.5" PointX="13.375" PointY="10.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemAppointmentDataItem" Width="1.5" PointX="13.375" PointY="14.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.C__MigrationLog" Width="1.5" PointX="15.75" PointY="0.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" Width="1.5" PointX="0.75" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
