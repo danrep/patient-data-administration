@@ -12,21 +12,12 @@ namespace PatientDataAdministration.Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Integration_SystemAppointmentDataItem
+    public partial class Integration_SystemPhoneNumberBlacklist
     {
         public long Id { get; set; }
         public System.DateTime DateLogged { get; set; }
-        public string AppointmentOffice { get; set; }
-        public string PepId { get; set; }
-        public string GeneratedMessage { get; set; }
-        public bool OperationStatus { get; set; }
-        public bool IsDeleted { get; set; }
-        public string AppointmentData { get; set; }
-        public System.DateTime AppointmentDate { get; set; }
         public string PhoneNumber { get; set; }
-        public string MessageId { get; set; }
-        public string InitialResponsePayload { get; set; }
-        public string FinalResponsePayload { get; set; }
-        public int MessageStatus { get; set; }
+        public int LastOperationStatus { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

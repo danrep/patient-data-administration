@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using PatientDataAdministration.Core.Processor.MessageProcessors;
+using PatientDataAdministration.EnumLibrary;
 
 namespace PatientDataAdministration.Core
 {
@@ -98,18 +99,55 @@ namespace PatientDataAdministration.Core
             }
         }
 
-        public static bool SendSms(string destination, string message)
+        public static bool SendSms(string destination, string message, out object payload)
         {
             try
             {
-                ProcessorXwireless.SendResponse(destination, message);
+                ProcessorXwireless.SendResponse(destination, message, out payload);
                 //ProcessorInfoBip.SendResponse(destination, message);
                 return true;
             }
             catch (Exception exception)
             {
                 ActivityLogger.Log(exception);
+                payload = null;
                 return false;
+            }
+        }
+
+        public static MessageResponse InquireSms(string messageId, out dynamic payload)
+        {
+            try
+            {
+                ProcessorXwireless.Inquiry(messageId, out payload);
+
+                if (payload["seq_id"] == null)
+                    return MessageResponse.Invalid;
+
+                var messageStatus = payload["seq_id"][0]["status"].ToString().ToUpper();
+
+                if (messageStatus == "DELIVRD")
+                    return MessageResponse.Delivered;
+
+                if (messageStatus == "DONOTDISTURB")
+                    return MessageResponse.DoNotDisturb;
+
+                if (messageStatus == "REJECTD")
+                    return MessageResponse.Rejected;
+
+                if (messageStatus == "INVALID")
+                    return MessageResponse.Invalid;
+
+                if (messageStatus == "UNDELIV")
+                    return MessageResponse.Invalid;
+
+                return MessageResponse.Processing;
+            }
+            catch (Exception exception)
+            {
+                ActivityLogger.Log(exception);
+                payload = null;
+                return MessageResponse.Error;
             }
         }
 

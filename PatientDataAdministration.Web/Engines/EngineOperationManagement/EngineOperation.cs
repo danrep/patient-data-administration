@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
-using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.Web.Engines.EngineModels;
 
@@ -337,9 +336,9 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                         //var message = RecurrentData.HealthMessages[new Random().Next(RecurrentData.HealthMessages.Length)];
                         var message = "Stay Healthy! See your health care provider regularly. ";
 
-                        var appointmentDataItemPayload =
-                            Newtonsoft.Json.JsonConvert.DeserializeObject<AppointmentDataItem[]>(appointmentDataItem
-                                .AppointmentData);
+                        //var appointmentDataItemPayload =
+                        //    Newtonsoft.Json.JsonConvert.DeserializeObject<AppointmentDataItem[]>(appointmentDataItem
+                        //        .AppointmentData);
 
                         switch (appointmentDataItem.AppointmentOffice.Trim().ToUpper())
                         {
@@ -354,7 +353,7 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                                 break;
                         }
 
-                        //message += $"{appointmentDataItem.DateAppointment:MMMyy}";
+                        message += $"{appointmentDataItem.DateAppointment:MMMyy}";
 
                         //if (appointmentDataItemPayload != null)
                         //    message = appointmentDataItemPayload.Aggregate(message,
@@ -371,9 +370,14 @@ namespace PatientDataAdministration.Web.Engines.EngineOperationManagement
                         if (appointment == null)
                             continue;
 
-                        appointment.IsValid = !Messaging.SendSms(Transforms.FormatPhoneNumber(patientInfo.PhoneNumber), message);
+                        object payload;
+
+                        appointment.IsValid = !Messaging.SendSms(Transforms.FormatPhoneNumber(patientInfo.PhoneNumber),
+                            message, out payload);
                         entity.Entry(appointment).State = EntityState.Modified;
                         entity.SaveChanges();
+
+                        ActivityLogger.Log("INFO", Newtonsoft.Json.JsonConvert.SerializeObject(payload));
                     }
                 }
             }

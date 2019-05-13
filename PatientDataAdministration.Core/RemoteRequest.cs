@@ -27,7 +27,12 @@ namespace PatientDataAdministration.Core
                     if (response.IsSuccessStatusCode)
                     {
                         var json = await response.Content.ReadAsStringAsync();
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseData>(json);
+                        return new ResponseData
+                        {
+                            Message = "Successful",
+                            Status = true,
+                            Data = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json)
+                        }; 
                     }
                     else
                         return new ResponseData

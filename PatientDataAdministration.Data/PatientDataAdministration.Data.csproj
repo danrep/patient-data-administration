@@ -82,6 +82,9 @@
     <Compile Include="Integration_SystemAppointmentDataItem.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Integration_SystemPhoneNumberBlacklist.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="InterchangeModels\ClientInformation.cs" />
     <Compile Include="InterchangeModels\IntegrationAppointmentDataIngress.cs" />
     <Compile Include="InterchangeModels\PatientInformationPatientPopulationRegister.cs" />

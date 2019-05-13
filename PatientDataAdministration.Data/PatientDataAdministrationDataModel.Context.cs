@@ -55,6 +55,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Integration_SystemAppointmentDataItem> Integration_SystemAppointmentDataItem { get; set; }
         public virtual DbSet<C__MigrationLog> C__MigrationLog { get; set; }
         public virtual DbSet<Administration_ClientLog> Administration_ClientLog { get; set; }
+        public virtual DbSet<Integration_SystemPhoneNumberBlacklist> Integration_SystemPhoneNumberBlacklist { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {

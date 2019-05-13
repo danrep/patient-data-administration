@@ -30,7 +30,6 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                 {
                     try
                     {
-
                         using (var entities = new Entities())
                         {
                             foreach (var appointment in appointments)
@@ -47,31 +46,52 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                                     IsDeleted = false,
                                     AppointmentOffice = appointment.AppointmentOffice,
                                     DateLogged = DateTime.Now,
-                                    GeneratedMessage = GenerateMessage(appointment.AppointmentOffice),
-                                    AppointmentData = Newtonsoft.Json.JsonConvert.SerializeObject(appointment.AppointmentData),
-                                    AppointmentDate = DateTime.ParseExact(appointment.AppointmentDate, "yyyy-MM-dd",
-                                        CultureInfo.InvariantCulture)
+                                    GeneratedMessage = GenerateMessage(appointment),
+                                    AppointmentData =
+                                        Newtonsoft.Json.JsonConvert.SerializeObject(appointment.AppointmentData),
+                                    AppointmentDate =
+                                        Transforms.NormalizeDate(appointment.AppointmentDate) ?? DateTime.Now,
+                                    PhoneNumber = appointment.PhoneNumber, 
+                                    OperationStatus = false
                                 };
-
-                                if (string.IsNullOrEmpty(appointment.PhoneNumber))
-                                    integrationItem.OperationStatus = false;
-                                else if (appointment.PhoneNumber.Length < 10)
-                                    integrationItem.OperationStatus = false;
-                                else if (appointment.PhoneNumber.Contains("000000"))
-                                    integrationItem.OperationStatus = false;
-                                else if (!System.Text.RegularExpressions.Regex.IsMatch(appointment.PhoneNumber,
-                                    "^[0-9]*$"))
-                                    integrationItem.OperationStatus = false;
+                                
+                                if (string.IsNullOrEmpty(appointment.PhoneNumber) ||
+                                    appointment.PhoneNumber.Length < 10 || 
+                                    appointment.PhoneNumber.Contains("000000") ||
+                                    !System.Text.RegularExpressions.Regex.IsMatch(appointment.PhoneNumber, "^[0-9]*$"))
+                                    integrationItem.MessageStatus = (int)EnumLibrary.MessageResponse.Failed;
+                                else if (integrationItem.AppointmentDate < DateTime.Now)
+                                    integrationItem.MessageStatus = (int)EnumLibrary.MessageResponse.Failed;
                                 else
                                 {
                                     appointment.PhoneNumber = Transforms.FormatPhoneNumber(appointment.PhoneNumber);
+                                    integrationItem.PhoneNumber = Transforms.FormatPhoneNumber(appointment.PhoneNumber);
 
-                                    integrationItem.OperationStatus = Messaging.SendSms(appointment.PhoneNumber,
-                                        integrationItem.GeneratedMessage);
+                                    if (!entities.Integration_SystemPhoneNumberBlacklist.Any(x =>
+                                        !x.IsDeleted && x.PhoneNumber == integrationItem.PhoneNumber))
+                                    {
+                                        dynamic payload;
+
+                                        integrationItem.OperationStatus = Messaging.SendSms(appointment.PhoneNumber,
+                                            integrationItem.GeneratedMessage, out payload);
+
+                                        if (payload == null)
+                                            integrationItem.MessageStatus = (int) EnumLibrary.MessageResponse.Pending;
+                                        else
+                                        {
+                                            var messageId = payload["msg_id"].ToString();
+
+                                            integrationItem.MessageId = messageId;
+                                            integrationItem.InitialResponsePayload =
+                                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                                            integrationItem.MessageStatus = (int) EnumLibrary.MessageResponse.Processing;
+                                        }
+                                    }
                                 }
 
                                 entities.Integration_SystemAppointmentDataItem.Add(integrationItem);
                             }
+
                             entities.SaveChanges();
                         }
                     }
@@ -102,13 +122,13 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
             }
         }
 
-        private string GenerateMessage(string appointmentOffice)
+        private string GenerateMessage(NextAppointment nextAppointment)
         {
             try
             {
                 var message = "Stay Healthy! See your health care provider regularly. ";
 
-                switch (appointmentOffice)
+                switch (nextAppointment.AppointmentOffice)
                 {
                     case "C":
                         message += "CD";
@@ -120,6 +140,13 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                         message += "DP";
                         break;
                 }
+
+                message += $"-{Transforms.NormalizeDate(nextAppointment.AppointmentDate):yyyyMMdd}";
+
+                //if (nextAppointment.AppointmentData != null)
+                //    message = nextAppointment.AppointmentData.Aggregate(message,
+                //        (current, appointmentDatumItemPayload) =>
+                //            current + (appointmentDatumItemPayload.ItemValue + " "));
 
                 message = message.Trim();
                 message += ". Get your FinVite today";

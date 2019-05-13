@@ -1,7 +1,9 @@
 ﻿using PatientDataAdministration.Core;
 using System;
+using System.Data.Entity;
 using System.Linq;
 using PatientDataAdministration.Data;
+using PatientDataAdministration.EnumLibrary;
 
 namespace PatientDataAdministration.Web.Engines
 {
@@ -9,6 +11,8 @@ namespace PatientDataAdministration.Web.Engines
     {
         private static bool _isTriggered;
         private static int _currentHour;
+
+        private readonly System.Timers.Timer _recurrentExecution;
 
         public Cron()
         {
@@ -21,6 +25,13 @@ namespace PatientDataAdministration.Web.Engines
 
             _currentHour = 0;
             _isTriggered = false;
+
+            _recurrentExecution = new System.Timers.Timer(60000)
+            {
+                Enabled = true
+            };
+            _recurrentExecution.Elapsed += RecurrentExecution_Elapsed;
+            _recurrentExecution.Start();
         }
 
         private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -83,7 +94,8 @@ namespace PatientDataAdministration.Web.Engines
 
                     foreach (var pendingHash in pendingHashes)
                     {
-                        pendingHash.FingerDataHash =
+           
+             pendingHash.FingerDataHash =
                             Sha512Engine.GenerateSHA512String(
                                 pendingHash.FingerPrimary + "|" + pendingHash.FingerSecondary);
                         pdaEntities.Entry(pendingHash).State = System.Data.Entity.EntityState.Modified;
@@ -95,12 +107,72 @@ namespace PatientDataAdministration.Web.Engines
             {
                 ActivityLogger.Log(ex);
             }
+
             #endregion
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
             _isTriggered = false;
+        }
+
+        private void RecurrentExecution_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            _recurrentExecution.Enabled = false;
+
+            #region SMS Status Check
+
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    var pendingStatus = (int) MessageResponse.Processing;
+                    var processingMessages =
+                        entity.Integration_SystemAppointmentDataItem.Where(x =>
+                            x.OperationStatus && x.MessageStatus == pendingStatus).ToList();
+
+                    foreach (var processingMessage in processingMessages)
+                    {
+                        dynamic payload;
+                        var messageStatuSms = Messaging.InquireSms(processingMessage.MessageId, out payload);
+
+                        processingMessage.MessageStatus = (int) messageStatuSms;
+                            processingMessage.FinalResponsePayload =
+                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+
+                        if (messageStatuSms == MessageResponse.Delivered)
+                        {
+                            processingMessage.OperationStatus = true;
+                        }
+                        else if (messageStatuSms == MessageResponse.DoNotDisturb ||
+                                 messageStatuSms == MessageResponse.Rejected ||
+                                 messageStatuSms == MessageResponse.Invalid)
+                        {
+                            entity.Integration_SystemPhoneNumberBlacklist.Add(
+                                new Integration_SystemPhoneNumberBlacklist()
+                                {
+                                    PhoneNumber = processingMessage.PhoneNumber,
+                                    IsDeleted = false,
+                                    DateLogged = DateTime.Now,
+                                    LastOperationStatus = processingMessage.MessageStatus
+                                });
+
+                            processingMessage.OperationStatus = false;
+                        }
+
+                        entity.Entry(processingMessage).State = EntityState.Modified;
+                        entity.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+
+            #endregion
+
+            _recurrentExecution.Enabled = true;
         }
     }
 }
