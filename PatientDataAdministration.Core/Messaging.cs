@@ -122,7 +122,7 @@ namespace PatientDataAdministration.Core
                 ProcessorXwireless.Inquiry(messageId, out payload);
 
                 if (payload["seq_id"] == null)
-                    return MessageResponse.Invalid;
+                    return MessageResponse.Processing;
 
                 var messageStatus = payload["seq_id"][0]["status"].ToString().ToUpper();
 
@@ -139,6 +139,9 @@ namespace PatientDataAdministration.Core
                     return MessageResponse.Invalid;
 
                 if (messageStatus == "UNDELIV")
+                    return MessageResponse.Invalid;
+
+                if (messageStatus == "EXPIRED")
                     return MessageResponse.Invalid;
 
                 return MessageResponse.Processing;
