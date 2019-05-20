@@ -19,6 +19,10 @@ namespace PatientDataAdministration.EnumLibrary
         [EnumDisplayName(DisplayName = "Error")]
         Error,
         [EnumDisplayName(DisplayName = "Invalid")]
-        Invalid
+        Invalid,
+        [EnumDisplayName(DisplayName = "Expired")]
+        Expired,
+        [EnumDisplayName(DisplayName = "Undelivered")]
+        Undelivered
     }
 }

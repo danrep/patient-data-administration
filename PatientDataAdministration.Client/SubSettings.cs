@@ -206,6 +206,10 @@ namespace PatientDataAdministration.Client
                         var i = 1;
                         foreach (var siteDatum in siteData)
                         {
+                            lblInformation.Text = $@"Processed {i} of {siteData.Count} Sites. Still Working ...";
+                            i++;
+                            Application.DoEvents();
+
                             if (_localPdaEntities.System_SiteData.Any(x => x.RemoteSiteId == siteDatum.Id))
                             {
                                 var existing =
@@ -240,9 +244,6 @@ namespace PatientDataAdministration.Client
                                 _localPdaEntities.SaveChanges();
                             }
 
-                            i++;
-
-                            lblInformation.Text = $@"Processed {i} of {siteData.Count} Sites. Still Working ...";
                             Application.DoEvents();
                         }
 

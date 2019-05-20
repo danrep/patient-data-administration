@@ -16,3 +16,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [Patient_PatientBiometricData_On_PepId]
+    ON [dbo].[Patient_PatientBiometricData]([PepId] ASC);
+

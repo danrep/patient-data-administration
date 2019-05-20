@@ -114,6 +114,10 @@
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetRegDataSummary.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetRegBioDataSummary.sql" />
     <Build Include="dbo\Stored Procedures\Sp_Administration_GetPatientDataManifest.sql" />
+    <Build Include="dbo\Tables\Integration_SystemPhoneNumberBlacklist.sql" />
+    <Build Include="dbo\Tables\Integration_SystemAppointmentDataItem.sql" />
+    <Build Include="dbo\Tables\Administration_ClientLog.sql" />
+    <Build Include="dbo\Stored Procedures\Sp_Administration_GetInActiveUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PatientDataAdministration.Database_PreDeploy.publish.publish.xml" />

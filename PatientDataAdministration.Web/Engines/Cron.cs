@@ -120,25 +120,46 @@ namespace PatientDataAdministration.Web.Engines
         {
             _recurrentExecution.Enabled = false;
 
+            #region Pending SMS Confirmation
+            StatusCheck();
+            #endregion
+
+            #region Pending SMS Execute
+            PendingSend();
+            #endregion
+
+            _recurrentExecution.Enabled = true;
+        }
+
+        private void StatusCheck()
+        {
             #region SMS Status Check
 
             try
             {
                 using (var entity = new Entities())
                 {
-                    var pendingStatus = (int) MessageResponse.Processing;
-                    var processingMessages =
+                    var pendingStatus = (int)MessageResponse.Processing;
+                    var pendingConfirmations =
                         entity.Integration_SystemAppointmentDataItem.Where(x =>
                             x.OperationStatus && x.MessageStatus == pendingStatus).ToList();
 
-                    foreach (var processingMessage in processingMessages)
+                    if (!pendingConfirmations.Any())
+                    {
+                        pendingStatus = (int)MessageResponse.Invalid;
+                        pendingConfirmations =
+                            entity.Integration_SystemAppointmentDataItem.Where(x =>
+                                x.MessageStatus == pendingStatus && !string.IsNullOrEmpty(x.MessageId)).ToList();
+                    }
+
+                    foreach (var processingMessage in pendingConfirmations)
                     {
                         dynamic payload;
                         var messageStatuSms = Messaging.InquireSms(processingMessage.MessageId, out payload);
 
-                        processingMessage.MessageStatus = (int) messageStatuSms;
-                            processingMessage.FinalResponsePayload =
-                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                        processingMessage.MessageStatus = (int)messageStatuSms;
+                        processingMessage.FinalResponsePayload =
+                            Newtonsoft.Json.JsonConvert.SerializeObject(payload);
 
                         if (messageStatuSms == MessageResponse.Delivered)
                         {
@@ -146,7 +167,9 @@ namespace PatientDataAdministration.Web.Engines
                         }
                         else if (messageStatuSms == MessageResponse.DoNotDisturb ||
                                  messageStatuSms == MessageResponse.Rejected ||
-                                 messageStatuSms == MessageResponse.Invalid)
+                                 messageStatuSms == MessageResponse.Invalid ||
+                                 messageStatuSms == MessageResponse.Undelivered ||
+                                 messageStatuSms == MessageResponse.Expired)
                         {
                             entity.Integration_SystemPhoneNumberBlacklist.Add(
                                 new Integration_SystemPhoneNumberBlacklist()
@@ -171,8 +194,48 @@ namespace PatientDataAdministration.Web.Engines
             }
 
             #endregion
+        }
 
-            _recurrentExecution.Enabled = true;
+        private void PendingSend()
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    var pendingStatus = (int)MessageResponse.Pending;
+                    var pendingSends =
+                        entity.Integration_SystemAppointmentDataItem.Where(x =>
+                            x.MessageStatus == pendingStatus && string.IsNullOrEmpty(x.MessageId) &&
+                            x.AppointmentDate > DateTime.Now.Date).ToList();
+
+                    foreach (var pendingSend in pendingSends)
+                    {
+                        dynamic payload;
+
+                        pendingSend.OperationStatus = Messaging.SendSms(pendingSend.PhoneNumber,
+                            pendingSend.GeneratedMessage, out payload);
+
+                        if (payload == null)
+                            pendingSend.MessageStatus = (int)EnumLibrary.MessageResponse.Pending;
+                        else
+                        {
+                            var messageId = payload["msg_id"].ToString();
+
+                            pendingSend.MessageId = messageId;
+                            pendingSend.InitialResponsePayload =
+                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                            pendingSend.MessageStatus = (int)EnumLibrary.MessageResponse.Processing;
+                        }
+
+                        entity.Entry(pendingSend).State = EntityState.Modified;
+                        entity.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
         }
     }
 }

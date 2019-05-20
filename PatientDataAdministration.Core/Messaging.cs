@@ -139,7 +139,7 @@ namespace PatientDataAdministration.Core
                     return MessageResponse.Invalid;
 
                 if (messageStatus == "UNDELIV")
-                    return MessageResponse.Invalid;
+                    return MessageResponse.Undelivered;
 
                 if (messageStatus == "EXPIRED")
                     return MessageResponse.Invalid;
