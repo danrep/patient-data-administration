@@ -53,6 +53,50 @@ namespace PatientDataAdministration.Core
             }
         }
 
+        public static async Task<ResponseData> RequestGetSecure(string url)
+        {
+            try
+            {
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+
+                using (var client = new HttpClient())
+                {
+
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(
+                        new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var response = client.GetAsync(url).Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        return new ResponseData
+                        {
+                            Message = "Successful",
+                            Status = true,
+                            Data = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(json)
+                        };
+                    }
+                    else
+                        return new ResponseData
+                        {
+                            Message = "Bad Response",
+                            Status = false
+                        };
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return new ResponseData
+                {
+                    Message = e.Message,
+                    Status = false
+                };
+            }
+        }
+
         public static ResponseData RequestPost(string url, string payload,
             NameValueCollection headerNameValueCollection = null)
         {

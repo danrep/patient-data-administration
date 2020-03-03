@@ -34,6 +34,8 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                         {
                             foreach (var appointment in appointments)
                             {
+                                // If PhoneNumber is not passed then search for it.
+
                                 if (string.IsNullOrEmpty(appointment.PhoneNumber))
                                 {
                                     appointment.PhoneNumber = entities.Patient_PatientInformation
@@ -54,9 +56,9 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                                     PhoneNumber = appointment.PhoneNumber, 
                                     OperationStatus = false
                                 };
-                                
+
                                 if (string.IsNullOrEmpty(appointment.PhoneNumber) ||
-                                    appointment.PhoneNumber.Length < 10 || 
+                                    appointment.PhoneNumber.Length < 10 ||
                                     appointment.PhoneNumber.Contains("000000") ||
                                     !System.Text.RegularExpressions.Regex.IsMatch(appointment.PhoneNumber, "^[0-9]*$"))
                                     integrationItem.MessageStatus = (int)EnumLibrary.MessageResponse.Failed;
@@ -67,26 +69,30 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                                     appointment.PhoneNumber = Transforms.FormatPhoneNumber(appointment.PhoneNumber);
                                     integrationItem.PhoneNumber = Transforms.FormatPhoneNumber(appointment.PhoneNumber);
 
-                                    if (!entities.Integration_SystemPhoneNumberBlacklist.Any(x =>
-                                        !x.IsDeleted && x.PhoneNumber == integrationItem.PhoneNumber))
+                                    //if (!entities.Integration_SystemPhoneNumberBlacklist.Any(x =>
+                                    //    !x.IsDeleted && x.PhoneNumber == integrationItem.PhoneNumber))
+                                    //{
+                                    dynamic payload;
+
+                                    integrationItem.OperationStatus = Messaging.SendSms(appointment.PhoneNumber,
+                                        integrationItem.GeneratedMessage, out payload);
+
+                                    if (payload == null)
+                                        integrationItem.MessageStatus = (int)EnumLibrary.MessageResponse.Pending;
+                                    else
                                     {
-                                        dynamic payload;
+                                        //integrationItem.MessageId = payload["msg_id"].ToString();
+                                        //integrationItem.InitialResponsePayload =
+                                        //    Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                                        //integrationItem.MessageStatus = (int) EnumLibrary.MessageResponse.Processing;
 
-                                        integrationItem.OperationStatus = Messaging.SendSms(appointment.PhoneNumber,
-                                            integrationItem.GeneratedMessage, out payload);
-
-                                        if (payload == null)
-                                            integrationItem.MessageStatus = (int) EnumLibrary.MessageResponse.Pending;
-                                        else
-                                        {
-                                            var messageId = payload["msg_id"].ToString();
-
-                                            integrationItem.MessageId = messageId;
-                                            integrationItem.InitialResponsePayload =
-                                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-                                            integrationItem.MessageStatus = (int) EnumLibrary.MessageResponse.Processing;
-                                        }
+                                        integrationItem.MessageId = Guid.NewGuid().ToString().ToUpper();
+                                        integrationItem.InitialResponsePayload =
+                                            Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                                        integrationItem.MessageStatus = (int)EnumLibrary.MessageResponse.Processing;
                                     }
+
+                                    //}
                                 }
 
                                 entities.Integration_SystemAppointmentDataItem.Add(integrationItem);

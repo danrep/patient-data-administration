@@ -310,8 +310,6 @@
     <Content Include="Assets\plugins\bootstrap-daterangepicker\daterangepicker.css" />
     <Content Include="Assets\plugins\bootstrap-daterangepicker\daterangepicker.js" />
     <Content Include="Assets\plugins\bootstrap-daterangepicker\moment.js" />
-    <Content Include="Assets\plugins\bootstrap-eonasdan-datetimepicker\build\css\bootstrap-datetimepicker.min.css" />
-    <Content Include="Assets\plugins\bootstrap-eonasdan-datetimepicker\build\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Assets\plugins\bootstrap-select\bootstrap-select.min.css" />
     <Content Include="Assets\plugins\bootstrap-select\bootstrap-select.min.js" />
     <Content Include="Assets\plugins\bootstrap-show-password\bootstrap-show-password.js" />
@@ -1117,6 +1115,7 @@
     <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicates.cshtml" />
     <Content Include="Views\ReportingEngine\DataRequest.cshtml" />
     <Content Include="Views\ReportingEngine\PatientDataExport.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

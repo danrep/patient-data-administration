@@ -77,7 +77,9 @@
     <Compile Include="Encryption.cs" />
     <Compile Include="ExcelWriter.cs" />
     <Compile Include="Messaging.cs" />
+    <Compile Include="Processor\MessageProcessors\ProcessorBulkSmsNg.cs" />
     <Compile Include="Processor\MessageProcessors\ProcessorInfoBip.cs" />
+    <Compile Include="Processor\MessageProcessors\ProcessorClickatell.cs" />
     <Compile Include="Processor\MessageProcessors\ProcessorXwireless.cs" />
     <Compile Include="Processor\MessageProcessors\ShortMessagingBridgeExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

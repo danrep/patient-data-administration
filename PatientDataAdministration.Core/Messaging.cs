@@ -103,8 +103,10 @@ namespace PatientDataAdministration.Core
         {
             try
             {
-                ProcessorXwireless.SendResponse(destination, message, out payload);
-                //ProcessorInfoBip.SendResponse(destination, message);
+                // ProcessorXwireless.SendResponse(destination, message, out payload);
+                // ProcessorInfoBip.SendResponse(destination, message);
+                // ProcessorClickatell.SendResponse(destination, message, out payload);
+                ProcessorBulkSmsNg.SendResponse(destination, message, out payload);
                 return true;
             }
             catch (Exception exception)
