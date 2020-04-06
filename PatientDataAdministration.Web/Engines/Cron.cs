@@ -183,6 +183,9 @@ namespace PatientDataAdministration.Web.Engines
                             processingMessage.OperationStatus = false;
                         }
 
+                        // Todo: Can be removed for Transparency
+                        RegisterMessage(processingMessage.Id, processingMessage.MessageId, MessageResponse.Delivered);
+
                         entity.Entry(processingMessage).State = EntityState.Modified;
                         entity.SaveChanges();
                     }
@@ -216,7 +219,7 @@ namespace PatientDataAdministration.Web.Engines
                             pendingSend.GeneratedMessage, out payload);
 
                         if (payload == null)
-                            pendingSend.MessageStatus = (int)EnumLibrary.MessageResponse.Pending;
+                            pendingSend.MessageStatus = (int)MessageResponse.Pending;
                         else
                         {
                             var messageId = payload["msg_id"].ToString();
@@ -224,7 +227,9 @@ namespace PatientDataAdministration.Web.Engines
                             pendingSend.MessageId = messageId;
                             pendingSend.InitialResponsePayload =
                                 Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-                            pendingSend.MessageStatus = (int)EnumLibrary.MessageResponse.Processing;
+                            pendingSend.MessageStatus = (int)MessageResponse.Processing;
+
+                            RegisterMessage(pendingSend.Id, messageId, MessageResponse.Processing);
                         }
 
                         entity.Entry(pendingSend).State = EntityState.Modified;
@@ -235,6 +240,37 @@ namespace PatientDataAdministration.Web.Engines
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
+            }
+        }
+
+        private void RegisterMessage(long id, string messageId, MessageResponse messageResponse)
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    var currentManifest = entities.Integration_SystemDeliveryManifest.FirstOrDefault(x => x.Id == id);
+                    if(currentManifest != null)
+                    {
+                        currentManifest.IsDelivered = messageResponse == MessageResponse.Delivered;
+                        entities.Entry(currentManifest).State = EntityState.Modified;
+                    }
+
+                    entities.Integration_SystemProviderDeliveryLogs.Add(new Integration_SystemProviderDeliveryLogs()
+                    {
+                        IsDeleted = false,
+                        IsFinalStatus = true,
+                        MessageId = messageId,
+                        OperationDate = DateTime.Now,
+                        OperationStatus = (int)messageResponse
+                    });
+
+                    entities.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
             }
         }
     }

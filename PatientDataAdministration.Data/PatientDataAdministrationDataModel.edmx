@@ -150,15 +150,28 @@
           <Property Name="DateLogged" Type="datetime" Nullable="false" />
           <Property Name="AppointmentOffice" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="AppointmentData" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
           <Property Name="PepId" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="GeneratedMessage" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="OperationStatus" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="MessageId" Type="varchar" MaxLength="100" />
           <Property Name="InitialResponsePayload" Type="varchar" MaxLength="1000" />
           <Property Name="FinalResponsePayload" Type="varchar" MaxLength="1000" />
           <Property Name="MessageStatus" Type="int" Nullable="false" />
-          <Property Name="OperationStatus" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemDeliveryManifest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MessageDate" Type="datetime" />
+          <Property Name="PepId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MessageSupportParams" Type="varchar" MaxLength="1000" />
+          <Property Name="IsDelivered" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Integration_SystemPhoneNumberBlacklist">
@@ -169,6 +182,17 @@
           <Property Name="DateLogged" Type="datetime" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="20" />
           <Property Name="LastOperationStatus" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemProviderDeliveryLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageId" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OperationDate" Type="datetime" />
+          <Property Name="OperationStatus" Type="int" Nullable="false" />
+          <Property Name="IsFinalStatus" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricData">
@@ -476,7 +500,9 @@
           <EntitySet Name="Integration_AppointmentDataItem" EntityType="Self.Integration_AppointmentDataItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_AppointmentDataManifest" EntityType="Self.Integration_AppointmentDataManifest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemAppointmentDataItem" EntityType="Self.Integration_SystemAppointmentDataItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Integration_SystemDeliveryManifest" EntityType="Self.Integration_SystemDeliveryManifest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemPhoneNumberBlacklist" EntityType="Self.Integration_SystemPhoneNumberBlacklist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Integration_SystemProviderDeliveryLogs" EntityType="Self.Integration_SystemProviderDeliveryLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="Self.Patient_PatientBiometricDataPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="Self.Patient_PatientBiometricIntegrityCase" Schema="dbo" store:Type="Tables" />
@@ -585,6 +611,8 @@
           <EntitySet Name="C__MigrationLog" EntityType="PatientDataAdministration.DatabaseModel.C__MigrationLog" />
           <EntitySet Name="Administration_ClientLog" EntityType="PatientDataAdministration.DatabaseModel.Administration_ClientLog" />
           <EntitySet Name="Integration_SystemPhoneNumberBlacklist" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemPhoneNumberBlacklist" />
+          <EntitySet Name="Integration_SystemDeliveryManifest" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemDeliveryManifest" />
+          <EntitySet Name="Integration_SystemProviderDeliveryLogs" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemProviderDeliveryLogs" />
           </EntityContainer>
         <EntityType Name="Administration_ClientMap">
           <Key>
@@ -1099,6 +1127,30 @@
           <Property Name="DateLogged" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="LastOperationStatus" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemDeliveryManifest">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MessageDate" Type="DateTime" Precision="3" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MessageSupportParams" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="IsDelivered" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemProviderDeliveryLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MessageId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OperationDate" Type="DateTime" Precision="3" />
+          <Property Name="OperationStatus" Type="Int32" Nullable="false" />
+          <Property Name="IsFinalStatus" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
@@ -1707,6 +1759,32 @@
                 <ScalarProperty Name="LastOperationStatus" ColumnName="LastOperationStatus" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="DateLogged" ColumnName="DateLogged" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Integration_SystemDeliveryManifest">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_SystemDeliveryManifest">
+              <MappingFragment StoreEntitySet="Integration_SystemDeliveryManifest">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsDelivered" ColumnName="IsDelivered" />
+                <ScalarProperty Name="MessageSupportParams" ColumnName="MessageSupportParams" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="MessageDate" ColumnName="MessageDate" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Integration_SystemProviderDeliveryLogs">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_SystemProviderDeliveryLogs">
+              <MappingFragment StoreEntitySet="Integration_SystemProviderDeliveryLogs">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsFinalStatus" ColumnName="IsFinalStatus" />
+                <ScalarProperty Name="OperationStatus" ColumnName="OperationStatus" />
+                <ScalarProperty Name="OperationDate" ColumnName="OperationDate" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

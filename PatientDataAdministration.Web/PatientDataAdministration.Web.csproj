@@ -1116,6 +1116,7 @@
     <Content Include="Views\ReportingEngine\DataRequest.cshtml" />
     <Content Include="Views\ReportingEngine\PatientDataExport.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <Content Include="Views\MessagingCenter\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1174,6 +1175,7 @@
     <Compile Include="Controllers\DataIntegrityController.cs" />
     <Compile Include="Controllers\DataProcessorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessagingCenterController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\ReportingEngineController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />

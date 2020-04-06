@@ -18,10 +18,18 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
 
                 var operation = RemoteRequest.RequestGet(url);
 
-                ActivityLogger.Log($"MSG_PROC_XWIRE_RES_{oprTrack}".ToUpper(),
+                if (!operation.Result.Status)
+                {
+                    responsePayload = null;
+                    ActivityLogger.Log($"MSG_PROC_XWIRE_RES_{oprTrack}".ToUpper(), "Low Balance");
+                }
+                else
+                {
+                    ActivityLogger.Log($"MSG_PROC_XWIRE_RES_{oprTrack}".ToUpper(),
                     Newtonsoft.Json.JsonConvert.SerializeObject(operation.Result));
 
-                responsePayload = operation.Result.Data;
+                    responsePayload = operation.Result.Data;
+                }
             }
             catch (Exception e)
             {
