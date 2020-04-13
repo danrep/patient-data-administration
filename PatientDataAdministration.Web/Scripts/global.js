@@ -127,6 +127,9 @@ function formatDate(date) {
 function formatDateShort(date) {
     return moment(date).format("MMM DD");
 };
+function formatDateCustom(date, format) {
+    return moment(date).format(format);
+};
 
 /*
  *  Charting Functions

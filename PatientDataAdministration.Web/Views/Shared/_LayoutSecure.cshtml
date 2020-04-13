@@ -46,7 +46,6 @@
     <link href="/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.css" rel="stylesheet" />
 
-    <link href="/assets/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap-sweetalert/sweetalert.css" rel="stylesheet" />
 
     <link href="/assets/plugins/jquery-jvectormap/jquery-jvectormap.css" rel="stylesheet" />
@@ -150,7 +149,8 @@
                             <span>Messaging Center</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "MessagingCenter", new {area = ""})">Overview</a></li>                            
+                            <li class="active"><a href="@Url.Action("Index", "MessagingCenter", new {area = ""})">Overview</a></li> 
+                            <li class="active"><a href="@Url.Action("SendMessage", "MessagingCenter", new {area = ""})">Send Message</a></li>                            
                         </ul>
                     </li>
                     <li class="has-sub">

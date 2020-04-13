@@ -1117,6 +1117,7 @@
     <Content Include="Views\ReportingEngine\PatientDataExport.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="Views\MessagingCenter\Index.cshtml" />
+    <Content Include="Views\MessagingCenter\SendMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
