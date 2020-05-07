@@ -29,6 +29,12 @@ namespace PatientDataAdministration.Web.Controllers
         {
             try
             {
+                using (var entities = new Entities())
+                {
+                    if (!entities.Sp_Integration_GetCreditStatus(listOfPhoneNumbers.Count).FirstOrDefault().Value)
+                        return Json(ResponseData.SendFailMsg(message: "Insufficient Units for Processing"), JsonRequestBehavior.AllowGet);
+                }
+
                 new Thread(()=> {
                     using(var entities = new Entities())
                     {
@@ -38,7 +44,8 @@ namespace PatientDataAdministration.Web.Controllers
 
                             if (phoneNumber.Contains("00000"))
                             {
-                                RegisterMessage(new { Status = "Successful 98" }, phoneNumber, MessageResponse.Invalid);
+                                RegisterMessage(new { StatusMessage = "Successful 96", GeneratedMessage = message }, 
+                                    phoneNumber, MessageResponse.Invalid);
                                 continue;
                             }
 
@@ -47,15 +54,31 @@ namespace PatientDataAdministration.Web.Controllers
                             {
                                 dynamic payload;
 
-                                Messaging.SendSms(phoneNumber, message, out payload);
+                                var messageState = Messaging.SendSms(phoneNumber, message, out payload);
 
                                 if (payload == null)
-                                    RegisterMessage(new { Status = "Successful 99" }, phoneNumber, MessageResponse.Pending);
+                                    RegisterMessage(new { StatusMessage = "Successful 98", GeneratedMessage = message }, 
+                                        phoneNumber, MessageResponse.Pending);
                                 else
-                                    RegisterMessage(payload, phoneNumber, MessageResponse.Pending);
+                                {
+                                    if (messageState)
+                                        RegisterMessage(new { StatusMessage = "Successful 00", GeneratedMessage = message, Payload = payload },
+                                            phoneNumber, MessageResponse.Delivered);
+                                    else
+                                        RegisterMessage(new { StatusMessage = "Successful 99", GeneratedMessage = message, Payload = payload },
+                                            phoneNumber, MessageResponse.Pending);
+                                }
                             }
                             else
-                                RegisterMessage(new { Status = "Successful 00"}, phoneNumber, MessageResponse.Delivered);
+                                RegisterMessage(new { StatusMessage = "Successful 97", GeneratedMessage = message }, 
+                                    phoneNumber, MessageResponse.Delivered);
+
+                            new Thread(() => {
+                                using (var innerentities = new Entities())
+                                {
+                                    innerentities.Sp_Integration_DeductLicenseCredit(1);
+                                }
+                            }).Start();
                         }
                     }
                 }).Start();
@@ -75,8 +98,7 @@ namespace PatientDataAdministration.Web.Controllers
                 {
                     var manifest = entities.Integration_SystemDeliveryManifest
                     .Where(x => !x.IsDeleted)
-                    .OrderByDescending(x => x.IsDelivered)
-                    .ThenByDescending(x => x.MessageDate)
+                    .OrderByDescending(x => x.MessageDate)
                     .Take(1000).ToList();
 
                     return Json(new
@@ -84,6 +106,48 @@ namespace PatientDataAdministration.Web.Controllers
                         Status = true,
                         Message = "Successful",
                         Data = manifest
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetMessageMeta()
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    var startDate = DateTime.Now.Date.AddDays((DateTime.Now.Date.Day - 1) * -1);
+                    var endDate = startDate.AddMonths(1);
+                    var today = DateTime.Today.Date;
+                    var tomorrow = today.AddDays(1);
+
+                    var manifest = entities.Integration_SystemGatewayLicence.FirstOrDefault(x => x.IsCurrentStatus) ?? new Integration_SystemGatewayLicence();
+                    var thisMonth = entities.Integration_SystemProviderDeliveryLogs
+                        .Where(x => x.OperationDate > startDate && x.OperationDate < endDate)
+                        .GroupBy(x => x.MessageId)
+                        .Select(x => new {
+                            MessageId = x.Key,
+                            OperationDate = x.Max(y => y.OperationDate)
+                        })
+                        .ToList();
+                    var thisDay = thisMonth.Count(x => x.OperationDate > today && x.OperationDate < tomorrow);
+
+                    return Json(new
+                    {
+                        Status = true,
+                        Message = "Successful",
+                        Data = new
+                        {
+                            TotalUnitsLeft = manifest.CurrentBalance.ToString("#,##0"),
+                            SentThisDay = thisDay,
+                            SentThisMonth = thisMonth.Count
+                        }
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -137,15 +201,36 @@ namespace PatientDataAdministration.Web.Controllers
             {
                 using (var entities = new Entities())
                 {
-                    var appointmentDataItem = entities.Integration_SystemAppointmentDataItem
-                    .FirstOrDefault(x => x.MessageId == messageId);
+                    if (!entities.Sp_Integration_GetCreditStatus(1).FirstOrDefault().Value)
+                        return Json(ResponseData.SendFailMsg(message: "Insufficient Units for Processing"), JsonRequestBehavior.AllowGet);
 
-                    if(appointmentDataItem != null)
+                    var appointmentDataItem = entities.Integration_SystemAppointmentDataItem
+                        .FirstOrDefault(x => x.MessageId == messageId);
+
+                    if (appointmentDataItem != null)
                     {
                         appointmentDataItem.MessageStatus = (int)MessageResponse.Pending;
                         entities.Entry(appointmentDataItem).State = System.Data.Entity.EntityState.Modified;
                         entities.SaveChanges();
                     }
+
+                    var previousOperation = entities.Integration_SystemDeliveryManifest
+                        .FirstOrDefault(x => x.MessageId == messageId);
+
+                    if (previousOperation != null)
+                    {
+                        previousOperation.MessageDate = DateTime.Now;
+                        previousOperation.IsDelivered = false;
+                        entities.Entry(previousOperation).State = System.Data.Entity.EntityState.Modified;
+                        entities.SaveChanges();
+                    }
+
+                    new Thread(() => {
+                        using (var innerentities = new Entities())
+                        {
+                            innerentities.Sp_Integration_DeductLicenseCredit(1);
+                        }
+                    }).Start();
 
                     return Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
                 }

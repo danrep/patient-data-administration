@@ -107,7 +107,9 @@ namespace PatientDataAdministration.Core
                 // ProcessorInfoBip.SendResponse(destination, message);
                 // ProcessorClickatell.SendResponse(destination, message, out payload);
                 // ProcessorBulkSmsNg.SendResponse(destination, message, out payload);
-                return true;
+                var messageId = ((dynamic)payload)["msg_id"];
+                
+                return messageId != null ? true : false;
             }
             catch (Exception exception)
             {

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
+using System.Threading;
 
 namespace PatientDataAdministration.Web.Engines
 {
@@ -120,18 +121,22 @@ namespace PatientDataAdministration.Web.Engines
         {
             _recurrentExecution.Enabled = false;
 
-            #region Pending SMS Confirmation
-            StatusCheck();
+            #region Pending SMS Appointment Confirmation
+            StatusCheckAppointment();
             #endregion
 
-            #region Pending SMS Execute
-            PendingSend();
+            #region Pending SMS Appointment Execute
+            PendingSendAppointment();
+            #endregion
+
+            #region Pending SMS General 
+            PendingSendGeneral();
             #endregion
 
             _recurrentExecution.Enabled = true;
         }
 
-        private void StatusCheck()
+        private void StatusCheckAppointment()
         {
             #region SMS Status Check
 
@@ -199,17 +204,21 @@ namespace PatientDataAdministration.Web.Engines
             #endregion
         }
 
-        private void PendingSend()
+        private void PendingSendAppointment()
         {
             try
             {
                 using (var entity = new Entities())
                 {
+                    var currentDate = DateTime.Now.Date;
                     var pendingStatus = (int)MessageResponse.Pending;
                     var pendingSends =
                         entity.Integration_SystemAppointmentDataItem.Where(x =>
                             x.MessageStatus == pendingStatus && string.IsNullOrEmpty(x.MessageId) &&
-                            x.AppointmentDate > DateTime.Now.Date).ToList();
+                            x.AppointmentDate > currentDate).ToList();
+
+                    if (!entity.Sp_Integration_GetCreditStatus(pendingSends.Count).FirstOrDefault().Value)
+                        return;
 
                     foreach (var pendingSend in pendingSends)
                     {
@@ -234,6 +243,65 @@ namespace PatientDataAdministration.Web.Engines
 
                         entity.Entry(pendingSend).State = EntityState.Modified;
                         entity.SaveChanges();
+
+                        new Thread(()=> {
+                            using(var entities = new Entities())
+                            {
+                                entities.Sp_Integration_DeductLicenseCredit(1);
+                            }
+                        }).Start();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+        }
+
+        private void PendingSendGeneral()
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    var currentDate = DateTime.Now.Date;
+
+                    var pendingSends =
+                        entity.Integration_SystemDeliveryManifest.Where(x =>
+                            !x.IsDelivered && 
+                            DbFunctions.TruncateTime(x.MessageDate) == currentDate).ToList();
+
+                    if (!entity.Sp_Integration_GetCreditStatus(pendingSends.Count).FirstOrDefault().Value)
+                        return;
+
+                    foreach (var pendingSend in pendingSends)
+                    {
+                        dynamic payload;
+                        var message = Newtonsoft.Json.JsonConvert.DeserializeObject<dynamic>(pendingSend.MessageSupportParams)["GeneratedMessage"];
+
+                        pendingSend.IsDelivered = Messaging.SendSms(pendingSend.PhoneNumber, message.ToString(), out payload);
+
+                        if (payload != null)
+                        {
+                            var messageId = payload["msg_id"].ToString();
+
+                            pendingSend.MessageId = messageId;
+                            pendingSend.MessageSupportParams =
+                                Newtonsoft.Json.JsonConvert.SerializeObject(new { StatusMessage = "Successful 00", GeneratedMessage = message, Payload = payload });
+
+                            RegisterMessage(pendingSend.Id, pendingSend.MessageId, MessageResponse.Delivered);
+                        }
+
+                        entity.Entry(pendingSend).State = EntityState.Modified;
+                        entity.SaveChanges();
+
+                        new Thread(() => {
+                            using (var entities = new Entities())
+                            {
+                                entities.Sp_Integration_DeductLicenseCredit(1);
+                            }
+                        }).Start();
                     }
                 }
             }

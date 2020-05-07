@@ -26,6 +26,12 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
 
                 ActivityLogger.Log("INTEGRATION_REQUEST_PNA", Newtonsoft.Json.JsonConvert.SerializeObject(appointments));
 
+                using(var entities = new Entities())
+                {
+                    if (!entities.Sp_Integration_GetCreditStatus(appointments.Count).FirstOrDefault().Value)
+                        return Json(ResponseData.SendFailMsg(message: "Insufficient Units for Processing"), JsonRequestBehavior.AllowGet);
+                }
+
                 new Thread(() =>
                 {
                     try
@@ -95,6 +101,13 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                                     else
                                         RegisterMessage(integrationItem, appointment, MessageResponse.Delivered);
                                 }
+
+                                new Thread(() => {
+                                    using (var innerentities = new Entities())
+                                    {
+                                        innerentities.Sp_Integration_DeductLicenseCredit(1);
+                                    }
+                                }).Start();
                             }
                         }
                     }
@@ -113,15 +126,35 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
             }
         }
 
-        public JsonResult PushFailedAppointment()
+        public JsonResult LoadUnits(string key)
         {
             try
             {
-                return Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
+                if (string.IsNullOrEmpty(key))
+                    return Json(ResponseData.SendFailMsg("Provide Lincense Key"), JsonRequestBehavior.AllowGet);
+
+                string base64Decoded;
+                byte[] data = Convert.FromBase64String(key);
+                base64Decoded = System.Text.Encoding.ASCII.GetString(data);
+
+                if (DateTime.Now.ToString("yyyyMMdd").Replace('0', '*') == base64Decoded.Split('|')[0])
+                {
+                    using (var entities = new Entities())
+                    {
+                        if (entities.Integration_SystemGatewayLicence.Any(x => x.LoadKey == key))
+                            return Json(ResponseData.SendFailMsg("This License Key has been Used"), JsonRequestBehavior.AllowGet);
+
+                        entities.Sp_Integration_AddLicenseCredit(Convert.ToInt64(base64Decoded.Split('|')[1]), key);
+                    }
+
+                    return Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
+                }
+                else
+                    return Json(ResponseData.SendFailMsg("Invalid License Key"), JsonRequestBehavior.AllowGet);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return Json(ResponseData.SendFailMsg(e.ToString()), JsonRequestBehavior.AllowGet);
+                return Json(ResponseData.SendFailMsg("Invalid License Key"), JsonRequestBehavior.AllowGet);
             }
         }
 

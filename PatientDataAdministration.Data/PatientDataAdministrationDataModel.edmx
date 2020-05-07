@@ -174,6 +174,20 @@
           <Property Name="IsDelivered" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Integration_SystemGatewayLicence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoadPeriod" Type="datetime" Nullable="false" />
+          <Property Name="LastLoadAmount" Type="bigint" Nullable="false" />
+          <Property Name="CurrentLoadAmount" Type="bigint" Nullable="false" />
+          <Property Name="CurrentBalance" Type="bigint" Nullable="false" />
+          <Property Name="LoadKey" Type="varchar(max)" Nullable="false" />
+          <Property Name="LastDeductionPeriod" Type="datetime" Nullable="false" />
+          <Property Name="IsCurrentStatus" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Integration_SystemPhoneNumberBlacklist">
           <Key>
             <PropertyRef Name="Id" />
@@ -429,6 +443,12 @@
         <Function Name="Function_GetPatientNfcRegStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="bit">
           <Parameter Name="pepId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="Function_GetPatientSiteId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
+          <Parameter Name="PepId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="Function_GetPatientSiteName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+          <Parameter Name="PepId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="Function_GetSiteId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="site_code" Type="varchar" Mode="In" />
         </Function>
@@ -458,6 +478,16 @@
         <Function Name="Sp_Administration_GetRegDataSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="startDate" Type="datetime" Mode="In" />
           <Parameter Name="endDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="Sp_Integration_AddLicenseCredit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="currentLoadAmount" Type="bigint" Mode="In" />
+          <Parameter Name="loadKey" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="Sp_Integration_DeductLicenseCredit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="creditUnit" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Sp_Integration_GetCreditStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="creditUnit" Type="int" Mode="In" />
         </Function>
         <Function Name="Sp_System_CleanUp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="Sp_System_DataIntegrity_Opr_CreateNew" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -501,6 +531,7 @@
           <EntitySet Name="Integration_AppointmentDataManifest" EntityType="Self.Integration_AppointmentDataManifest" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemAppointmentDataItem" EntityType="Self.Integration_SystemAppointmentDataItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemDeliveryManifest" EntityType="Self.Integration_SystemDeliveryManifest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Integration_SystemGatewayLicence" EntityType="Self.Integration_SystemGatewayLicence" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemPhoneNumberBlacklist" EntityType="Self.Integration_SystemPhoneNumberBlacklist" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Integration_SystemProviderDeliveryLogs" EntityType="Self.Integration_SystemProviderDeliveryLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
@@ -613,6 +644,17 @@
           <EntitySet Name="Integration_SystemPhoneNumberBlacklist" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemPhoneNumberBlacklist" />
           <EntitySet Name="Integration_SystemDeliveryManifest" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemDeliveryManifest" />
           <EntitySet Name="Integration_SystemProviderDeliveryLogs" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemProviderDeliveryLogs" />
+          <EntitySet Name="Integration_SystemGatewayLicence" EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemGatewayLicence" />
+          <FunctionImport Name="Sp_Integration_AddLicenseCredit">
+            <Parameter Name="currentLoadAmount" Mode="In" Type="Int64" />
+            <Parameter Name="loadKey" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_Integration_DeductLicenseCredit">
+          <Parameter Name="creditUnit" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Sp_Integration_GetCreditStatus" ReturnType="Collection(Boolean)">
+            <Parameter Name="creditUnit" Mode="In" Type="Int32" />
+          </FunctionImport>
           </EntityContainer>
         <EntityType Name="Administration_ClientMap">
           <Key>
@@ -1151,6 +1193,20 @@
           <Property Name="OperationDate" Type="DateTime" Precision="3" />
           <Property Name="OperationStatus" Type="Int32" Nullable="false" />
           <Property Name="IsFinalStatus" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Integration_SystemGatewayLicence">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoadPeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastLoadAmount" Type="Int64" Nullable="false" />
+          <Property Name="CurrentLoadAmount" Type="Int64" Nullable="false" />
+          <Property Name="CurrentBalance" Type="Int64" Nullable="false" />
+          <Property Name="LoadKey" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="LastDeductionPeriod" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCurrentStatus" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
@@ -1789,6 +1845,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Integration_SystemGatewayLicence">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Integration_SystemGatewayLicence">
+              <MappingFragment StoreEntitySet="Integration_SystemGatewayLicence">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsCurrentStatus" ColumnName="IsCurrentStatus" />
+                <ScalarProperty Name="LastDeductionPeriod" ColumnName="LastDeductionPeriod" />
+                <ScalarProperty Name="LoadKey" ColumnName="LoadKey" />
+                <ScalarProperty Name="CurrentBalance" ColumnName="CurrentBalance" />
+                <ScalarProperty Name="CurrentLoadAmount" ColumnName="CurrentLoadAmount" />
+                <ScalarProperty Name="LastLoadAmount" ColumnName="LastLoadAmount" />
+                <ScalarProperty Name="LoadPeriod" ColumnName="LoadPeriod" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Sp_Integration_AddLicenseCredit" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_AddLicenseCredit" />
+          <FunctionImportMapping FunctionImportName="Sp_Integration_DeductLicenseCredit" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_DeductLicenseCredit" />
+          <FunctionImportMapping FunctionImportName="Sp_Integration_GetCreditStatus" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_GetCreditStatus" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

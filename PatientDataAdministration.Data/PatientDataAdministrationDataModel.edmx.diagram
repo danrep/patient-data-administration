@@ -36,6 +36,7 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemPhoneNumberBlacklist" Width="1.5" PointX="15.375" PointY="4.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemDeliveryManifest" Width="1.5" PointX="15.375" PointY="7.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemProviderDeliveryLogs" Width="1.5" PointX="15.375" PointY="11.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemGatewayLicence" Width="1.5" PointX="15.375" PointY="14.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

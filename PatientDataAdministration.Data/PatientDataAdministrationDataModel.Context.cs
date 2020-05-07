@@ -58,6 +58,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Integration_SystemPhoneNumberBlacklist> Integration_SystemPhoneNumberBlacklist { get; set; }
         public virtual DbSet<Integration_SystemDeliveryManifest> Integration_SystemDeliveryManifest { get; set; }
         public virtual DbSet<Integration_SystemProviderDeliveryLogs> Integration_SystemProviderDeliveryLogs { get; set; }
+        public virtual DbSet<Integration_SystemGatewayLicence> Integration_SystemGatewayLicence { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {
@@ -246,6 +247,37 @@ namespace PatientDataAdministration.Data
                 new ObjectParameter("upperDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Sp_System_Reporting_PopulationDataSite_Result>("Sp_System_Reporting_PopulationDataSite", siteIdParameter, lowerDateParameter, upperDateParameter);
+        }
+    
+        public virtual int Sp_Integration_AddLicenseCredit(Nullable<long> currentLoadAmount, string loadKey)
+        {
+            var currentLoadAmountParameter = currentLoadAmount.HasValue ?
+                new ObjectParameter("currentLoadAmount", currentLoadAmount) :
+                new ObjectParameter("currentLoadAmount", typeof(long));
+    
+            var loadKeyParameter = loadKey != null ?
+                new ObjectParameter("loadKey", loadKey) :
+                new ObjectParameter("loadKey", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integration_AddLicenseCredit", currentLoadAmountParameter, loadKeyParameter);
+        }
+    
+        public virtual int Sp_Integration_DeductLicenseCredit(Nullable<int> creditUnit)
+        {
+            var creditUnitParameter = creditUnit.HasValue ?
+                new ObjectParameter("creditUnit", creditUnit) :
+                new ObjectParameter("creditUnit", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Sp_Integration_DeductLicenseCredit", creditUnitParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<bool>> Sp_Integration_GetCreditStatus(Nullable<int> creditUnit)
+        {
+            var creditUnitParameter = creditUnit.HasValue ?
+                new ObjectParameter("creditUnit", creditUnit) :
+                new ObjectParameter("creditUnit", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<bool>>("Sp_Integration_GetCreditStatus", creditUnitParameter);
         }
     }
 }

@@ -6,6 +6,47 @@
 }
 
 <div class="row">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="widget widget-stats bg-green-darker">
+            <div class="stats-icon"><i class="fa fa-bars"></i></div>
+            <div class="stats-info">
+                <h4>Total Units Left</h4>
+                <p id="totalUnitsLeft_p">00</p>
+            </div>
+            <div class="stats-link">
+                <a><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="widget widget-stats bg-orange-darker">
+            <div class="stats-icon"><i class="fa fa-bars"></i></div>
+            <div class="stats-info">
+                <h4>Units Used this Month</h4>
+                <p id="unitsUsedThisMonth_p">00</p>
+            </div>
+            <div class="stats-link">
+                <a><i class="fa fa-calendar"></i>&nbsp;@DateTime.Now.ToString("MMMM yyyy") </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="widget widget-stats bg-blue-darker">
+            <div class="stats-icon"><i class="fa fa-bars"></i></div>
+            <div class="stats-info">
+                <h4>Units Used Today</h4>
+                <p id="unitsUsedToday_p">00</p>
+            </div>
+            <div class="stats-link">
+                <a><i class="fa fa-calendar"></i>&nbsp;@DateTime.Now.ToLongDateString() </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
     <div class="col-md-12 col-xs-12">
         <div class="panel panel-inverse">
             <div class="panel-heading">
@@ -38,7 +79,7 @@
     <div class="modal fade" id="modal-alert">
         <div class="modal-dialog modal-md">
             <div class="modal-content">
-                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:savePatient();">
+                <form class="form-horizontal" data-parsley-validate="true" name="demo-form" id="demo-form" action="javascript:resendMessage();">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             ×
@@ -125,6 +166,20 @@
             FormSliderSwitcher.init();
         });
 
+        function iniTileLoad() {
+            window.api("GET",
+                "@Url.Action("GetMessageMeta", "MessagingCenter", new {area = ""})",
+                null,
+                true,
+                loadTiles);
+        }
+
+        function loadTiles(data) {
+            $('#totalUnitsLeft_p').text(data.TotalUnitsLeft);
+            $('#unitsUsedThisMonth_p').text(data.SentThisMonth.format());
+            $('#unitsUsedToday_p').text(data.SentThisDay.format());
+        };
+
         pdaWeb.controller('pdaWebCtrlr',
             function ($scope) {
                 $scope.messageInfo = {};
@@ -139,6 +194,7 @@
         function pageLoad() {
             window.reInitializeTable($('#data-table'));
             loadTableRequest();
+            iniTileLoad();
         };
 
         function loadTableRequest() {
@@ -162,7 +218,7 @@
                 function (i, datum) {
                     var rowData = "<tr>";
                     rowData += '<td>' + datum.PepId + '</td>';
-                    rowData += '<td>' + window.formatDate(datum.MessageDate) + '</td>';
+                    rowData += '<td>' + window.formatDateCustom(datum.MessageDate, "ddd DD MMM YYYY, hh:mm a") + '</td>';
                     rowData += '<td>' + datum.MessageId + '</td>';
                     rowData += '<td>' + datum.PhoneNumber + '</td>';
 
@@ -204,7 +260,7 @@
                 "@Url.Action("ResendMessage", "MessagingCenter", new {area = ""})?messageId=" + window.getNgScope().messageInfo.Manifest.MessageId,
                 null,
                 true,
-                resendMessageResponse);
+                resendMessageResponse, true);
         }
 
         function resendMessageResponse(data) {

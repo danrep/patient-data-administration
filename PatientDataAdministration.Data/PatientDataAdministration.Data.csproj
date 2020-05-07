@@ -85,6 +85,9 @@
     <Compile Include="Integration_SystemDeliveryManifest.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Integration_SystemGatewayLicence.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Integration_SystemPhoneNumberBlacklist.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
