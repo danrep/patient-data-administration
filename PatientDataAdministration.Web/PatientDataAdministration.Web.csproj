@@ -1118,6 +1118,7 @@
     <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="Views\MessagingCenter\Index.cshtml" />
     <Content Include="Views\MessagingCenter\SendMessage.cshtml" />
+    <Content Include="Views\PatientManagement\SecondaryBioDataUpload.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1197,6 +1198,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\RecurrentData.cs" />
+    <Compile Include="Models\SecondaryBioDataModels\NmrsXml.cs" />
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

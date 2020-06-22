@@ -48,6 +48,7 @@
     <Compile Include="BiometricIntegrity.cs" />
     <Compile Include="AuditCategory.cs" />
     <Compile Include="MessageResponse.cs" />
+    <Compile Include="SecondaryBioDataSources.cs" />
     <Compile Include="ReportingType.cs" />
     <Compile Include="RecurrenceInterval.cs" />
     <Compile Include="ActionTypeDataIntegrity.cs" />

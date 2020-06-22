@@ -239,6 +239,20 @@
           <Property Name="IsValid" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="Patient_PatientBiometricDataSecondary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PepId" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DataModel" Type="int" Nullable="false" />
+          <Property Name="DataSet" Type="varchar(max)" Nullable="false" />
+          <Property Name="BioDataExtract" Type="varchar(max)" Nullable="false" />
+          <Property Name="BioDataScore" Type="int" Nullable="false" />
+          <Property Name="DateUploaded" Type="datetime" Nullable="false" />
+          <Property Name="DateRegistered" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Patient_PatientBiometricIntegrityCase">
           <Key>
             <PropertyRef Name="Id" />
@@ -536,6 +550,7 @@
           <EntitySet Name="Integration_SystemProviderDeliveryLogs" EntityType="Self.Integration_SystemProviderDeliveryLogs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricData" EntityType="Self.Patient_PatientBiometricData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricDataPopulationRegister" EntityType="Self.Patient_PatientBiometricDataPopulationRegister" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient_PatientBiometricDataSecondary" EntityType="Self.Patient_PatientBiometricDataSecondary" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="Self.Patient_PatientBiometricIntegrityCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCaseMember" EntityType="Self.Patient_PatientBiometricIntegrityCaseMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientInformation" EntityType="Self.Patient_PatientInformation" Schema="dbo" store:Type="Tables" />
@@ -653,8 +668,9 @@
           <Parameter Name="creditUnit" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="Sp_Integration_GetCreditStatus" ReturnType="Collection(Boolean)">
-            <Parameter Name="creditUnit" Mode="In" Type="Int32" />
+          <Parameter Name="creditUnit" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="Patient_PatientBiometricDataSecondary" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataSecondary" />
           </EntityContainer>
         <EntityType Name="Administration_ClientMap">
           <Key>
@@ -1207,6 +1223,20 @@
           <Property Name="LoadKey" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="LastDeductionPeriod" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsCurrentStatus" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricDataSecondary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PepId" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DataModel" Type="Int32" Nullable="false" />
+          <Property Name="DataSet" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BioDataExtract" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BioDataScore" Type="Int32" Nullable="false" />
+          <Property Name="DateUploaded" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
         </EntityType>
         </Schema>
@@ -1863,6 +1893,21 @@
           <FunctionImportMapping FunctionImportName="Sp_Integration_AddLicenseCredit" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_AddLicenseCredit" />
           <FunctionImportMapping FunctionImportName="Sp_Integration_DeductLicenseCredit" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_DeductLicenseCredit" />
           <FunctionImportMapping FunctionImportName="Sp_Integration_GetCreditStatus" FunctionName="PatientDataAdministration.DatabaseModel.Store.Sp_Integration_GetCreditStatus" />
+          <EntitySetMapping Name="Patient_PatientBiometricDataSecondary">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataSecondary">
+              <MappingFragment StoreEntitySet="Patient_PatientBiometricDataSecondary">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
+                <ScalarProperty Name="DateUploaded" ColumnName="DateUploaded" />
+                <ScalarProperty Name="BioDataScore" ColumnName="BioDataScore" />
+                <ScalarProperty Name="BioDataExtract" ColumnName="BioDataExtract" />
+                <ScalarProperty Name="DataSet" ColumnName="DataSet" />
+                <ScalarProperty Name="DataModel" ColumnName="DataModel" />
+                <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

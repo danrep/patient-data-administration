@@ -139,7 +139,8 @@
                             <span>Patient Management</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement", new {area = ""})">Patient Data</a></li>
+                            <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement" , new {area="" })">Patient Overview</a></li>
+                            <li class="active"><a href="@Url.Action("SecondaryBioDataUpload", "PatientManagement", new {area = ""})">Secondary BioData Upload</a></li>
                         </ul>
                     </li>
                     <li class="has-sub">

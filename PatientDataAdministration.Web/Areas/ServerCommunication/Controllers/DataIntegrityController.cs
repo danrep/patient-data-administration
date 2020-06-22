@@ -155,6 +155,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 if (DateTime.Now
                         .Subtract(task?.DateGenerated ?? DateTime.Now).TotalSeconds > 60)
                 {
+                    _entities.Database.CommandTimeout = 0;
                     EngineDuplicatePepId.DataIntegrityPepId = _entities.Sp_System_DataIntegrity_PepId().ToList();
 
                     if (task != null)

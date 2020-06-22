@@ -125,6 +125,9 @@
     <Compile Include="Patient_PatientBiometricDataPopulationRegister.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Patient_PatientBiometricDataSecondary.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Patient_PatientBiometricIntegrityCase.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>

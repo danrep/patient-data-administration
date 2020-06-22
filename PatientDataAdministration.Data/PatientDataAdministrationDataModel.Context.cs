@@ -59,6 +59,7 @@ namespace PatientDataAdministration.Data
         public virtual DbSet<Integration_SystemDeliveryManifest> Integration_SystemDeliveryManifest { get; set; }
         public virtual DbSet<Integration_SystemProviderDeliveryLogs> Integration_SystemProviderDeliveryLogs { get; set; }
         public virtual DbSet<Integration_SystemGatewayLicence> Integration_SystemGatewayLicence { get; set; }
+        public virtual DbSet<Patient_PatientBiometricDataSecondary> Patient_PatientBiometricDataSecondary { get; set; }
     
         public virtual ObjectResult<Sp_Administration_GetAgeDistro_Result> Sp_Administration_GetAgeDistro()
         {

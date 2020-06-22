@@ -12,6 +12,7 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
         {
             using (var entites = new Entities())
             {
+                entites.Database.CommandTimeout = 0;
                 DataIntegrityPepId = entites.Sp_System_DataIntegrity_PepId().ToList();
             }
         }
