@@ -126,9 +126,15 @@
                 </ul>
                 <ul class="nav">
                     <li class="has-sub">
-                        <a href="@Url.Action("Index", "Home", new {area = ""})">
+                        <a href="@Url.Action(" Index", "Home" , new {area="" })">
                             <i class="fa fa-home"></i>
-                            <span>Home</span>
+                            <span>Main Dashboard </span>
+                        </a>
+                    </li>
+                    <li class="has-sub">
+                        <a href="@Url.Action("SecondaryBioData", "Home", new {area = ""})">
+                            <i class="fa fa-home"></i>
+                            <span>Secondary Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-header">General Menus</li>
@@ -150,8 +156,8 @@
                             <span>Messaging Center</span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="active"><a href="@Url.Action("Index", "MessagingCenter", new {area = ""})">Overview</a></li> 
-                            <li class="active"><a href="@Url.Action("SendMessage", "MessagingCenter", new {area = ""})">Send Message</a></li>                            
+                            <li class="active"><a href="@Url.Action("Index", "MessagingCenter", new {area = ""})">Overview</a></li>
+                            <li class="active"><a href="@Url.Action("SendMessage", "MessagingCenter", new {area = ""})">Send Message</a></li>
                         </ul>
                     </li>
                     <li class="has-sub">

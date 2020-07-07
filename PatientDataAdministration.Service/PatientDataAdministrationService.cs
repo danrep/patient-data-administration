@@ -30,7 +30,7 @@ namespace PatientDataAdministration.Service
 
                 ActivityLogger.LogFileName = "PDA_Service_Logs.txt";
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 ActivityLogger.Log(e);
             }

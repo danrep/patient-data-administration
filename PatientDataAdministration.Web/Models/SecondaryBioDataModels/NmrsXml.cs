@@ -2,29 +2,21 @@
 
 namespace PatientDataAdministration.Web.Models.SecondaryBioDataModels
 {
-    public class NmrsXmlIndividualReport
+    public class NmrsXmlPatientDemographics
     {
-        public PatientDemographics PatientDemographics { get; set; }
-        public dynamic Condition { get; set; }
-        public dynamic HIVTestingReport { get; set; }
+        public string PatientIdentifier { get; set; }
+        public TreatmentFacility TreatmentFacility { get; set; }
+        public string PatientDateOfBirth { get; set; }
+        public string PatientSexCode { get; set; }
+        public string EnrolleeCode { get; set; }
+        public FingerPrints FingerPrints { get; set; }
     }
-    
+
     public class TreatmentFacility
     {
         public string FacilityName { get; set; }
         public string FacilityID { get; set; }
         public string FacilityTypeCode { get; set; }
-    }
-    
-    public class Identifier
-    {
-        public string IDNumber { get; set; }
-        public string IDTypeCode { get; set; }
-    }
-    
-    public class OtherPatientIdentifiers
-    {
-        public List<Identifier> Identifier { get; set; }
     }
     
     public class RightHand
@@ -52,16 +44,5 @@ namespace PatientDataAdministration.Web.Models.SecondaryBioDataModels
         public LeftHand LeftHand { get; set; }
         public string Source { get; set; }
         public string Present { get; set; }
-    }
-
-    public class PatientDemographics
-    {
-        public string PatientIdentifier { get; set; }
-        public TreatmentFacility TreatmentFacility { get; set; }
-        public OtherPatientIdentifiers OtherPatientIdentifiers { get; set; }
-        public string PatientDateOfBirth { get; set; }
-        public string PatientSexCode { get; set; }
-        public string EnrolleeCode { get; set; }
-        public FingerPrints FingerPrints { get; set; }
     }
 }

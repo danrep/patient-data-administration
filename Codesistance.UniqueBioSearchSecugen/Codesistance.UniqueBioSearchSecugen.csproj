@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Codesistance.UniqueBioSearchSecugen</RootNamespace>
     <AssemblyName>Codesistance.UniqueBioSearchSecugen</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SecuSearchAPI.Net">
-      <HintPath>..\..\..\..\Documents\Visual Studio 2017\Code Snippets\Visual C#\My Code Snippets\secusearchapi\SecuSearchAPI.Net.dll</HintPath>
+      <HintPath>..\BioLibraryPacks\Secugen\SecuSearchAPI.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -342,5 +342,23 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 ActivityLogger.Log(ex);
             }
         }
+
+        public JsonResult GetSecondaryBioDataOverview()
+        {
+            try
+            {
+
+                return Json(new ResponseData
+                {
+                    Status = true,
+                    Message = "Your request has been received. You will get a Notification shortly"
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return Json(new ResponseData { Status = false, Message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

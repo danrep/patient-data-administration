@@ -38,6 +38,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             {
                 var template = new Template(patientDatum.PepId, i,
                     Convert.FromBase64String(patientDatum.FingerPrintData), patientDatum);
+
                 Add(template);
                 i++;
             }
@@ -77,7 +78,15 @@ namespace Codesistance.UniqueBioSearchSecugen
 
     public enum FingerPrintPosition
     {
-        Left = 1, 
-        Right
+        LeftThumb = 1, 
+        RightThumb, 
+        LeftIndex, 
+        RightIndex, 
+        LeftMiddle, 
+        RightMiddle, 
+        LeftRing, 
+        RightRing, 
+        LeftLittle, 
+        RightLittle
     }
 } 

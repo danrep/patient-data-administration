@@ -168,53 +168,54 @@ namespace PatientDataAdministration.Web.Controllers
             {
                 XmlDocument rawXmlDocument = new XmlDocument();
                 rawXmlDocument.Load(file);
-                var individualReport = rawXmlDocument.GetElementsByTagName("IndividualReport")[0];
 
-                if (individualReport != null)
-                    if (individualReport.InnerXml.Contains("FingerPrints"))
+                var patientDemographics = rawXmlDocument.GetElementsByTagName("PatientDemographics")[0];
+
+                if (patientDemographics != null)
+                    if (patientDemographics.InnerXml.Contains("FingerPrints"))
                     {
-                        var individualReportJson = JsonConvert.SerializeXmlNode(individualReport, Newtonsoft.Json.Formatting.None, true);
-                        var individualReportParsed = JsonConvert.DeserializeObject<NmrsXmlIndividualReport>(individualReportJson);
+                        var patientDemographicsJson = JsonConvert.SerializeXmlNode(patientDemographics, Newtonsoft.Json.Formatting.None, true);
+                        var patientDemographicsParsed = JsonConvert.DeserializeObject<NmrsXmlPatientDemographics>(patientDemographicsJson);
 
                         using(var entities = new Entities())
                         {
                             var score = 0;
 
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.LeftHand.LeftIndex))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftIndex))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.LeftHand.LeftMiddle))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftMiddle))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.LeftHand.LeftSmall))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftSmall))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.LeftHand.LeftThumb))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftThumb))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.LeftHand.LeftWedding))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftWedding))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.RightHand.RightIndex))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightIndex))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.RightHand.RightMiddle))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightMiddle))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.RightHand.RightSmall))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightSmall))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.RightHand.RightThumb))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightThumb))
                                 score += 10;
-                            if (!string.IsNullOrEmpty(individualReportParsed.PatientDemographics.FingerPrints.RightHand.RightWedding))
+                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightWedding))
                                 score += 10;
 
                             if (entities.Patient_PatientBiometricDataSecondary
-                                .Any(x => x.PepId == individualReportParsed.PatientDemographics.PatientIdentifier
+                                .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
                                 && !x.IsDeleted)
                                 && forceReplace)
                             {
                                 var existingRecord = entities.Patient_PatientBiometricDataSecondary
-                                .FirstOrDefault(x => x.PepId == individualReportParsed.PatientDemographics.PatientIdentifier
+                                .FirstOrDefault(x => x.PepId == patientDemographicsParsed.PatientIdentifier
                                 && !x.IsDeleted);
 
-                                existingRecord.BioDataExtract = JsonConvert.SerializeObject(individualReportParsed.PatientDemographics.FingerPrints);
+                                existingRecord.BioDataExtract = JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints);
                                 existingRecord.BioDataScore = score;
                                 existingRecord.DataModel = (int)SecondaryBioDataSources.NmrsBioDataXml;
                                 existingRecord.DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]);
-                                existingRecord.DateRegistered = DateTime.ParseExact(individualReportParsed.PatientDemographics.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                existingRecord.DateRegistered = DateTime.ParseExact(patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                                 existingRecord.DateUploaded = DateTime.Now;
 
                                 entities.Entry(existingRecord).State = EntityState.Modified;
@@ -222,7 +223,7 @@ namespace PatientDataAdministration.Web.Controllers
                                 messageBody += "was updated successfully.";
                             }
                             else if (entities.Patient_PatientBiometricDataSecondary
-                                .Any(x => x.PepId == individualReportParsed.PatientDemographics.PatientIdentifier
+                                .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
                                 && !x.IsDeleted)
                                 && !forceReplace)
                             {
@@ -232,14 +233,14 @@ namespace PatientDataAdministration.Web.Controllers
                             {
                                 entities.Patient_PatientBiometricDataSecondary.Add(new Patient_PatientBiometricDataSecondary()
                                 {
-                                    BioDataExtract = JsonConvert.SerializeObject(individualReportParsed.PatientDemographics.FingerPrints),
+                                    BioDataExtract = JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints),
                                     BioDataScore = score,
                                     DataModel = (int)SecondaryBioDataSources.NmrsBioDataXml,
                                     DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]),
-                                    DateRegistered = DateTime.ParseExact(individualReportParsed.PatientDemographics.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture),
+                                    DateRegistered = DateTime.ParseExact(patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture),
                                     DateUploaded = DateTime.Now,
                                     IsDeleted = false,
-                                    PepId = individualReportParsed.PatientDemographics.PatientIdentifier
+                                    PepId = patientDemographicsParsed.PatientIdentifier
                                 });
 
                                 messageBody += "was loaded successfully.";

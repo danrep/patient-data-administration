@@ -66,7 +66,7 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                             {
                                 PepId = x.PepId,
                                 FingerPrintData = x.FingerPrimary,
-                                FingerPosition = FingerPrintPosition.Left
+                                FingerPosition = FingerPrintPosition.LeftThumb
                             }));
 
                     allPatientBiometrics.AddRange(entities.Patient_PatientBiometricData
@@ -75,7 +75,7 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                             {
                             PepId = x.PepId,
                             FingerPrintData = x.FingerSecondary,
-                            FingerPosition = FingerPrintPosition.Right
+                            FingerPosition = FingerPrintPosition.RightThumb
                         }));
 
                     var patientBiometricDataChunks = Transforms.ListChunk(allPatientBiometrics.OrderBy(x => Guid.NewGuid()).ToList(), 800);
@@ -153,8 +153,6 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                         }
 
                         biomtricSearchEngine = null;
-
-                        GC.Collect();
                     }
 
                     ActivityLogger.Log("INFO", $"Processing is Completed at this time");

@@ -19,6 +19,11 @@ namespace PatientDataAdministration.Web.Controllers
             return View();
         }
 
+        public ActionResult SecondaryBioData()
+        {
+            return View();
+        }
+
         [HttpPost]
         public JsonResult LogIn(string username, string password)
         {

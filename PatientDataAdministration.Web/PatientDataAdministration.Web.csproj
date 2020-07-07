@@ -1119,6 +1119,8 @@
     <Content Include="Views\MessagingCenter\Index.cshtml" />
     <Content Include="Views\MessagingCenter\SendMessage.cshtml" />
     <Content Include="Views\PatientManagement\SecondaryBioDataUpload.cshtml" />
+    <Content Include="Views\Home\SecondaryBioData.cshtml" />
+    <Content Include="Views\Home\SecondaryBioDataItems\Overview.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
