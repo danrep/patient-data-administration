@@ -147,6 +147,7 @@
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SecondaryBioDataModels\NmrsXml.cs" />
     <Compile Include="Sp_Administration_GetAgeDistro_Result.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>

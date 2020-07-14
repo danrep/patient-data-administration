@@ -1200,7 +1200,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\RecurrentData.cs" />
-    <Compile Include="Models\SecondaryBioDataModels\NmrsXml.cs" />
     <Compile Include="Models\SecurityModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

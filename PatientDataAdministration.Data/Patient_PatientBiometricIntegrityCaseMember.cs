@@ -24,5 +24,7 @@ namespace PatientDataAdministration.Data
         public bool IsTreated { get; set; }
         public bool IsDeleted { get; set; }
         public int MatchingScore { get; set; }
+        public string PivotData { get; set; }
+        public string SuspectData { get; set; }
     }
 }

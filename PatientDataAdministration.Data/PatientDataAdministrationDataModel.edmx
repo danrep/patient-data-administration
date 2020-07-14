@@ -279,6 +279,8 @@
           <Property Name="DateTreated" Type="datetime" Nullable="false" />
           <Property Name="IsTreated" Type="bit" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="PivotData" Type="varchar(max)" />
+          <Property Name="SuspectData" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Patient_PatientInformation">
           <Key>
@@ -805,6 +807,8 @@
           <Property Name="IsTreated" Type="Boolean" Nullable="false" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <Property Name="MatchingScore" Type="Int32" Nullable="false" />
+          <Property Name="PivotData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SuspectData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Patient_PatientInformation">
           <Key>
@@ -1376,6 +1380,8 @@
           <EntitySetMapping Name="Patient_PatientBiometricIntegrityCaseMember">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricIntegrityCaseMember">
               <MappingFragment StoreEntitySet="Patient_PatientBiometricIntegrityCaseMember">
+                <ScalarProperty Name="SuspectData" ColumnName="SuspectData" />
+                <ScalarProperty Name="PivotData" ColumnName="PivotData" />
                 <ScalarProperty Name="MatchingScore" ColumnName="MatchingScore" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsTreated" ColumnName="IsTreated" />

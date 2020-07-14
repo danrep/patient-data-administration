@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PatientDataAdministration.EnumLibrary;
+using System;
 using System.Collections.Generic;
 
 namespace Codesistance.UniqueBioSearchSecugen
@@ -60,6 +61,7 @@ namespace Codesistance.UniqueBioSearchSecugen
     public class MatchModel
     {
         public string Pivot { get; set; }
+        public PatientData PivotData { get; set; }
         public List<SuspectedCandidate> SuspectedCandidates { get; set; }
     }
 
@@ -71,22 +73,10 @@ namespace Codesistance.UniqueBioSearchSecugen
 
     public class PatientData
     {
+        public long RowId { get; set; }
         public string PepId { get; set; }
         public string FingerPrintData { get; set; }
         public FingerPrintPosition FingerPosition { get; set; }
-    }
-
-    public enum FingerPrintPosition
-    {
-        LeftThumb = 1, 
-        RightThumb, 
-        LeftIndex, 
-        RightIndex, 
-        LeftMiddle, 
-        RightMiddle, 
-        LeftRing, 
-        RightRing, 
-        LeftLittle, 
-        RightLittle
+        public FingerPrintStore FingerPrintStore { get; set; }
     }
 } 

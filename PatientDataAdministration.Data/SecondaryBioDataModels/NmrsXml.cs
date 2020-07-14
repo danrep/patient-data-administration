@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PatientDataAdministration.Web.Models.SecondaryBioDataModels
+﻿namespace PatientDataAdministration.Data.SecondaryBioDataModels
 {
     public class NmrsXmlPatientDemographics
     {

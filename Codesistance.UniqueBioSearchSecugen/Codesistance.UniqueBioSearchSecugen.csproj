@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SecuSearchAPI.Net">
       <HintPath>..\BioLibraryPacks\Secugen\SecuSearchAPI.Net.dll</HintPath>
     </Reference>
@@ -53,6 +56,10 @@
       <Project>{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}</Project>
       <Name>PatientDataAdministration.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj">
+      <Project>{c914f40e-8a5e-49c4-8d1e-7739d2453d8d}</Project>
+      <Name>PatientDataAdministration.EnumLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="secusearchapi.dll">
@@ -61,6 +68,9 @@
     <Content Include="secusearchapi32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

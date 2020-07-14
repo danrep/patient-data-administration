@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FingerPrintStore.cs" />
+    <Compile Include="FingerPrintPosition.cs" />
     <Compile Include="Dictionary\EnumDescriptor.cs" />
     <Compile Include="Dictionary\EnumDictionary.cs" />
     <Compile Include="FileProcessingMethod.cs" />

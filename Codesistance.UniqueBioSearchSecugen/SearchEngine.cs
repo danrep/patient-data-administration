@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using PatientDataAdministration.Core;
+using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 using SecuGen.SecuSearchSDK3;
 
 namespace Codesistance.UniqueBioSearchSecugen
@@ -104,9 +106,38 @@ namespace Codesistance.UniqueBioSearchSecugen
             {
                 var templateId = SearchModel.GetTemplate(i).Index;
                 var templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
-                error = SSearch.RegisterFP(templateBuff, templateId);
-                if (error != SSError.NONE)
+                var patientData = (PatientData)SearchModel.GetTemplate(i).Data;
+
+                if (patientData.FingerPrintStore == FingerPrintStore.Primary)
                 {
+                    error = SSearch.RegisterFP(templateBuff, templateId);
+                    if (error != SSError.NONE)
+                    {
+                        ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
+                    }
+                }
+                else
+                {
+                    byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
+                    uint numberOfViews = 0;
+
+                    SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
+
+                    for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                    {
+                        error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
+                            continue;
+                        }
+
+                        error = SSearch.RegisterFP(sgTemplate, templateId);
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
+                        }
+                    }
                 }
             }
 
@@ -156,7 +187,7 @@ namespace Codesistance.UniqueBioSearchSecugen
 
                     if (error != SSError.NONE)
                     {
-                        ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(i).Filename} | {error}");
+                        ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(i).Filename} | {error.DisplayName()}");
                         continue;
                     }
 
@@ -170,6 +201,7 @@ namespace Codesistance.UniqueBioSearchSecugen
                         matchModels.Add(new MatchModel()
                         {
                             Pivot = SearchModel.GetTemplate(i).Filename,
+                            PivotData = (PatientData)SearchModel.GetTemplate(i).Data,
                             SuspectedCandidates = candList.Candidates
                                 .Where(x => x.ConfidenceLevel != SSConfLevel.INVALID)
                                 .Select(x => new SuspectedCandidate()
@@ -183,7 +215,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             }
             catch (Exception e)
             {
-                throw;
+                ActivityLogger.Log(e);
             }
 
             return matchModels;

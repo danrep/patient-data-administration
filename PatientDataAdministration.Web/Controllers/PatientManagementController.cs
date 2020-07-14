@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
-using PatientDataAdministration.Web.Models.SecondaryBioDataModels;
+using PatientDataAdministration.Data.SecondaryBioDataModels;
 
 namespace PatientDataAdministration.Web.Controllers
 {
