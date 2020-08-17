@@ -97,7 +97,6 @@
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -1097,7 +1096,6 @@
     <Content Include="Assets\plugins\d3\d3-procesor.js" />
     <Content Include="Engines\EngineOperationManagement\DataHealthMessages.json" />
     <Content Include="Areas\DataDelivery\Views\web.config" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
     <Content Include="Views\Security\Index.cshtml" />
@@ -1115,12 +1113,12 @@
     <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicates.cshtml" />
     <Content Include="Views\ReportingEngine\DataRequest.cshtml" />
     <Content Include="Views\ReportingEngine\PatientDataExport.cshtml" />
-    <None Include="Properties\PublishProfiles\FolderProfile1.pubxml" />
     <Content Include="Views\MessagingCenter\Index.cshtml" />
     <Content Include="Views\MessagingCenter\SendMessage.cshtml" />
     <Content Include="Views\PatientManagement\SecondaryBioDataUpload.cshtml" />
     <Content Include="Views\Home\SecondaryBioData.cshtml" />
     <Content Include="Views\Home\SecondaryBioDataItems\Overview.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

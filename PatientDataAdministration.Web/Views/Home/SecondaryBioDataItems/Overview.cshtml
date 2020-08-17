@@ -1,1 +1,51 @@
-﻿
+﻿<div class="col-md-3 col-sm-6">
+    <div class="widget widget-stats bg-green-darker">
+        <div class="stats-icon"><i class="fa fa-calendar"></i></div>
+        <div class="stats-info">
+            <h4>TOTAL UPLOADS TODAY</h4>
+            <p id="totalToday_p">00</p>
+        </div>
+        <div class="stats-link">
+            <a>Today @DateTime.Now.Date.ToLongDateString()</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="widget widget-stats bg-green-darker">
+        <div class="stats-icon"><i class="fa fa-calendar"></i></div>
+        <div class="stats-info">
+            <h4>TOTAL UPLOADS THIS MONTH</h4>
+            <p id="totalThisMonth_p">00</p>
+        </div>
+        <div class="stats-link">
+            <a>Month of @DateTime.Now.Date.ToString("MMMM yyyy")</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="widget widget-stats bg-red-darker">
+        <div class="stats-icon"><i class="fa fa-battery-half"></i></div>
+        <div class="stats-info">
+            <h4>TOTAL NOT OPTIMAL</h4>
+            <p id="totalNotOptimal_p">00</p>
+        </div>
+        <div class="stats-link">
+            <a>Less than 6 Fingers Captured</a>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3 col-sm-6">
+    <div class="widget widget-stats bg-blue-darker">
+        <div class="stats-icon"><i class="fa fa-shield"></i></div>
+        <div class="stats-info">
+            <h4>AVERAGE BIO-DATA SCORE</h4>
+            <p id="averageScore_p">00</p>
+        </div>
+        <div class="stats-link">
+            <a>Max Score: <span id="maxScore_p">00</span> | Min Score: <span id="minScore_p">00</span></a>
+        </div>
+    </div>
+</div>

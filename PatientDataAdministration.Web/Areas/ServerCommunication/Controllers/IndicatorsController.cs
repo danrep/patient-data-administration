@@ -133,6 +133,62 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
+        public JsonResult SecondaryBioDataStats()
+        {
+            try
+            {
+                var uploadedToday =
+                    _entities.Patient_PatientBiometricDataSecondary.Count(x =>
+                        x.DateUploaded > DbFunctions.TruncateTime(DateTime.Now) && !x.IsDeleted);
+
+                var thisMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var uploadedThisMonth =
+                    _entities.Patient_PatientBiometricDataSecondary.Count(x =>
+                        x.DateUploaded > thisMonth && !x.IsDeleted);
+
+                var averageScore =
+                    _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted).Sum(x => x.BioDataScore) /
+                    _entities.Patient_PatientBiometricDataSecondary.Count(x => !x.IsDeleted);
+
+                var maxScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
+                    .Max(x => x.BioDataScore);
+
+                var minScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
+                    .Min(x => x.BioDataScore);
+
+                var notOptimal = _entities.Patient_PatientBiometricDataSecondary.Count(x => !x.IsDeleted && x.BioDataScore < 60);
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = new
+                            {
+                                Counts = new
+                                {
+                                    Today = uploadedToday, 
+                                    ThisMonth = uploadedThisMonth, 
+                                    NotOptimalPopulation = notOptimal
+                                },
+                                Score = new
+                                {
+                                    Average = averageScore,
+                                    Max = maxScore,
+                                    Min = minScore
+                                }
+                            }
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public JsonResult PatientStatsByDate(string date)
         {
             try

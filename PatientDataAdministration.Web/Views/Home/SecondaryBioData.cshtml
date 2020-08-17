@@ -4,3 +4,58 @@
     ViewBag.TitleDesc = "Secondary Biometric Data Analytics";
     Layout = "~/Views/Shared/_LayoutSecure.cshtml";
 }
+
+<div class="row">
+    <div class="col-md-12 ui-sortable">
+        <div class="panel panel-inverse" data-sortable-id="ui-buttons-5">
+            <div class="panel-heading bg-blue-darker">
+                <div class="panel-heading-btn">
+                    Click here to Open / Close&nbsp;
+                    <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-info"
+                       data-click="panel-collapse"><i class="fa fa-minus"></i></a>
+                </div>
+                <h4 class="panel-title">Secondary Bio-Data Processing Summary&nbsp;</h4>
+            </div>
+            <div class="panel-body bg-black" style="display: block">
+                @RenderPage("~/Views/Home/SecondaryBioDataItems/Overview.cshtml")
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        pdaWeb.controller('pdaWebCtrlr',
+            function($scope) {});
+
+        $(document).ready(function() {
+            pageLoad();
+        });
+
+        function pageLoad() {
+            secondaryBioDataStatsRequest();
+        }
+
+        function secondaryBioDataStatsRequest() {
+            window.api("GET",
+                "@Url.Action("SecondaryBioDataStats", "Indicators", new {area = "ServerCommunication"})",
+                null,
+                true,
+                secondaryBioDataStatsResponse);
+        }
+
+        function secondaryBioDataStatsResponse(data) {
+            $('#totalToday_p').text(data.Counts.Today.format());
+            $('#totalThisMonth_p').text(data.Counts.ThisMonth.format());
+            $('#totalNotOptimal_p').text(data.Counts.NotOptimalPopulation.format());
+            $('#averageScore_p').text(data.Score.Average.format() + "%");
+            $('#maxScore_p').text(data.Score.Max.format() + "%");
+            $('#minScore_p').text(data.Score.Min.format() + "%");
+        };
+
+        function sectionLoad() {
+            secondaryBioDataStatsRequest();
+        };
+    </script>
+}

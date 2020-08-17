@@ -6,7 +6,7 @@
 }
 
 @section styles{
-    <link href="/Assets/plugins/country/nigeria/jsmaps/jsmaps.css" rel="stylesheet" type="text/css" />
+    <link href="/Assets/plugins/country/nigeria/jsmaps/jsmaps.css" rel="stylesheet" type="text/css"/>
     <style>
         .treeChart {
             max-width: 100%;
@@ -26,10 +26,10 @@
             stroke-width: 1px;
         }
 
-            rect.parent,
-            .grandparent rect {
-                stroke-width: 3px;
-            }
+        rect.parent,
+        .grandparent rect {
+            stroke-width: 3px;
+        }
 
         .grandparent:hover rect {
             fill: grey;
@@ -60,17 +60,17 @@
             margin-bottom: 8px !important;
         }
 
-            .legend rect {
-                stroke-width: 0px;
-            }
+        .legend rect {
+            stroke-width: 0px;
+        }
 
-            .legend text {
-                text-anchor: middle;
-                pointer-events: auto;
-                font-size: 14px;
-                font-family: "Open Sans", Helvetica, Arial, sans-serif;
-                fill: black;
-            }
+        .legend text {
+            text-anchor: middle;
+            pointer-events: auto;
+            font-size: 14px;
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            fill: black;
+        }
 
         .form-group {
             text-align: left;
@@ -84,25 +84,24 @@
             overflow: auto;
         }
 
-            .textdiv .title {
-                font-size: 102%;
-                font-weight: bold;
-                margin-top: 8px;
-                font-size: 14px !important;
-                font-weight: 100;
-                line-height: 18px;
-            }
+        .textdiv .title {
+            font-size: 102%;
+            font-weight: bold;
+            margin-top: 8px;
+            font-size: 14px !important;
+            font-weight: 100;
+            line-height: 18px;
+        }
 
-            .textdiv p {
-                line-height: 12px;
-                margin: 0 0 4px !important;
-                padding: 0px;
-                font-size: 10px !important;
-                font-weight: 100;
-                color: #ffffff !important;
-            }
-    </style>
-    <style>
+        .textdiv p {
+            line-height: 12px;
+            margin: 0 0 4px !important;
+            padding: 0px;
+            font-size: 10px !important;
+            font-weight: 100;
+            color: #ffffff !important;
+        }
+
         .gritter {
             font-weight: 100 !important;
             color: #fff
@@ -167,7 +166,7 @@
 <div class="row">
     <div class="col-md-12 ui-sortable">
         <div class="panel panel-inverse" data-sortable-id="ui-buttons-5">
-            <div class="panel-heading bg-red-darker">
+            <div class="panel-heading bg-blue-darker">
                 <div class="panel-heading-btn">
                     Click here to Open / Close&nbsp;
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-circle btn-info"
@@ -176,8 +175,11 @@
                 <h4 class="panel-title">Secondary Bio-Data Processing Summary&nbsp;</h4>
             </div>
             <div class="panel-body bg-black" style="display: block">
-                <a class="text text-success" href="@Url.Action("SecondaryBioData", "Home", new { area = ""})">Click Here to View Full Dashboard</a>
+                @RenderPage("~/Views/Home/SecondaryBioDataItems/Overview.cshtml")
             </div>
+            @*<div class="panel-footer">
+                <a class="text text-info" href="@Url.Action("SecondaryBioData", "Home", new {area = ""})">Click Here to View Full Data</a>
+            </div>*@
         </div>
     </div>
 </div>
@@ -531,6 +533,8 @@
             iniDateLoad();
             iniTreeLoad();
 
+            secondaryBioDataStatsRequest();
+
             $('#indi_up').hide();
             $('#indi_down').hide();
         };
@@ -672,6 +676,27 @@
                         return true;
                     }
                 }), false;
+        };
+
+        function secondaryBioDataStatsRequest() {
+            window.api("GET",
+                "@Url.Action("SecondaryBioDataStats", "Indicators", new {area = "ServerCommunication"})",
+                null,
+                true,
+                secondaryBioDataStatsResponse);
+        }
+
+        function secondaryBioDataStatsResponse(data) {
+            $('#totalToday_p').text(data.Counts.Today.format());
+            $('#totalThisMonth_p').text(data.Counts.ThisMonth.format());
+            $('#totalNotOptimal_p').text(data.Counts.NotOptimalPopulation.format());
+            $('#averageScore_p').text(data.Score.Average.format() + "%");
+            $('#maxScore_p').text(data.Score.Max.format() + "%");
+            $('#minScore_p').text(data.Score.Min.format() + "%");
+        };
+
+        function sectionLoad() {
+            secondaryBioDataStatsRequest();
         };
 
         pdaWeb.controller('pdaWebCtrlr',
