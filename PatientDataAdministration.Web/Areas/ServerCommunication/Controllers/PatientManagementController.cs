@@ -11,6 +11,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 using PatientDataAdministration.Web.Engines;
 using PatientDataAdministration.Web.Engines.EngineModels;
 using PatientDataAdministration.Web.Engines.EngineReporting;
@@ -343,16 +344,81 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult GetSecondaryBioDataOverview()
+        public JsonResult GetSecondaryBioData(string query = "", int source = 0, int score = 0)
         {
             try
             {
-
-                return Json(new ResponseData
+                using (var entity = new Entities())
                 {
-                    Status = true,
-                    Message = "Your request has been received. You will get a Notification shortly"
-                }, JsonRequestBehavior.AllowGet);
+                    var secondaryCandidates =
+                        entity.Patient_PatientBiometricDataSecondary
+                            .Where(x => !x.IsDeleted);
+
+                    if (!string.IsNullOrEmpty(query))
+                        secondaryCandidates = secondaryCandidates
+                            .Where(x =>
+                                x.PepId.Contains(query) ||
+                                x.BioDataExtract.Contains(query));
+
+                    if (source > 0)
+                        secondaryCandidates = secondaryCandidates
+                            .Where(x =>
+                                x.DataModel == source);
+
+                    if (score > 0)
+                        secondaryCandidates = secondaryCandidates
+                            .Where(x =>
+                                x.BioDataScore > score);
+
+                    var result = secondaryCandidates
+                        .OrderBy(x => Guid.NewGuid())
+                        .Take(1000)
+                        .ToList()
+                        .Select(x => new
+                        {
+                            x.PepId,
+                            x.BioDataScore,
+                            DateUploaded = x.DateUploaded.ToLongDateString(),
+                            SeconarySource = ((SecondaryBioDataSources) x.DataModel).DisplayName(),
+                            PrimaryData =
+                                entity.Patient_PatientBiometricData.Any(y => y.PepId == x.PepId && !y.IsDeleted)
+                        })
+                        .ToList();
+
+                    return Json(new ResponseData
+                    {
+                        Status = true, Data = result
+                    }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return Json(new ResponseData { Status = false, Message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSecondaryBioDataItem(string pepId)
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    var data = new
+                    {
+                        PatientInfo = entity.Patient_PatientInformation.FirstOrDefault(x => !x.IsDeleted && x.PepId == pepId),
+                        PrimaryInfo =
+                            entity.Patient_PatientBiometricData.FirstOrDefault(x => !x.IsDeleted && x.PepId == pepId),
+                        SecondaryInfo =
+                            entity.Patient_PatientBiometricDataSecondary.FirstOrDefault(x => !x.IsDeleted && x.PepId == pepId)
+                    };
+
+                    return Json(new ResponseData
+                    {
+                        Status = true,
+                        Data = data
+                    }, JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception e)
             {

@@ -146,14 +146,22 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                     _entities.Patient_PatientBiometricDataSecondary.Count(x =>
                         x.DateUploaded > thisMonth && !x.IsDeleted);
 
-                var averageScore =
-                    _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted).Sum(x => x.BioDataScore) /
-                    _entities.Patient_PatientBiometricDataSecondary.Count(x => !x.IsDeleted);
+                var averageScore = 0;
+                var maxScore = 0;
+                var minScore = 0;
 
-                var maxScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
+                if (_entities.Patient_PatientBiometricDataSecondary.Any(x => !x.IsDeleted))
+                    averageScore =
+                        _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
+                            .Sum(x => x.BioDataScore) /
+                        _entities.Patient_PatientBiometricDataSecondary.Count(x => !x.IsDeleted);
+
+                if (_entities.Patient_PatientBiometricDataSecondary.Any(x => !x.IsDeleted))
+                    maxScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
                     .Max(x => x.BioDataScore);
 
-                var minScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
+                if (_entities.Patient_PatientBiometricDataSecondary.Any(x => !x.IsDeleted))
+                    minScore = _entities.Patient_PatientBiometricDataSecondary.Where(x => !x.IsDeleted)
                     .Min(x => x.BioDataScore);
 
                 var notOptimal = _entities.Patient_PatientBiometricDataSecondary.Count(x => !x.IsDeleted && x.BioDataScore < 60);

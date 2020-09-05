@@ -136,7 +136,7 @@ namespace PatientDataAdministration.Web.Controllers
 
                         System.IO.File.Delete(path);
 
-                        ActivityLogger.Log("INFO", $"Upload of {file} Colmpleted. Tracking ID: {trackingGuid}");
+                        ActivityLogger.Log("INFO", $"Upload of {file} Completed. Tracking ID: {trackingGuid}");
                     })
                     {
                         Name = $"FP|{trackingGuid}|{file}|{DateTime.Now}"
@@ -166,7 +166,7 @@ namespace PatientDataAdministration.Web.Controllers
 
             try
             {
-                XmlDocument rawXmlDocument = new XmlDocument();
+                var rawXmlDocument = new XmlDocument();
                 rawXmlDocument.Load(file);
 
                 var patientDemographics = rawXmlDocument.GetElementsByTagName("PatientDemographics")[0];
@@ -250,12 +250,19 @@ namespace PatientDataAdministration.Web.Controllers
                         }
 
                         Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                        ActivityLogger.Log("INFO", $"{file} has been uploaded successfully.");
                         return;
                     }
                     else
+                    {
                         messageBody += "was not loaded. There was no section containing Fingerprints in it.";
+                        ActivityLogger.Log("WARN", $"{file} has NO section containing Fingerprints in it.");
+                    }
                 else
-                    messageBody += "was not loaded. There was no section containing an IndividualReport in it.";
+                {
+                    messageBody += "was not loaded. There was NO section containing an IndividualReport in it.";
+                    ActivityLogger.Log("WARN", $"{file} has NO section containing an IndividualReport in it");
+                }
 
                 Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
             }
@@ -263,6 +270,7 @@ namespace PatientDataAdministration.Web.Controllers
             {
                 ActivityLogger.Log(e);
                 messageBody += "was not loaded. The schema seems to be Invalid.";
+                ActivityLogger.Log("WARN", $"{file} has an Invalid Schema");
                 Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
             }
         }
