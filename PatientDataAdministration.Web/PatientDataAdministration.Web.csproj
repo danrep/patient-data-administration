@@ -112,6 +112,7 @@
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net45\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -2031,7 +2032,7 @@
     <Content Include="Views\SystemSettings\UpdateChannelSetUp.cshtml" />
     <Content Include="Views\SystemOperations\ApplicationLogs.cshtml" />
     <Content Include="Views\SystemOperations\Index.cshtml" />
-    <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicates.cshtml" />
+    <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicatesPrimary.cshtml" />
     <Content Include="Views\ReportingEngine\DataRequest.cshtml" />
     <Content Include="Views\ReportingEngine\PatientDataExport.cshtml" />
     <Content Include="Views\MessagingCenter\Index.cshtml" />
@@ -2061,6 +2062,7 @@
     <Content Include="Assets\_template\Assets\plugins\summernote\font\summernotef534f534.ttf" />
     <Content Include="Assets\_template\Assets\plugins\summernote\font\summernotef534f534.woff" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicatesSecondary.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

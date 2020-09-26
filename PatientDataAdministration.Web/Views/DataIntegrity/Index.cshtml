@@ -6,39 +6,45 @@
 }
 
 <!--CASE A-->
-<div class="col-md-12">
-    @if (EngineDuplicateBioData.IsProcessing)
-    {
-        <div class="note note-info">
-            <h4>Processing...</h4>
-            <p>
-                Biometric Duplicate Engine is Currently Running. You will be notified as Required.
-            </p>
-        </div>
-    }
-    else
-    {
-        if (EngineDuplicateBioData.BioDataIntegrityCases?.Any() ?? false)
+    <div class="col-md-12">
+        @if (EngineDuplicateBioData.IsProcessing)
         {
-            <div class="note note-warning">
-                <h4>Duplicate Biometric Registrations Found!</h4>
+            <div class="note note-info">
+                <h4>Processing...</h4>
                 <p>
-                    The system has found some patient records with matching Biometric Registrations. The current batch count is @EngineDuplicateBioData.BioDataIntegrityCases.Count. Click <a href="@Url.Action("TreatDupBioDataDuplicates", "DataIntegrity")">here</a> to view them!
+                    Biometric Duplicate Engine is Currently Running. You will be notified as Required.
                 </p>
             </div>
         }
         else
         {
-            <div class="note note-success">
-                <h4>All is Good Here!</h4>
-                <p>
-                    Biometric Duplicate Engine does not have anything to Report at the moment. Please click Refresh on the Left!
-                </p>
-            </div>
+            if (EngineDuplicateBioData.BioDataIntegrityCases?.Any() ?? false)
+            {
+                <div class="note note-warning">
+                    <h4>Duplicate Primary Biometric Registrations Found!</h4>
+                    <p>
+                        The system has found some patient records with matching Biometric Registrations. The current batch count is @EngineDuplicateBioData.BioDataIntegrityCases.Count. Click <a href="@Url.Action("TreatDupBioDataDuplicatesPrimary", "DataIntegrity")">here</a> to view them!
+                    </p>
+                </div>
+
+                <div class="note note-danger">
+                    <h4>Duplicate Secondary Biometric Registrations Found!</h4>
+                    <p>
+                        The system has found some patient records with matching Biometric Registrations. The current batch count is 6. Click <a href="@Url.Action("TreatDupBioDataDuplicatesSecondary", "DataIntegrity")">here</a> to view them!
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div class="note note-success">
+                    <h4>All is Good Here!</h4>
+                    <p>
+                        Biometric Duplicate Engine does not have anything to Report at the moment. Please click Refresh on the Left!
+                    </p>
+                </div>
+            }
         }
-    }
-    }
-</div>
+    </div>
 <!--CASE B-->
 <div class="col-md-12">
     @if (EngineDuplicatePepId.DataIntegrityPepId?.Any() ?? false)

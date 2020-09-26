@@ -13,6 +13,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.Data.SecondaryBioDataModels;
+using System.IO.Compression;
 
 namespace PatientDataAdministration.Web.Controllers
 {
@@ -37,7 +38,7 @@ namespace PatientDataAdministration.Web.Controllers
 
             return View(patient);
         }
-        
+
         public ActionResult SecondaryBioDataUpload()
         {
             return View();
@@ -76,8 +77,8 @@ namespace PatientDataAdministration.Web.Controllers
 
             return
                 Json(isSavedSuccessfully
-                    ? new { Message = "File(s) was Uploaded Successfully", Status = true }
-                    : new { Message = "Error in saving file", Status = false });
+                    ? new {Message = "File(s) was Uploaded Successfully", Status = true}
+                    : new {Message = "Error in saving file", Status = false});
         }
 
         public ActionResult DeleteFile(string name)
@@ -91,19 +92,29 @@ namespace PatientDataAdministration.Web.Controllers
                 var path = $"{directory.FullName}\\{name}";
                 System.IO.File.Delete(path);
 
-                return Json(new { Message = "File(s) was Deleted Successfully", Status = true });
+                return Json(new {Message = "File(s) was Deleted Successfully", Status = true});
             }
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new { Message = "Error in Deleting file", Status = false });
+                return Json(new {Message = "Error in Deleting file", Status = false});
             }
         }
 
-        public ActionResult ProcessFile(int fileProcessingMethod, List<string> files, bool forceReplace, string notifyDestination)
+        public ActionResult ProcessFile(int fileProcessingMethod, List<string> files, bool forceReplace,
+            string notifyDestination)
         {
             try
             {
+                if (fileProcessingMethod == 0)
+                    return
+                        Json(
+                            new
+                            {
+                                Message = "Please select a Processing Method!",
+                                Status = false
+                            });
+
                 var location =
                     $"{HostingEnvironment.ApplicationPhysicalPath}DataFiles";
 
@@ -124,13 +135,14 @@ namespace PatientDataAdministration.Web.Controllers
                     {
                         ActivityLogger.Log("INFO", $"Upload of {file} Started. Tracking ID: {trackingGuid}");
 
-                        switch ((SecondaryBioDataSources)fileProcessingMethod)
+                        switch ((SecondaryBioDataSources) fileProcessingMethod)
                         {
                             case SecondaryBioDataSources.NmrsBioDataXml:
                                 ProcessPatientRecordsNmrsBioDataXml(path, forceReplace, notifyDestination);
                                 break;
 
                             default:
+                                ActivityLogger.Log("WARN", "Invalid Processing Type");
                                 break;
                         }
 
@@ -155,13 +167,37 @@ namespace PatientDataAdministration.Web.Controllers
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
-                return Json(new { Message = "Error in Processing file", Status = false });
+                return Json(new {Message = "Error in Processing file", Status = false});
             }
         }
 
         private void ProcessPatientRecordsNmrsBioDataXml(string file, bool forceReplace, string notifyDestination)
         {
-            var messageBody = $"Hello {notifyDestination},<br />";
+            var fileInfo = new FileInfo(file);
+
+            switch (fileInfo.Extension)
+            {
+                case ".xml":
+                    ProcessPatientRecordsNmrsBioDataXmlSingle(file, forceReplace, notifyDestination);
+                    break;
+
+                case ".zip":
+                    ProcessPatientRecordsNmrsBioDataXmlMultiple(fileInfo, forceReplace, notifyDestination);
+                    break;
+
+                default: 
+                    ActivityLogger.Log("WARN", "Unsupported File Type Detected");
+                    break;
+            }
+        }
+
+        private string ProcessPatientRecordsNmrsBioDataXmlSingle(string file, bool forceReplace,
+            string notifyDestination, bool isBulk = false)
+        {
+            var messageBody = "";
+            if (isBulk == false)
+                messageBody += $"Hello {notifyDestination},<br />";
+
             messageBody += $"The file {new FileInfo(file).Name} ";
 
             try
@@ -174,10 +210,12 @@ namespace PatientDataAdministration.Web.Controllers
                 if (patientDemographics != null)
                     if (patientDemographics.InnerXml.Contains("FingerPrints"))
                     {
-                        var patientDemographicsJson = JsonConvert.SerializeXmlNode(patientDemographics, Newtonsoft.Json.Formatting.None, true);
-                        var patientDemographicsParsed = JsonConvert.DeserializeObject<NmrsXmlPatientDemographics>(patientDemographicsJson);
+                        var patientDemographicsJson = JsonConvert.SerializeXmlNode(patientDemographics,
+                            Newtonsoft.Json.Formatting.None, true);
+                        var patientDemographicsParsed =
+                            JsonConvert.DeserializeObject<NmrsXmlPatientDemographics>(patientDemographicsJson);
 
-                        using(var entities = new Entities())
+                        using (var entities = new Entities())
                         {
                             var score = 0;
 
@@ -203,19 +241,22 @@ namespace PatientDataAdministration.Web.Controllers
                                 score += 10;
 
                             if (entities.Patient_PatientBiometricDataSecondary
-                                .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                && !x.IsDeleted)
+                                    .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                              && !x.IsDeleted)
                                 && forceReplace)
                             {
                                 var existingRecord = entities.Patient_PatientBiometricDataSecondary
-                                .FirstOrDefault(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                && !x.IsDeleted);
+                                    .FirstOrDefault(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                                         && !x.IsDeleted);
 
-                                existingRecord.BioDataExtract = JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints);
+                                existingRecord.BioDataExtract =
+                                    JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints);
                                 existingRecord.BioDataScore = score;
-                                existingRecord.DataModel = (int)SecondaryBioDataSources.NmrsBioDataXml;
+                                existingRecord.DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml;
                                 existingRecord.DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]);
-                                existingRecord.DateRegistered = DateTime.ParseExact(patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                                existingRecord.DateRegistered = DateTime.ParseExact(
+                                    patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
+                                    CultureInfo.InvariantCulture);
                                 existingRecord.DateUploaded = DateTime.Now;
 
                                 entities.Entry(existingRecord).State = EntityState.Modified;
@@ -223,25 +264,30 @@ namespace PatientDataAdministration.Web.Controllers
                                 messageBody += "was updated successfully.";
                             }
                             else if (entities.Patient_PatientBiometricDataSecondary
-                                .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                && !x.IsDeleted)
-                                && !forceReplace)
+                                         .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                                   && !x.IsDeleted)
+                                     && !forceReplace)
                             {
-                                messageBody += "was not loaded because a record has been preloaded and the Force Replace flag was not set.";
+                                messageBody +=
+                                    "was not loaded because a record has been preloaded and the Force Replace flag was not set.";
                             }
                             else
                             {
-                                entities.Patient_PatientBiometricDataSecondary.Add(new Patient_PatientBiometricDataSecondary()
-                                {
-                                    BioDataExtract = JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints),
-                                    BioDataScore = score,
-                                    DataModel = (int)SecondaryBioDataSources.NmrsBioDataXml,
-                                    DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]),
-                                    DateRegistered = DateTime.ParseExact(patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                                    DateUploaded = DateTime.Now,
-                                    IsDeleted = false,
-                                    PepId = patientDemographicsParsed.PatientIdentifier
-                                });
+                                entities.Patient_PatientBiometricDataSecondary.Add(
+                                    new Patient_PatientBiometricDataSecondary()
+                                    {
+                                        BioDataExtract =
+                                            JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints),
+                                        BioDataScore = score,
+                                        DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml,
+                                        DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]),
+                                        DateRegistered = DateTime.ParseExact(
+                                            patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
+                                            CultureInfo.InvariantCulture),
+                                        DateUploaded = DateTime.Now,
+                                        IsDeleted = false,
+                                        PepId = patientDemographicsParsed.PatientIdentifier
+                                    });
 
                                 messageBody += "was loaded successfully.";
                             }
@@ -249,9 +295,11 @@ namespace PatientDataAdministration.Web.Controllers
                             entities.SaveChanges();
                         }
 
-                        Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                        if (isBulk == false)
+                            Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                        
                         ActivityLogger.Log("INFO", $"{file} has been uploaded successfully.");
-                        return;
+                        return messageBody;
                     }
                     else
                     {
@@ -264,7 +312,8 @@ namespace PatientDataAdministration.Web.Controllers
                     ActivityLogger.Log("WARN", $"{file} has NO section containing an IndividualReport in it");
                 }
 
-                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                if (isBulk == false)
+                    Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
             }
             catch (Exception e)
             {
@@ -272,6 +321,73 @@ namespace PatientDataAdministration.Web.Controllers
                 messageBody += "was not loaded. The schema seems to be Invalid.";
                 ActivityLogger.Log("WARN", $"{file} has an Invalid Schema");
                 Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+            }
+
+            return messageBody;
+        }
+
+        private void ProcessPatientRecordsNmrsBioDataXmlMultiple(FileInfo fileInfo, bool forceReplace, string notifyDestination)
+        {
+            try
+            {
+                var extractedFiles = ExtractZip(fileInfo);
+                ActivityLogger.Log("INFO", $"Found {extractedFiles.Count} files for processing.");
+
+                var messageBody = $"Hello {notifyDestination},<br />";
+                messageBody += $"Find below the processing status of the files in the archive {fileInfo.Name}.<br /><br />";
+
+                foreach (var extractedFile in extractedFiles)
+                {
+                    messageBody += $"{extractedFiles.IndexOf(extractedFile) + 1}: ";
+                    messageBody += ProcessPatientRecordsNmrsBioDataXmlSingle(extractedFile, forceReplace, notifyDestination, true);
+                    messageBody += "<br />";
+                }
+
+                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+
+                var extractionSite = Path.Combine(fileInfo.DirectoryName, fileInfo.Name.Replace(fileInfo.Extension, ""));
+                var extractionSiteInfo = new DirectoryInfo(extractionSite);
+
+                if (extractionSiteInfo.Exists)
+                    extractionSiteInfo.Delete(true);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private List<string> ExtractZip(FileInfo file)
+        {
+            try
+            {
+                var extractionSite = Path.Combine(file.DirectoryName, file.Name.Replace(file.Extension, ""));
+                var extractionSiteInfo = new DirectoryInfo(extractionSite);
+
+                if (extractionSiteInfo.Exists)
+                    extractionSiteInfo.Delete(true);
+
+                ZipFile.ExtractToDirectory(file.FullName, extractionSite);
+                extractionSiteInfo.Attributes = FileAttributes.Normal;
+
+                var fileList = new DirectoryInfo(extractionSite).EnumerateFiles("*.xml", SearchOption.AllDirectories)
+                    .OrderBy(x => x.Name)
+                    .Select(x => x.FullName)
+                    .ToList();
+
+                if (!fileList.Any())
+                    fileList = new DirectoryInfo(Path.Combine(extractionSite, file.Name.Replace(file.Extension, "")))
+                        .EnumerateFiles("*.xml", SearchOption.AllDirectories)
+                        .OrderBy(x => x.Name)
+                        .Select(x => x.FullName)
+                        .ToList();
+
+                return fileList;
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return  new List<string>();
             }
         }
     }
