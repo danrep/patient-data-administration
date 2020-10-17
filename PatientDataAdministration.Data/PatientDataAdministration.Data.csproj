@@ -134,6 +134,12 @@
     <Compile Include="Patient_PatientBiometricIntegrityCaseMember.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Patient_PatientBiometricSecondaryIntegrityCase.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Patient_PatientBiometricSecondaryIntegrityCaseMember.cs">
+      <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Patient_PatientInformation.cs">
       <DependentUpon>PatientDataAdministrationDataModel.tt</DependentUpon>
     </Compile>

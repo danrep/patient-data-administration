@@ -38,6 +38,8 @@
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemProviderDeliveryLogs" Width="1.5" PointX="15.375" PointY="11.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Integration_SystemGatewayLicence" Width="1.5" PointX="15.375" PointY="14.75" />
         <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataSecondary" Width="1.5" PointX="17.375" PointY="4.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCase" Width="1.5" PointX="7.375" PointY="17.75" />
+        <EntityTypeShape EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCaseMember" Width="1.5" PointX="17.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

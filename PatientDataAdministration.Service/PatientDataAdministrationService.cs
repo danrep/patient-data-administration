@@ -44,6 +44,9 @@ namespace PatientDataAdministration.Service
             {
                 if (!EngineDuplicateBioData.IsProcessing)
                     TaskManagerEngineDuplicateBioData()?.ThreadEngine.Start();
+
+                if (!EngineDuplicateBioDataSecondary.IsProcessing)
+                    TaskManagerEngineDuplicateBioDataSecondary()?.ThreadEngine.Start();
             }
             catch (Exception ex)
             {
@@ -61,6 +64,8 @@ namespace PatientDataAdministration.Service
                 _timer.Enabled = false;
 
                 EngineDuplicateBioData.KillProcessing();
+                EngineDuplicateBioDataSecondary.KillProcessing();
+
                 _taskManagerEngineDuplicateBioData.ThreadEngine.Abort();
             }
             catch (Exception ex)
@@ -77,6 +82,17 @@ namespace PatientDataAdministration.Service
             return new TaskManager()
             {
                 ThreadEngine = new Thread(EngineDuplicateBioData.ProcessDataIntegrityBiometric)
+            };
+        }
+
+        private static TaskManager TaskManagerEngineDuplicateBioDataSecondary()
+        {
+            if (EngineDuplicateBioDataSecondary.IsProcessing)
+                return null;
+
+            return new TaskManager()
+            {
+                ThreadEngine = new Thread(EngineDuplicateBioDataSecondary.ProcessDataIntegrityBiometric)
             };
         }
     }

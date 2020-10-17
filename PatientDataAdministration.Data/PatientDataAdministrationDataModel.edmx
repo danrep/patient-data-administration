@@ -282,6 +282,37 @@
           <Property Name="PivotData" Type="varchar(max)" />
           <Property Name="SuspectData" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="Patient_PatientBiometricSecondaryIntegrityCase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateGenerated" Type="datetime" Nullable="false" />
+          <Property Name="PivotPepId" Type="varchar" MaxLength="100" />
+          <Property Name="CaseName" Type="varchar" MaxLength="100" />
+          <Property Name="CaseDescription" Type="varchar" MaxLength="100" />
+          <Property Name="CaseStatus" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricSecondaryIntegrityCaseMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PatientBiometricIntegrityCaseId" Type="int" Nullable="false" />
+          <Property Name="MatchingScore" Type="int" Nullable="false" />
+          <Property Name="ScoreAggregate" Type="int" Nullable="false" />
+          <Property Name="PivotPepId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SuspectPepId" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="SuspectBioData" Type="varchar(max)" />
+          <Property Name="MemberTreatmentNote" Type="varchar" MaxLength="100" />
+          <Property Name="MemberTreatmentTypeId" Type="int" Nullable="false" />
+          <Property Name="DateTreated" Type="datetime" Nullable="false" />
+          <Property Name="IsTreated" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="PivotData" Type="varchar(max)" />
+          <Property Name="SuspectData" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="Patient_PatientInformation">
           <Key>
             <PropertyRef Name="Id" />
@@ -555,6 +586,8 @@
           <EntitySet Name="Patient_PatientBiometricDataSecondary" EntityType="Self.Patient_PatientBiometricDataSecondary" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCase" EntityType="Self.Patient_PatientBiometricIntegrityCase" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientBiometricIntegrityCaseMember" EntityType="Self.Patient_PatientBiometricIntegrityCaseMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient_PatientBiometricSecondaryIntegrityCase" EntityType="Self.Patient_PatientBiometricSecondaryIntegrityCase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Patient_PatientBiometricSecondaryIntegrityCaseMember" EntityType="Self.Patient_PatientBiometricSecondaryIntegrityCaseMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientInformation" EntityType="Self.Patient_PatientInformation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientInformationPopulationRegister" EntityType="Self.Patient_PatientInformationPopulationRegister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient_PatientNearFieldCommunicationData" EntityType="Self.Patient_PatientNearFieldCommunicationData" Schema="dbo" store:Type="Tables" />
@@ -673,6 +706,8 @@
           <Parameter Name="creditUnit" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Patient_PatientBiometricDataSecondary" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataSecondary" />
+          <EntitySet Name="Patient_PatientBiometricSecondaryIntegrityCase" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCase" />
+          <EntitySet Name="Patient_PatientBiometricSecondaryIntegrityCaseMember" EntityType="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCaseMember" />
           </EntityContainer>
         <EntityType Name="Administration_ClientMap">
           <Key>
@@ -1242,6 +1277,37 @@
           <Property Name="DateUploaded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricSecondaryIntegrityCase">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateGenerated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PivotPepId" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CaseName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CaseDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CaseStatus" Type="Int32" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Patient_PatientBiometricSecondaryIntegrityCaseMember">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientBiometricIntegrityCaseId" Type="Int32" Nullable="false" />
+          <Property Name="MatchingScore" Type="Int32" Nullable="false" />
+          <Property Name="ScoreAggregate" Type="Int32" Nullable="false" />
+          <Property Name="PivotPepId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SuspectPepId" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SuspectBioData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="MemberTreatmentNote" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MemberTreatmentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="DateTreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsTreated" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="PivotData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="SuspectData" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1910,6 +1976,39 @@
                 <ScalarProperty Name="DataSet" ColumnName="DataSet" />
                 <ScalarProperty Name="DataModel" ColumnName="DataModel" />
                 <ScalarProperty Name="PepId" ColumnName="PepId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patient_PatientBiometricSecondaryIntegrityCase">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCase">
+              <MappingFragment StoreEntitySet="Patient_PatientBiometricSecondaryIntegrityCase">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="CaseStatus" ColumnName="CaseStatus" />
+                <ScalarProperty Name="CaseDescription" ColumnName="CaseDescription" />
+                <ScalarProperty Name="CaseName" ColumnName="CaseName" />
+                <ScalarProperty Name="PivotPepId" ColumnName="PivotPepId" />
+                <ScalarProperty Name="DateGenerated" ColumnName="DateGenerated" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Patient_PatientBiometricSecondaryIntegrityCaseMember">
+            <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricSecondaryIntegrityCaseMember">
+              <MappingFragment StoreEntitySet="Patient_PatientBiometricSecondaryIntegrityCaseMember">
+                <ScalarProperty Name="SuspectData" ColumnName="SuspectData" />
+                <ScalarProperty Name="PivotData" ColumnName="PivotData" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsTreated" ColumnName="IsTreated" />
+                <ScalarProperty Name="DateTreated" ColumnName="DateTreated" />
+                <ScalarProperty Name="MemberTreatmentTypeId" ColumnName="MemberTreatmentTypeId" />
+                <ScalarProperty Name="MemberTreatmentNote" ColumnName="MemberTreatmentNote" />
+                <ScalarProperty Name="SuspectBioData" ColumnName="SuspectBioData" />
+                <ScalarProperty Name="SuspectPepId" ColumnName="SuspectPepId" />
+                <ScalarProperty Name="PivotPepId" ColumnName="PivotPepId" />
+                <ScalarProperty Name="ScoreAggregate" ColumnName="ScoreAggregate" />
+                <ScalarProperty Name="MatchingScore" ColumnName="MatchingScore" />
+                <ScalarProperty Name="PatientBiometricIntegrityCaseId" ColumnName="PatientBiometricIntegrityCaseId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioDataSecondary.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioData.cs" />
     <Compile Include="PatientDataAdministrationService.cs">
       <SubType>Component</SubType>
