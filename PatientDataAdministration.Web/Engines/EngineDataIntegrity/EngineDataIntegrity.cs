@@ -22,6 +22,9 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
             if (EngineDuplicateBioData.BioDataIntegrityCases == null)
                 EngineDuplicateBioData.BioDataIntegrityCases = new List<Patient_PatientBiometricIntegrityCase>();
 
+            if (EngineDuplicateBioDataSecondary.BioDataIntegrityCases == null)
+                EngineDuplicateBioDataSecondary.BioDataIntegrityCases = new List<Patient_PatientBiometricSecondaryIntegrityCase>();
+
             try
             {
                 if (Tasks == null)
@@ -67,6 +70,11 @@ namespace PatientDataAdministration.Web.Engines.EngineDataIntegrity
                     return new TaskManager()
                     {
                         ThreadEngine = new Thread(EngineDuplicateBioData.ProcessDataIntegrityBiometric)
+                    };
+                case (int)DataIntegrityIssue.DupBioDataSecondary:
+                    return new TaskManager()
+                    {
+                        ThreadEngine = new Thread(EngineDuplicateBioDataSecondary.ProcessDataIntegrityBiometric)
                     };
             }
 

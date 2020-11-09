@@ -1,6 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "TreatDupBioDataDuplicatesSecondary";
+    ViewBag.Title = "Secondary Bio Data Integrity Operations";
+    ViewBag.TitleDesc = "Manage Biometric Data Duplicates";
     Layout = "~/Views/Shared/_LayoutSecure.cshtml";
 }
 
@@ -28,26 +29,7 @@
                         <th>Case Files</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>OG-09-0054 <button ng-click="loadData('OG-09-0054')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                    <tr>
-                        <td>OG-08-0010 <button ng-click="loadData('OG-08-0010')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                    <tr>
-                        <td>BU-12-0315 <button ng-click="loadData('BU-12-0315')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                    <tr>
-                        <td>bu-12-0034 <button ng-click="loadData('bu-12-0034')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                    <tr>
-                        <td>NM-09-0799 <button ng-click="loadData('NM-09-0799')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                    <tr>
-                        <td>OG-08-0157 <button ng-click="loadData('OG-08-0157')" class="pull-right btn btn-xs btn-success">View Cases</button></td>
-                    </tr>
-                </tbody>
+                <tbody></tbody>
             </table>
         </div>
     </div>
@@ -70,33 +52,42 @@
                         <h4>Please select a Case on the left</h4>
                     </div>
                 </div>
-                <ul class="media-list media-list-with-divider media-messaging" ng-repeat="patientSuspect in patientSuspectData track by $index">
-                    <li class="media media-xs m-b-20">
-                        <div class="media-body">
-                            Suspect {{$index + 1}}:
-                            <h4 class="media-heading">
-                                <strong>{{patientSuspect.PatientInformation.PepId}} </strong>[{{patientSuspect.PatientInformation.PepId}}]
-                            </h4>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div class="widget widget-stats bg-red-darker">
-                                    <div class="stats-icon stats-icon-lg"><i class="fa fa-clone fa-fw"></i></div>
-                                    <div class="stats-title">Match with {{patientSuspect.SuspectData.PivotPepId}}</div>
-                                    <div class="stats-number">{{patientSuspect.SuspectData.PointAgg}} Points Aggregate over {{patientSuspect.SuspectData.MatchScore}}%</div>
-                                    <div class="stats-progress progress">
-                                        <div class="progress-bar" style="width: {{patientSuspect.SuspectData.MatchScore}}%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 p-b-5 m-t-5">
-                                <span class="panel panel-success">
-                                    <button class="btn btn-info btn-xs" type="button" ng-click="createNew(patient)"><i class="fa fa-plus"></i>&nbsp;Remove Pivot Data</button>
-                                    <button class="btn btn-success btn-xs" type="button" ng-click="selectPreffered(patient)"><i class="fa fa-shield"></i>&nbsp;Remove Suspect Data</button>
-                                    <button class="btn btn-danger btn-xs" type="button" ng-click="delete(patient)"><i class="fa fa-trash"></i>&nbsp;Resolve as Unique</button>
-                                </span>
+                <div ng-repeat="patientSuspect in patientSuspectData track by $index">
+                    <div class="col-md-12 p-b-5">
+                        <div class="progress progress-striped active m-b-0">
+                            <div class="progress-bar progress-bar-danger" style="width: {{patientSuspect.MatchingScore / 100}}%;">{{patientSuspect.MatchingScore / 100}}%</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="widget widget-stats bg-blue-darker">
+                            <div class="stats-icon stats-icon-lg"><i class="fa fa-shield fa-fw"></i></div>
+                            <div class="stats-title">Pivot Record</div>
+                            <div class="stats-number" ng-if="patientSuspect.PivotData.PatientInformation != null"><span>{{patientSuspect.PivotData.PatientInformation.Surname}} {{patientSuspect.PivotData.PatientInformation.Othername}} </span>[{{patientSuspect.PivotData.PatientInformation.PepId}}]</div>
+                            <div class="stats-number" ng-if="patientSuspect.PivotData.PatientInformation == null"><span class="text text-white">Patient Information has not been captured Primarily. [{{patientSuspect.PivotPepId}}]</span></div>
+                            <div class="stats-link">
+                                <a href="javascript:;"><i class="fa fa-align-left"></i>&nbsp;{{patientSuspect.PivotData.PatientBioDataTrace.FingerPositionText}}</a>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class="widget widget-stats bg-orange-darker">
+                            <div class="stats-icon stats-icon-lg"><i class="fa fa-clone fa-fw"></i></div>
+                            <div class="stats-title">Suspect {{$index + 1}}</div>
+                            <div class="stats-number" ng-if="patientSuspect.SuspectData.PatientInformation != null"><span>{{patientSuspect.SuspectData.PatientInformation.Surname}} {{patientSuspect.SuspectData.PatientInformation.Othername}} </span>[{{patientSuspect.SuspectData.PatientInformation.PepId}}]</div>
+                            <div class="stats-number" ng-if="patientSuspect.SuspectData.PatientInformation == null"><span class="text text-white">Patient Information has not been captured Primarily. [{{patientSuspect.SuspectPepId}}]</span></div>
+                            <div class="stats-link">
+                                <a href="javascript:;"><i class="fa fa-align-right"></i>&nbsp;{{patientSuspect.PivotData.PatientBioDataTrace.FingerPositionText}}</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-b-5">
+                        <span class="panel panel-success">
+                            <button class="btn btn-info btn-xs" type="button" ng-click="createNew(patient)"><i class="fa fa-plus"></i>&nbsp;Remove Pivot Data</button>
+                            <button class="btn btn-success btn-xs" type="button" ng-click="selectPreffered(patient)"><i class="fa fa-shield"></i>&nbsp;Remove Suspect Data</button>
+                            <button class="btn btn-danger btn-xs" type="button" ng-click="delete(patient)"><i class="fa fa-trash"></i>&nbsp;Resolve as Unique</button>
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -112,102 +103,106 @@
         });
 
         pdaWeb.controller('pdaWebCtrlr',
-            function($scope) {
+            function ($scope) {
                 $scope.patientData = null;
                 $scope.patientSuspectData = null;
                 $scope.pepId = null;
                 $scope.caseId = null;
                 $scope.biometricCaseRecords = {};
 
-                $scope.loadData = function (pepId) {
-                    $scope.patientSuspectData = getData(pepId);
-                }
+                $scope.getPatients = function(pepId) {
+                    $scope.pepId = pepId;
+
+                    $('#spanLoading').show();
+
+                    window.api("GET",
+                        "@Url.Action("GetPatients", "PatientManagement", new {area = "ServerCommunication"})?pepId=" +
+                        pepId,
+                        null,
+                        true,
+                        loadPatients);
+                };
+
+                $scope.getSuspectPatients = function (caseId) {
+                    $scope.caseId = caseId;
+
+                    $('#spanLoading').show();
+
+                    window.api("GET",
+                        "@Url.Action("GetBioDataIntegritySuspectsSecondary", "DataIntegrity", new {area = "ServerCommunication"})?caseId=" +
+                        caseId,
+                        null,
+                        true,
+                        loadSuspectPatients);
+                };
+
+                $scope.convertDate = function(dateTicks) {
+                    return window.formatDate(dateTicks);
+                };
+
+                $scope.loadBiometricIntegrityCases = function() {
+                    window.api("GET",
+                        "@Url.Action("GetBioDataIntegritySecondary", "DataIntegrity", new {area = "ServerCommunication"})",
+                        null,
+                        true,
+                        loadBiometicCaseData);
+                };
+
+                $scope.loadBiometricIntegrityCases();
             });
 
-        function getData(pivotPepId) {
-            if (pivotPepId === 'OG-09-0054')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "BU-12-0010",
-                            "PointAgg": 3,
-                            "MatchScore": 92
-                        },
-                        "PatientInformation": {
-                            "PepId": "OG-09-0054"
-                        }
-                    }
-                ];
-            
-            if (pivotPepId === 'OG-08-0157')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "BU-12-1569",
-                            "PointAgg": 10,
-                            "MatchScore": 95
-                        },
-                        "PatientInformation": {
-                            "PepId": "OG-08-0157"
-                        }
-                    }
-                ];
-            
-            if (pivotPepId === 'NM-09-0799')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "BU-12-0121",
-                            "PointAgg": 6,
-                            "MatchScore": 96
-                        },
-                        "PatientInformation": {
-                            "PepId": "NM-09-0799"
-                        }
-                    }
-                ];
-            
-            if (pivotPepId === 'bu-12-0034')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "NM-08-0903",
-                            "PointAgg": 7,
-                            "MatchScore": 97
-                        },
-                        "PatientInformation": {
-                            "PepId": "bu-12-0034"
-                        }
-                    }
-                ];
-            
-            if (pivotPepId === 'BU-12-0315')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "OG-08-0089",
-                            "PointAgg": 10,
-                            "MatchScore": 91
-                        },
-                        "PatientInformation": {
-                            "PepId": "BU-12-0315"
-                        }
-                    }
-                ];
-            
-            if (pivotPepId === 'OG-08-0010')
-                return [
-                    {
-                        "SuspectData": {
-                            "PivotPepId": "BU-12-0137",
-                            "PointAgg": 9,
-                            "MatchScore": 98
-                        },
-                        "PatientInformation": {
-                            "PepId": "OG-08-0010"
-                        }
-                    }
-                ];
+        function loadBiometicCaseData(data) {
+            window.resetDataTable($("#data-table"));
+
+            window.getNgScope().biometricCaseRecords = data;
+            window.getNgScope().$apply();
+
+            $.each(data,
+                function(i, datum) {
+                    var rowData = '<tr>';
+
+                    rowData += '<td> Case for ' +
+                        datum.PivotPepId +
+                        '<button class="btn btn-xs btn-info pull-right" onclick="getSuspectPatientData(\'' +
+                        datum.Id +
+                        '\')">&nbsp;View Records</button></td>';
+
+                    rowData += '</tr>';
+                    $("#data-table tbody").append(rowData);
+                });
+
+            handleDataTableKeyTable();
+
+            $('#spanLoading').hide();
+        };
+
+        function loadPatients(data) {
+            $('#spanLoading').hide();
+
+            window.getNgScope().patientData = data;
+            window.getNgScope().$apply();
+        };
+
+        function loadSuspectPatients(data) {
+            $('#spanLoading').hide();
+
+            window.getNgScope().patientSuspectData = data;
+            window.getNgScope().$apply();
+        };
+
+        function getPatientData(pepId) {
+            window.getNgScope().getPatients(pepId);
+        };
+
+        function getSuspectPatientData(caseId) {
+            window.getNgScope().getSuspectPatients(caseId);
+        };
+
+        function refreshWorkingList() {
+            $('#spanLoading').show();
+            window.getNgScope().loadBiometricIntegrityCases();
+
+            window.getNgScope().getPatients(window.getNgScope().pepId);
         }
     </script>
 }

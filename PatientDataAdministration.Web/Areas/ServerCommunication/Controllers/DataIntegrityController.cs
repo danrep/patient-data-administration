@@ -7,6 +7,7 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
+using PatientDataAdministration.Web.Areas.ServerCommunication.Models;
 using PatientDataAdministration.Web.Engines.EngineDataIntegrity;
 using PatientDataAdministration.Web.Models;
 
@@ -179,7 +180,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult GetBioDataIntegrity()
+        public JsonResult GetBioDataIntegrityPrimary()
         {
             try
             {
@@ -200,7 +201,28 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult GetBioDataIntegritySuspects(int caseId)
+        public JsonResult GetBioDataIntegritySecondary()
+        {
+            try
+            {
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = EngineDuplicateBioDataSecondary.BioDataIntegrityCases
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetBioDataIntegritySuspectsPrimary(int caseId)
         {
             try
             {
@@ -220,6 +242,51 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                                 SuspectData = x, 
                                 PatientInformation = _entities.Patient_PatientInformation.FirstOrDefault(y => y.PepId == x.SuspectPepId),
                                 BiometricInformation = _entities.Patient_PatientBiometricData.FirstOrDefault(y => y.PepId == x.SuspectPepId)
+                            }).ToList()
+                        },
+                        JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetBioDataIntegritySuspectsSecondary(int caseId)
+        {
+            try
+            {
+                var suspectInformation = _entities.Patient_PatientBiometricSecondaryIntegrityCaseMember
+                    .Where(x => !x.IsDeleted &&
+                                !x.IsTreated &&
+                                x.PatientBiometricIntegrityCaseId == caseId &&
+                                x.MemberTreatmentTypeId == (int) CaseMemberStatus.Undecided).ToList();
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = "Successful",
+                            Data = suspectInformation.Select(x => new
+                            {
+                                x.MatchingScore,
+                                x.SuspectPepId,
+                                x.PivotPepId,
+                                SuspectData = new
+                                {
+                                    PatientBioDataTrace =
+                                        Newtonsoft.Json.JsonConvert.DeserializeObject<PatientBioDataTrace>(x.SuspectData),
+                                    PatientInformation =
+                                        _entities.Patient_PatientInformation.FirstOrDefault(y => y.PepId == x.SuspectPepId)
+                                },
+                                PivotData = new
+                                {
+                                    PatientBioDataTrace =
+                                        Newtonsoft.Json.JsonConvert.DeserializeObject<PatientBioDataTrace>(x.PivotData),
+                                    PatientInformation =
+                                        _entities.Patient_PatientInformation.FirstOrDefault(y => y.PepId == x.PivotPepId)
+                                }
                             }).ToList()
                         },
                         JsonRequestBehavior.AllowGet);

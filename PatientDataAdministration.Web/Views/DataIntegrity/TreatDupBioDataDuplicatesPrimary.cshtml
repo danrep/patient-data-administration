@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Data Integrity Operations";
+    ViewBag.Title = "Primary Bio Data Integrity Operations";
     ViewBag.TitleDesc = "Manage Biometric Data Duplicates";
     Layout = "~/Views/Shared/_LayoutSecure.cshtml";
 }
@@ -120,7 +120,7 @@
                     $('#spanLoading').show();
 
                     window.api("GET",
-                        "@Url.Action("GetBioDataIntegritySuspects", "DataIntegrity", new {area = "ServerCommunication"})?caseId=" +
+                        "@Url.Action("GetBioDataIntegritySuspectsPrimary", "DataIntegrity", new {area = "ServerCommunication"})?caseId=" +
                         caseId,
                         null,
                         true,
@@ -133,11 +133,12 @@
 
                 $scope.loadBiometricIntegrityCases = function() {
                     window.api("GET",
-                        "@Url.Action("GetBioDataIntegrity", "DataIntegrity", new {area = "ServerCommunication"})",
+                        "@Url.Action("GetBioDataIntegrityPrimary", "DataIntegrity", new {area = "ServerCommunication"})",
                         null,
                         true,
                         loadBiometicCaseData);
                 };
+
                 $scope.loadBiometricIntegrityCases();
             });
 

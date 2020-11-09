@@ -202,10 +202,14 @@
                                         <div class="note note-warning">
                                             <span class="fa fa-warning"></span> APIN PDA noticed some Data Integrity Issues. Please fix them as soon as possible.
                                             <br />
-                                            <a class="btn btn-info btn-xs" href="@Url.Action("Index", "DataIntegrity", new {area = ""})">
-                                                View
-                                            </a>
-                                            <button class="btn btn-danger btn-xs" onclick="refreshDupData('@Url.Action("RefreshStaticData", "Home", new {area = ""})')">Refresh</button>
+                                            <div class="btn-group m-t-5">
+                                                <a class="btn btn-info btn-xs" href="@Url.Action("Index", "DataIntegrity", new {area = ""})">
+                                                    View
+                                                </a>
+                                                <a class="btn btn-danger btn-xs" href="#" onclick="refreshDupData('@Url.Action("RefreshStaticData", "Home", new {area = ""})')">
+                                                    Refresh
+                                                </a>
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>

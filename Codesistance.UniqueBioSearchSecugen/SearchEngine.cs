@@ -177,13 +177,33 @@ namespace Codesistance.UniqueBioSearchSecugen
 
                 // search : the candidate count must be zero because secusearch has no templates.
                 var candList = new SSCandList();
+                byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
 
                 for (var i = 0; i < templateSearchModelSize; i++)
                 {
                     var templateId = (uint)i;
                     ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(i).Filename} of {templateId}");
 
-                    error = SSearch.SearchFP(SearchModel.GetTemplate(i).TemplatesBuffer, ref candList);
+                    var templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
+                    uint numberOfViews = 0;
+                    SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
+                    for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                    {
+                        error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
+                            continue;
+                        }
+
+                        error = SSearch.SearchFP(sgTemplate, ref candList);
+
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Confirmation Error: {error.DisplayName()}");
+                        }
+                    }
+                    
 
                     if (error != SSError.NONE)
                     {

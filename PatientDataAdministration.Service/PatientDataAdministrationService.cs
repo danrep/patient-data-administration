@@ -76,6 +76,8 @@ namespace PatientDataAdministration.Service
 
         private static TaskManager TaskManagerEngineDuplicateBioData()
         {
+            return null;
+
             if (EngineDuplicateBioData.IsProcessing)
                 return null;
 

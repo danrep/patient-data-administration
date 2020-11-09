@@ -63,8 +63,9 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
 
                     #region Secondary Processing
 
+                    var limiter = new DateTime(2020, 08, 01);
                     var allSecondaryBiometrics = entities.Patient_PatientBiometricDataSecondary
-                        .Where(x => !x.IsDeleted)
+                        .Where(x => !x.IsDeleted && x.DateUploaded > limiter)
                         .ToList();
 
                     foreach(var secondaryBiometrics in allSecondaryBiometrics)
@@ -103,7 +104,7 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
 
                             //gunning for a 60% above match
                             var validCases = result.SuspectedCandidates
-                                .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 6000)
+                                .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 7000)
                                 .ToList();
 
                             ActivityLogger.Log("INFO", $"Found {validCases.Count} Relevant Matches");
@@ -126,30 +127,31 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                                         entities.SaveChanges();
                                     }
 
-                                    if (!entities.Patient_PatientBiometricSecondaryIntegrityCaseMember.Any(x =>
-                                        !x.IsDeleted && !x.IsTreated && 
+                                    if (entities.Patient_PatientBiometricSecondaryIntegrityCaseMember.Any(x =>
+                                        !x.IsDeleted && !x.IsTreated &&
                                         x.PivotPepId == result.Pivot &&
-                                        x.SuspectPepId == validCase.BioDataSuspect.Filename))
-                                    {
-                                        entities.Patient_PatientBiometricSecondaryIntegrityCaseMember.Add(
-                                            new Patient_PatientBiometricSecondaryIntegrityCaseMember()
-                                            {
-                                                SuspectPepId = validCase.BioDataSuspect.Filename, 
-                                                IsDeleted = false, 
-                                                DateTreated = DateTime.Now,
-                                                IsTreated = false, 
-                                                PatientBiometricIntegrityCaseId = integrityCase.Id, 
-                                                PivotPepId = result.Pivot, 
-                                                MatchingScore = validCase.MatchScore, 
-                                                MemberTreatmentTypeId = (int)CaseMemberStatus.Undecided, 
-                                                PivotData = Newtonsoft.Json.JsonConvert.SerializeObject(result.PivotData),
-                                                SuspectData = Newtonsoft.Json.JsonConvert.SerializeObject((PatientData)validCase.BioDataSuspect.Data)
-                                            });
+                                        x.SuspectPepId == validCase.BioDataSuspect.Filename)) continue;
 
-                                        entities.SaveChanges();
-                                    }
+                                    entities.Patient_PatientBiometricSecondaryIntegrityCaseMember.Add(
+                                        new Patient_PatientBiometricSecondaryIntegrityCaseMember()
+                                        {
+                                            SuspectPepId = validCase.BioDataSuspect.Filename, 
+                                            IsDeleted = false, 
+                                            DateTreated = DateTime.Now,
+                                            IsTreated = false, 
+                                            PatientBiometricIntegrityCaseId = integrityCase.Id, 
+                                            PivotPepId = result.Pivot, 
+                                            MatchingScore = validCase.MatchScore, 
+                                            MemberTreatmentTypeId = (int)CaseMemberStatus.Undecided, 
+                                            PivotData = Newtonsoft.Json.JsonConvert.SerializeObject(result.PivotData),
+                                            SuspectData = Newtonsoft.Json.JsonConvert.SerializeObject((PatientData)validCase.BioDataSuspect.Data)
+                                        });
+
+                                    entities.SaveChanges();
                                 }
                             }
+
+                            RefreshBioDataIntegrityCases();
                         }
 
                         biomtricSearchEngine = null;

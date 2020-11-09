@@ -8,6 +8,9 @@ namespace PatientDataAdministration.EnumLibrary
         DupPepId = 0,
 
         [EnumDisplayName(DisplayName = "Duplicate Biometric Data")]
-        DupBioData
+        DupBioData,
+
+        [EnumDisplayName(DisplayName = "Duplicate Biometric Data Secondary")]
+        DupBioDataSecondary
     }
 }
