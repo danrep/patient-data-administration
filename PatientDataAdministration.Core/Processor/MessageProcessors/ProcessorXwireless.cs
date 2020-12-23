@@ -8,7 +8,7 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
         {
             try
             {
-               var oprTrack = Guid.NewGuid().ToString().Replace('-', '0');
+                var oprTrack = Guid.NewGuid().ToString().Replace('-', '0');
                 var url =
                     "http://panel.xwireless.net/API/WebSMS/Http/v1.0a/index.php?username=codesistance&password=skyRunn3r&sender=StayHealthy&to=" +
                     destination + "&message=" + message + "&reqid=1&format=json&route_id=2";
@@ -26,7 +26,7 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
                 else
                 {
                     ActivityLogger.Log($"MSG_PROC_XWIRE_RES_{oprTrack}".ToUpper(),
-                    Newtonsoft.Json.JsonConvert.SerializeObject(operation.Result));
+                        Newtonsoft.Json.JsonConvert.SerializeObject(operation.Result));
 
                     responsePayload = operation.Result.Data;
                 }
