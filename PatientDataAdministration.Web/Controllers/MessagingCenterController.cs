@@ -122,9 +122,9 @@ namespace PatientDataAdministration.Web.Controllers
             {
                 using (var entities = new Entities())
                 {
-                    var startDate = DateTime.Now.Date.AddDays((DateTime.Now.Date.Day - 1) * -1);
-                    var endDate = startDate.AddMonths(1);
                     var today = DateTime.Today.Date;
+                    var startDate = new DateTime(today.Year, today.Month, 1);
+                    var endDate = startDate.AddMonths(1).AddSeconds(-1);
                     var tomorrow = today.AddDays(1);
 
                     var manifest = entities.Integration_SystemGatewayLicence.FirstOrDefault(x => x.IsCurrentStatus) ?? new Integration_SystemGatewayLicence();
@@ -145,8 +145,8 @@ namespace PatientDataAdministration.Web.Controllers
                         Data = new
                         {
                             TotalUnitsLeft = manifest.CurrentBalance.ToString("#,##0"),
-                            SentThisDay = thisDay,
-                            SentThisMonth = thisMonth.Count
+                            SentThisDay = thisDay.ToString("#,##0"),
+                            SentThisMonth = thisMonth.Count.ToString("#,##0")
                         }
                     }, JsonRequestBehavior.AllowGet);
                 }

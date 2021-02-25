@@ -95,8 +95,7 @@ namespace PatientDataAdministration.Web.Engines
 
                     foreach (var pendingHash in pendingHashes)
                     {
-           
-             pendingHash.FingerDataHash =
+                        pendingHash.FingerDataHash =
                             Sha512Engine.GenerateSHA512String(
                                 pendingHash.FingerPrimary + "|" + pendingHash.FingerSecondary);
                         pdaEntities.Entry(pendingHash).State = System.Data.Entity.EntityState.Modified;
@@ -145,6 +144,7 @@ namespace PatientDataAdministration.Web.Engines
                 using (var entity = new Entities())
                 {
                     var pendingStatus = (int)MessageResponse.Processing;
+
                     var pendingConfirmations =
                         entity.Integration_SystemAppointmentDataItem.Where(x =>
                             x.OperationStatus && x.MessageStatus == pendingStatus).ToList();
@@ -152,6 +152,14 @@ namespace PatientDataAdministration.Web.Engines
                     if (!pendingConfirmations.Any())
                     {
                         pendingStatus = (int)MessageResponse.Invalid;
+                        pendingConfirmations =
+                            entity.Integration_SystemAppointmentDataItem.Where(x =>
+                                x.MessageStatus == pendingStatus && !string.IsNullOrEmpty(x.MessageId)).ToList();
+                    }
+
+                    if (!pendingConfirmations.Any())
+                    {
+                        pendingStatus = (int)MessageResponse.Pending;
                         pendingConfirmations =
                             entity.Integration_SystemAppointmentDataItem.Where(x =>
                                 x.MessageStatus == pendingStatus && !string.IsNullOrEmpty(x.MessageId)).ToList();
@@ -174,7 +182,10 @@ namespace PatientDataAdministration.Web.Engines
                                  messageStatuSms == MessageResponse.Rejected ||
                                  messageStatuSms == MessageResponse.Invalid ||
                                  messageStatuSms == MessageResponse.Undelivered ||
-                                 messageStatuSms == MessageResponse.Expired)
+                                 messageStatuSms == MessageResponse.Submitted ||
+                                 messageStatuSms == MessageResponse.Expired ||
+                                 (messageStatuSms == MessageResponse.Processing &&
+                                  DateTime.Now.Subtract(processingMessage.DateLogged).TotalHours > 12))
                         {
                             entity.Integration_SystemPhoneNumberBlacklist.Add(
                                 new Integration_SystemPhoneNumberBlacklist()
@@ -186,11 +197,16 @@ namespace PatientDataAdministration.Web.Engines
                                 });
 
                             processingMessage.OperationStatus = false;
+
+                            if (messageStatuSms == MessageResponse.Invalid)
+                                processingMessage.MessageStatus = (int) MessageResponse.Expired;
+                        }
+                        else 
+                        {
+                            continue;
                         }
 
-                        // Todo: Can be removed for Transparency
                         RegisterMessage(processingMessage.Id, processingMessage.MessageId, MessageResponse.Delivered);
-
                         entity.Entry(processingMessage).State = EntityState.Modified;
                         entity.SaveChanges();
                     }
@@ -231,7 +247,7 @@ namespace PatientDataAdministration.Web.Engines
                             pendingSend.MessageStatus = (int)MessageResponse.Pending;
                         else
                         {
-                            var messageId = payload["msg_id"].ToString();
+                            var messageId = ((dynamic)payload)["Data"][0]["MessageId"];
 
                             pendingSend.MessageId = messageId;
                             pendingSend.InitialResponsePayload =
@@ -284,7 +300,7 @@ namespace PatientDataAdministration.Web.Engines
 
                         if (payload != null)
                         {
-                            var messageId = payload["msg_id"].ToString();
+                            var messageId = payload["Data"][0]["MessageId"].ToString().ToUpper();
 
                             pendingSend.MessageId = messageId;
                             pendingSend.MessageSupportParams =
@@ -317,7 +333,10 @@ namespace PatientDataAdministration.Web.Engines
             {
                 using (var entities = new Entities())
                 {
-                    var currentManifest = entities.Integration_SystemDeliveryManifest.FirstOrDefault(x => x.Id == id);
+                    var currentManifest =
+                        entities.Integration_SystemDeliveryManifest.FirstOrDefault(x =>
+                            x.Id == id || x.MessageId == messageId);
+
                     if(currentManifest != null)
                     {
                         currentManifest.IsDelivered = messageResponse == MessageResponse.Delivered;

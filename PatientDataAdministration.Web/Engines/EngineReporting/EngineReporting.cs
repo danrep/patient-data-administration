@@ -4,12 +4,14 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Hosting;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using PatientDataAdministration.Web.Engines.EngineModels;
+using PatientDataAdministration.Web.Engines.EngineReporting.CustomFiles;
 
 namespace PatientDataAdministration.Web.Engines.EngineReporting
 {
@@ -180,6 +182,12 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         if (recurrenceInterval == (int)RecurrenceInterval.Day)
                         {
                             PatientDataReg();
+                        }
+                        break;
+                    case ReportingType.PatientSecondaryBioDataDeDupRep:
+                        if (recurrenceInterval == (int)RecurrenceInterval.Day)
+                        {
+                            PatientSecondaryBioDataDuplicationReport();
                         }
                         break;
                 }
@@ -623,6 +631,71 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
             }
         }
 
+        public static void PatientSecondaryBioDataDuplicationReport(string recepients = "")
+        {
+            try
+            {
+                using (var entity = new Entities())
+                {
+                    entity.Database.CommandTimeout = 0;
+
+                    var today = DateTime.Today;
+                    var yesterday = today.AddDays(-1);
+
+                    var msg = "Dear Administrator(s)<br />";
+
+                    //var caseData = entity.Patient_PatientBiometricSecondaryIntegrityCase
+                    //    .Where(x => !x.IsDeleted && x.DateGenerated > yesterday && x.DateGenerated < today)
+                    //    .ToList();
+
+                    var caseData = entity.Patient_PatientBiometricSecondaryIntegrityCase
+                        .Where(x => !x.IsDeleted)
+                        .ToList();
+
+                    var fileName = "SYS_PATSECBIODATACASEFILE_" + DateTime.Now.Date.ToString("yyyyMMdd");
+
+                    msg +=
+                        $"Find attached the Secondary Biometric Duplication Report for {yesterday.ToLongDateString()}";
+
+                    var listOfCases = new List<SecondaryBioDataDuplicationReport>();
+
+                    var chunkCases = Transforms.ListChunk(caseData, 100);
+                    Parallel.ForEach(chunkCases, (chunkCase) =>
+                    {
+                        try
+                        {
+                            listOfCases.AddRange(chunkCase.Select(caseItem => new SecondaryBioDataDuplicationReport { Case = caseItem }));
+                        }
+                        catch (Exception e)
+                        {
+                            ActivityLogger.Log(e);
+                        }
+                    });
+
+                    var resultingFile =
+                        SecondaryBioDataDuplicationReportExcelWriter.GetFile(fileName, listOfCases);
+
+                    if (string.IsNullOrEmpty(resultingFile)) 
+                        return;
+
+                    var mailStatus = Messaging.SendMail(
+                        string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
+                        null, null, "Secondary BioData Duplication Report: " + DateTime.Now.Date.ToString("yyyyMMdd"), msg, resultingFile);
+
+                    if (mailStatus)
+                        LogOperation(RecurrenceInterval.Day, ReportingType.PatientSecondaryBioDataDeDupRep);
+
+                    caseData = null;
+                    chunkCases = null;
+                    listOfCases = null;
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
         private static List<PopulationStat> ConvertPopulationStat(
             List<Sp_System_Indicators_PopulationDistro_SexSiteState_Result> stateData)
         {
@@ -637,9 +710,13 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         var siteData = stateData.Where(x => x.SiteId == siteId).ToList();
                         returnList.Add(new PopulationStat()
                         {
-                            Females = (siteData.FirstOrDefault(x => x.Sex.ToLower() == "female")?.PatientPopulation ?? 0).ToString("#,##0"),
-                            Males = (siteData.FirstOrDefault(x => x.Sex.ToLower() == "male")?.PatientPopulation ?? 0).ToString("#,##0"),
-                            SiteName = entity.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)?.SiteNameOfficial ?? "NA", 
+                            Females =
+                                (siteData.FirstOrDefault(x => x.Sex.ToLower() == "female")?.PatientPopulation ?? 0)
+                                .ToString("#,##0"),
+                            Males = (siteData.FirstOrDefault(x => x.Sex.ToLower() == "male")?.PatientPopulation ?? 0)
+                                .ToString("#,##0"),
+                            SiteName = entity.Administration_SiteInformation.FirstOrDefault(x => x.Id == siteId)
+                                ?.SiteNameOfficial ?? "NA",
                             Total = siteData.Sum(x => x.PatientPopulation).ToString()
                         });
                     }
@@ -691,5 +768,47 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
         public string Males { get; set; }
         public string Females { get; set; }
         public string Total { get; set; }
+    }
+
+    public class SecondaryBioDataDuplicationReport
+    {
+        private Patient_PatientBiometricSecondaryIntegrityCase _case;
+
+        public Patient_PatientBiometricSecondaryIntegrityCase Case
+        {
+            get
+            {
+                return _case;
+            }
+
+            set
+            {
+                _case = value;
+
+                using (var entity = new Entities())
+                {
+                    PivotData = entity.Patient_PatientBiometricDataSecondary.FirstOrDefault(x =>
+                        x.PepId == _case.PivotPepId);
+
+                    CaseMembers = entity.Patient_PatientBiometricSecondaryIntegrityCaseMember
+                        .Where(x => !x.IsDeleted && x.PatientBiometricIntegrityCaseId == _case.Id)
+                        .ToList()
+                        .Select(x => new CaseMemberData()
+                        {
+                            SuspectData = entity.Patient_PatientBiometricDataSecondary.FirstOrDefault(y =>
+                                y.PepId == x.SuspectPepId),
+                            CaseMember = x
+                        }).ToList();
+                }
+            }
+        }
+        public Patient_PatientBiometricDataSecondary PivotData { get; private set; }
+        public List<CaseMemberData> CaseMembers { get; private set; }
+    }
+
+    public class CaseMemberData
+    {
+        public Patient_PatientBiometricSecondaryIntegrityCaseMember CaseMember { get; set; }
+        public Patient_PatientBiometricDataSecondary SuspectData { get; set; }
     }
 }

@@ -2061,6 +2061,7 @@
     <Content Include="Assets\_template\Assets\plugins\summernote\font\summernotef534f534.eot" />
     <Content Include="Assets\_template\Assets\plugins\summernote\font\summernotef534f534.ttf" />
     <Content Include="Assets\_template\Assets\plugins\summernote\font\summernotef534f534.woff" />
+    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Views\DataIntegrity\TreatDupBioDataDuplicatesSecondary.cshtml" />
     <None Include="Web.Debug.config">
@@ -2137,6 +2138,7 @@
     <Compile Include="Engines\EngineOperationManagement\EngineOperation.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDataIntegrity.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicatePepId.cs" />
+    <Compile Include="Engines\EngineReporting\CustomFiles\SecondaryBioDataDuplicationReportExcelWriter.cs" />
     <Compile Include="Engines\EngineReporting\EngineReporting.cs" />
     <Compile Include="Engines\LocalCache.cs" />
     <Compile Include="ErrorHandler\AiHandleErrorAttribute.cs" />

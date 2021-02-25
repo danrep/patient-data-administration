@@ -25,7 +25,7 @@ Benue,BE,Mbaikyo Comprehensive Health Center,CCK,46
 Benue,BE,Tse-Kwange Primary Health Center,CCO,7
 Benue,BE,Okileme Primary Health Center,CCQ,10
 Benue,BE,Onyangede Primary Health Center,CCR,163
-Benue,BE,St James Health Centre Ogboju-Ogobia,CCX,68
+Benue,BE,St James Health Centre Ogboju-Ogobia,CCX,69
 Benue,BE,St. Theresa Hospital - Otukpo,CCY,7
 Benue,BE,Abinisi Primary Health Center,CF,221
 Benue,BE,St. Charles' Hospital,CH,716
@@ -52,7 +52,7 @@ Benue,BE,Gboko East Comprehensive Health Center,ES,4209
 Benue,BE,Ambighir Primary Health Center		,EX,6
 Benue,BE,Mbagar Primary Health Center,FG,39
 Benue,BE,Afia Comprehensive Health Center,FI,1323
-Benue,BE,"Federal Medical Center, Makurdi ",FM,12240
+Benue,BE,"Federal Medical Center, Makurdi ",FM,12237
 Benue,BE,"HTS Federal Medical Center, Markurdi",FMT,6
 Benue,BE,Faith Health Clinic - Atoga,FN,1
 Benue,BE,St. Francis Primary Health Center,FP,18
@@ -75,7 +75,7 @@ Benue,BE,Nakar Gwer West Comprehensive Health Center,GW,4827
 Benue,BE,Mchia Local Government Health Center,HA,42
 Benue,BE,Aboho Primary Health Centre,HB,84
 Benue,BE,Gwer East KP One Stop Shop,HI,8
-Benue,BE,Nongu u Kristu ke Sudan hen Tiv (NKST) Health Center - Uchi,HI,644
+Benue,BE,Nongu u Kristu ke Sudan hen Tiv (NKST) Health Center - Uchi,HI,643
 Benue,BE,Tse Akeme Primary Health Center,HJ,1
 Benue,BE,Hope Hospital,HL,93
 Benue,BE,Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Anyiin,HN,6700
@@ -90,7 +90,7 @@ Benue,BE,Jirgba Primary Health Center,JI,240
 Benue,BE,St. Joseph Maternity Clinic - Korinya,JK,1
 Benue,BE,Jingir Primary Health Center,JN,1
 Benue,BE,St. Joseph's Hospital-Ogobia,JS,575
-Benue,BE,NKST Hospital Jato-Aka,JT,2235
+Benue,BE,NKST Hospital Jato-Aka,JT,2234
 Benue,BE,Jumota Health Clinic Tsuwe,JW,75
 Benue,BE,Jolua Hospital,JX,61
 Benue,BE,Kur Primary Health Center,KC,40
@@ -108,7 +108,7 @@ Benue,BE,St. Luke's Hospital,LK,69
 Benue,BE,Luter Health Clinic,LR,1
 Benue,BE,Lord Is Saviour Clinic and Maternity,LS,153
 Benue,BE,Buruku KP One Stop Shop			,MB,3024
-Benue,BE,St. Monica's Hospital -Adikpo,MD,12018
+Benue,BE,St. Monica's Hospital -Adikpo,MD,11872
 Benue,BE,May Memorial Hospital - Adoka,MP,62
 Benue,BE,Fr. Mathias Clinic,MS,1695
 Benue,BE,Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Mbaakon,MV,1376
@@ -245,14 +245,14 @@ Lagos,LA,Ajeabo Primary Health Centre,JB,361
 Lagos,LA,Ojokoro Primary Health Center,JP,8
 Lagos,LA,Heartland Alliance Ilupeju OSS			,LA,73
 Lagos,LA,Obalende Primary Health Center,LB,38
-Lagos,LA,Lagos State University Teaching Hospital,LG,10141
+Lagos,LA,Lagos State University Teaching Hospital,LG,10139
 Lagos,LA,Lakowe Primary Health Center,LH,1
-Lagos,LA,St. Leo Medical Centre,LM,338
+Lagos,LA,St. Leo Medical Centre,LM,335
 Lagos,LA,Lagoon Hospital Ikeja,LN,4
 Lagos,LA,Ajegunle-Ilo Primary Health Center,LP,16
-Lagos,LA,Lagos University Teaching Hospital (LUTH),LU,24005
+Lagos,LA,Lagos University Teaching Hospital (LUTH),LU,23976
 Lagos,LA,68 Military Hospital (Nigerian Army Reference Hospital),MH,32
-Lagos,LA,MOTHER THERESA MEDICAL CENTRE - IDIMU,MT,214
+Lagos,LA,MOTHER THERESA MEDICAL CENTRE - IDIMU,MT,213
 Lagos,LA,Mushin General Hospital,MU,2061
 Lagos,LA,BMM HOSPITAL,MZ,75
 Lagos,LA,Nigerian Institute of Medical Research (NIMR),NM,81
@@ -263,7 +263,7 @@ Lagos,LA,Ogba-Oluwole Primary Health Center,OO,71
 Lagos,LA,Igbo-Efon Primary Health Center,OZ,87
 Lagos,LA,"Akinyele Primary Health Centre ",PR,18
 Lagos,LA,Ikate Primary Health Center,PT,68
-Lagos,LA,Palm Avenue Primary Health Center,PV,625
+Lagos,LA,Palm Avenue Primary Health Center,PV,624
 Lagos,LA,"Mary the Queen Hospital - Akowonjo  ",QU,217
 Lagos,LA,"Aregbesola Primary Health Centre ",RB,1728
 Lagos,LA,DURO SOLEYE HOSPITAL,RD,14
@@ -282,20 +282,20 @@ Lagos,LA,Awoyaya Primary Health Center,YY,7
 Lagos,LA,Wasimi Primary Health Center,ZV,8
 Ogun,OG,Babcock University Teaching Hospital (BUTH),BB,12
 Ogun,OG,Olabisi Onabanjo University Teaching Hospital (OOUTH),BJ,1908
-Ogun,OG,Idi Iroko General Hospital,DR,429
+Ogun,OG,Idi Iroko General Hospital,DR,428
 Ogun,OG,Ifo General Hospital,FO,1755
 Ogun,OG,"Federal Medical center, Abeokuta",FT,1895
 Ogun,OG,Ita-Alapo Primary Health Center,IA,5
 Ogun,OG,Imeko Primary Health Center,IE,13
 Ogun,OG,Ijoko Primary Health Center,II,210
-Ogun,OG,State Hospital - Ijebu Ode,IJ,5550
+Ogun,OG,State Hospital - Ijebu Ode,IJ,5549
 Ogun,OG,Jesus is Love and Power Catholic Hospital - Ifo,JF,41
 Ogun,OG,Ogijo Primary Health Care,JG,159
 Ogun,OG,St. Mary's Clinics - Ajilete,JL,275
-Ogun,OG,"Sacred Heart Catholic Hospital, Lantoro",LT,3928
+Ogun,OG,"Sacred Heart Catholic Hospital, Lantoro",LT,3924
 Ogun,OG,Ota Primary Health Center,OP,534
 Ogun,OG,Ogere Primary Health Center - Ikenne,RQ,13
-Ogun,OG,Specialist Hospital - Ilaro,SI,662
+Ogun,OG,Specialist Hospital - Ilaro,SI,660
 Ogun,OG,Isara State Hospital,SS,30
 Ogun,OG,Isaga Owode Health Center,SW,300
 Ogun,OG,Makun Primary Health Care,UD,25
@@ -355,12 +355,12 @@ Oyo,OY,Baabo Primary Health Center,AA,14
 Oyo,OY,Molete Primary Health Centre,AC,3
 Oyo,OY,Adeoyo Maternity Hospital,AD,4689
 Oyo,OY,Aafin Primary Health Centre,AF,17
-Oyo,OY,St. Anne's Anglican Hospital - Molete Ibadan,AS,455
+Oyo,OY,St. Anne's Anglican Hospital - Molete Ibadan,AS,451
 Oyo,OY,Ogbooro Primary Health Center,BF,23
-Oyo,OY,Baptist Medical Center Saki,BM,1137
+Oyo,OY,Baptist Medical Center Saki,BM,1136
 Oyo,OY,Ikose Primary Health Center	,BQ,1
 Oyo,OY,Aba Emu Primary Health Centre,EF,18
-Oyo,OY,"St. Mary's Catholic Hospital, Eleta",EH,2587
+Oyo,OY,"St. Mary's Catholic Hospital, Eleta",EH,2586
 Oyo,OY,Elekuro Primary Health Centre,EL,34
 Oyo,OY,Awotunde Olosunde Primary Health Centre,FE,2
 Oyo,OY,"General Hospital, Okeho",HO,585
@@ -413,7 +413,7 @@ Oyo,OY,Boluwaji Primary Health Centre,ZW,2
 Oyo,OY,Moniya Primary Health Centre,ZY,68
 Plateau,PL,Angware General Hospital,AW,201
 Plateau,PL,Barkin Ladi General Hospital,BL,2975
-Plateau,PL,Bingham University Teaching Hospital,BU,5628
+Plateau,PL,Bingham University Teaching Hospital,BU,5609
 Plateau,PL,Amper Central Primary Health Care Center,CQ,23
 Plateau,PL,Amper Model Primary Health Care Center,CW,3
 Plateau,PL,Church of Christ in Nigeria (COCIN) Primary Health Center - Daffo,DF,7
@@ -424,21 +424,21 @@ Plateau,PL,Church of Christ in Nigeria (COCIN) Primary Health Center - Shendam,D
 Plateau,PL,Dawaki Primary Health Care Center,DW,31
 Plateau,PL,Evangelical Church of West Africa (ECWA) Comprehensive Hospital - Bukuru,EC,683
 Plateau,PL,Evangelical Church of West Africa (ECWA) Health Clinic - Miango,EV,5
-Plateau,PL,Faith Alive Foundation,FA,10024
+Plateau,PL,Faith Alive Foundation,FA,9988
 Plateau,PL,Bene Clinic,FB,11
 Plateau,PL,Town Clinic Primary Health Center,FD,81
 Plateau,PL,COMPREHENSIVE HEALTH CENTER JUTH GINDIRI,GD,14
 Plateau,PL,General Hospital Langtang,GL,1
 Plateau,PL,HWOLSHE MEDICAL CENTER,HW,1
-Plateau,PL,Jos University Teaching Hospital,JU,36848
+Plateau,PL,Jos University Teaching Hospital,JU,36812
 Plateau,PL,Kwalla General Hospital,KW,1527
 Plateau,PL,Evangelical Church of West Africa (ECWA) Health Clinic - Tudun Wada,KZ,217
 Plateau,PL,May Hospital - Shendam,MC,258
 Plateau,PL,Mangu General Hospital,MG,1232
 Plateau,PL,Mabudi Primary Health Care Center,MQ,17
-Plateau,PL,Our Lady of Apostle (OLA) Hospital - Jos,OL,4962
+Plateau,PL,Our Lady of Apostle (OLA) Hospital - Jos,OL,4958
 Plateau,PL,Pankshin General Hospital,PK,2669
-Plateau,PL,Plateau State Specialist Hospital,PS,7237
+Plateau,PL,Plateau State Specialist Hospital,PS,7207
 Plateau,PL,CCDP Hospital - Panyam,PY,2530
 Plateau,PL,Shendam B Primary Health Center,QB,23
 Plateau,PL,"Church of Christ in Nigeria (COCIN) Hospital and Rehabilitation Center, Mangu",RC,3984

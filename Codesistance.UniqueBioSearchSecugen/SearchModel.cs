@@ -1,6 +1,7 @@
 ﻿using PatientDataAdministration.EnumLibrary;
 using System;
 using System.Collections.Generic;
+using PatientDataAdministration.Core;
 
 namespace Codesistance.UniqueBioSearchSecugen
 {
@@ -37,11 +38,19 @@ namespace Codesistance.UniqueBioSearchSecugen
 
             foreach (var patientDatum in patientData)
             {
-                var template = new Template(patientDatum.PepId, i,
-                    Convert.FromBase64String(patientDatum.FingerPrintData), patientDatum);
+                try
+                {
+                    var template = new Template(patientDatum.PepId, i,
+                        Convert.FromBase64String(patientDatum.FingerPrintData), patientDatum);
 
-                Add(template);
-                i++;
+                    Add(template);
+                    i++;
+                }
+                catch (Exception e)
+                {
+                    ActivityLogger.Log(e);
+                    ActivityLogger.Log("WARN", $"Data Issue ==> {Newtonsoft.Json.JsonConvert.SerializeObject(patientDatum)}");
+                }
             }
 
             return Size > 0;

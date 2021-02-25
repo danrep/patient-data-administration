@@ -176,8 +176,8 @@
 
         function loadTiles(data) {
             $('#totalUnitsLeft_p').text(data.TotalUnitsLeft);
-            $('#unitsUsedThisMonth_p').text(data.SentThisMonth.format());
-            $('#unitsUsedToday_p').text(data.SentThisDay.format());
+            $('#unitsUsedThisMonth_p').text(data.SentThisMonth);
+            $('#unitsUsedToday_p').text(data.SentThisDay);
         };
 
         pdaWeb.controller('pdaWebCtrlr',

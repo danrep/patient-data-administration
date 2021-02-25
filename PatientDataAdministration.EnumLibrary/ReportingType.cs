@@ -15,6 +15,8 @@ namespace PatientDataAdministration.EnumLibrary
         [EnumDisplayName(DisplayName = "Patient Data: Registered Biometrics")]
         PatientDataRegBio,
         [EnumDisplayName(DisplayName = "Patient Data: Default")]
-        PatientDataPopulation
+        PatientDataPopulation,
+        [EnumDisplayName(DisplayName = "Patient Data: Secondary BioData Duplication Report")]
+        PatientSecondaryBioDataDeDupRep
     }
 }

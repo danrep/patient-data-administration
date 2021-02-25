@@ -107,7 +107,7 @@ namespace PatientDataAdministration.Core
                 // ProcessorInfoBip.SendResponse(destination, message);
                 // ProcessorClickatell.SendResponse(destination, message, out payload);
                 // ProcessorBulkSmsNg.SendResponse(destination, message, out payload);
-                var messageId = ((dynamic)payload)["msg_id"];
+                var messageId = ((dynamic)payload)["Data"][0]["MessageId"];
                 
                 return messageId != null ? true : false;
             }
@@ -125,10 +125,10 @@ namespace PatientDataAdministration.Core
             {
                 ProcessorXwireless.Inquiry(messageId, out payload);
 
-                if (payload["seq_id"] == null)
+                if (payload["Data"] == null)
                     return MessageResponse.Processing;
 
-                var messageStatus = payload["seq_id"][0]["status"].ToString().ToUpper();
+                var messageStatus = payload["Data"]["Status"].ToString().ToUpper();
 
                 if (messageStatus == "DELIVRD")
                     return MessageResponse.Delivered;
@@ -136,7 +136,7 @@ namespace PatientDataAdministration.Core
                 if (messageStatus == "DONOTDISTURB")
                     return MessageResponse.DoNotDisturb;
 
-                if (messageStatus == "REJECTD")
+                if (messageStatus == "REJECTD" || string.IsNullOrEmpty(messageStatus))
                     return MessageResponse.Rejected;
 
                 if (messageStatus == "INVALID")
@@ -147,6 +147,9 @@ namespace PatientDataAdministration.Core
 
                 if (messageStatus == "EXPIRED")
                     return MessageResponse.Invalid;
+
+                if (messageStatus == "SUBMITTED")
+                    return MessageResponse.Submitted;
 
                 return MessageResponse.Processing;
             }
@@ -183,12 +186,12 @@ namespace PatientDataAdministration.Core
             foreach (var item in list)
             {
                 sb.Append("<tr>\n");
+                decimal d;
                 foreach (var fxn in fxns)
                 {
                     var cellContent = (fxn.Compile()(item)).ToString();
                     cellContent = cellContent.Replace(",", "");
 
-                    decimal d;
                     if (decimal.TryParse(cellContent, out d))
                     {
                         sb.Append("<td style=\"text-align: right;\">");

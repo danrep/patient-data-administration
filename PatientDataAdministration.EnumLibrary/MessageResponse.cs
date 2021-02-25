@@ -23,6 +23,8 @@ namespace PatientDataAdministration.EnumLibrary
         [EnumDisplayName(DisplayName = "Expired")]
         Expired,
         [EnumDisplayName(DisplayName = "Undelivered")]
-        Undelivered
+        Undelivered,
+        [EnumDisplayName(DisplayName = "Submitted")]
+        Submitted
     }
 }

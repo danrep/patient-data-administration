@@ -215,91 +215,101 @@ namespace PatientDataAdministration.Web.Controllers
                         var patientDemographicsParsed =
                             JsonConvert.DeserializeObject<NmrsXmlPatientDemographics>(patientDemographicsJson);
 
-                        using (var entities = new Entities())
+                        if (patientDemographicsParsed.PatientIdentifier.Length >= 10 && patientDemographicsParsed
+                            .PatientIdentifier.ToCharArray().Count(x => x == '-') == 2)
                         {
-                            var score = 0;
-
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftIndex))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftMiddle))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftSmall))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftThumb))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftWedding))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightIndex))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightMiddle))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightSmall))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightThumb))
-                                score += 10;
-                            if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightWedding))
-                                score += 10;
-
-                            if (entities.Patient_PatientBiometricDataSecondary
-                                    .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                              && !x.IsDeleted)
-                                && forceReplace)
+                            using (var entities = new Entities())
                             {
-                                var existingRecord = entities.Patient_PatientBiometricDataSecondary
-                                    .FirstOrDefault(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                                         && !x.IsDeleted);
+                                var score = 0;
 
-                                existingRecord.BioDataExtract =
-                                    JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints);
-                                existingRecord.BioDataScore = score;
-                                existingRecord.DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml;
-                                existingRecord.DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]);
-                                existingRecord.DateRegistered = DateTime.ParseExact(
-                                    patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
-                                    CultureInfo.InvariantCulture);
-                                existingRecord.DateUploaded = DateTime.Now;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftIndex))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftMiddle))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftSmall))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftThumb))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.LeftHand?.LeftWedding))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightIndex))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand
+                                    ?.RightMiddle))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightSmall))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(patientDemographicsParsed.FingerPrints.RightHand?.RightThumb))
+                                    score += 10;
+                                if (!string.IsNullOrEmpty(
+                                    patientDemographicsParsed.FingerPrints.RightHand?.RightWedding))
+                                    score += 10;
 
-                                entities.Entry(existingRecord).State = EntityState.Modified;
+                                if (entities.Patient_PatientBiometricDataSecondary
+                                        .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                                  && !x.IsDeleted)
+                                    && forceReplace)
+                                {
+                                    var existingRecord = entities.Patient_PatientBiometricDataSecondary
+                                        .FirstOrDefault(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                                             && !x.IsDeleted);
 
-                                messageBody += "was updated successfully.";
+                                    existingRecord.BioDataExtract =
+                                        JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints);
+                                    existingRecord.BioDataScore = score;
+                                    existingRecord.DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml;
+                                    existingRecord.DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]);
+                                    existingRecord.DateRegistered = DateTime.ParseExact(
+                                        patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
+                                        CultureInfo.InvariantCulture);
+                                    existingRecord.DateUploaded = DateTime.Now;
+
+                                    entities.Entry(existingRecord).State = EntityState.Modified;
+
+                                    messageBody += "was updated successfully.";
+                                }
+                                else if (entities.Patient_PatientBiometricDataSecondary
+                                             .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
+                                                       && !x.IsDeleted)
+                                         && !forceReplace)
+                                {
+                                    messageBody +=
+                                        "was not loaded because a record has been preloaded and the Force Replace flag was not set.";
+                                }
+                                else
+                                {
+                                    entities.Patient_PatientBiometricDataSecondary.Add(
+                                        new Patient_PatientBiometricDataSecondary()
+                                        {
+                                            BioDataExtract =
+                                                JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints),
+                                            BioDataScore = score,
+                                            DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml,
+                                            DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]),
+                                            DateRegistered = DateTime.ParseExact(
+                                                patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
+                                                CultureInfo.InvariantCulture),
+                                            DateUploaded = DateTime.Now,
+                                            IsDeleted = false,
+                                            PepId = patientDemographicsParsed.PatientIdentifier
+                                        });
+
+                                    messageBody += "was loaded successfully.";
+                                }
+
+                                entities.SaveChanges();
                             }
-                            else if (entities.Patient_PatientBiometricDataSecondary
-                                         .Any(x => x.PepId == patientDemographicsParsed.PatientIdentifier
-                                                   && !x.IsDeleted)
-                                     && !forceReplace)
-                            {
-                                messageBody +=
-                                    "was not loaded because a record has been preloaded and the Force Replace flag was not set.";
-                            }
-                            else
-                            {
-                                entities.Patient_PatientBiometricDataSecondary.Add(
-                                    new Patient_PatientBiometricDataSecondary()
-                                    {
-                                        BioDataExtract =
-                                            JsonConvert.SerializeObject(patientDemographicsParsed.FingerPrints),
-                                        BioDataScore = score,
-                                        DataModel = (int) SecondaryBioDataSources.NmrsBioDataXml,
-                                        DataSet = JsonConvert.SerializeXmlNode(rawXmlDocument.ChildNodes[1]),
-                                        DateRegistered = DateTime.ParseExact(
-                                            patientDemographicsParsed.FingerPrints.DateCaptured, "yyyy-MM-dd",
-                                            CultureInfo.InvariantCulture),
-                                        DateUploaded = DateTime.Now,
-                                        IsDeleted = false,
-                                        PepId = patientDemographicsParsed.PatientIdentifier
-                                    });
 
-                                messageBody += "was loaded successfully.";
-                            }
+                            if (isBulk == false)
+                                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody,
+                                    null);
 
-                            entities.SaveChanges();
+                            ActivityLogger.Log("INFO", $"{file} has been uploaded successfully.");
+                            return messageBody;
                         }
 
-                        if (isBulk == false)
-                            Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
-                        
-                        ActivityLogger.Log("INFO", $"{file} has been uploaded successfully.");
-                        return messageBody;
+                        messageBody += "was not loaded. The PEPID is Invalid.";
+                        ActivityLogger.Log("WARN", $"{file} does not have a valid PEPID.");
                     }
                     else
                     {
@@ -313,20 +323,21 @@ namespace PatientDataAdministration.Web.Controllers
                 }
 
                 if (isBulk == false)
-                    Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                    Messaging.SendMail(notifyDestination, null, null, "File Processing Status Error", messageBody, file);
             }
             catch (Exception e)
             {
                 ActivityLogger.Log(e);
                 messageBody += "was not loaded. The schema seems to be Invalid.";
                 ActivityLogger.Log("WARN", $"{file} has an Invalid Schema");
-                Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
+                Messaging.SendMail(notifyDestination, null, null, "File Processing Status Error", messageBody, file);
             }
 
             return messageBody;
         }
 
-        private void ProcessPatientRecordsNmrsBioDataXmlMultiple(FileInfo fileInfo, bool forceReplace, string notifyDestination)
+        private void ProcessPatientRecordsNmrsBioDataXmlMultiple(FileInfo fileInfo, bool forceReplace,
+            string notifyDestination)
         {
             try
             {
@@ -334,18 +345,21 @@ namespace PatientDataAdministration.Web.Controllers
                 ActivityLogger.Log("INFO", $"Found {extractedFiles.Count} files for processing.");
 
                 var messageBody = $"Hello {notifyDestination},<br />";
-                messageBody += $"Find below the processing status of the files in the archive {fileInfo.Name}.<br /><br />";
+                messageBody +=
+                    $"Find below the processing status of the files in the archive {fileInfo.Name}.<br /><br />";
 
                 foreach (var extractedFile in extractedFiles)
                 {
                     messageBody += $"{extractedFiles.IndexOf(extractedFile) + 1}: ";
-                    messageBody += ProcessPatientRecordsNmrsBioDataXmlSingle(extractedFile, forceReplace, notifyDestination, true);
+                    messageBody +=
+                        ProcessPatientRecordsNmrsBioDataXmlSingle(extractedFile, forceReplace, notifyDestination, true);
                     messageBody += "<br />";
                 }
 
                 Messaging.SendMail(notifyDestination, null, null, "File Processing Status", messageBody, null);
 
-                var extractionSite = Path.Combine(fileInfo.DirectoryName, fileInfo.Name.Replace(fileInfo.Extension, ""));
+                var extractionSite =
+                    Path.Combine(fileInfo.DirectoryName, fileInfo.Name.Replace(fileInfo.Extension, ""));
                 var extractionSiteInfo = new DirectoryInfo(extractionSite);
 
                 if (extractionSiteInfo.Exists)
