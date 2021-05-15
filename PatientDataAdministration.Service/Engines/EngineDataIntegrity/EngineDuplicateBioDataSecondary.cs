@@ -107,9 +107,9 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                                 BioDataIntegrityCases.FirstOrDefault(x =>
                                     x.PivotPepId == result.Pivot);
 
-                            //gunning for a 60% above match
+                            //gunning for a 95% above match
                             var validCases = result.SuspectedCandidates
-                                .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 7000)
+                                .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 9500)
                                 .ToList();
 
                             ActivityLogger.Log("INFO", $"Found {validCases.Count} Relevant Matches");

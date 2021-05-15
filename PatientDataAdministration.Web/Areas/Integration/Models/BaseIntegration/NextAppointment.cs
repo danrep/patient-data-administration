@@ -11,4 +11,11 @@ namespace PatientDataAdministration.Web.Areas.Integration.Models.BaseIntegration
         public string AppointmentDate { get; set; }
         public AppointmentDataItem[] AppointmentData { get; set; }
     }
+
+    public class Message
+    {
+        public string PepId { get; set; }
+        public string PhoneNumber { get; set; }
+        public string MessageData { get; set; }
+    }
 }

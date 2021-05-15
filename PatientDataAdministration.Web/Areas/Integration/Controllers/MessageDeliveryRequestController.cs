@@ -129,6 +129,119 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                 return Json(ResponseData.SendFailMsg(e.ToString()), JsonRequestBehavior.AllowGet);
             }
         }
+        
+        [HttpPost]
+        public JsonResult Push(List<Message> messages)
+        {
+            try
+            {
+                if (messages == null)
+                    return
+                        Json(ResponseData.SendFailMsg(), JsonRequestBehavior.AllowGet);
+
+                ActivityLogger.Log("INTEGRATION_REQUEST_PNA", Newtonsoft.Json.JsonConvert.SerializeObject(messages));
+
+                using (var entities = new Entities())
+                {
+                    if (!entities.Sp_Integration_GetCreditStatus(messages.Count).FirstOrDefault().Value)
+                        return Json(ResponseData.SendFailMsg(message: "Insufficient Units for Processing"), JsonRequestBehavior.AllowGet);
+                }
+
+                new Thread(() =>
+                {
+                    try
+                    {
+                        using (var entities = new Entities())
+                        {
+                            foreach (var message in messages)
+                            {
+                                // If PhoneNumber is not passed then search for it.
+                                if (string.IsNullOrEmpty(message.PhoneNumber))
+                                {
+                                    message.PhoneNumber = entities.Patient_PatientInformation
+                                        .FirstOrDefault(x => !x.IsDeleted && x.PepId == message.PepId)?.PhoneNumber;
+                                }
+
+                                var integrationItem = new Integration_SystemAppointmentDataItem()
+                                {
+                                    PepId = message.PepId,
+                                    IsDeleted = false,
+                                    AppointmentOffice = "M",
+                                    DateLogged = DateTime.Now,
+                                    GeneratedMessage = message.MessageData,
+                                    AppointmentData =
+                                        Newtonsoft.Json.JsonConvert.SerializeObject(new object()),
+                                    AppointmentDate = DateTime.Now,
+                                    PhoneNumber = message.PhoneNumber,
+                                    OperationStatus = false
+                                };
+
+                                if (string.IsNullOrEmpty(message.PhoneNumber) ||
+                                    message.PhoneNumber.Length < 10 ||
+                                    message.PhoneNumber.Contains("000000") ||
+                                    !System.Text.RegularExpressions.Regex.IsMatch(message.PhoneNumber, "^[0-9]*$"))
+                                {
+                                    integrationItem.MessageStatus = (int)MessageResponse.Failed;
+                                    RegisterMessage(integrationItem, message, MessageResponse.Failed);
+                                }
+                                //else if (integrationItem.AppointmentDate < DateTime.Now)
+                                //    integrationItem.MessageStatus = (int)MessageResponse.Failed;
+                                else
+                                {
+                                    message.PhoneNumber = Transforms.FormatPhoneNumber(message.PhoneNumber);
+                                    integrationItem.PhoneNumber = Transforms.FormatPhoneNumber(message.PhoneNumber);
+
+                                    if (!entities.Integration_SystemPhoneNumberBlacklist.Any(x =>
+                                        !x.IsDeleted && x.PhoneNumber == integrationItem.PhoneNumber))
+                                    {
+                                        dynamic payload;
+
+                                        // send message
+                                        integrationItem.OperationStatus = Messaging.SendSms(message.PhoneNumber,
+                                            integrationItem.GeneratedMessage, out payload);
+
+                                        if (payload == null)
+                                            integrationItem.MessageStatus = (int)MessageResponse.Pending;
+                                        else
+                                        {
+                                            integrationItem.MessageId = payload["Data"][0]["MessageId"].ToString().ToUpper();
+                                            integrationItem.InitialResponsePayload =
+                                                Newtonsoft.Json.JsonConvert.SerializeObject(payload);
+                                            integrationItem.MessageStatus = (int)MessageResponse.Processing;
+
+                                            entities.Integration_SystemAppointmentDataItem.Add(integrationItem);
+                                            entities.SaveChanges();
+
+                                            RegisterMessage(integrationItem, message, MessageResponse.Processing);
+                                        }
+                                    }
+                                    else
+                                        RegisterMessage(integrationItem, message, MessageResponse.Delivered);
+                                }
+
+                                new Thread(() => {
+                                    using (var innerentities = new Entities())
+                                    {
+                                        innerentities.Sp_Integration_DeductLicenseCredit(1);
+                                    }
+                                }).Start();
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        ActivityLogger.Log(e);
+                    }
+                }).Start();
+
+                return
+                    Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(ResponseData.SendFailMsg(e.ToString()), JsonRequestBehavior.AllowGet);
+            }
+        }
 
         [HttpGet]
         public JsonResult GetBalance()
@@ -298,6 +411,45 @@ namespace PatientDataAdministration.Web.Areas.Integration.Controllers
                         MessageSupportParams = Newtonsoft.Json.JsonConvert.SerializeObject(integrationItem),
                         PepId = appointment.PepId,
                         PhoneNumber = appointment.PhoneNumber
+                    });
+
+                    entities.Integration_SystemProviderDeliveryLogs.Add(new Integration_SystemProviderDeliveryLogs()
+                    {
+                        IsDeleted = false,
+                        IsFinalStatus = true,
+                        MessageId = integrationItem.MessageId,
+                        OperationDate = logDate,
+                        OperationStatus = (int)messageResponse
+                    });
+
+                    entities.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private void RegisterMessage(Integration_SystemAppointmentDataItem integrationItem, Message message, MessageResponse messageResponse)
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    if (messageResponse == MessageResponse.Pending)
+                        integrationItem.MessageId = Guid.NewGuid().ToString().Replace('-', '0').ToUpper();
+
+                    var logDate = DateTime.Now;
+                    entities.Integration_SystemDeliveryManifest.Add(new Integration_SystemDeliveryManifest()
+                    {
+                        IsDeleted = false,
+                        IsDelivered = messageResponse == MessageResponse.Delivered,
+                        MessageDate = logDate,
+                        MessageId = integrationItem.MessageId,
+                        MessageSupportParams = Newtonsoft.Json.JsonConvert.SerializeObject(integrationItem),
+                        PepId = message.PepId,
+                        PhoneNumber = message.PhoneNumber
                     });
 
                     entities.Integration_SystemProviderDeliveryLogs.Add(new Integration_SystemProviderDeliveryLogs()

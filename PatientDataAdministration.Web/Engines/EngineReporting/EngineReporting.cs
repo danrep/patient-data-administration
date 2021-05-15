@@ -652,6 +652,8 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                         .Where(x => !x.IsDeleted)
                         .ToList();
 
+                    ActivityLogger.Log("INFO", $"Pulled {caseData.Count} Case List Items");
+
                     var fileName = "SYS_PATSECBIODATACASEFILE_" + DateTime.Now.Date.ToString("yyyyMMdd");
 
                     msg +=
@@ -671,13 +673,15 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                             ActivityLogger.Log(e);
                         }
                     });
-
+                    
+                    ActivityLogger.Log("INFO", $"Materialized {listOfCases.Count} Cases out of {caseData.Count} Case List Items");
                     var resultingFile =
                         SecondaryBioDataDuplicationReportExcelWriter.GetFile(fileName, listOfCases);
 
                     if (string.IsNullOrEmpty(resultingFile)) 
                         return;
 
+                    ActivityLogger.Log("INFO", $"Generated {resultingFile}");
                     var mailStatus = Messaging.SendMail(
                         string.IsNullOrEmpty(recepients) ? GetMailingList(UserRole.CountryAdministrator) : recepients,
                         null, null, "Secondary BioData Duplication Report: " + DateTime.Now.Date.ToString("yyyyMMdd"), msg, resultingFile);
@@ -688,6 +692,8 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     caseData = null;
                     chunkCases = null;
                     listOfCases = null;
+
+                    ActivityLogger.Log("INFO", $"Mail Sent Successfully");
                 }
             }
             catch (Exception e)
