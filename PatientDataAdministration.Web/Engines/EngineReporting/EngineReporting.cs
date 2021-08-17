@@ -675,8 +675,12 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting
                     });
                     
                     ActivityLogger.Log("INFO", $"Materialized {listOfCases.Count} Cases out of {caseData.Count} Case List Items");
+
+                    var stateDict = entity.System_State.Where(x => !x.IsDeleted).ToDictionary(x => x.Id, x => x.StateName);
+                    var lgaDict = entity.System_State.Where(x => !x.IsDeleted).ToDictionary(x => x.Id, x => x.StateName);
+
                     var resultingFile =
-                        SecondaryBioDataDuplicationReportExcelWriter.GetFile(fileName, listOfCases);
+                        SecondaryBioDataDuplicationReportExcelWriter.GetFile(fileName, listOfCases, stateDict, lgaDict);
 
                     if (string.IsNullOrEmpty(resultingFile)) 
                         return;

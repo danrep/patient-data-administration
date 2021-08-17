@@ -10,12 +10,15 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting.CustomFiles
 {
     public static class SecondaryBioDataDuplicationReportExcelWriter
     {
-        public static string GetFile(string fileName, IEnumerable<SecondaryBioDataDuplicationReport> secondaryBioData)
+        public static string GetFile(string fileName, IEnumerable<SecondaryBioDataDuplicationReport> secondaryBioData, 
+            Dictionary<int, string> stateData, Dictionary<int, string> lgaData)
         {
             try
             {
                 var localDirectory =
                     new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+
+                string stateName, lgaName;
 
                 if (!localDirectory.Exists)
                     localDirectory.Create();
@@ -66,21 +69,26 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting.CustomFiles
                     {
                         try
                         {
-                            worksheet.Cells[suspectRows, 1].LoadFromText($"{pivotRows}");
-                            worksheet.Cells[suspectRows, 2].LoadFromText($"{secondaryBioDatum.PivotData.PepId}");
-
-                            worksheet.Cells[suspectRows, 3].LoadFromText($"---");
-                            worksheet.Cells[suspectRows, 4].LoadFromText($"---");
-                            worksheet.Cells[suspectRows, 5].LoadFromText($"---");
-
                             var pivotXmlData = JsonConvert.DeserializeXmlNode(secondaryBioDatum.PivotData.DataSet);
-
                             var currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("TreatmentFacility")[0],
                                 Formatting.None, true);
                             var currentSection =
                                 JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
+
+                            worksheet.Cells[suspectRows, 1].LoadFromText($"{pivotRows}");
+                            worksheet.Cells[suspectRows, 2].LoadFromText($"{secondaryBioDatum.PivotData.PepId}");
+
+                            stateData.TryGetValue(secondaryBioDatum.PivotData.StateId, out stateName);
+                            lgaData.TryGetValue(secondaryBioDatum.PivotData.StateId, out lgaName);
+
+                            worksheet.Cells[suspectRows, 3].LoadFromText($"{stateName ?? "NA"}");
+                            worksheet.Cells[suspectRows, 4].LoadFromText($"{lgaName ?? "NA"}");
+
                             if (currentSection != null)
+                            {
+                                worksheet.Cells[suspectRows, 5].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
                                 worksheet.Cells[suspectRows, 6].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
+                            }
 
                             currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("HIVQuestions")[0],
                                 Formatting.None, true);
@@ -96,25 +104,30 @@ namespace PatientDataAdministration.Web.Engines.EngineReporting.CustomFiles
 
                             foreach (var caseMember in secondaryBioDatum.CaseMembers)
                             {
+                                var suspectXmlData = JsonConvert.DeserializeXmlNode(caseMember.SuspectData.DataSet);
+                                currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("TreatmentFacility")[0],
+                                    Formatting.None, true);
+                                currentSection =
+                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
                                 worksheet.Cells[suspectRows, 9].LoadFromText($"{caseMember.SuspectData.PepId}");
 
-                                worksheet.Cells[suspectRows, 10].LoadFromText($"---");
-                                worksheet.Cells[suspectRows, 11].LoadFromText($"---");
-                                worksheet.Cells[suspectRows, 12].LoadFromText($"---");
+                                stateData.TryGetValue(caseMember.SuspectData.StateId, out stateName);
+                                lgaData.TryGetValue(caseMember.SuspectData.StateId, out lgaName);
 
-                                pivotXmlData = JsonConvert.DeserializeXmlNode(caseMember.SuspectData.DataSet);
+                                worksheet.Cells[suspectRows, 10].LoadFromText($"{stateName ?? "NA"}");
+                                worksheet.Cells[suspectRows, 11].LoadFromText($"{lgaName ?? "NA"}");
 
-                                currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("TreatmentFacility")[0],
-                                    Formatting.None, true);
-                                currentSection =
-                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
                                 if (currentSection != null)
+                                {
+                                    worksheet.Cells[suspectRows, 12].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
                                     worksheet.Cells[suspectRows, 13].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
+                                }
 
-                                currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("HIVQuestions")[0],
+                                currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("HIVQuestions")[0],
                                     Formatting.None, true);
                                 currentSection =
                                     JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
+
                                 if (currentSection != null)
                                 {
                                     worksheet.Cells[suspectRows, 14].Style.Numberformat.Format = "@"; 

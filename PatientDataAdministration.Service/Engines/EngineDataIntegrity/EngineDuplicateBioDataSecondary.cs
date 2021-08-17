@@ -63,16 +63,22 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
 
                     #region Secondary Processing
 
-                    var now = DateTime.Now;
-                    var limiter = new DateTime(now.Year, now.Month, 01);
+                    //var now = DateTime.Now;
+                    //var limiter = new DateTime(now.Year, now.Month, 01);
+
+                    //var allSecondaryBiometrics = entities.Patient_PatientBiometricDataSecondary
+                    //    .Where(x => !x.IsDeleted && x.DateUploaded > limiter)
+                    //    .OrderBy(x => Guid.NewGuid())
+                    //    .Take(1000)
+                    //    .ToList();
 
                     var allSecondaryBiometrics = entities.Patient_PatientBiometricDataSecondary
-                        .Where(x => !x.IsDeleted && x.DateUploaded > limiter)
+                        .Where(x => !x.IsDeleted && x.StateId == 7)
                         .OrderBy(x => Guid.NewGuid())
                         .Take(1000)
                         .ToList();
 
-                    foreach(var secondaryBiometrics in allSecondaryBiometrics)
+                    foreach (var secondaryBiometrics in allSecondaryBiometrics)
                     {
                         allPatientBiometrics.AddRange(ResolveSecondaryBioData(secondaryBiometrics));
                     }

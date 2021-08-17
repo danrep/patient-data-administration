@@ -252,6 +252,8 @@
           <Property Name="DateUploaded" Type="datetime" Nullable="false" />
           <Property Name="DateRegistered" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+          <Property Name="FacilityId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricIntegrityCase">
           <Key>
@@ -1277,6 +1279,8 @@
           <Property Name="DateUploaded" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DateRegistered" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <Property Name="FacilityId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Patient_PatientBiometricSecondaryIntegrityCase">
           <Key>
@@ -1968,6 +1972,8 @@
           <EntitySetMapping Name="Patient_PatientBiometricDataSecondary">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Patient_PatientBiometricDataSecondary">
               <MappingFragment StoreEntitySet="Patient_PatientBiometricDataSecondary">
+                <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="DateRegistered" ColumnName="DateRegistered" />
                 <ScalarProperty Name="DateUploaded" ColumnName="DateUploaded" />

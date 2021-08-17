@@ -23,5 +23,7 @@ namespace PatientDataAdministration.Data
         public System.DateTime DateUploaded { get; set; }
         public System.DateTime DateRegistered { get; set; }
         public bool IsDeleted { get; set; }
+        public int StateId { get; set; }
+        public int FacilityId { get; set; }
     }
 }

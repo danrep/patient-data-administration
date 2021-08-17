@@ -278,6 +278,10 @@ namespace PatientDataAdministration.Web.Controllers
                                 }
                                 else
                                 {
+                                    var facility = entities.Administration_SiteInformation
+                                        .FirstOrDefault(x => x.SiteNameOfficial == patientDemographicsParsed.TreatmentFacility.FacilityName.Trim() || 
+                                        x.SiteNameInformal == patientDemographicsParsed.TreatmentFacility.FacilityName.Trim());
+
                                     entities.Patient_PatientBiometricDataSecondary.Add(
                                         new Patient_PatientBiometricDataSecondary()
                                         {
@@ -291,7 +295,9 @@ namespace PatientDataAdministration.Web.Controllers
                                                 CultureInfo.InvariantCulture),
                                             DateUploaded = DateTime.Now,
                                             IsDeleted = false,
-                                            PepId = patientDemographicsParsed.PatientIdentifier
+                                            PepId = patientDemographicsParsed.PatientIdentifier, 
+                                            FacilityId = facility?.Id ?? 0, 
+                                            StateId = facility?.StateId ?? 0
                                         });
 
                                     messageBody += "was loaded successfully.";
