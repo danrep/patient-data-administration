@@ -243,3 +243,5 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+Codesistance.NFC/
+Codesistance.UniqueBioSearchSecugen/

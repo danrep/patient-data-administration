@@ -5,7 +5,6 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
-using PatientDataAdministration.Web.Engines.EngineDataIntegrity;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Controllers
@@ -37,7 +36,7 @@ namespace PatientDataAdministration.Web.Controllers
                         AdministrationStaffInformation = new Administration_StaffInformation()
                         {
                             Id = 0,
-                            AuthenticationState = (int)EnumLibrary.Status.Active,
+                            AuthenticationState = (int)Status.Active,
                             SiteId = 0,
                             PhoneNumber = "08000000000",
                             Surname = "APIN",
@@ -137,7 +136,7 @@ namespace PatientDataAdministration.Web.Controllers
             {
                 _entities.Sp_System_CleanUp();
 
-                new EngineDataIntegrity();
+                //new EngineDataIntegrity();
                 
                 return Json(new ResponseData { Status = true, Message = "Sucessful" }, JsonRequestBehavior.AllowGet);
             }

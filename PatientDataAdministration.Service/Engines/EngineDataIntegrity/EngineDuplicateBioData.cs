@@ -101,7 +101,7 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                         var biomtricSearchEngine = new SearchEngine();
                         biomtricSearchEngine.LoadTemplates(patientBiometricDataChunk);
 
-                        var resultSet = biomtricSearchEngine.Process();
+                        var resultSet = biomtricSearchEngine.BulkProcess();
                         biomtricSearchEngine.DeInitialize();
 
                         if (!IsAlive)

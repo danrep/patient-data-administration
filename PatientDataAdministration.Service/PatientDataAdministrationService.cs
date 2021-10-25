@@ -10,7 +10,6 @@ namespace PatientDataAdministration.Service
     public partial class PatientDataAdministrationService : ServiceBase
     {
         System.Timers.Timer _timer;
-        private TaskManager _taskManagerEngineDuplicateBioData;
 
         public PatientDataAdministrationService()
         {
@@ -65,8 +64,6 @@ namespace PatientDataAdministration.Service
 
                 EngineDuplicateBioData.KillProcessing();
                 EngineDuplicateBioDataSecondary.KillProcessing();
-
-                _taskManagerEngineDuplicateBioData.ThreadEngine.Abort();
             }
             catch (Exception ex)
             {
@@ -76,8 +73,6 @@ namespace PatientDataAdministration.Service
 
         private static TaskManager TaskManagerEngineDuplicateBioData()
         {
-            return null;
-
             if (EngineDuplicateBioData.IsProcessing)
                 return null;
 

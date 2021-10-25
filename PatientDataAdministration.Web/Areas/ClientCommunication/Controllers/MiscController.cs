@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
-using PatientDataAdministration.Web.Engines;
 
 namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {

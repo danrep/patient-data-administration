@@ -98,7 +98,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="SecuGen.FDxSDKPro.Windows">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\SecuGen\FDx SDK Pro for Windows\DotNET\Bin\i386\SecuGen.FDxSDKPro.Windows.dll</HintPath>
+      <HintPath>..\BioLibraryPacks\Secugen\SecuGen.FDxSDKPro.Windows.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -401,8 +401,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Visual Studio 2010\Projects\Codesistance.Utilities\Codesistance.NFC\Codesistance.NFC.csproj">
-      <Project>{d363637b-0ce4-4150-a6bf-15676285754d}</Project>
+    <ProjectReference Include="..\Codesistance.NFC\Codesistance.NFC.csproj">
+      <Project>{D363637B-0CE4-4150-A6BF-15676285754D}</Project>
       <Name>Codesistance.NFC</Name>
     </ProjectReference>
     <ProjectReference Include="..\PatientDataAdministration.Core\PatientDataAdministration.Core.csproj">

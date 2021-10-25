@@ -18,6 +18,7 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
+using LocalCache = PatientDataAdministration.Client.LocalSettingStorage.LocalCache;
 using ThreadState = System.Threading.ThreadState;
 
 namespace PatientDataAdministration.Client

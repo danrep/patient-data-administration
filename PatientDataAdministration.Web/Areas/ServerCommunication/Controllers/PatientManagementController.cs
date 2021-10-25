@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
@@ -12,9 +11,6 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
-using PatientDataAdministration.Web.Engines;
-using PatientDataAdministration.Web.Engines.EngineModels;
-using PatientDataAdministration.Web.Engines.EngineReporting;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
@@ -69,14 +65,14 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             {
                 new Thread(() =>
                 {
-                    if ((ReportingType) patientDataRequestConfig.ReportType == ReportingType.PatientDataRegBio)
-                        EngineReporting.PatientDataRegBio(new ReportReadiness()
-                        {
-                            UpperBound = DateTime.ParseExact(patientDataRequestConfig.EndDate, "dd/MM/yyyy",
-                                CultureInfo.InvariantCulture),
-                            LowerBound = DateTime.ParseExact(patientDataRequestConfig.StartDate, "dd/MM/yyyy",
-                                CultureInfo.InvariantCulture)
-                        }, patientDataRequestConfig.Reciepients);
+                    //if ((ReportingType) patientDataRequestConfig.ReportType == ReportingType.PatientDataRegBio)
+                    //    EngineReporting.PatientDataRegBio(new ReportReadiness()
+                    //    {
+                    //        UpperBound = DateTime.ParseExact(patientDataRequestConfig.EndDate, "dd/MM/yyyy",
+                    //            CultureInfo.InvariantCulture),
+                    //        LowerBound = DateTime.ParseExact(patientDataRequestConfig.StartDate, "dd/MM/yyyy",
+                    //            CultureInfo.InvariantCulture)
+                    //    }, patientDataRequestConfig.Reciepients);
                 }).Start();
                 return Json(ResponseData.SendSuccessMsg(), JsonRequestBehavior.AllowGet);
             }

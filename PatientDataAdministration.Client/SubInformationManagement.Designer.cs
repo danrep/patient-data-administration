@@ -125,7 +125,7 @@ namespace PatientDataAdministration.Client
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox1.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(30, 64);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 409);
@@ -152,10 +152,10 @@ namespace PatientDataAdministration.Client
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(143, 13);
+            this.label2.Size = new System.Drawing.Size(160, 93);
             this.label2.TabIndex = 136;
             this.label2.Text = "Search by Text (Press Enter)";
             // 
@@ -163,11 +163,11 @@ namespace PatientDataAdministration.Client
             // 
             this.txtSearch.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSearch.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearch.ForeColor = System.Drawing.Color.Black;
-            this.txtSearch.Location = new System.Drawing.Point(3, 16);
+            this.txtSearch.Location = new System.Drawing.Point(3, 96);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(161, 27);
+            this.txtSearch.Size = new System.Drawing.Size(161, 53);
             this.txtSearch.TabIndex = 135;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
@@ -175,12 +175,12 @@ namespace PatientDataAdministration.Client
             // 
             // lstBoxSearchResult
             // 
-            this.lstBoxSearchResult.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstBoxSearchResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lstBoxSearchResult.FormattingEnabled = true;
-            this.lstBoxSearchResult.ItemHeight = 15;
-            this.lstBoxSearchResult.Location = new System.Drawing.Point(3, 49);
+            this.lstBoxSearchResult.ItemHeight = 36;
+            this.lstBoxSearchResult.Location = new System.Drawing.Point(3, 155);
             this.lstBoxSearchResult.Name = "lstBoxSearchResult";
-            this.lstBoxSearchResult.Size = new System.Drawing.Size(161, 154);
+            this.lstBoxSearchResult.Size = new System.Drawing.Size(161, 148);
             this.lstBoxSearchResult.TabIndex = 136;
             this.lstBoxSearchResult.Visible = false;
             this.lstBoxSearchResult.Click += new System.EventHandler(this.lstBoxSearchResult_Click);
@@ -199,7 +199,7 @@ namespace PatientDataAdministration.Client
             // 
             // btnSearchBiometrics
             // 
-            this.btnSearchBiometrics.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchBiometrics.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchBiometrics.Location = new System.Drawing.Point(170, 213);
             this.btnSearchBiometrics.Name = "btnSearchBiometrics";
             this.btnSearchBiometrics.Size = new System.Drawing.Size(161, 38);
@@ -211,30 +211,30 @@ namespace PatientDataAdministration.Client
             // lblBioDeviceInfo
             // 
             this.lblBioDeviceInfo.AutoSize = true;
-            this.lblBioDeviceInfo.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBioDeviceInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblBioDeviceInfo.Location = new System.Drawing.Point(170, 254);
             this.lblBioDeviceInfo.Name = "lblBioDeviceInfo";
-            this.lblBioDeviceInfo.Size = new System.Drawing.Size(16, 15);
+            this.lblBioDeviceInfo.Size = new System.Drawing.Size(39, 36);
             this.lblBioDeviceInfo.TabIndex = 83;
             this.lblBioDeviceInfo.Text = "...";
             // 
             // lblNfcStatus
             // 
             this.lblNfcStatus.AutoSize = true;
-            this.lblNfcStatus.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNfcStatus.Location = new System.Drawing.Point(170, 269);
+            this.lblNfcStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNfcStatus.Location = new System.Drawing.Point(170, 290);
             this.lblNfcStatus.Name = "lblNfcStatus";
-            this.lblNfcStatus.Size = new System.Drawing.Size(16, 15);
+            this.lblNfcStatus.Size = new System.Drawing.Size(39, 36);
             this.lblNfcStatus.TabIndex = 138;
             this.lblNfcStatus.Text = "...";
             // 
             // lblTagUid
             // 
             this.lblTagUid.AutoSize = true;
-            this.lblTagUid.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTagUid.Location = new System.Drawing.Point(170, 284);
+            this.lblTagUid.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTagUid.Location = new System.Drawing.Point(170, 326);
             this.lblTagUid.Name = "lblTagUid";
-            this.lblTagUid.Size = new System.Drawing.Size(16, 15);
+            this.lblTagUid.Size = new System.Drawing.Size(39, 36);
             this.lblTagUid.TabIndex = 139;
             this.lblTagUid.Text = "...";
             // 
@@ -244,7 +244,7 @@ namespace PatientDataAdministration.Client
             this.groupBox2.Controls.Add(this.pnlPersonalInformation);
             this.groupBox2.Controls.Add(this.pnlDataControl);
             this.groupBox2.Controls.Add(this.pnlOfficialInformation);
-            this.groupBox2.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(218, 64);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(721, 409);
@@ -270,7 +270,7 @@ namespace PatientDataAdministration.Client
             this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.ForeColor = System.Drawing.Color.Black;
             this.btnSave.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Save_24px;
             this.btnSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -289,7 +289,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshNfcDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnRefreshNfcDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshNfcDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshNfcDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshNfcDevice.ForeColor = System.Drawing.Color.Black;
             this.btnRefreshNfcDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshNfcDevice.Image")));
             this.btnRefreshNfcDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -308,7 +308,7 @@ namespace PatientDataAdministration.Client
             this.btnRefreshBioDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnRefreshBioDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefreshBioDevice.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefreshBioDevice.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefreshBioDevice.ForeColor = System.Drawing.Color.Black;
             this.btnRefreshBioDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnRefreshBioDevice.Image")));
             this.btnRefreshBioDevice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -327,7 +327,7 @@ namespace PatientDataAdministration.Client
             this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClear.ForeColor = System.Drawing.Color.Black;
             this.btnClear.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Empty_Trash_24px;
             this.btnClear.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -369,21 +369,21 @@ namespace PatientDataAdministration.Client
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.ForeColor = System.Drawing.Color.Maroon;
             this.label10.Location = new System.Drawing.Point(344, 10);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(190, 13);
+            this.label10.Size = new System.Drawing.Size(488, 32);
             this.label10.TabIndex = 135;
             this.label10.Text = "Verify all Data Properly before Saving";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(278, 180);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(94, 13);
+            this.label7.Size = new System.Drawing.Size(245, 32);
             this.label7.TabIndex = 105;
             this.label7.Text = "LGA of Residence";
             // 
@@ -393,11 +393,11 @@ namespace PatientDataAdministration.Client
             this.txtLgaOfResidence.DataSource = this.systemLocalGovermentAreaBindingSource;
             this.txtLgaOfResidence.DisplayMember = "LocalGovermentAreaName";
             this.txtLgaOfResidence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtLgaOfResidence.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLgaOfResidence.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLgaOfResidence.FormattingEnabled = true;
             this.txtLgaOfResidence.Location = new System.Drawing.Point(281, 196);
             this.txtLgaOfResidence.Name = "txtLgaOfResidence";
-            this.txtLgaOfResidence.Size = new System.Drawing.Size(253, 27);
+            this.txtLgaOfResidence.Size = new System.Drawing.Size(253, 54);
             this.txtLgaOfResidence.TabIndex = 104;
             this.txtLgaOfResidence.ValueMember = "Id";
             // 
@@ -414,10 +414,10 @@ namespace PatientDataAdministration.Client
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(1, 180);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(98, 13);
+            this.label6.Size = new System.Drawing.Size(255, 32);
             this.label6.TabIndex = 103;
             this.label6.Text = "State of Residence";
             // 
@@ -427,11 +427,11 @@ namespace PatientDataAdministration.Client
             this.txtStateOfResidence.DataSource = this.systemStateBindingSourceResidence;
             this.txtStateOfResidence.DisplayMember = "StateName";
             this.txtStateOfResidence.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtStateOfResidence.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtStateOfResidence.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtStateOfResidence.FormattingEnabled = true;
             this.txtStateOfResidence.Location = new System.Drawing.Point(4, 196);
             this.txtStateOfResidence.Name = "txtStateOfResidence";
-            this.txtStateOfResidence.Size = new System.Drawing.Size(252, 27);
+            this.txtStateOfResidence.Size = new System.Drawing.Size(252, 54);
             this.txtStateOfResidence.TabIndex = 102;
             this.txtStateOfResidence.ValueMember = "Id";
             this.txtStateOfResidence.SelectedValueChanged += new System.EventHandler(this.txtStateOfResidence_SelectedValueChanged);
@@ -444,10 +444,10 @@ namespace PatientDataAdministration.Client
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(3, 128);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 13);
+            this.label5.Size = new System.Drawing.Size(119, 32);
             this.label5.TabIndex = 100;
             this.label5.Text = "Address";
             // 
@@ -455,19 +455,19 @@ namespace PatientDataAdministration.Client
             // 
             this.txtAddress.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtAddress.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAddress.Font = new System.Drawing.Font("Lato", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAddress.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAddress.Location = new System.Drawing.Point(3, 144);
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(531, 30);
+            this.txtAddress.Size = new System.Drawing.Size(531, 61);
             this.txtAddress.TabIndex = 101;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(136, 85);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(80, 13);
+            this.label17.Size = new System.Drawing.Size(205, 32);
             this.label17.TabIndex = 62;
             this.label17.Text = "Phone Number";
             // 
@@ -475,74 +475,74 @@ namespace PatientDataAdministration.Client
             // 
             this.txtPhoneNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPhoneNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPhoneNumber.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPhoneNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPhoneNumber.Location = new System.Drawing.Point(136, 101);
             this.txtPhoneNumber.Name = "txtPhoneNumber";
-            this.txtPhoneNumber.Size = new System.Drawing.Size(240, 27);
+            this.txtPhoneNumber.Size = new System.Drawing.Size(240, 53);
             this.txtPhoneNumber.TabIndex = 63;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(379, 86);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(70, 13);
+            this.label12.Size = new System.Drawing.Size(172, 32);
             this.label12.TabIndex = 74;
             this.label12.Text = "Date of Birth";
             // 
             // txtDateOfBirth
             // 
-            this.txtDateOfBirth.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDateOfBirth.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtDateOfBirth.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.txtDateOfBirth.Location = new System.Drawing.Point(382, 101);
             this.txtDateOfBirth.Name = "txtDateOfBirth";
             this.txtDateOfBirth.ShowCheckBox = true;
-            this.txtDateOfBirth.Size = new System.Drawing.Size(152, 27);
+            this.txtDateOfBirth.Size = new System.Drawing.Size(152, 53);
             this.txtDateOfBirth.TabIndex = 73;
             // 
             // txtSex
             // 
             this.txtSex.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtSex.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.txtSex.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSex.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSex.FormattingEnabled = true;
             this.txtSex.Items.AddRange(new object[] {
             "Male",
             "Female"});
             this.txtSex.Location = new System.Drawing.Point(4, 101);
             this.txtSex.Name = "txtSex";
-            this.txtSex.Size = new System.Drawing.Size(126, 27);
+            this.txtSex.Size = new System.Drawing.Size(126, 54);
             this.txtSex.TabIndex = 70;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.SteelBlue;
             this.label14.Location = new System.Drawing.Point(3, 9);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(119, 15);
+            this.label14.Size = new System.Drawing.Size(309, 36);
             this.label14.TabIndex = 60;
             this.label14.Text = "Personal Information";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(4, 34);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 13);
+            this.label11.Size = new System.Drawing.Size(130, 32);
             this.label11.TabIndex = 54;
             this.label11.Text = "Surname";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(3, 86);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(24, 13);
+            this.label15.Size = new System.Drawing.Size(64, 32);
             this.label15.TabIndex = 58;
             this.label15.Text = "Sex";
             // 
@@ -550,30 +550,30 @@ namespace PatientDataAdministration.Client
             // 
             this.txtSurname.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtSurname.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSurname.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSurname.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSurname.Location = new System.Drawing.Point(4, 50);
             this.txtSurname.Name = "txtSurname";
-            this.txtSurname.Size = new System.Drawing.Size(260, 27);
+            this.txtSurname.Size = new System.Drawing.Size(260, 53);
             this.txtSurname.TabIndex = 55;
             // 
             // txtOtherNames
             // 
             this.txtOtherNames.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtOtherNames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtOtherNames.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOtherNames.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOtherNames.Location = new System.Drawing.Point(270, 50);
             this.txtOtherNames.Name = "txtOtherNames";
-            this.txtOtherNames.Size = new System.Drawing.Size(264, 27);
+            this.txtOtherNames.Size = new System.Drawing.Size(264, 53);
             this.txtOtherNames.TabIndex = 57;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.label16.Location = new System.Drawing.Point(265, 34);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(72, 13);
+            this.label16.Size = new System.Drawing.Size(182, 32);
             this.label16.TabIndex = 56;
             this.label16.Text = "Other Names";
             // 
@@ -608,7 +608,7 @@ namespace PatientDataAdministration.Client
             // 
             this.cmbDataFingerSelector2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cmbDataFingerSelector2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDataFingerSelector2.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbDataFingerSelector2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbDataFingerSelector2.FormattingEnabled = true;
             this.cmbDataFingerSelector2.Items.AddRange(new object[] {
             "Left Thumb",
@@ -623,14 +623,14 @@ namespace PatientDataAdministration.Client
             "Right Baby Finger"});
             this.cmbDataFingerSelector2.Location = new System.Drawing.Point(48, 61);
             this.cmbDataFingerSelector2.Name = "cmbDataFingerSelector2";
-            this.cmbDataFingerSelector2.Size = new System.Drawing.Size(152, 27);
+            this.cmbDataFingerSelector2.Size = new System.Drawing.Size(152, 54);
             this.cmbDataFingerSelector2.TabIndex = 140;
             // 
             // cmbDataFingerSelector1
             // 
             this.cmbDataFingerSelector1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.cmbDataFingerSelector1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDataFingerSelector1.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbDataFingerSelector1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbDataFingerSelector1.FormattingEnabled = true;
             this.cmbDataFingerSelector1.Items.AddRange(new object[] {
             "Left Thumb",
@@ -645,7 +645,7 @@ namespace PatientDataAdministration.Client
             "Right Baby Finger"});
             this.cmbDataFingerSelector1.Location = new System.Drawing.Point(48, 19);
             this.cmbDataFingerSelector1.Name = "cmbDataFingerSelector1";
-            this.cmbDataFingerSelector1.Size = new System.Drawing.Size(152, 27);
+            this.cmbDataFingerSelector1.Size = new System.Drawing.Size(152, 54);
             this.cmbDataFingerSelector1.TabIndex = 139;
             // 
             // btnDataFinger1
@@ -699,11 +699,11 @@ namespace PatientDataAdministration.Client
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.ForeColor = System.Drawing.Color.Black;
             this.label9.Location = new System.Drawing.Point(309, 10);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(150, 13);
+            this.label9.Size = new System.Drawing.Size(376, 32);
             this.label9.TabIndex = 139;
             this.label9.Text = "Click buttons for Fingerprints";
             // 
@@ -711,11 +711,11 @@ namespace PatientDataAdministration.Client
             // 
             this.chkNfc.AutoSize = true;
             this.chkNfc.Enabled = false;
-            this.chkNfc.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkNfc.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkNfc.ForeColor = System.Drawing.Color.DimGray;
             this.chkNfc.Location = new System.Drawing.Point(259, 85);
             this.chkNfc.Name = "chkNfc";
-            this.chkNfc.Size = new System.Drawing.Size(117, 17);
+            this.chkNfc.Size = new System.Drawing.Size(295, 35);
             this.chkNfc.TabIndex = 63;
             this.chkNfc.Text = "Is NFC Tag Issued?";
             this.chkNfc.UseVisualStyleBackColor = true;
@@ -724,11 +724,11 @@ namespace PatientDataAdministration.Client
             // 
             this.chkSecFin.AutoSize = true;
             this.chkSecFin.Enabled = false;
-            this.chkSecFin.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkSecFin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSecFin.ForeColor = System.Drawing.Color.DimGray;
             this.chkSecFin.Location = new System.Drawing.Point(259, 59);
             this.chkSecFin.Name = "chkSecFin";
-            this.chkSecFin.Size = new System.Drawing.Size(196, 17);
+            this.chkSecFin.Size = new System.Drawing.Size(482, 35);
             this.chkSecFin.TabIndex = 62;
             this.chkSecFin.Text = "Is Secondary Fingerprint Captured?";
             this.chkSecFin.UseVisualStyleBackColor = true;
@@ -737,11 +737,11 @@ namespace PatientDataAdministration.Client
             // 
             this.chkPriFin.AutoSize = true;
             this.chkPriFin.Enabled = false;
-            this.chkPriFin.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkPriFin.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkPriFin.ForeColor = System.Drawing.Color.DimGray;
             this.chkPriFin.Location = new System.Drawing.Point(259, 33);
             this.chkPriFin.Name = "chkPriFin";
-            this.chkPriFin.Size = new System.Drawing.Size(184, 17);
+            this.chkPriFin.Size = new System.Drawing.Size(445, 35);
             this.chkPriFin.TabIndex = 61;
             this.chkPriFin.Text = "Is Primary Fingerprint Captured?";
             this.chkPriFin.UseVisualStyleBackColor = true;
@@ -749,11 +749,11 @@ namespace PatientDataAdministration.Client
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.Crimson;
             this.label8.Location = new System.Drawing.Point(3, 9);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(75, 15);
+            this.label8.Size = new System.Drawing.Size(193, 36);
             this.label8.TabIndex = 60;
             this.label8.Text = "Data Control";
             // 
@@ -787,11 +787,11 @@ namespace PatientDataAdministration.Client
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.Color.DarkGreen;
             this.label4.Location = new System.Drawing.Point(3, 9);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(113, 15);
+            this.label4.Size = new System.Drawing.Size(281, 36);
             this.label4.TabIndex = 60;
             this.label4.Text = "Official Information";
             // 
@@ -799,29 +799,29 @@ namespace PatientDataAdministration.Client
             // 
             this.txtHospitalNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtHospitalNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtHospitalNumber.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHospitalNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtHospitalNumber.Location = new System.Drawing.Point(124, 99);
             this.txtHospitalNumber.Name = "txtHospitalNumber";
-            this.txtHospitalNumber.Size = new System.Drawing.Size(106, 27);
+            this.txtHospitalNumber.Size = new System.Drawing.Size(106, 53);
             this.txtHospitalNumber.TabIndex = 59;
             // 
             // label40
             // 
             this.label40.AutoSize = true;
-            this.label40.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label40.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label40.Location = new System.Drawing.Point(3, 34);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(41, 13);
+            this.label40.Size = new System.Drawing.Size(103, 32);
             this.label40.TabIndex = 54;
             this.label40.Text = "PeP ID";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(124, 83);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 13);
+            this.label3.Size = new System.Drawing.Size(226, 32);
             this.label3.TabIndex = 58;
             this.label3.Text = "Hospital Number";
             // 
@@ -829,30 +829,30 @@ namespace PatientDataAdministration.Client
             // 
             this.txtPepId.BackColor = System.Drawing.Color.LightGray;
             this.txtPepId.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPepId.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPepId.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPepId.ForeColor = System.Drawing.Color.Black;
             this.txtPepId.Location = new System.Drawing.Point(3, 50);
             this.txtPepId.Name = "txtPepId";
-            this.txtPepId.Size = new System.Drawing.Size(227, 27);
+            this.txtPepId.Size = new System.Drawing.Size(227, 53);
             this.txtPepId.TabIndex = 55;
             // 
             // txtPreviousNumber
             // 
             this.txtPreviousNumber.BackColor = System.Drawing.Color.WhiteSmoke;
             this.txtPreviousNumber.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPreviousNumber.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPreviousNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtPreviousNumber.Location = new System.Drawing.Point(3, 99);
             this.txtPreviousNumber.Name = "txtPreviousNumber";
-            this.txtPreviousNumber.Size = new System.Drawing.Size(113, 27);
+            this.txtPreviousNumber.Size = new System.Drawing.Size(113, 53);
             this.txtPreviousNumber.TabIndex = 57;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(3, 83);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 13);
+            this.label1.Size = new System.Drawing.Size(160, 32);
             this.label1.TabIndex = 56;
             this.label1.Text = "Previous ID";
             // 
@@ -864,10 +864,10 @@ namespace PatientDataAdministration.Client
             // lblInformation
             // 
             this.lblInformation.AutoSize = true;
-            this.lblInformation.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblInformation.Location = new System.Drawing.Point(30, 483);
             this.lblInformation.Name = "lblInformation";
-            this.lblInformation.Size = new System.Drawing.Size(16, 15);
+            this.lblInformation.Size = new System.Drawing.Size(42, 36);
             this.lblInformation.TabIndex = 132;
             this.lblInformation.Text = "...";
             // 
@@ -907,7 +907,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.Location = new System.Drawing.Point(899, 22);
             this.btnClose.Name = "btnClose";
@@ -931,7 +931,7 @@ namespace PatientDataAdministration.Client
             // lblDataState
             // 
             this.lblDataState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDataState.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDataState.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblDataState.Location = new System.Drawing.Point(463, 483);
             this.lblDataState.Name = "lblDataState";
             this.lblDataState.Size = new System.Drawing.Size(476, 15);
@@ -954,17 +954,17 @@ namespace PatientDataAdministration.Client
             // 
             this.label13.AutoSize = true;
             this.label13.BackColor = System.Drawing.Color.Transparent;
-            this.label13.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.White;
             this.label13.Location = new System.Drawing.Point(397, 10);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(177, 13);
+            this.label13.Size = new System.Drawing.Size(438, 31);
             this.label13.TabIndex = 106;
             this.label13.Text = "Operation In Progress. Please Wait";
             // 
             // SubInformationManagement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 38F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 517);
             this.ControlBox = false;
@@ -974,7 +974,7 @@ namespace PatientDataAdministration.Client
             this.Controls.Add(this.lblInformation);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Font = new System.Drawing.Font("Lato", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;

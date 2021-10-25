@@ -149,7 +149,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             return error;
         }
 
-        public List<MatchModel> Process()
+        public List<MatchModel> BulkProcess()
         {
             if (!Initialized)
                 return null;
@@ -231,6 +231,95 @@ namespace Codesistance.UniqueBioSearchSecugen
                                 }).ToList()
                         });
                     }
+                }
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+
+            return matchModels;
+        }
+
+        public List<MatchModel> SingleProcess(int templatePosition)
+        {
+            if (!Initialized)
+                return null;
+
+            var matchModels = new List<MatchModel>();
+
+            try
+            {
+                var error = SSError.NONE;
+
+                // Read template files
+                // Register
+                error = RegisterSearchModel();
+
+                // how many templates in mdb
+                var templateSearchModelSize = SearchModel.Size;
+
+                // how many templates in secusearch
+                var fpCount = 0;
+                error = SSearch.GetFPCount(ref fpCount);
+
+                // List IDs of templates registered
+                var idList = new List<uint>();
+                error = SSearch.GetIDList(idList);
+
+                // search : the candidate count must be zero because secusearch has no templates.
+                var candList = new SSCandList();
+                byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
+
+                var templateId = (uint)templatePosition;
+                ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(templatePosition).Filename} of {templateId}");
+
+                var templateBuff = SearchModel.GetTemplate(templatePosition).TemplatesBuffer;
+                uint numberOfViews = 0;
+                SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
+                for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                {
+                    error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                    if (error != SSError.NONE)
+                    {
+                        ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
+                        continue;
+                    }
+
+                    error = SSearch.SearchFP(sgTemplate, ref candList);
+
+                    if (error != SSError.NONE)
+                    {
+                        ActivityLogger.Log("ERROR", $"Finger Confirmation Error: {error.DisplayName()}");
+                    }
+                }
+
+
+                if (error != SSError.NONE)
+                {
+                    ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(templatePosition).Filename} | {error.DisplayName()}");
+                    return new List<MatchModel>();
+                }
+
+                ActivityLogger.Log("INFO",
+                    candList.Count > 0
+                        ? $"Matching: Found {candList.Count} Matches"
+                        : "Matching: No Matching Candidate");
+
+                if (candList.Count > 0)
+                {
+                    matchModels.Add(new MatchModel()
+                    {
+                        Pivot = SearchModel.GetTemplate(templatePosition).Filename,
+                        PivotData = (PatientData)SearchModel.GetTemplate(templatePosition).Data,
+                        SuspectedCandidates = candList.Candidates
+                            .Where(x => x.ConfidenceLevel != SSConfLevel.INVALID)
+                            .Select(x => new SuspectedCandidate()
+                            {
+                                BioDataSuspect = SearchModel.GetTemplate((int)x.Id),
+                                MatchScore = x.MatchScore
+                            }).ToList()
+                    });
                 }
             }
             catch (Exception e)

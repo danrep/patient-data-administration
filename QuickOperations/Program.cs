@@ -131,7 +131,7 @@ namespace QuickOperations
             }            
         }
 
-        public static void UpdateSites()
+        private static void UpdateSites()
         {
             if (!siteInfo.Any())
                 return;

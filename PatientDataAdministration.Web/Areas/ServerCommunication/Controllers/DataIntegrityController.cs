@@ -6,9 +6,7 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
-using PatientDataAdministration.EnumLibrary.Dictionary;
 using PatientDataAdministration.Web.Areas.ServerCommunication.Models;
-using PatientDataAdministration.Web.Engines.EngineDataIntegrity;
 using PatientDataAdministration.Web.Models;
 
 namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
@@ -42,7 +40,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
                 LogActionPepIdIntegrity(ActionTypeDataIntegrity.CreateNew, beforeData, afterData);
-                ReloadPepIdIntegrity();
+                //ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -84,7 +82,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
                 LogActionPepIdIntegrity(ActionTypeDataIntegrity.Preffered, beforeData, afterData);
-                ReloadPepIdIntegrity();
+                //ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -126,7 +124,7 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
                 var afterData = Newtonsoft.Json.JsonConvert.SerializeObject(_entities.Patient_PatientInformation
                     .Where(x => x.PepId == pepId && !x.IsDeleted).ToList());
                 LogActionPepIdIntegrity(ActionTypeDataIntegrity.Delete, beforeData, afterData);
-                ReloadPepIdIntegrity();
+                //ReloadPepIdIntegrity();
 
                 return
                     Json(
@@ -145,82 +143,82 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        public JsonResult GetDataPepIdIntegrity()
-        {
-            try
-            {
-                var task = EngineDataIntegrity.Tasks
-                    .FirstOrDefault(x =>
-                        x.ThreadEngine.Name == DataIntegrityIssue.DupPepId.DisplayName());
+        //public JsonResult GetDataPepIdIntegrity()
+        //{
+        //    try
+        //    {
+        //        var task = EngineDataIntegrity.Tasks
+        //            .FirstOrDefault(x =>
+        //                x.ThreadEngine.Name == DataIntegrityIssue.DupPepId.DisplayName());
 
-                if (DateTime.Now
-                        .Subtract(task?.DateGenerated ?? DateTime.Now).TotalSeconds > 60)
-                {
-                    _entities.Database.CommandTimeout = 0;
-                    EngineDuplicatePepId.DataIntegrityPepId = _entities.Sp_System_DataIntegrity_PepId().ToList();
+        //        if (DateTime.Now
+        //                .Subtract(task?.DateGenerated ?? DateTime.Now).TotalSeconds > 60)
+        //        {
+        //            _entities.Database.CommandTimeout = 0;
+        //            EngineDuplicatePepId.DataIntegrityPepId = _entities.Sp_System_DataIntegrity_PepId().ToList();
 
-                    if (task != null)
-                        task.DateGenerated = DateTime.Now;
-                }
+        //            if (task != null)
+        //                task.DateGenerated = DateTime.Now;
+        //        }
 
-                return
-                    Json(
-                        new ResponseData
-                        {
-                            Status = true,
-                            Message = "Successful",
-                            Data = EngineDuplicatePepId.DataIntegrityPepId
-                        },
-                        JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ActivityLogger.Log(ex);
-                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //        return
+        //            Json(
+        //                new ResponseData
+        //                {
+        //                    Status = true,
+        //                    Message = "Successful",
+        //                    Data = EngineDuplicatePepId.DataIntegrityPepId
+        //                },
+        //                JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ActivityLogger.Log(ex);
+        //        return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
-        public JsonResult GetBioDataIntegrityPrimary()
-        {
-            try
-            {
-                return
-                    Json(
-                        new ResponseData
-                        {
-                            Status = true,
-                            Message = "Successful",
-                            Data = EngineDuplicateBioData.BioDataIntegrityCases
-                        },
-                        JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //public JsonResult GetBioDataIntegrityPrimary()
+        //{
+        //    try
+        //    {
+        //        return
+        //            Json(
+        //                new ResponseData
+        //                {
+        //                    Status = true,
+        //                    Message = "Successful",
+        //                    Data = EngineDuplicateBioData.BioDataIntegrityCases
+        //                },
+        //                JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ActivityLogger.Log(ex);
+        //        return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
-        public JsonResult GetBioDataIntegritySecondary()
-        {
-            try
-            {
-                return
-                    Json(
-                        new ResponseData
-                        {
-                            Status = true,
-                            Message = "Successful",
-                            Data = EngineDuplicateBioDataSecondary.BioDataIntegrityCases
-                        },
-                        JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ActivityLogger.Log(ex);
-                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
+        //public JsonResult GetBioDataIntegritySecondary()
+        //{
+        //    try
+        //    {
+        //        return
+        //            Json(
+        //                new ResponseData
+        //                {
+        //                    Status = true,
+        //                    Message = "Successful",
+        //                    Data = EngineDuplicateBioDataSecondary.BioDataIntegrityCases
+        //                },
+        //                JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ActivityLogger.Log(ex);
+        //        return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
 
         public JsonResult GetBioDataIntegritySuspectsPrimary(int caseId)
         {
@@ -298,12 +296,12 @@ namespace PatientDataAdministration.Web.Areas.ServerCommunication.Controllers
             }
         }
 
-        private static void ReloadPepIdIntegrity()
-        {
-            EngineDuplicatePepId.ProcessDataIntegrityPepId();
+        //private static void ReloadPepIdIntegrity()
+        //{
+        //    EngineDuplicatePepId.ProcessDataIntegrityPepId();
 
-            EngineDuplicateBioData.ProcessDataIntegrityBiometric();
-        }
+        //    EngineDuplicateBioData.ProcessDataIntegrityBiometric();
+        //}
 
         private void LogActionPepIdIntegrity(ActionTypeDataIntegrity actionTypeDataIntegrity, string dataBefore,
             string dataAfter)
