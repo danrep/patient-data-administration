@@ -93,11 +93,15 @@ namespace PatientDataAdministration.Client
 
         private void DataCentral_Load(object sender, EventArgs e)
         {
+            //lblUserInformation.Text = @"Welcome, " +
+            //                          _administrationStaffInformation.Surname + @" " +
+            //                          _administrationStaffInformation.FirstName +
+            //                          @". You are attached to " +
+            //                         _systemSiteData.SiteNameOfficial;
+
             lblUserInformation.Text = @"Welcome, " +
                                       _administrationStaffInformation.Surname + @" " +
-                                      _administrationStaffInformation.FirstName +
-                                      @". You are attached to " +
-                                     _systemSiteData.SiteNameOfficial;
+                                      _administrationStaffInformation.FirstName;
         }
 
         private void DataCentral_Shown(object sender, EventArgs e)
@@ -331,22 +335,21 @@ namespace PatientDataAdministration.Client
 
         private void tmrPostInfoLogs_Tick(object sender, EventArgs e)
         {
+            tmrPostInfoLogs.Enabled = false;
             try
             {
-                tmrPostInfoLogs.Enabled = false;
                 var timeBar = DateTime.Now;
-
                 var listOfEvents = _operationQueue.Where(x => x.TimeStamp < timeBar).ToList();
+
                 foreach (var eventItem in listOfEvents.OrderBy(x => x.TimeStamp))
                 {
-                    lstBoxInfoLog.AppendText($"{eventItem.TimeStamp:yyyyMMddHHmmss}: {eventItem.Param}\n");
-                    lstBoxInfoLog.ScrollToCaret();
+                    if (lstBoxInfoLog.Items.Count == 1000)
+                        lstBoxInfoLog.Items.RemoveAt(0);
+
+                    lstBoxInfoLog.Items.Add($"{eventItem.TimeStamp:yyyyMMddHHmmss}: {eventItem.Param}");
                     Application.DoEvents();
                 }
-
                 _operationQueue.RemoveAll(x => x.TimeStamp < timeBar);
-
-                tmrPostInfoLogs.Enabled = true;
 
                 if (bgwNewPatient.IsBusy || bgwUpdatePatient.IsBusy)
                 {
@@ -371,6 +374,8 @@ namespace PatientDataAdministration.Client
             {
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
             }
+
+            tmrPostInfoLogs.Enabled = true;
         }
 
         private void tmrEndPointExecutionEffect_Tick(object sender, EventArgs e)
@@ -435,6 +440,7 @@ namespace PatientDataAdministration.Client
 
                 var pulled = 0;
                 var blankResult = 1;
+                int cycle = 0;
 
                 while (true)
                 {
@@ -452,29 +458,40 @@ namespace PatientDataAdministration.Client
                             break;
                         }
 
-                        var listOfPepId = "";
+                        //var listOfPepId = "";
 
-                        if (innerEntity.System_BioDataStore.Any())
-                        {
-                            var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
+                        //if (innerEntity.System_BioDataStore.Any())
+                        //{
+                        //    var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
 
-                            listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
-                                (current, patientInfo) => current + $"{patientInfo},");
-                            listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
+                        //    listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
+                        //        (current, patientInfo) => current + $"{patientInfo},");
+                        //    listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
 
-                            patientInformation.Clear();
-                            GC.Collect();
-                        }
+                        //    patientInformation.Clear();
+                        //    GC.Collect();
+                        //}
 
-                        var data = Encoding.ASCII.GetBytes(listOfPepId);
+                        //var data = Encoding.ASCII.GetBytes(listOfPepId);
+
+                        //var payLoad = new
+                        //{
+                        //    encodedListOfAvailablePepId = Convert.ToBase64String(data),
+                        //    siteId = _systemSiteData.RemoteSiteId
+                        //};
+
+                        //var payLoad = new
+                        //{
+                        //    encodedListOfAvailablePepId = Convert.ToBase64String(data),
+                        //    siteId = 0
+                        //};
 
                         var payLoad = new
                         {
-                            encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                            siteId = _systemSiteData.RemoteSiteId
+                            cycle = cycle
                         };
 
-                        var responseData = LocalCore.Post(@"/ClientCommunication/Sync/PullNew",
+                        var responseData = LocalCore.Post(@"/ClientCommunication/Sync/PullNewSequence",
                             JsonConvert.SerializeObject(payLoad));
 
                         if (!responseData.Status)
@@ -491,6 +508,9 @@ namespace PatientDataAdministration.Client
                             blankResult++;
                             continue;
                         }
+
+                        if (responseData.Status && responseData.Data == null)
+                            break;
 
                         _isSyncNewInProgress = true;
 
@@ -540,11 +560,15 @@ namespace PatientDataAdministration.Client
 
                         _isSyncNewInProgress = false;
 
-                        if (returnedPatients.Count < 100)
-                        {
-                            break;
-                        }
+                        //if (returnedPatients.Count < 100)
+                        //{
+                        //    break;
+                        //}
                     }
+
+                    cycle++;
+                    if (cycle % 5 == 0)
+                        _subInfoMan.UpdatePersistedData();
                 }
 
                 if (!_onDemandSyncEnabled)
@@ -940,6 +964,14 @@ namespace PatientDataAdministration.Client
                     if (existingPatient == null)
                         return;
 
+                    if (existingPatient.LastUpdate > patientInformation.Patient_PatientInformation.LastUpdated)
+                    {
+                        _operationQueue.Add(new OperationQueue
+                        {
+                            Param = "Already Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
+                        });
+                    }
+
                     existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
                                                patientInformation.Patient_PatientInformation.Othername;
                     existingPatient.IsSync = true;
@@ -1001,6 +1033,11 @@ namespace PatientDataAdministration.Client
             catch (Exception e)
             {
                 LocalCore.TreatError(e, _administrationStaffInformation.Id);
+
+                _operationQueue.Add(new OperationQueue
+                {
+                    Param = $"PEPID {patientInformation.Patient_PatientInformation.PepId} has an error. {e.Message}"
+                });
             }
         }
 

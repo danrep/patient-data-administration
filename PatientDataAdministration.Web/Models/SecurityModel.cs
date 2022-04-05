@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
@@ -13,11 +14,11 @@ namespace PatientDataAdministration.Web.Models
 
         public static void SetUserSession(UserInformation userInformation)
         {
-            HttpContext.Current.Session.Add("UserInformation", userInformation);
+            HttpContext.Current.Session.Add("UserInformation", JsonConvert.SerializeObject(userInformation));
         }
 
         public static UserInformation GetUserInSession
-            => (UserInformation) HttpContext.Current.Session["UserInformation"];
+            => JsonConvert.DeserializeObject<UserInformation>((string)HttpContext.Current.Session["UserInformation"]);
 
         public static void ClearSession()
         {

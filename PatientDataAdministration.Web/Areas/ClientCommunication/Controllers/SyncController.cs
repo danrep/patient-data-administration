@@ -78,8 +78,13 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                 var listOfAvalailablePepId =
                     Encoding.ASCII.GetString(stringData).ToLower().Split(',').OrderBy(x => x).ToList();
 
+                //var patientsInSite = _entities.Patient_PatientInformation
+                //    .Where(x => !x.IsDeleted && x.SiteId == siteId)
+                //    .OrderBy(x => x.Id)
+                //    .ToList();
+
                 var patientsInSite = _entities.Patient_PatientInformation
-                    .Where(x => !x.IsDeleted && x.SiteId == siteId)
+                    .Where(x => !x.IsDeleted)
                     .OrderBy(x => x.Id)
                     .ToList();
 
@@ -130,6 +135,73 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             {
                 ActivityLogger.Log(ex);
                 return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult PullNewSequence(int cycle = 0)
+        {
+            try
+            {
+                var listOfNewPatients = _entities.Patient_PatientInformation
+                    .Where(x => !x.IsDeleted)
+                    .OrderBy(x => x.Id)
+                    .Skip(100 * cycle)
+                    .Take(500).ToList();
+
+                if (!listOfNewPatients.Any())
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = $"All Done",
+                            Data = null
+                        }, JsonRequestBehavior.AllowGet);
+
+                var returnNewPatients = new List<PatientInformation>();
+
+                foreach (var patient in listOfNewPatients)
+                {
+                    var patientInformation = new PatientInformation
+                    {
+                        Patient_PatientInformation = new Patient_PatientInformation()
+                    };
+
+                    patientInformation.Patient_PatientInformation = patient;
+
+                    if (_entities.Patient_PatientBiometricData.Any(x => x.PepId == patient.PepId))
+                    {
+                        patientInformation.Patient_PatientBiometricData = new Patient_PatientBiometricData();
+                        patientInformation.Patient_PatientBiometricData =
+                            _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == patient.PepId);
+                    }
+                    else
+                        continue;
+
+                    if (_entities.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == patient.PepId))
+                    {
+                        patientInformation.Patient_PatientNearFieldCommunicationData =
+                            new Patient_PatientNearFieldCommunicationData();
+                        patientInformation.Patient_PatientNearFieldCommunicationData =
+                            _entities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x =>
+                                x.PepId == patient.PepId);
+                    }
+
+                    returnNewPatients.Add(patientInformation);
+                }
+
+                return
+                    Json(
+                        new ResponseData
+                        {
+                            Status = true,
+                            Message = $"Found {returnNewPatients.Count} Patient Information for Updating",
+                            Data = returnNewPatients
+                        }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+                return Json(new ResponseData { Status = false, Message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

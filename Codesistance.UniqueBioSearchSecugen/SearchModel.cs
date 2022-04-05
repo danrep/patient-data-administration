@@ -65,6 +65,11 @@ namespace Codesistance.UniqueBioSearchSecugen
         {
             _templates.Add(template);
         }
+
+        public void Clear()
+        {
+            _templates = new List<Template>();
+        }
     }
 
     public class MatchModel

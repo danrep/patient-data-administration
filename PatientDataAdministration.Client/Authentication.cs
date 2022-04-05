@@ -255,7 +255,7 @@ namespace PatientDataAdministration.Client
         private void tmrFeedBack_Tick(object sender, EventArgs e)
         {
             btnLogIn.Enabled = _status;
-            pnlWaiting.Visible = !_status;
+            lblPleaseWait.Visible = !_status;
         }
     }
 }

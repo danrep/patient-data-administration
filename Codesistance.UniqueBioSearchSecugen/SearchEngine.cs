@@ -39,6 +39,13 @@ namespace Codesistance.UniqueBioSearchSecugen
                 LicenseFile = "license.dat"
             };
 
+            //var param = new SSParam
+            //{
+            //    CandidateCount = 10,
+            //    Concurrency = 0,
+            //    EnableRotation = true
+            //};
+
             // license file - Ask SecuGen with your volume number which bin\VolNoReader.exe returns.
             // param.LicenseFile = "./license.dat";
 
@@ -78,6 +85,14 @@ namespace Codesistance.UniqueBioSearchSecugen
             Initialized = false;
         }
 
+        public void Clear()
+        {
+            for (uint i = 0; i < SearchModel.Size; i++)
+                SSearch.RemoveFP(i);
+
+            SearchModel.Clear();
+        }
+
         public void LoadTemplates(List<PatientData> patientData)
         {
             if (!Initialized)
@@ -86,7 +101,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             ActivityLogger.Log("INFO", $"Version ==> {SSearch.GetVersion()}");
 
             ActivityLogger.Log("INFO", $"Loaded {patientData.Count}");
-            var loaded = SearchModel.Load(patientData);
+            var loaded = SearchModel.Load(patientData); 
 
             if (!loaded)
             {
@@ -102,49 +117,71 @@ namespace Codesistance.UniqueBioSearchSecugen
             ActivityLogger.Log("INFO", "Registering Templates");
             var error = SSError.NONE;
 
-            for (var i = 0; i < SearchModel.Size; i++)
+            try
             {
-                var templateId = SearchModel.GetTemplate(i).Index;
-                var templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
-                var patientData = (PatientData)SearchModel.GetTemplate(i).Data;
-
-                if (patientData.FingerPrintStore == FingerPrintStore.Primary)
+                for (var i = 0; i < SearchModel.Size; i++)
                 {
-                    error = SSearch.RegisterFP(templateBuff, templateId);
-                    if (error != SSError.NONE)
+                    try
                     {
-                        ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
+                        var templateId = SearchModel.GetTemplate(i).Index;
+                        var templateBuff = SearchModel.GetTemplate(i).TemplatesBuffer;
+                        var patientData = (PatientData)SearchModel.GetTemplate(i).Data;
+
+                        if (patientData.FingerPrintStore == FingerPrintStore.Primary)
+                        {
+                            error = SSearch.RegisterFP(templateBuff, templateId);
+                            if (error != SSError.NONE)
+                            {
+                                ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
+                            }
+                        }
+                        else
+                        {
+                            byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
+                            uint numberOfViews = 0;
+
+                            SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
+
+                            for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                            {
+                                try
+                                {
+                                    error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                                    if (error != SSError.NONE)
+                                    {
+                                        ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
+                                        continue;
+                                    }
+
+                                    error = SSearch.RegisterFP(sgTemplate, templateId);
+                                    if (error != SSError.NONE)
+                                    {
+                                        ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
+                                    }
+                                }
+                                catch (Exception exx)
+                                {
+                                    ActivityLogger.Log("ERROR >> Codesistance.UniqueBioSearch", $"{exx.Message}: {exx}");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception exx)
+                    {
+                        ActivityLogger.Log("ERROR >> Codesistance.UniqueBioSearch", $"{exx.Message}: {exx}");
                     }
                 }
-                else
-                {
-                    byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
-                    uint numberOfViews = 0;
 
-                    SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
+                int fpCount = 0;
+                error = SSearch.GetFPCount(ref fpCount);
 
-                    for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
-                    {
-                        error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
-                        if (error != SSError.NONE)
-                        {
-                            ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
-                            continue;
-                        }
-
-                        error = SSearch.RegisterFP(sgTemplate, templateId);
-                        if (error != SSError.NONE)
-                        {
-                            ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
-                        }
-                    }
-                }
+                ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
             }
-
-            int fpCount = 0;
-            error = SSearch.GetFPCount(ref fpCount);
-
-            ActivityLogger.Log("INFO", $"Fingerprint Count: {fpCount}");
+            catch (Exception ex)
+            {
+                ActivityLogger.Log("ERROR >> Codesistance.UniqueBioSearch", $"{ex.Message}: {ex}");
+                ActivityLogger.Log(ex);
+            }
 
             return error;
         }

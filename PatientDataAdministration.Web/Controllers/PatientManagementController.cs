@@ -27,6 +27,16 @@ namespace PatientDataAdministration.Web.Controllers
             return View();
         }
 
+        public ActionResult SecondaryBioData()
+        {
+            return View();
+        }
+
+        public ActionResult SecondaryBioDataUpload()
+        {
+            return View();
+        }
+
         public ActionResult PatientData(string pepId = null)
         {
             if (string.IsNullOrEmpty(pepId))
@@ -37,11 +47,6 @@ namespace PatientDataAdministration.Web.Controllers
                 return RedirectToAction("PatientOverview");
 
             return View(patient);
-        }
-
-        public ActionResult SecondaryBioDataUpload()
-        {
-            return View();
         }
 
         public ActionResult UploadFile()

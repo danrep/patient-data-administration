@@ -63,9 +63,9 @@ namespace PatientDataAdministration.Client
 
                 key.SetValue(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "PatientDataAdministration.Client.exe"), "~ WIN8RTM");
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                throw;
+                LocalCore.TreatError(exception, 0);
             }
         }
     }

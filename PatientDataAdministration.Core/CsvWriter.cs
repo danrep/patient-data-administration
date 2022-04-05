@@ -14,7 +14,7 @@ namespace PatientDataAdministration.Core
                 using (TextWriter writer =
                     new StreamWriter(expectedFileName, false, System.Text.Encoding.UTF8))
                 {
-                    var csv = new CsvWriter(writer);
+                    var csv = new CsvWriter(writer, System.Globalization.CultureInfo.InvariantCulture);
                     csv.WriteRecords(list);
                     csv.Dispose();
 

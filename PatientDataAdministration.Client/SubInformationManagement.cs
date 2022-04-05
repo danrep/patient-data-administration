@@ -126,7 +126,7 @@ namespace PatientDataAdministration.Client
                 var capturedBioData = Convert.FromBase64String(image);
                 var matched = false;
                 System_BioDataStore patientData = null;
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
                 Application.DoEvents();
 
                 foreach (var pds in _systemBioDataStores)
@@ -168,7 +168,7 @@ namespace PatientDataAdministration.Client
                     ClearContents();
                 }
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
                 Application.DoEvents();
             }
             catch (Exception exception)
@@ -181,6 +181,7 @@ namespace PatientDataAdministration.Client
         {
             ClearContents();
             txtSearch.Text = "";
+            UpdatePersistedData();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -281,7 +282,7 @@ namespace PatientDataAdministration.Client
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
                     {
                         MessageBox.Show(@"The Captured Biodata have a match and that's not proper. Please confirm");
-                        pnlWaiting.Visible = false;
+                        lblPleaseWait.Visible = false;
                         return;
                     }
 
@@ -352,7 +353,7 @@ namespace PatientDataAdministration.Client
 
                 #region Patient Local CRUD
 
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
 
                 if (_systemBioDataStore.Id == 0)
                 {
@@ -398,7 +399,7 @@ namespace PatientDataAdministration.Client
                 }
                 _localPdaEntities.SaveChanges();
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
 
                 #endregion
 
@@ -416,7 +417,7 @@ namespace PatientDataAdministration.Client
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 lblInformation.Text = @"An unexpected error has occured. Please contact the Administrator";
                 lblInformation.ForeColor = Color.DarkRed;
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
             }
         }
 
@@ -545,7 +546,7 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
 
                 var capturedBioDataPrimary = Convert.FromBase64String(bioDataPrimary);
                 var capturedBioDataSecondary = Convert.FromBase64String(bioDataSecondary);
@@ -586,7 +587,7 @@ namespace PatientDataAdministration.Client
                         break;
                 }
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
 
                 return matched;
             }
@@ -605,32 +606,41 @@ namespace PatientDataAdministration.Client
                 {
                     _dataLoadthread = new Thread(() =>
                     {
-                        _isBusy = true;
-                        _systemBioDataStores = new List<System_BioDataStore>();
-
-                        _lblInformationText = "Data is Updating";
-                        _lblInformationForeColor = Color.DarkOrange;
-
-                        var totalPatients = _localPdaEntities.System_BioDataStore.Count();
-                        var orderedSystemBioDataStore =
-                            _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).ToList();
-                        for (var i = 0; i < totalPatients; i += 100)
+                        try
                         {
-                            _systemBioDataStores.AddRange(
-                                orderedSystemBioDataStore.Skip(i).Take(100).ToList());
+                            _isBusy = true;
+                            _systemBioDataStores = new List<System_BioDataStore>();
+
+                            _lblInformationText = "Data is Updating";
+                            _lblInformationForeColor = Color.DarkOrange;
+
+                            var totalPatients = _localPdaEntities.System_BioDataStore.Count();
+                            var orderedSystemBioDataStore =
+                                _localPdaEntities.System_BioDataStore.OrderBy(x => x.Id).ToList();
+                            for (var i = 0; i < totalPatients; i += 100)
+                            {
+                                _systemBioDataStores.AddRange(
+                                    orderedSystemBioDataStore.Skip(i).Take(100).ToList());
+                            }
+
+                            _lblInformationText =
+                                $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
+                            _lblInformationForeColor = Color.DarkGreen;
+
+                            _isBusy = false;
+
+                            orderedSystemBioDataStore.Clear();
+                            orderedSystemBioDataStore.TrimExcess();
+
+                            GC.Collect();
                         }
-
-                        _lblInformationText =
-                            $"Quick Search has been Updated. Loaded {totalPatients:#,###} Patients Successfully";
-                        _lblInformationForeColor = Color.DarkGreen;
-
-                        _isBusy = false;
-
-                        orderedSystemBioDataStore.Clear();
-                        orderedSystemBioDataStore.TrimExcess();
-
-                        GC.Collect();
+                        catch (Exception e)
+                        {
+                            _isBusy = false;
+                            LocalCore.TreatError(e, _administrationStaffInformation.Id);
+                        }
                     });
+
                     _dataLoadthread.Start();
                 }
             }
@@ -1122,7 +1132,7 @@ namespace PatientDataAdministration.Client
         private void tmrSecureWindow_Tick(object sender, EventArgs e)
         {
             groupBox1.Enabled = groupBox2.Enabled = _isBusy;
-            pnlWaiting.Visible = !_isBusy;
+            lblPleaseWait.Visible = !_isBusy;
         }
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)

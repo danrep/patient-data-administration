@@ -115,7 +115,7 @@ namespace PatientDataAdministration.Client
                 var capturedBioData = Convert.FromBase64String(image);
                 var matched = false;
                 System_BioDataStore_PopulationRegister patientData = null;
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
                 Application.DoEvents();
 
                 foreach (var pds in _systemBioDataStorePopulationRegisters)
@@ -157,7 +157,7 @@ namespace PatientDataAdministration.Client
                     ClearContents();
                 }
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
                 Application.DoEvents();
             }
             catch (Exception exception)
@@ -170,7 +170,6 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-
                 ClearContents();
                 txtPhoneNumber.Text = txtHtsId.Text = txtSearch.Text = "";
                 txtSex.SelectedIndex = txtTestResult.SelectedIndex = -1;
@@ -266,7 +265,7 @@ namespace PatientDataAdministration.Client
                 {
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
                     {
-                        pnlWaiting.Visible = false;
+                        lblPleaseWait.Visible = false;
                         MessageBox.Show(@"The Captured Biodata are either a match or a match with some other Biometric Data and that's not proper. Please confirm!");
                         return;
                     }
@@ -296,7 +295,7 @@ namespace PatientDataAdministration.Client
 
                 #region Patient Local CRUD
 
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
 
                 if (_systemBioDataStorePopulationRegister.Id == 0)
                 {
@@ -348,7 +347,7 @@ namespace PatientDataAdministration.Client
                 }
                 _localPdaEntities.SaveChanges();
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
 
                 #endregion
 
@@ -366,7 +365,7 @@ namespace PatientDataAdministration.Client
                 LocalCore.TreatError(exception, _administrationStaffInformation.Id);
                 lblInformation.Text = @"An unexpected error has occured. Please contact the Administrator";
                 lblInformation.ForeColor = Color.DarkRed;
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
             }
         }
 
@@ -447,7 +446,7 @@ namespace PatientDataAdministration.Client
         {
             try
             {
-                pnlWaiting.Visible = true;
+                lblPleaseWait.Visible = true;
 
                 var capturedBioDataPrimary = Convert.FromBase64String(bioDataPrimary);
                 var capturedBioDataSecondary = Convert.FromBase64String(bioDataSecondary);
@@ -488,7 +487,7 @@ namespace PatientDataAdministration.Client
                         break;
                 }
 
-                pnlWaiting.Visible = false;
+                lblPleaseWait.Visible = false;
 
                 return matched;
             }
@@ -627,7 +626,6 @@ namespace PatientDataAdministration.Client
             }
         }
 
-
         private void LoadPatientData(System_BioDataStore_PopulationRegister patientData)
         {
             try
@@ -720,7 +718,7 @@ namespace PatientDataAdministration.Client
         private void tmrSecureWindow_Tick(object sender, EventArgs e)
         {
             groupBox1.Enabled = groupBox2.Enabled = _isBusy;
-            pnlWaiting.Visible = !_isBusy;
+            lblPleaseWait.Visible = !_isBusy;
         }
 
         private void txtSearch_KeyPress(object sender, KeyPressEventArgs e)

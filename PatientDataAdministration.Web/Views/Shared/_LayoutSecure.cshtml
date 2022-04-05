@@ -32,7 +32,7 @@
     <meta content="Codesistance" name="author" />
     <link rel="shortcut icon" href="/Assets/img/icons8_Facial_Recognition_30px.png">
 
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     <link href="/assets/plugins/jquery-ui/themes/base/minified/jquery-ui.min.css" rel="stylesheet" />
     <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -139,6 +139,7 @@
                         </a>
                         <ul class="sub-menu">
                             <li class="active"><a href="@Url.Action("PatientOverview", "PatientManagement" , new {area="" })">Patient Overview</a></li>
+                            <li class="active"><a href="@Url.Action("SecondaryBioData", "PatientManagement", new {area = ""})">Secondary BioData</a></li>
                             <li class="active"><a href="@Url.Action("SecondaryBioDataUpload", "PatientManagement", new {area = ""})">Secondary BioData Upload</a></li>
                         </ul>
                     </li>

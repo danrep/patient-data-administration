@@ -12,16 +12,22 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
                     senderId = "STAYHEALTHY";
 
                 var oprTrack = Guid.NewGuid().ToString().Replace('-', '0');
+
                 //var url =
                 //    "http://panel.xwireless.net/API/WebSMS/Http/v1.0a/index.php?username=codesistance&password=skyRunn3r&sender=StayHealthy&to=" +
                 //    destination + "&message=" + message + "&reqid=1&format=json&route_id=2";
 
-                var url =
-                    "http://45.77.146.255:6005/api/v2/SendSMS?SenderId="+ senderId + "&Is_Unicode=false&Is_Flash=false&Message=" +
-                    message +
-                    "&MobileNumbers=" + destination +
-                    "&ApiKey=ulLP6gO0xxClzTwRtw88tw%2B%2FvAWAJDzl1xSjEjEfUkM%3D&ClientId=f039365c-940e-4971-8fec-6700076178b4";
+                //var url =
+                //    "http://45.77.146.255:6005/api/v2/SendSMS?SenderId="+ senderId + "&Is_Unicode=false&Is_Flash=false&Message=" +
+                //    message +
+                //    "&MobileNumbers=" + destination +
+                //    "&ApiKey=ulLP6gO0xxClzTwRtw88tw%2B%2FvAWAJDzl1xSjEjEfUkM%3D&ClientId=f039365c-940e-4971-8fec-6700076178b4";
 
+                var url =
+                    $"https://secure.xwireless.net/api/v2/SendSMS?SenderId={senderId}&Is_Unicode=false&Is_Flash=false&Message=" +
+                    message + "&MobileNumbers=" + destination +
+                    "&ApiKey=ulLP6gO0xxClzTwRtw88tw+/vAWAJDzl1xSjEjEfUkM=&ClientId=f039365c-940e-4971-8fec-6700076178b4";
+                
                 ActivityLogger.Log($"MSG_PROC_XWIRE_REQ_{oprTrack}".ToUpper(),
                     Newtonsoft.Json.JsonConvert.SerializeObject(url));
 

@@ -68,10 +68,10 @@ namespace PatientDataAdministration.Client
             this.bgwSelfServer = new System.ComponentModel.BackgroundWorker();
             this.bgwContentManager = new System.ComponentModel.BackgroundWorker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lstBoxInfoLog = new System.Windows.Forms.TextBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.btnAdminSettings = new System.Windows.Forms.Button();
             this.tmrEndPointExecutionEffect = new System.Windows.Forms.Timer(this.components);
+            this.lstBoxInfoLog = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpSyncController.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -111,9 +111,9 @@ namespace PatientDataAdministration.Client
             // 
             this.chkEndPointExecutionControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.chkEndPointExecutionControl.FormattingEnabled = true;
-            this.chkEndPointExecutionControl.Location = new System.Drawing.Point(3, 17);
+            this.chkEndPointExecutionControl.Location = new System.Drawing.Point(3, 16);
             this.chkEndPointExecutionControl.Name = "chkEndPointExecutionControl";
-            this.chkEndPointExecutionControl.Size = new System.Drawing.Size(394, 175);
+            this.chkEndPointExecutionControl.Size = new System.Drawing.Size(394, 176);
             this.chkEndPointExecutionControl.TabIndex = 0;
             // 
             // btnPatientManagement
@@ -123,7 +123,7 @@ namespace PatientDataAdministration.Client
             this.btnPatientManagement.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnPatientManagement.FlatAppearance.BorderSize = 2;
             this.btnPatientManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPatientManagement.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPatientManagement.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPatientManagement.ForeColor = System.Drawing.Color.White;
             this.btnPatientManagement.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Counselor_96px;
             this.btnPatientManagement.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -143,7 +143,7 @@ namespace PatientDataAdministration.Client
             this.btnPopulationStatusRegister.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnPopulationStatusRegister.FlatAppearance.BorderSize = 2;
             this.btnPopulationStatusRegister.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPopulationStatusRegister.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPopulationStatusRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPopulationStatusRegister.ForeColor = System.Drawing.Color.White;
             this.btnPopulationStatusRegister.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_AIDS_Ribbon_96px;
             this.btnPopulationStatusRegister.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -163,7 +163,7 @@ namespace PatientDataAdministration.Client
             this.btnAdministratorSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAdministratorSettings.FlatAppearance.BorderSize = 2;
             this.btnAdministratorSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdministratorSettings.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdministratorSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdministratorSettings.ForeColor = System.Drawing.Color.Black;
             this.btnAdministratorSettings.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Protect_96px;
             this.btnAdministratorSettings.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -183,7 +183,7 @@ namespace PatientDataAdministration.Client
             this.btnSync.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSync.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSync.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.ForeColor = System.Drawing.Color.White;
             this.btnSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Sync_20px;
             this.btnSync.Location = new System.Drawing.Point(384, 3);
@@ -220,7 +220,7 @@ namespace PatientDataAdministration.Client
             this.btnProfile.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnProfile.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnProfile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnProfile.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProfile.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Person_24px;
             this.btnProfile.Location = new System.Drawing.Point(430, 3);
             this.btnProfile.Name = "btnProfile";
@@ -238,7 +238,7 @@ namespace PatientDataAdministration.Client
             this.btnClose.FlatAppearance.BorderColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Maroon;
             this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnClose.Location = new System.Drawing.Point(476, 3);
             this.btnClose.Name = "btnClose";
@@ -337,11 +337,11 @@ namespace PatientDataAdministration.Client
             // 
             this.lblUserInformation.AutoSize = true;
             this.lblUserInformation.BackColor = System.Drawing.Color.Transparent;
-            this.lblUserInformation.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserInformation.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserInformation.ForeColor = System.Drawing.Color.White;
             this.lblUserInformation.Location = new System.Drawing.Point(3, 13);
             this.lblUserInformation.Name = "lblUserInformation";
-            this.lblUserInformation.Size = new System.Drawing.Size(0, 15);
+            this.lblUserInformation.Size = new System.Drawing.Size(0, 13);
             this.lblUserInformation.TabIndex = 9;
             // 
             // metroToolTip
@@ -382,7 +382,7 @@ namespace PatientDataAdministration.Client
             this.btnCancelSync.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnCancelSync.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnCancelSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCancelSync.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelSync.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelSync.ForeColor = System.Drawing.Color.White;
             this.btnCancelSync.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Close_Window_24px;
             this.btnCancelSync.Location = new System.Drawing.Point(200, 3);
@@ -416,7 +416,7 @@ namespace PatientDataAdministration.Client
             this.btnClearDump.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnClearDump.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnClearDump.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearDump.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClearDump.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClearDump.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Page_24px;
             this.btnClearDump.Location = new System.Drawing.Point(338, 3);
             this.btnClearDump.Name = "btnClearDump";
@@ -433,7 +433,7 @@ namespace PatientDataAdministration.Client
             this.btnTogglePushPull.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnTogglePushPull.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnTogglePushPull.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTogglePushPull.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTogglePushPull.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTogglePushPull.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Todo_List_24px;
             this.btnTogglePushPull.Location = new System.Drawing.Point(292, 3);
             this.btnTogglePushPull.Name = "btnTogglePushPull";
@@ -450,7 +450,7 @@ namespace PatientDataAdministration.Client
             this.btnForceUpdate.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnForceUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnForceUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnForceUpdate.Font = new System.Drawing.Font("Lato", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnForceUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnForceUpdate.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Download_From_FTP_24px;
             this.btnForceUpdate.Location = new System.Drawing.Point(246, 3);
             this.btnForceUpdate.Name = "btnForceUpdate";
@@ -501,17 +501,6 @@ namespace PatientDataAdministration.Client
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logs and Information";
             // 
-            // lstBoxInfoLog
-            // 
-            this.lstBoxInfoLog.Font = new System.Drawing.Font("Lato", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 20);
-            this.lstBoxInfoLog.Multiline = true;
-            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
-            this.lstBoxInfoLog.ReadOnly = true;
-            this.lstBoxInfoLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(737, 78);
-            this.lstBoxInfoLog.TabIndex = 0;
-            // 
             // btnAdminSettings
             // 
             this.btnAdminSettings.BackColor = System.Drawing.Color.White;
@@ -519,7 +508,7 @@ namespace PatientDataAdministration.Client
             this.btnAdminSettings.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAdminSettings.FlatAppearance.BorderSize = 2;
             this.btnAdminSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAdminSettings.Font = new System.Drawing.Font("Lato", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdminSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdminSettings.ForeColor = System.Drawing.Color.Black;
             this.btnAdminSettings.Image = global::PatientDataAdministration.Client.Properties.Resources.icons8_Protect_96px;
             this.btnAdminSettings.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -537,6 +526,14 @@ namespace PatientDataAdministration.Client
             this.tmrEndPointExecutionEffect.Interval = 500;
             this.tmrEndPointExecutionEffect.Tick += new System.EventHandler(this.tmrEndPointExecutionEffect_Tick);
             // 
+            // lstBoxInfoLog
+            // 
+            this.lstBoxInfoLog.FormattingEnabled = true;
+            this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 19);
+            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(736, 82);
+            this.lstBoxInfoLog.TabIndex = 0;
+            // 
             // DataCentral
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -547,7 +544,7 @@ namespace PatientDataAdministration.Client
             this.Controls.Add(this.flowLayoutPanel3);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.panel2);
-            this.Font = new System.Drawing.Font("Lato", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -570,7 +567,6 @@ namespace PatientDataAdministration.Client
             ((System.ComponentModel.ISupportInitialize)(this.picDataWait)).EndInit();
             this.flowLayoutPanel3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -607,7 +603,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnPopulationStatusRegister;
         private System.Windows.Forms.Button btnClearDump;
-        private System.Windows.Forms.TextBox lstBoxInfoLog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.Button btnAdministratorSettings;
         private System.Windows.Forms.Button btnAdminSettings;
@@ -616,5 +611,6 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Button btnTogglePushPull;
         private System.Windows.Forms.Timer tmrEndPointExecutionEffect;
         private System.Windows.Forms.Button btnForceUpdate;
+        private System.Windows.Forms.ListBox lstBoxInfoLog;
     }
 }

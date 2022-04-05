@@ -25,8 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatientDataAdministration.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickOperations", "QuickOperations\QuickOperations.csproj", "{BF9C0B0A-211E-4BBE-9069-683997E62BAF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PatientDataAdministration.Worker", "PatientDataAdministration.Worker\PatientDataAdministration.Worker.csproj", "{CF94F8F7-9216-46C6-A476-A389D6ACD217}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codesistance.NFC", "Codesistance.NFC\Codesistance.NFC.csproj", "{D363637B-0CE4-4150-A6BF-15676285754D}"
 EndProject
 Global
@@ -81,10 +79,6 @@ Global
 		{BF9C0B0A-211E-4BBE-9069-683997E62BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF9C0B0A-211E-4BBE-9069-683997E62BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF9C0B0A-211E-4BBE-9069-683997E62BAF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF94F8F7-9216-46C6-A476-A389D6ACD217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF94F8F7-9216-46C6-A476-A389D6ACD217}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF94F8F7-9216-46C6-A476-A389D6ACD217}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF94F8F7-9216-46C6-A476-A389D6ACD217}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D363637B-0CE4-4150-A6BF-15676285754D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D363637B-0CE4-4150-A6BF-15676285754D}.Release|Any CPU.ActiveCfg = Release|Any CPU
