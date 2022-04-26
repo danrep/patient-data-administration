@@ -140,6 +140,8 @@
     <Compile Include="Processor\MessageProcessors\ProcessorXwireless.cs" />
     <Compile Include="Processor\MessageProcessors\ShortMessagingBridgeExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PubSub\CommunicationModel.cs" />
+    <Compile Include="PubSub\Redis\Operations.cs" />
     <Compile Include="RemoteRequest.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Sha512Engine.cs" />

@@ -138,12 +138,14 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             }
         }
 
-        public JsonResult PullNewSequence(int cycle = 0)
+        public JsonResult PullNewSequence(int cycle = 0, string dateMarker = "")
         {
             try
             {
+                var dateRegMarker = string.IsNullOrEmpty(dateMarker) ? new DateTime(2021, 01, 01) : DateTime.ParseExact(dateMarker, "yyyyMMdd", CultureInfo.InvariantCulture);
+
                 var listOfNewPatients = _entities.Patient_PatientInformation
-                    .Where(x => !x.IsDeleted)
+                    .Where(x => !x.IsDeleted && x.WhenCreated > dateRegMarker)
                     .OrderBy(x => x.Id)
                     .Skip(100 * cycle)
                     .Take(500).ToList();

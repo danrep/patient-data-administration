@@ -65,13 +65,12 @@ namespace PatientDataAdministration.Client
             this.bgwPing = new System.ComponentModel.BackgroundWorker();
             this.bgwFreshPatient = new System.ComponentModel.BackgroundWorker();
             this.tmrFreshPatient = new System.Windows.Forms.Timer(this.components);
-            this.bgwSelfServer = new System.ComponentModel.BackgroundWorker();
             this.bgwContentManager = new System.ComponentModel.BackgroundWorker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lstBoxInfoLog = new System.Windows.Forms.ListBox();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.btnAdminSettings = new System.Windows.Forms.Button();
             this.tmrEndPointExecutionEffect = new System.Windows.Forms.Timer(this.components);
-            this.lstBoxInfoLog = new System.Windows.Forms.ListBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.grpSyncController.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -479,12 +478,6 @@ namespace PatientDataAdministration.Client
             this.tmrFreshPatient.Tag = "";
             this.tmrFreshPatient.Tick += new System.EventHandler(this.tmrFreshPatient_Tick);
             // 
-            // bgwSelfServer
-            // 
-            this.bgwSelfServer.WorkerReportsProgress = true;
-            this.bgwSelfServer.WorkerSupportsCancellation = true;
-            this.bgwSelfServer.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwSelfServer_DoWork);
-            // 
             // bgwContentManager
             // 
             this.bgwContentManager.WorkerReportsProgress = true;
@@ -500,6 +493,14 @@ namespace PatientDataAdministration.Client
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logs and Information";
+            // 
+            // lstBoxInfoLog
+            // 
+            this.lstBoxInfoLog.FormattingEnabled = true;
+            this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 19);
+            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(736, 82);
+            this.lstBoxInfoLog.TabIndex = 0;
             // 
             // btnAdminSettings
             // 
@@ -525,14 +526,6 @@ namespace PatientDataAdministration.Client
             this.tmrEndPointExecutionEffect.Enabled = true;
             this.tmrEndPointExecutionEffect.Interval = 500;
             this.tmrEndPointExecutionEffect.Tick += new System.EventHandler(this.tmrEndPointExecutionEffect_Tick);
-            // 
-            // lstBoxInfoLog
-            // 
-            this.lstBoxInfoLog.FormattingEnabled = true;
-            this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 19);
-            this.lstBoxInfoLog.Name = "lstBoxInfoLog";
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(736, 82);
-            this.lstBoxInfoLog.TabIndex = 0;
             // 
             // DataCentral
             // 
@@ -598,7 +591,6 @@ namespace PatientDataAdministration.Client
         private System.ComponentModel.BackgroundWorker bgwPing;
         private System.ComponentModel.BackgroundWorker bgwFreshPatient;
         private System.Windows.Forms.Timer tmrFreshPatient;
-        private System.ComponentModel.BackgroundWorker bgwSelfServer;
         private System.ComponentModel.BackgroundWorker bgwContentManager;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnPopulationStatusRegister;

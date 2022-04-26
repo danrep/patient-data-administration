@@ -1071,6 +1071,11 @@
                     "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
                     "ProductCode" = "8:.NETFramework,Version=v4.6.1"
                     }
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.8"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.8 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.8"
+                    }
                     "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:Microsoft.SqlServer.SqlLocalDB.11.1"
                     {
                     "Name" = "8:SQL Server 2012 Express LocalDB"
@@ -2931,7 +2936,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Patient Data Administration Client"
         "ProductCode" = "8:{B6E58BED-6653-4667-BE9C-B823793F0688}"
-        "PackageCode" = "8:{389F2D66-EC8D-4E81-98B4-8E9BC7A90A43}"
+        "PackageCode" = "8:{14AE9B71-CA33-40C3-B1A6-B8890663A375}"
         "UpgradeCode" = "8:{C31E2104-19D5-4B70-9CA0-3F7D1A70251E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

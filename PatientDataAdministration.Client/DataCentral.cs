@@ -5,10 +5,7 @@ using System.Data.Entity;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Web.Http;
-using System.Web.Http.SelfHost;
 using System.Windows.Forms;
 using MetroFramework.Forms;
 using Newtonsoft.Json;
@@ -43,7 +40,6 @@ namespace PatientDataAdministration.Client
         private SubInformationManagement _subInfoMan;
         private SubHtc _subPopReg;
 
-        private HttpSelfHostServer _selfServer;
         private readonly Process _process = new Process();
 
         private Thread _threadPullDataAppointment;
@@ -151,8 +147,6 @@ namespace PatientDataAdministration.Client
                     });
                 }).Start();
 
-                _operationQueue.Add(new OperationQueue { Param = "Starting Application Server" });
-                bgwSelfServer.RunWorkerAsync();
                 _operationQueue.Add(new OperationQueue {Param = "Application Server Started Successfully"});
 
                 _operationQueue.Add(new OperationQueue { Param = "Initializing Pull/Push for 3rd Party Data" });
@@ -198,15 +192,12 @@ namespace PatientDataAdministration.Client
         private void btnClose_Click(object sender, EventArgs e)
         {
             try
-            {
-                _selfServer.CloseAsync();
-                
+            {                
                 _onDemandSyncEnabled = false;
                 _killCommandReceived = true;
 
                 bgwNewPatient.CancelAsync();
                 bgwUpdatePatient.CancelAsync();
-                bgwSelfServer.CancelAsync();
                 bgwContentManager.CancelAsync();
                 bgwPing.CancelAsync();
 
@@ -486,9 +477,17 @@ namespace PatientDataAdministration.Client
                         //    siteId = 0
                         //};
 
+                        var dateMarker = "";
+
+                        if (innerEntity.System_BioDataStore.Any())
+                        {
+                            dateMarker = innerEntity.System_BioDataStore.Select(x => x.LastUpdate).Max().ToString("yyyyMMdd");
+                        }
+
                         var payLoad = new
                         {
-                            cycle = cycle
+                            cycle = cycle,
+                            dateMarker = dateMarker
                         };
 
                         var responseData = LocalCore.Post(@"/ClientCommunication/Sync/PullNewSequence",
@@ -764,29 +763,6 @@ namespace PatientDataAdministration.Client
                 _operationQueue.Add(new OperationQueue
                 {
                     Param = "Synchronization Error: " + ex
-                });
-                LocalCore.TreatError(ex, _administrationStaffInformation.Id);
-            }
-        }
-
-        private void bgwSelfServer_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                var config = new HttpSelfHostConfiguration("http://localhost:8000");
-
-                config.Routes.MapHttpRoute(
-                    "API Default", "api/{controller}/{id}",
-                    new { controller = "Home", id = RouteParameter.Optional });
-
-                _selfServer = new HttpSelfHostServer(config);
-                _selfServer.OpenAsync().Wait();
-            }
-            catch (Exception ex)
-            {
-                _operationQueue.Add(new OperationQueue
-                {
-                    Param = "Local Server Operation Encountered an Error. " + ex
                 });
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id);
             }

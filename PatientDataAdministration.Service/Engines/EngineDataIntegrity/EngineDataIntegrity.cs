@@ -19,12 +19,6 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
             if (EngineDuplicatePepId.DataIntegrityPepId == null)
                 EngineDuplicatePepId.DataIntegrityPepId = new List<Sp_System_DataIntegrity_PepId_Result>();
 
-            if (EngineDuplicateBioData.BioDataIntegrityCases == null)
-                EngineDuplicateBioData.BioDataIntegrityCases = new List<Patient_PatientBiometricIntegrityCase>();
-
-            if (EngineDuplicateBioDataSecondary.BioDataIntegrityCases == null)
-                EngineDuplicateBioDataSecondary.BioDataIntegrityCases = new List<Patient_PatientBiometricSecondaryIntegrityCase>();
-
             try
             {
                 if (Tasks == null)
@@ -66,16 +60,6 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
                     {
                         ThreadEngine = new Thread(EngineDuplicatePepId.ProcessDataIntegrityPepId)
                     };
-                case (int)DataIntegrityIssue.DupBioData:
-                    return new TaskManager()
-                    {
-                        ThreadEngine = new Thread(EngineDuplicateBioData.ProcessDataIntegrityBiometric)
-                    };
-                case (int)DataIntegrityIssue.DupBioDataSecondary:
-                    return new TaskManager()
-                    {
-                        ThreadEngine = new Thread(EngineDuplicateBioDataSecondary.ProcessDataIntegrityBiometric)
-                    };
             }
 
             return null;
@@ -86,8 +70,6 @@ namespace PatientDataAdministration.Service.Engines.EngineDataIntegrity
             try
             {
                 if (EngineDuplicatePepId.DataIntegrityPepId.Any())
-                    return true;
-                else if (EngineDuplicateBioData.BioDataIntegrityCases.Any())
                     return true;
 
                 return false;

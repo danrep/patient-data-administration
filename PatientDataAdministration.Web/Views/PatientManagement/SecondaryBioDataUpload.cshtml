@@ -71,7 +71,7 @@
         Dropzone.options.dropzoneForm = {
             maxFiles: 5,
             maxFilesize: 100,
-            acceptedFiles: ".xml,.zip",
+            acceptedFiles: ".xml,.zip,.csv",
             init: function () {
                 this.on("maxfilesexceeded", function (data) {
                     window.swalWarning('Too many files has been uploaded');

@@ -1,11 +1,8 @@
 ﻿using PatientDataAdministration.Core;
-using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.Service.Engines;
-using PatientDataAdministration.Service.Engines.EngineDataIntegrity;
 using PatientDataAdministration.Service.Engines.EngineReporting;
 using System;
 using System.ServiceProcess;
-using System.Threading;
 
 namespace PatientDataAdministration.Service
 {
@@ -76,36 +73,11 @@ namespace PatientDataAdministration.Service
             {
                 _timer.Stop();
                 _timer.Enabled = false;
-
-                EngineDuplicateBioData.KillProcessing();
-                EngineDuplicateBioDataSecondary.KillProcessing();
             }
             catch (Exception ex)
             {
                 ActivityLogger.Log(ex);
             }
-        }
-
-        private static TaskManager TaskManagerEngineDuplicateBioData()
-        {
-            if (EngineDuplicateBioData.IsProcessing)
-                return null;
-
-            return new TaskManager()
-            {
-                ThreadEngine = new Thread(EngineDuplicateBioData.ProcessDataIntegrityBiometric)
-            };
-        }
-
-        private static TaskManager TaskManagerEngineDuplicateBioDataSecondary()
-        {
-            if (EngineDuplicateBioDataSecondary.IsProcessing)
-                return null;
-
-            return new TaskManager()
-            {
-                ThreadEngine = new Thread(EngineDuplicateBioDataSecondary.ProcessDataIntegrityBiometric)
-            };
         }
     }
 }

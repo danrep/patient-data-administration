@@ -194,9 +194,6 @@ namespace PatientDataAdministration.Service.Engines.EngineOperationManagement
                     case OperationType.AppointmentReminder:
                         ProcessAppointments();
                         break;
-                    case OperationType.BiometricComplianceReminder:
-                        ProcessBiometricCompliance();
-                        break;
                 }
 
                 LogOperation((RecurrenceInterval)recurrenceInterval, (OperationType)operationType);
@@ -295,26 +292,6 @@ namespace PatientDataAdministration.Service.Engines.EngineOperationManagement
             {
                 ActivityLogger.Log(e);
                 return string.Empty;
-            }
-        }
-
-        private static void ProcessBiometricCompliance()
-        {
-            try
-            {
-                if (!EngineDataIntegrity.EngineDuplicateBioData.BioDataIntegrityCases.Any())
-                    return;
-
-                var message = "Dear Administrator(s)<br />";
-                message +=
-                    $"There are {EngineDataIntegrity.EngineDuplicateBioData.BioDataIntegrityCases.Count} unresolved case around Biometric Data Integrity. Kindly Log In to Resolve them.<br/>";
-
-                Messaging.SendMail(GetMailingList(UserRole.CountryAdministrator), null, null,
-                    "Biometric Data Integrity", message, null);
-            }
-            catch (Exception e)
-            {
-                ActivityLogger.Log(e);
             }
         }
 
