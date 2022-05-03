@@ -6,9 +6,9 @@ namespace PatientDataAdministration.EnumLibrary
     {
         [EnumDisplayName(DisplayName = "Delete Uploaded File")]
         DeleteUploadedFile = 1,
-        [EnumDisplayName(DisplayName = "Process Uploaded Fie")]
+        [EnumDisplayName(DisplayName = "Process Uploaded File")]
         ProcessSecondaryDataUploadedFile,
         [EnumDisplayName(DisplayName = "Instant Deduplication: Client Submission")]
-        InstaDedupClient
+        InstaDedupClientSub
     }
 }

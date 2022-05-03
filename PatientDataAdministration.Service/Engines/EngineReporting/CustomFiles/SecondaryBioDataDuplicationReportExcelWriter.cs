@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web.Hosting;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using PatientDataAdministration.Core;
+using PatientDataAdministration.EnumLibrary;
 
 namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
 {
@@ -15,16 +15,19 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
         {
             try
             {
+                var basePath = Setting.FileLanding;
+
                 var localDirectory =
-                    new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+                    new DirectoryInfo($"{basePath}\\LocalFileStorage");
 
                 string stateName, lgaName;
 
                 if (!localDirectory.Exists)
                     localDirectory.Create();
 
-                var exportFilename = $"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage\\{fileName}.xlsx";
+                var exportFilename = $"{basePath}\\LocalFileStorage\\{fileName}.xlsx";
 
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (var excel = new ExcelPackage())
                 {
                     var worksheetName = "CASE_FILE_" + DateTime.Now.ToString("yyyyMMdd");
@@ -69,12 +72,6 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
                     {
                         try
                         {
-                            var pivotXmlData = JsonConvert.DeserializeXmlNode(secondaryBioDatum.PivotData.DataSet);
-                            var currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("TreatmentFacility")[0],
-                                Formatting.None, true);
-                            var currentSection =
-                                JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
-
                             worksheet.Cells[suspectRows, 1].LoadFromText($"{pivotRows}");
                             worksheet.Cells[suspectRows, 2].LoadFromText($"{secondaryBioDatum.PivotData.PepId}");
 
@@ -84,31 +81,36 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
                             worksheet.Cells[suspectRows, 3].LoadFromText($"{stateName ?? "NA"}");
                             worksheet.Cells[suspectRows, 4].LoadFromText($"{lgaName ?? "NA"}");
 
-                            if (currentSection != null)
+                            if ((SecondaryBioDataSources)secondaryBioDatum.PivotData.DataModel == SecondaryBioDataSources.NmrsBioDataXml)
                             {
-                                worksheet.Cells[suspectRows, 5].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
-                                worksheet.Cells[suspectRows, 6].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
-                            }
+                                var pivotXmlData = JsonConvert.DeserializeXmlNode(secondaryBioDatum.PivotData.DataSet);
+                                var currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("TreatmentFacility")[0],
+                                    Formatting.None, true);
+                                var currentSection =
+                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
 
-                            currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("HIVQuestions")[0],
-                                Formatting.None, true);
-                            currentSection =
-                                JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
-                            if (currentSection != null)
-                            {
-                                worksheet.Cells[suspectRows, 7].Style.Numberformat.Format = "@";
-                                worksheet.Cells[suspectRows, 7].LoadFromText($"[{currentSection["ARTStartDate"]?.ToString() ?? "NA"}]");
+                                if (currentSection != null)
+                                {
+                                    worksheet.Cells[suspectRows, 5].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
+                                    worksheet.Cells[suspectRows, 6].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
+                                }
+
+                                currentSectionJson = JsonConvert.SerializeXmlNode(pivotXmlData.GetElementsByTagName("HIVQuestions")[0],
+                                    Formatting.None, true);
+                                currentSection =
+                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
+
+                                if (currentSection != null)
+                                {
+                                    worksheet.Cells[suspectRows, 7].Style.Numberformat.Format = "@";
+                                    worksheet.Cells[suspectRows, 7].LoadFromText($"[{currentSection["ARTStartDate"]?.ToString() ?? "NA"}]");
+                                }
                             }
 
                             worksheet.Cells[suspectRows, 8].LoadFromText($"---");
 
                             foreach (var caseMember in secondaryBioDatum.CaseMembers)
                             {
-                                var suspectXmlData = JsonConvert.DeserializeXmlNode(caseMember.SuspectData.DataSet);
-                                currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("TreatmentFacility")[0],
-                                    Formatting.None, true);
-                                currentSection =
-                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
                                 worksheet.Cells[suspectRows, 9].LoadFromText($"{caseMember.SuspectData.PepId}");
 
                                 stateData.TryGetValue(caseMember.SuspectData.StateId, out stateName);
@@ -117,22 +119,31 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
                                 worksheet.Cells[suspectRows, 10].LoadFromText($"{stateName ?? "NA"}");
                                 worksheet.Cells[suspectRows, 11].LoadFromText($"{lgaName ?? "NA"}");
 
-                                if (currentSection != null)
+                                if ((SecondaryBioDataSources)caseMember.SuspectData.DataModel == SecondaryBioDataSources.NmrsBioDataXml)
                                 {
-                                    worksheet.Cells[suspectRows, 12].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
-                                    worksheet.Cells[suspectRows, 13].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
-                                }
+                                    var suspectXmlData = JsonConvert.DeserializeXmlNode(caseMember.SuspectData.DataSet);
+                                    var currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("TreatmentFacility")[0],
+                                        Formatting.None, true);
+                                    var currentSection =
+                                        JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
 
-                                currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("HIVQuestions")[0],
-                                    Formatting.None, true);
-                                currentSection =
-                                    JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
+                                    if (currentSection != null)
+                                    {
+                                        worksheet.Cells[suspectRows, 12].LoadFromText($"{currentSection["FacilityID"]?.ToString() ?? "NA"}");
+                                        worksheet.Cells[suspectRows, 13].LoadFromText($"{currentSection["FacilityName"]?.ToString() ?? "NA"}");
+                                    }
 
-                                if (currentSection != null)
-                                {
-                                    worksheet.Cells[suspectRows, 14].Style.Numberformat.Format = "@"; 
-                                    worksheet.Cells[suspectRows, 14].LoadFromText($"[{currentSection["ARTStartDate"]?.ToString() ?? "NA"}]");
-                                }
+                                    currentSectionJson = JsonConvert.SerializeXmlNode(suspectXmlData.GetElementsByTagName("HIVQuestions")[0],
+                                        Formatting.None, true);
+                                    currentSection =
+                                        JsonConvert.DeserializeObject<dynamic>(currentSectionJson);
+
+                                    if (currentSection != null)
+                                    {
+                                        worksheet.Cells[suspectRows, 14].Style.Numberformat.Format = "@";
+                                        worksheet.Cells[suspectRows, 14].LoadFromText($"[{currentSection["ARTStartDate"]?.ToString() ?? "NA"}]");
+                                    }
+                                }                                
 
                                 worksheet.Cells[suspectRows, 15].LoadFromText($"---");
                                 worksheet.Cells[suspectRows, 16].LoadFromText($"{caseMember.CaseMember.MatchingScore / 100}");

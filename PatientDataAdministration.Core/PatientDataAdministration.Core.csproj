@@ -143,7 +143,7 @@
     <Compile Include="PubSub\CommunicationModel.cs" />
     <Compile Include="PubSub\Redis\Operations.cs" />
     <Compile Include="RemoteRequest.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Setting.cs" />
     <Compile Include="Sha512Engine.cs" />
     <Compile Include="Transforms.cs" />
   </ItemGroup>

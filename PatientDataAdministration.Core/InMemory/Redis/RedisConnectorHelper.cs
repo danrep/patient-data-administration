@@ -14,7 +14,7 @@ namespace PatientDataAdministration.Core.InMemory.Redis
             });
         }
 
-        private static Lazy<ConnectionMultiplexer> lazyConnection;
+        private static readonly Lazy<ConnectionMultiplexer> lazyConnection;
 
         public static ConnectionMultiplexer Connection
         {

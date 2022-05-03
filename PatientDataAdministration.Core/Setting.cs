@@ -28,6 +28,7 @@ namespace PatientDataAdministration.Core
         public static string FtpPath => ConfigurationManager.AppSettings["FtpPath"] ?? "";
         public static int FtpServerPort => Convert.ToInt32(ConfigurationManager.AppSettings["FtpServerPort"] ?? "587");
 
-        public static string WatchLocation => ConfigurationManager.AppSettings["WatchLocation"] ?? "";
+        public static string FileLanding => ConfigurationManager.AppSettings["FileLanding"] ?? "";
+        public static long NightlyHour => Convert.ToInt32(ConfigurationManager.AppSettings["NightlyHour"] ?? "23");
     }
 }

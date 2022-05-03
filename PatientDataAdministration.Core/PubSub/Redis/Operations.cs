@@ -17,7 +17,21 @@ namespace PatientDataAdministration.Core.PubSub.Redis
                     channelMessageExecutor(message);
                 });
 
-                ActivityLogger.Log("INFO", $"Listening for {channelName} channel");
+                ActivityLogger.Log("INFO", $"Listening on {channelName} channel");
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+        }
+        
+        public static void Unsubscribe(string channelName)
+        {
+            try
+            {
+                InMemory.Redis.RedisConnectorHelper.Connection.GetSubscriber().Unsubscribe(channelName);
+
+                ActivityLogger.Log("INFO", $"Stopped listening on {channelName} channel");
             }
             catch (Exception ex)
             {

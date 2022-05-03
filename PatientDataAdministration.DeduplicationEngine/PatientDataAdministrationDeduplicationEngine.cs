@@ -24,7 +24,7 @@ namespace PatientDataAdministration.DeduplicationEngine
             {
                 ActivityLogger.LogFileName = "PDA_DeduplicationEngine_Logs.txt";
 
-                ActivityLogger.Log("INFO", "Starting Up PBS DeduplicationEngine");
+                ActivityLogger.Log("INFO", "Starting Up PBS DeduplicationEngine Services");
 
                 _nightly = new System.Timers.Timer(60000)
                 {
@@ -32,8 +32,10 @@ namespace PatientDataAdministration.DeduplicationEngine
                 };
                 _nightly.Elapsed += Nightly_Elapsed;
                 _nightly.Start();
+                ActivityLogger.Log("INFO", "Started Nightly Services");
 
                 LoadMessageListeners();
+                ActivityLogger.Log("INFO", "Started Message Listener Services");
             }
             catch (Exception e)
             {
@@ -50,6 +52,8 @@ namespace PatientDataAdministration.DeduplicationEngine
 
                 EngineDuplicateBioData.KillProcessing();
                 EngineDuplicateBioDataSecondary.KillProcessing();
+
+                StopMessageListeners();
             }
             catch (Exception ex)
             {
@@ -62,7 +66,7 @@ namespace PatientDataAdministration.DeduplicationEngine
         {
             #region Data Integrity Engine
 
-            if (DateTime.Now.Hour != 23)
+            if (DateTime.Now.Hour != Setting.NightlyHour)
                 return;
 
             try
@@ -113,7 +117,23 @@ namespace PatientDataAdministration.DeduplicationEngine
         {
             try
             {
-                Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName(), ProcessFile.ProcessSecondaryData);
+                Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
+
+                Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.DeleteUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private static void StopMessageListeners()
+        {
+            try
+            {
+                Core.PubSub.Redis.Operations.Unsubscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName());
+
+                Core.PubSub.Redis.Operations.Unsubscribe(EnumLibrary.PubSubAction.DeleteUploadedFile.NormalizeDisplayName());
             }
             catch (Exception e)
             {

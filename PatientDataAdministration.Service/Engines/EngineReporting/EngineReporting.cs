@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Hosting;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
@@ -18,11 +17,14 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
     public class EngineReporting
     {
         public static List<ReportConfiguration> ReportConfigurations;
+        private static string BasePath;
 
         public EngineReporting()
         {
             try
             {
+                BasePath = Setting.FileLanding;
+
                 if (ReportConfigurations == null)
                     InitializeConfiguration();
 
@@ -551,7 +553,7 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                     }
 
                     var localDirectory =
-                        new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+                        new DirectoryInfo($"{BasePath}\\LocalFileStorage");
 
                     if(!localDirectory.Exists)
                         localDirectory.Create();
@@ -608,7 +610,7 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                     }
 
                     var localDirectory =
-                        new DirectoryInfo($"{HostingEnvironment.ApplicationPhysicalPath}LocalFileStorage");
+                        new DirectoryInfo($"{BasePath}\\LocalFileStorage");
 
                     if (!localDirectory.Exists)
                         localDirectory.Create();
@@ -673,6 +675,8 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                             ActivityLogger.Log(e);
                         }
                     });
+
+                    listOfCases = listOfCases.Where(x => x != null).ToList();
                     
                     ActivityLogger.Log("INFO", $"Materialized {listOfCases.Count} Cases out of {caseData.Count} Case List Items");
 
@@ -696,6 +700,8 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                     caseData = null;
                     chunkCases = null;
                     listOfCases = null;
+
+                    GC.Collect();
 
                     ActivityLogger.Log("INFO", $"Mail Sent Successfully");
                 }
