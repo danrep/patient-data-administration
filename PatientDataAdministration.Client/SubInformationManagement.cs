@@ -249,7 +249,7 @@ namespace PatientDataAdministration.Client
                     return;
                 }
 
-                #region Patient Data Composition
+                #region Patient Data Composition 
 
                 var patientData = new PatientInformation
                 {
@@ -277,6 +277,12 @@ namespace PatientDataAdministration.Client
                     }
                 };
 
+                patientData.Administration_StaffInformation = _administrationStaffInformation;
+
+                #endregion Patient Data Composition
+
+                #region BioData Parsing
+
                 if (!string.IsNullOrEmpty(_bioDataPrimary) && !string.IsNullOrEmpty(_bioDataSecondary))
                 {
                     if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
@@ -300,6 +306,10 @@ namespace PatientDataAdministration.Client
                     if (_systemBioDataStore.Id == 0)
                         patientData.Patient_PatientBiometricData.DateRegistered = DateTime.Now;
                 }
+
+                #endregion BioData Parsing
+
+                #region NFC Binding
 
                 if (!string.IsNullOrEmpty(_nfcUid))
                 {
@@ -347,9 +357,7 @@ namespace PatientDataAdministration.Client
                     patientData.Patient_PatientNearFieldCommunicationData.IsValid = true;
                 }
 
-                patientData.Administration_StaffInformation = _administrationStaffInformation;
-
-                #endregion Patient Data Composition
+                #endregion NFC Binding
 
                 #region Patient Local CRUD
 
@@ -397,6 +405,7 @@ namespace PatientDataAdministration.Client
 
                     _localPdaEntities.Entry(_systemBioDataStore).State = EntityState.Modified;
                 }
+
                 _localPdaEntities.SaveChanges();
 
                 lblPleaseWait.Visible = false;
@@ -520,8 +529,9 @@ namespace PatientDataAdministration.Client
                 if (lstBoxSearchResult.SelectedIndex <= -1)
                     return;
 
-                var pepId = lstBoxSearchResult.SelectedItem.ToString().Split('|')[0];
-                LoadPatientData(_systemBioDataStores.FirstOrDefault(x => x.PepId == pepId));
+                var pepId = lstBoxSearchResult.SelectedItem.ToString().Split('|')[0].Trim();
+
+                LoadPatientData(_systemBioDataStores.FirstOrDefault(x => string.Equals(x.PepId.Trim(), pepId, StringComparison.CurrentCultureIgnoreCase)));
             }
             catch (Exception exception)
             {
@@ -553,38 +563,45 @@ namespace PatientDataAdministration.Client
 
                 var matched = false;
 
-                foreach (var pds in _systemBioDataStores.Where(x => x.PepId != txtPepId.Text.Trim()))
+                if (chkInstantDedup.Checked)
                 {
-                    if (string.IsNullOrEmpty(pds.PrimaryFinger) || string.IsNullOrEmpty(pds.SecondaryFinger))
-                        continue;
-                    
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+
+                }
+                else
+                {
+                    foreach (var pds in _systemBioDataStores.Where(x => x.PepId != txtPepId.Text.Trim()))
+                    {
+                        if (string.IsNullOrEmpty(pds.PrimaryFinger) || string.IsNullOrEmpty(pds.SecondaryFinger))
+                            continue;
+
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                            capturedBioDataPrimary,
+                            SGFPMSecurityLevel.HIGH, ref matched);
+
+                        if (matched)
+                            break;
+
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
                         capturedBioDataPrimary,
                         SGFPMSecurityLevel.HIGH, ref matched);
 
-                    if (matched)
-                        break;
+                        if (matched)
+                            break;
 
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
-                    capturedBioDataPrimary,
-                    SGFPMSecurityLevel.HIGH, ref matched);
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
+                        capturedBioDataSecondary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
 
-                    if (matched)
-                        break;
+                        if (matched)
+                            break;
 
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.PrimaryFinger),
-                    capturedBioDataSecondary,
-                    SGFPMSecurityLevel.HIGH, ref matched);
+                        _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
+                        capturedBioDataSecondary,
+                        SGFPMSecurityLevel.HIGH, ref matched);
 
-                    if (matched)
-                        break;
-
-                    _fingerPrintManager.MatchTemplate(Convert.FromBase64String(pds.SecondaryFinger),
-                    capturedBioDataSecondary,
-                    SGFPMSecurityLevel.HIGH, ref matched);
-
-                    if (matched)
-                        break;
+                        if (matched)
+                            break;
+                    }
                 }
 
                 lblPleaseWait.Visible = false;

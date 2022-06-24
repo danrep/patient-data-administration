@@ -92,7 +92,7 @@ namespace PatientDataAdministration.Client
             this.flowLayoutPanel1.Controls.Add(this.btnAdministratorSettings);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(20, 70);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(746, 203);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(746, 184);
             this.flowLayoutPanel1.TabIndex = 15;
             // 
             // grpSyncController
@@ -100,7 +100,7 @@ namespace PatientDataAdministration.Client
             this.grpSyncController.Controls.Add(this.chkEndPointExecutionControl);
             this.grpSyncController.Location = new System.Drawing.Point(3, 3);
             this.grpSyncController.Name = "grpSyncController";
-            this.grpSyncController.Size = new System.Drawing.Size(400, 195);
+            this.grpSyncController.Size = new System.Drawing.Size(400, 176);
             this.grpSyncController.TabIndex = 7;
             this.grpSyncController.TabStop = false;
             this.grpSyncController.Text = "End Point Execution Control";
@@ -112,7 +112,7 @@ namespace PatientDataAdministration.Client
             this.chkEndPointExecutionControl.FormattingEnabled = true;
             this.chkEndPointExecutionControl.Location = new System.Drawing.Point(3, 16);
             this.chkEndPointExecutionControl.Name = "chkEndPointExecutionControl";
-            this.chkEndPointExecutionControl.Size = new System.Drawing.Size(394, 176);
+            this.chkEndPointExecutionControl.Size = new System.Drawing.Size(394, 157);
             this.chkEndPointExecutionControl.TabIndex = 0;
             // 
             // btnPatientManagement
@@ -128,7 +128,7 @@ namespace PatientDataAdministration.Client
             this.btnPatientManagement.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnPatientManagement.Location = new System.Drawing.Point(409, 3);
             this.btnPatientManagement.Name = "btnPatientManagement";
-            this.btnPatientManagement.Size = new System.Drawing.Size(106, 195);
+            this.btnPatientManagement.Size = new System.Drawing.Size(106, 176);
             this.btnPatientManagement.TabIndex = 2;
             this.btnPatientManagement.Text = "Patient Information Management\r\n\r\n";
             this.btnPatientManagement.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -148,7 +148,7 @@ namespace PatientDataAdministration.Client
             this.btnPopulationStatusRegister.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnPopulationStatusRegister.Location = new System.Drawing.Point(521, 3);
             this.btnPopulationStatusRegister.Name = "btnPopulationStatusRegister";
-            this.btnPopulationStatusRegister.Size = new System.Drawing.Size(106, 195);
+            this.btnPopulationStatusRegister.Size = new System.Drawing.Size(106, 176);
             this.btnPopulationStatusRegister.TabIndex = 5;
             this.btnPopulationStatusRegister.Text = "HIV Testing && Counselling Register\r\n \r\n";
             this.btnPopulationStatusRegister.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -168,7 +168,7 @@ namespace PatientDataAdministration.Client
             this.btnAdministratorSettings.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnAdministratorSettings.Location = new System.Drawing.Point(633, 3);
             this.btnAdministratorSettings.Name = "btnAdministratorSettings";
-            this.btnAdministratorSettings.Size = new System.Drawing.Size(106, 195);
+            this.btnAdministratorSettings.Size = new System.Drawing.Size(106, 176);
             this.btnAdministratorSettings.TabIndex = 6;
             this.btnAdministratorSettings.Text = "Admin Mode\r\n \r\n";
             this.btnAdministratorSettings.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -253,7 +253,7 @@ namespace PatientDataAdministration.Client
             this.panel2.Controls.Add(this.flowLayoutPanel2);
             this.panel2.Controls.Add(this.lblUserInformation);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(20, 390);
+            this.panel2.Location = new System.Drawing.Point(20, 402);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(748, 38);
             this.panel2.TabIndex = 11;
@@ -487,9 +487,9 @@ namespace PatientDataAdministration.Client
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lstBoxInfoLog);
-            this.groupBox1.Location = new System.Drawing.Point(20, 280);
+            this.groupBox1.Location = new System.Drawing.Point(20, 260);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(748, 104);
+            this.groupBox1.Size = new System.Drawing.Size(748, 136);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Logs and Information";
@@ -499,7 +499,7 @@ namespace PatientDataAdministration.Client
             this.lstBoxInfoLog.FormattingEnabled = true;
             this.lstBoxInfoLog.Location = new System.Drawing.Point(6, 19);
             this.lstBoxInfoLog.Name = "lstBoxInfoLog";
-            this.lstBoxInfoLog.Size = new System.Drawing.Size(736, 82);
+            this.lstBoxInfoLog.Size = new System.Drawing.Size(736, 108);
             this.lstBoxInfoLog.TabIndex = 0;
             // 
             // btnAdminSettings
@@ -531,7 +531,7 @@ namespace PatientDataAdministration.Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(788, 448);
+            this.ClientSize = new System.Drawing.Size(788, 460);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.flowLayoutPanel3);

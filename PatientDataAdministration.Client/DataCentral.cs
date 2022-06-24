@@ -433,6 +433,16 @@ namespace PatientDataAdministration.Client
                 var blankResult = 1;
                 int cycle = 0;
 
+                var dateMarker = "";
+
+                using (var innerEntity = new LocalPDAEntities())
+                {
+                    if (innerEntity.System_BioDataStore.Any())
+                    {
+                        dateMarker = innerEntity.System_BioDataStore.Select(x => x.LastUpdate).Max().ToString("yyyyMMdd");
+                    }
+                }                    
+
                 while (true)
                 {
                     if (!CheckConnection())
@@ -449,48 +459,13 @@ namespace PatientDataAdministration.Client
                             break;
                         }
 
-                        //var listOfPepId = "";
-
-                        //if (innerEntity.System_BioDataStore.Any())
-                        //{
-                        //    var patientInformation = innerEntity.System_BioDataStore.Select(x => x.PepId).ToList();
-
-                        //    listOfPepId = patientInformation.OrderBy(x => x).Aggregate("",
-                        //        (current, patientInfo) => current + $"{patientInfo},");
-                        //    listOfPepId = listOfPepId.Substring(0, listOfPepId.Length - 1);
-
-                        //    patientInformation.Clear();
-                        //    GC.Collect();
-                        //}
-
-                        //var data = Encoding.ASCII.GetBytes(listOfPepId);
-
-                        //var payLoad = new
-                        //{
-                        //    encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        //    siteId = _systemSiteData.RemoteSiteId
-                        //};
-
-                        //var payLoad = new
-                        //{
-                        //    encodedListOfAvailablePepId = Convert.ToBase64String(data),
-                        //    siteId = 0
-                        //};
-
-                        var dateMarker = "";
-
-                        if (innerEntity.System_BioDataStore.Any())
-                        {
-                            dateMarker = innerEntity.System_BioDataStore.Select(x => x.LastUpdate).Max().ToString("yyyyMMdd");
-                        }
-
                         var payLoad = new
                         {
                             cycle = cycle,
                             dateMarker = dateMarker
                         };
 
-                        var responseData = LocalCore.Post(@"/ClientCommunication/Sync/PullNewSequence",
+                        var responseData = LocalCore.Post(@"/ClientCommunication/Sync/Pull",
                             JsonConvert.SerializeObject(payLoad));
 
                         if (!responseData.Status)
@@ -858,7 +833,6 @@ namespace PatientDataAdministration.Client
             grpSyncController.Visible = !grpSyncController.Visible;
         }
 
-
         private static int GenerateVersionCode(string version)
         {
             return Convert.ToInt32(version.Replace(".", "").Replace("_", "").Replace("v", "").Trim());
@@ -937,21 +911,19 @@ namespace PatientDataAdministration.Client
                     var existingPatient = localPdaEntitiesPatientUpdateSync.System_BioDataStore.FirstOrDefault(
                         x => x.PepId == patientInformation.Patient_PatientInformation.PepId);
 
-                    if (existingPatient == null)
-                        return;
-
-                    if (existingPatient.LastUpdate > patientInformation.Patient_PatientInformation.LastUpdated)
+                    if (existingPatient.LastUpdate >= patientInformation.Patient_PatientInformation.LastUpdated)
                     {
                         _operationQueue.Add(new OperationQueue
                         {
                             Param = "Already Updated Patient with PEPID " + patientInformation.Patient_PatientInformation.PepId
                         });
+                        return;
                     }
 
                     existingPatient.FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
                                                patientInformation.Patient_PatientInformation.Othername;
                     existingPatient.IsSync = true;
-                    existingPatient.LastUpdate = DateTime.Now;
+                    existingPatient.LastUpdate = (DateTime)patientInformation.Patient_PatientInformation.LastUpdated;
                     existingPatient.LastSync = DateTime.Now;
                     existingPatient.SiteId = patientInformation.Patient_PatientInformation.SiteId;
 
@@ -981,7 +953,7 @@ namespace PatientDataAdministration.Client
                         FullName = patientInformation.Patient_PatientInformation.Surname + @" " +
                                    patientInformation.Patient_PatientInformation.Othername,
                         IsSync = true,
-                        LastUpdate = DateTime.Now,
+                        LastUpdate = (DateTime)patientInformation.Patient_PatientInformation.LastUpdated,
                         LastSync = DateTime.Now, 
                         SiteId = patientInformation.Patient_PatientInformation.SiteId
                     };

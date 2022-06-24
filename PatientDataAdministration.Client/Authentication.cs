@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using PatientDataAdministration.Client.LocalSettingStorage;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace PatientDataAdministration.Client
@@ -92,6 +94,20 @@ namespace PatientDataAdministration.Client
             {
                 this.Hide();
                 var dataCentral = new DataCentral(administrationStaffInformation);
+
+                using (var entities = new LocalPDAEntities())
+                {
+                    entities.System_AuditTrail.Add(new System_AuditTrail()
+                    {
+                        ActionPerformed = AuditCategory.ClientAuth.DisplayName(),
+                        AuditTimeStamp = DateTime.Now,
+                        IsDeleted = false, 
+                        IsRestrcitedOperation = true, 
+                        UserPerformed = administrationStaffInformation.Email
+                    });
+                    entities.SaveChanges();
+                }
+
                 dataCentral.ShowDialog();
                 this.Show();
 

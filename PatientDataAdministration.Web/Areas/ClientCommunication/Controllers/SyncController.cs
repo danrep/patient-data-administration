@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Web.Mvc;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
@@ -70,88 +69,24 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
             }
         }
 
-        public JsonResult PullNew(string encodedListOfAvailablePepId, int siteId)
+        public JsonResult Pull(int cycle = 0, string dateMarker = "")
         {
             try
             {
-                var stringData = Convert.FromBase64String(encodedListOfAvailablePepId);
-                var listOfAvalailablePepId =
-                    Encoding.ASCII.GetString(stringData).ToLower().Split(',').OrderBy(x => x).ToList();
-
-                //var patientsInSite = _entities.Patient_PatientInformation
-                //    .Where(x => !x.IsDeleted && x.SiteId == siteId)
-                //    .OrderBy(x => x.Id)
-                //    .ToList();
-
-                var patientsInSite = _entities.Patient_PatientInformation
-                    .Where(x => !x.IsDeleted)
-                    .OrderBy(x => x.Id)
-                    .ToList();
-
-                var listOfNewPatients = patientsInSite
-                    .Where(x => listOfAvalailablePepId.Any(y => y == x.PepId.ToLower()) == false)
-                    .OrderBy(x => x.PepId)
-                    .Take(100).ToList();
-
-                var returnNewPatients = new List<PatientInformation>();
-
-                foreach (var patient in listOfNewPatients)
-                {
-                    var patientInformation = new PatientInformation
-                    {
-                        Patient_PatientInformation = new Patient_PatientInformation()
-                    };
-                    patientInformation.Patient_PatientInformation = patient;
-
-                    if (_entities.Patient_PatientBiometricData.Any(x => x.PepId == patient.PepId))
-                    {
-                        patientInformation.Patient_PatientBiometricData = new Patient_PatientBiometricData();
-                        patientInformation.Patient_PatientBiometricData =
-                            _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == patient.PepId);
-                    }
-
-                    if (_entities.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == patient.PepId))
-                    {
-                        patientInformation.Patient_PatientNearFieldCommunicationData =
-                            new Patient_PatientNearFieldCommunicationData();
-                        patientInformation.Patient_PatientNearFieldCommunicationData =
-                            _entities.Patient_PatientNearFieldCommunicationData.FirstOrDefault(x =>
-                                x.PepId == patient.PepId);
-                    }
-
-                    returnNewPatients.Add(patientInformation);
-                }
-
-                return
-                    Json(
-                        new ResponseData
-                        {
-                            Status = true,
-                            Message = $"Found {returnNewPatients.Count} Patient Information for Updating",
-                            Data = returnNewPatients
-                        }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                ActivityLogger.Log(ex);
-                return Json(new ResponseData {Status = false, Message = ex.Message}, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        public JsonResult PullNewSequence(int cycle = 0, string dateMarker = "")
-        {
-            try
-            {
-                var dateRegMarker = string.IsNullOrEmpty(dateMarker) ? new DateTime(2021, 01, 01) : DateTime.ParseExact(dateMarker, "yyyyMMdd", CultureInfo.InvariantCulture);
+                var dateRegMarker = string.IsNullOrEmpty(dateMarker) ? new DateTime(2018, 01, 01) : DateTime.ParseExact(dateMarker, "yyyyMMdd", CultureInfo.InvariantCulture);
 
                 var listOfNewPatients = _entities.Patient_PatientInformation
-                    .Where(x => !x.IsDeleted && x.WhenCreated > dateRegMarker)
-                    .OrderBy(x => x.Id)
+                    .Where(x => !x.IsDeleted && x.LastUpdated > dateRegMarker && _entities.Patient_PatientBiometricData.Any(y => y.PepId == x.PepId))
+                    .OrderBy(x => x.LastUpdated)
                     .Skip(100 * cycle)
-                    .Take(500).ToList();
+                    .Take(100).ToList();
+
+                var count = _entities.Patient_PatientInformation
+                     .Where(x => !x.IsDeleted && x.LastUpdated > dateRegMarker && _entities.Patient_PatientBiometricData.Any(y => x.PepId == y.PepId))
+                     .Count();
 
                 if (!listOfNewPatients.Any())
-                    Json(
+                    return Json(
                         new ResponseData
                         {
                             Status = true,
@@ -169,15 +104,9 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                     };
 
                     patientInformation.Patient_PatientInformation = patient;
-
-                    if (_entities.Patient_PatientBiometricData.Any(x => x.PepId == patient.PepId))
-                    {
-                        patientInformation.Patient_PatientBiometricData = new Patient_PatientBiometricData();
-                        patientInformation.Patient_PatientBiometricData =
-                            _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == patient.PepId);
-                    }
-                    else
-                        continue;
+                    patientInformation.Patient_PatientBiometricData = new Patient_PatientBiometricData();
+                    patientInformation.Patient_PatientBiometricData =
+                        _entities.Patient_PatientBiometricData.FirstOrDefault(x => x.PepId == patient.PepId);
 
                     if (_entities.Patient_PatientNearFieldCommunicationData.Any(x => x.PepId == patient.PepId))
                     {

@@ -168,6 +168,7 @@ namespace PatientDataAdministration.Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(457, 229);
             this.ControlBox = false;
             this.Controls.Add(this.lblPleaseWait);

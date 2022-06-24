@@ -266,7 +266,6 @@ namespace PatientDataAdministration.Client
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(163, 180);
             this.panel2.TabIndex = 137;
-            this.panel2.Visible = false;
             // 
             // listView1
             // 
@@ -285,14 +284,13 @@ namespace PatientDataAdministration.Client
             this.label13.ForeColor = System.Drawing.Color.SteelBlue;
             this.label13.Location = new System.Drawing.Point(3, 9);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(93, 13);
+            this.label13.Size = new System.Drawing.Size(89, 13);
             this.label13.TabIndex = 140;
-            this.label13.Text = "Data Sync Control";
+            this.label13.Text = "Verification Mode";
             // 
             // chkInstantDedup
             // 
             this.chkInstantDedup.AutoSize = true;
-            this.chkInstantDedup.Enabled = false;
             this.chkInstantDedup.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkInstantDedup.ForeColor = System.Drawing.Color.Black;
             this.chkInstantDedup.Location = new System.Drawing.Point(5, 34);

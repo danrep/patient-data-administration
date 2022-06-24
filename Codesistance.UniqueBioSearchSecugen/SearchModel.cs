@@ -92,5 +92,6 @@ namespace Codesistance.UniqueBioSearchSecugen
         public string FingerPrintData { get; set; }
         public FingerPrintPosition FingerPosition { get; set; }
         public FingerPrintStore FingerPrintStore { get; set; }
+        public int BioDataSource { get; set; }
     }
 } 

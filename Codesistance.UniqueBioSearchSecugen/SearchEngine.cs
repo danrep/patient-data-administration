@@ -278,12 +278,12 @@ namespace Codesistance.UniqueBioSearchSecugen
             return matchModels;
         }
 
-        public List<MatchModel> SingleProcess(int templatePosition)
+        public MatchModel SingleProcess(PatientData patientData)
         {
             if (!Initialized)
                 return null;
 
-            var matchModels = new List<MatchModel>();
+            var matchModel = new MatchModel();
 
             try
             {
@@ -308,10 +308,11 @@ namespace Codesistance.UniqueBioSearchSecugen
                 var candList = new SSCandList();
                 byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
 
-                var templateId = (uint)templatePosition;
-                ActivityLogger.Log("INFO", $"Currently working on {SearchModel.GetTemplate(templatePosition).Filename} of {templateId}");
+                var template = new Template(patientData.PepId, 0,
+                        Convert.FromBase64String(patientData.FingerPrintData), patientData);
 
-                var templateBuff = SearchModel.GetTemplate(templatePosition).TemplatesBuffer;
+                var templateBuff = template.TemplatesBuffer;
+
                 uint numberOfViews = 0;
                 SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
                 for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
@@ -334,8 +335,8 @@ namespace Codesistance.UniqueBioSearchSecugen
 
                 if (error != SSError.NONE)
                 {
-                    ActivityLogger.Log("WARN", $"Failed ==> {SearchModel.GetTemplate(templatePosition).Filename} | {error.DisplayName()}");
-                    return new List<MatchModel>();
+                    ActivityLogger.Log("WARN", $"Failed ==> {template.Filename} | {error.DisplayName()}");
+                    return new MatchModel();
                 }
 
                 ActivityLogger.Log("INFO",
@@ -345,10 +346,10 @@ namespace Codesistance.UniqueBioSearchSecugen
 
                 if (candList.Count > 0)
                 {
-                    matchModels.Add(new MatchModel()
+                    matchModel = new MatchModel()
                     {
-                        Pivot = SearchModel.GetTemplate(templatePosition).Filename,
-                        PivotData = (PatientData)SearchModel.GetTemplate(templatePosition).Data,
+                        Pivot = template.Filename,
+                        PivotData = (PatientData)template.Data,
                         SuspectedCandidates = candList.Candidates
                             .Where(x => x.ConfidenceLevel != SSConfLevel.INVALID)
                             .Select(x => new SuspectedCandidate()
@@ -356,7 +357,7 @@ namespace Codesistance.UniqueBioSearchSecugen
                                 BioDataSuspect = SearchModel.GetTemplate((int)x.Id),
                                 MatchScore = x.MatchScore
                             }).ToList()
-                    });
+                    };
                 }
             }
             catch (Exception e)
@@ -364,7 +365,7 @@ namespace Codesistance.UniqueBioSearchSecugen
                 ActivityLogger.Log(e);
             }
 
-            return matchModels;
+            return matchModel;
         }
     }
 }

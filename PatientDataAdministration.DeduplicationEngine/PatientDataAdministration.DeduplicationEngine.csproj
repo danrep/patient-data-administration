@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioData.cs" />
+    <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioDataInstant.cs" />
     <Compile Include="Engines\EngineDataIntegrity\EngineDuplicateBioDataSecondary.cs" />
     <Compile Include="Engines\FileOperations\FileOperations.cs" />
     <Compile Include="PatientDataAdministrationDeduplicationEngine.cs">

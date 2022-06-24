@@ -421,5 +421,46 @@ namespace PatientDataAdministration.Client
                 LocalCore.TreatError(exception, 0, false);
             }
         }
+
+        private void btnReInit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // check if the user logged on recently 
+                using (var entities = new LocalPDAEntities())
+                {
+                    if (!entities.System_AuditTrail.Any())
+                    {
+                        MessageBox.Show("As a sensitive Operation, this action needs to be logged. Please Log In and return to this view within 5 mins");
+                        return;
+                    }
+
+                    var lastLogInTimestamp = entities.System_AuditTrail.Max(x => x.AuditTimeStamp);
+
+                    if (DateTime.Now.Subtract(lastLogInTimestamp).TotalMinutes > 5)
+                    {
+                        MessageBox.Show("As a sensitive Operation, this action needs to be logged. Please Log In and return to this view within 5 mins");
+                        return;
+                    }
+                }
+
+                if (MessageBox.Show("This will delete all captured and synchronized patient biometric data on this machine. This action is not reverseable. Are you sure you want to proceed?", "Severe Operation Confirmation", MessageBoxButtons.YesNoCancel) != DialogResult.Yes)
+                    return;
+
+                LocalCore.RunDatabaseSript("LOCALPDA", "use [{dbLocation}\\LOCALPDA.mdf]\r\ntruncate table dbo.System_BioDataStore");
+
+                LocalCore.RunDatabaseSript("LOCALPDA", "use [{dbLocation}\\LOCALPDA.mdf]\r\ntruncate table dbo.System_BioDataStore_PopulationRegister");
+
+                LocalCore.RunDatabaseSript("LOCALPDA", "use [{dbLocation}\\LOCALPDA.mdf]\r\ntruncate table dbo.System_ErrorLog");
+
+                LocalCore.LogAudit(AuditCategory.ResetBioDataStore.DisplayName(), true);
+
+                MessageBox.Show("Operation Completed Successfully. You will be required to restart for the changes to take effect.");
+            }
+            catch (Exception exception)
+            {
+                LocalCore.TreatError(exception, 0);
+            }
+        }
     }
 }
