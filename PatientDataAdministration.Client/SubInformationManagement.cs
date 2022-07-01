@@ -11,6 +11,7 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using SecuGen.FDxSDKPro.Windows;
 using Codesistance.NFC;
+using Newtonsoft.Json;
 
 namespace PatientDataAdministration.Client
 {
@@ -258,9 +259,9 @@ namespace PatientDataAdministration.Client
                         PepId = txtPepId.Text,
                         DateOfBirth = txtDateOfBirth.Value,
                         HospitalNumber = txtHospitalNumber.Text,
-                        HouseAddresLga = (int) txtLgaOfResidence.SelectedValue,
+                        HouseAddresLga = (int)txtLgaOfResidence.SelectedValue,
                         HouseAddress = txtAddress.Text,
-                        HouseAddressState = (int) txtStateOfResidence.SelectedValue,
+                        HouseAddressState = (int)txtStateOfResidence.SelectedValue,
                         IsDeleted = false,
                         MaritalStatus = string.Empty,
                         Othername = txtOtherNames.Text,
@@ -272,12 +273,11 @@ namespace PatientDataAdministration.Client
                         SiteId = LocalCore.GetCurrentSite().Id,
                         Surname = txtSurname.Text,
                         StateOfOrigin = 0,
-                        PhoneNumber = txtPhoneNumber.Text, 
-                        Id = 0,  
-                    }
+                        PhoneNumber = txtPhoneNumber.Text,
+                        Id = 0,
+                    },
+                    Administration_StaffInformation = _administrationStaffInformation
                 };
-
-                patientData.Administration_StaffInformation = _administrationStaffInformation;
 
                 #endregion Patient Data Composition
 
@@ -285,9 +285,9 @@ namespace PatientDataAdministration.Client
 
                 if (!string.IsNullOrEmpty(_bioDataPrimary) && !string.IsNullOrEmpty(_bioDataSecondary))
                 {
-                    if (ValidateBioData(_bioDataPrimary, _bioDataSecondary))
+                    if (ValidateBioData(_bioDataPrimary, _bioDataSecondary, txtPepId.Text.Trim(), out string message))
                     {
-                        MessageBox.Show(@"The Captured Biodata have a match and that's not proper. Please confirm");
+                        MessageBox.Show(message);
                         lblPleaseWait.Visible = false;
                         return;
                     }
@@ -552,8 +552,9 @@ namespace PatientDataAdministration.Client
 
         #region Methods
 
-        public bool ValidateBioData(string bioDataPrimary, string bioDataSecondary)
+        public bool ValidateBioData(string bioDataPrimary, string bioDataSecondary, string pepId, out string message)
         {
+            message = "";
             try
             {
                 lblPleaseWait.Visible = true;
@@ -564,8 +565,42 @@ namespace PatientDataAdministration.Client
                 var matched = false;
 
                 if (chkInstantDedup.Checked)
-                {
-                    //call endpoint  
+                {                
+                    var patientInformation = new 
+                    {
+                        FingerPrimary = bioDataPrimary,
+                        FingerSecondary = bioDataSecondary,
+                        PepId = pepId
+                    };
+
+                    var responseData = LocalCore.Post(@"/ClientCommunication/InstantBioCheckController/PostNewVerification",
+                        JsonConvert.SerializeObject(patientInformation));
+
+                    if (responseData.Status)
+                    {
+                        InstantDudupModel dedupResponse;
+                        
+                        while (true)
+                        {
+                            var response = LocalCore.Get($"/ClientCommunication/InstantBioCheckController/PostNewVerification?CheckOperationStatus={responseData.Data}").Result;
+
+                            if (response.Data == null)
+                            {
+                                Thread.Sleep(10000);
+                                continue;
+                            }
+
+                            dedupResponse = JsonConvert.DeserializeObject<InstantDudupModel>(response.Data.ToString());
+                            break;
+                        }
+
+                        
+                    }
+                    else
+                    {
+                        message = $"Instant Deduplication Failed at this time. Reason: {responseData.Message}";
+                        return false;
+                    }
                 }
                 else
                 {
@@ -606,11 +641,16 @@ namespace PatientDataAdministration.Client
 
                 lblPleaseWait.Visible = false;
 
+                if (matched)
+                    message = @"The Captured Biodata have a match and that's not proper. Please confirm";
+
                 return matched;
             }
             catch (Exception ex)
             {
                 LocalCore.TreatError(ex, _administrationStaffInformation.Id);
+                message = ex.Message;
+
                 return false;
             }
         }

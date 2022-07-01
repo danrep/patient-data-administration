@@ -11,8 +11,8 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
 {
     public class InstantBioCheckController : BaseClientCommController
     {
-
-        public JsonResult PostNewVerification(PatientInformation patientInformation)
+        [HttpPost]
+        public JsonResult PostNewVerification(dynamic patientInformation)
         {
             try
             {
@@ -28,17 +28,17 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                                 new PatientData() { 
                                     BioDataSource = 0, 
                                     FingerPosition = FingerPrintPosition.LeftThumb, 
-                                    FingerPrintData = patientInformation.Patient_PatientBiometricData.FingerPrimary, 
+                                    FingerPrintData = patientInformation.FingerPrimary, 
                                     FingerPrintStore = FingerPrintStore.Primary, 
-                                    PepId = patientInformation.Patient_PatientInformation.PepId, 
+                                    PepId = patientInformation.PepId, 
                                     RowId = 0
                                 },
                                 new PatientData() {
                                     BioDataSource = 0,
                                     FingerPosition = FingerPrintPosition.RightThumb,
-                                    FingerPrintData = patientInformation.Patient_PatientBiometricData.FingerSecondary,
+                                    FingerPrintData = patientInformation.FingerSecondary,
                                     FingerPrintStore = FingerPrintStore.Primary,
-                                    PepId = patientInformation.Patient_PatientInformation.PepId,
+                                    PepId = patientInformation.PepId,
                                     RowId = 0
                                 } }
                         }),
