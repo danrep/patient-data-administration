@@ -3,9 +3,9 @@ using System;
 
 namespace PatientDataAdministration.Core.InMemory.Redis
 {
-    class Operations
+    public class Operations
     {
-        public T ReadData<T>(string key)
+        public static T ReadData<T>(string key)
         {
             try
             {
@@ -19,7 +19,7 @@ namespace PatientDataAdministration.Core.InMemory.Redis
             }
         }
 
-        public bool SaveData<T>(string key, T value)
+        public static bool SaveData<T>(string key, T value)
         {
             try
             {

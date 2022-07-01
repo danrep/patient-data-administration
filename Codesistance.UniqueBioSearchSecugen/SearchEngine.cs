@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PatientDataAdministration.Core;
+using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using SecuGen.SecuSearchSDK3;

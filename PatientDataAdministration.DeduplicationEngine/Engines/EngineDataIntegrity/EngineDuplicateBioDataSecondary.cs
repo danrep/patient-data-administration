@@ -4,6 +4,7 @@ using System.Linq;
 using Codesistance.UniqueBioSearchSecugen;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
+using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.Data.SecondaryBioDataModels;
 using PatientDataAdministration.EnumLibrary;
 

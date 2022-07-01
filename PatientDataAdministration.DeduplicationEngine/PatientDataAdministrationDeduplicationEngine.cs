@@ -12,6 +12,7 @@ namespace PatientDataAdministration.DeduplicationEngine
     public partial class PatientDataAdministrationDeduplicationEngine : ServiceBase
     {
         System.Timers.Timer _nightly;
+        static EngineDuplicateBioDataInstant _instant;
 
         public PatientDataAdministrationDeduplicationEngine()
         {
@@ -54,6 +55,8 @@ namespace PatientDataAdministration.DeduplicationEngine
                 EngineDuplicateBioDataSecondary.KillProcessing();
 
                 StopMessageListeners();
+
+                _instant = null;
             }
             catch (Exception ex)
             {
@@ -120,6 +123,9 @@ namespace PatientDataAdministration.DeduplicationEngine
                 Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
 
                 Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.DeleteUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
+
+                _instant = new EngineDuplicateBioDataInstant();
+                Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.InstaDedupClientSub.NormalizeDisplayName(), _instant.ReceiveMessage);
             }
             catch (Exception e)
             {
@@ -134,6 +140,10 @@ namespace PatientDataAdministration.DeduplicationEngine
                 Core.PubSub.Redis.Operations.Unsubscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName());
 
                 Core.PubSub.Redis.Operations.Unsubscribe(EnumLibrary.PubSubAction.DeleteUploadedFile.NormalizeDisplayName());
+
+                Core.PubSub.Redis.Operations.Unsubscribe(EnumLibrary.PubSubAction.InstaDedupClientSub.NormalizeDisplayName());
+
+                _instant = null;
             }
             catch (Exception e)
             {

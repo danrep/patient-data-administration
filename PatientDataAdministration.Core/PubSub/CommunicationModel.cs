@@ -1,4 +1,5 @@
-﻿using PatientDataAdministration.EnumLibrary;
+﻿using PatientDataAdministration.Data.InterchangeModels;
+using PatientDataAdministration.EnumLibrary;
 using System;
 using System.Collections.Generic;
 
@@ -29,5 +30,11 @@ namespace PatientDataAdministration.Core.PubSub
     public class DeleteFile
     {
         public string File { get; set; }
+    }
+
+    public class DedupSubmission
+    {
+        public string OperationId { get; set; }
+        public List<PatientData> PatientDataSubmitted { get; set; }
     }
 }

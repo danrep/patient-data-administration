@@ -56,6 +56,10 @@
       <Project>{9B1A1CF1-1BD1-4EF1-9281-07B07D0B3A43}</Project>
       <Name>PatientDataAdministration.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PatientDataAdministration.Data\PatientDataAdministration.Data.csproj">
+      <Project>{0D35BDA4-BE0F-4FA4-B6C7-4766EFD5500B}</Project>
+      <Name>PatientDataAdministration.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PatientDataAdministration.EnumLibrary\PatientDataAdministration.EnumLibrary.csproj">
       <Project>{c914f40e-8a5e-49c4-8d1e-7739d2453d8d}</Project>
       <Name>PatientDataAdministration.EnumLibrary</Name>

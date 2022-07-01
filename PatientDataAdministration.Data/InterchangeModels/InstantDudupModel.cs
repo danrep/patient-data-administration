@@ -9,6 +9,10 @@ namespace PatientDataAdministration.Data.InterchangeModels
         public List<DuplicationSuspect> DuplicationSuspects { get; set; }
 
         public bool IsDuplicated { get; set; }
+
+        public bool IsSuccessful { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 
     public class DuplicationSuspect

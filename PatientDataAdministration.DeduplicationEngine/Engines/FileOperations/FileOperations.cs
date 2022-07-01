@@ -25,16 +25,16 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.FileOperations
         {
             try
             {
-                var message = Newtonsoft.Json.JsonConvert.DeserializeObject<CommunicationModel>(channelMessage.Message.ToString());
+                var message = JsonConvert.DeserializeObject<CommunicationModel>(channelMessage.Message.ToString());
 
                 switch(message.PubSubAction)
                 {
                     case PubSubAction.ProcessSecondaryDataUploadedFile:
-                        new Thread(()=> ProcessFile(Newtonsoft.Json.JsonConvert.DeserializeObject<SecondaryFileData>(message.Data))).Start();
+                        new Thread(()=> ProcessFile(JsonConvert.DeserializeObject<SecondaryFileData>(message.Data))).Start();
                         break;
 
                     case PubSubAction.DeleteUploadedFile:
-                        new Thread(() => DeleteFile(Newtonsoft.Json.JsonConvert.DeserializeObject<DeleteFile>(message.Data))).Start();
+                        new Thread(() => DeleteFile(JsonConvert.DeserializeObject<DeleteFile>(message.Data))).Start();
                         break;
 
                     default:
