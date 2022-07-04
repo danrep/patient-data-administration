@@ -314,31 +314,6 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                 var fingerPrints = JsonConvert.DeserializeObject<FingerPrints>(bioDataExtract);
 
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftThumb,
-                        FingerPrintData = fingerPrints.LeftHand.LeftThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightThumb,
-                        FingerPrintData = fingerPrints.RightHand.RightThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-
-                return patientData;
-                // ommited due to memory limits
-
                 if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftIndex))
                     patientData.Add(new PatientData() {
                         FingerPosition = FingerPrintPosition.LeftIndex,
