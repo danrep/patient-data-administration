@@ -63,6 +63,16 @@ namespace PatientDataAdministration.Client.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap background_3_4_0 {
+            get {
+                object obj = ResourceManager.GetObject("background_3_4_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bg_wave {
             get {
                 object obj = ResourceManager.GetObject("bg_wave", resourceCulture);
@@ -109,6 +119,16 @@ namespace PatientDataAdministration.Client.Properties {
         internal static string DatabaseMigrateScript {
             get {
                 return ResourceManager.GetString("DatabaseMigrateScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Glass_lines {
+            get {
+                object obj = ResourceManager.GetObject("Glass lines", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

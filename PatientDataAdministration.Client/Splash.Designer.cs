@@ -48,6 +48,7 @@
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.pictureBox9 = new System.Windows.Forms.PictureBox();
+            this.processDBCheck = new System.Diagnostics.Process();
             this.pnlUpdate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel1.SuspendLayout();
@@ -219,7 +220,7 @@
             this.pictureBox3.Image = global::PatientDataAdministration.Client.Properties.Resources.PDA_Assets;
             this.pictureBox3.Location = new System.Drawing.Point(14, 17);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(255, 46);
+            this.pictureBox3.Size = new System.Drawing.Size(232, 46);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox3.TabIndex = 5;
             this.pictureBox3.TabStop = false;
@@ -281,13 +282,23 @@
             // 
             // pictureBox9
             // 
-            this.pictureBox9.Image = global::PatientDataAdministration.Client.Properties.Resources.bg_wave;
-            this.pictureBox9.Location = new System.Drawing.Point(-4, 67);
+            this.pictureBox9.Image = global::PatientDataAdministration.Client.Properties.Resources.background_3_4_0;
+            this.pictureBox9.Location = new System.Drawing.Point(-3, 73);
             this.pictureBox9.Name = "pictureBox9";
-            this.pictureBox9.Size = new System.Drawing.Size(672, 298);
+            this.pictureBox9.Size = new System.Drawing.Size(672, 395);
             this.pictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox9.TabIndex = 11;
             this.pictureBox9.TabStop = false;
+            // 
+            // processDBCheck
+            // 
+            this.processDBCheck.StartInfo.Domain = "";
+            this.processDBCheck.StartInfo.LoadUserProfile = false;
+            this.processDBCheck.StartInfo.Password = null;
+            this.processDBCheck.StartInfo.StandardErrorEncoding = null;
+            this.processDBCheck.StartInfo.StandardOutputEncoding = null;
+            this.processDBCheck.StartInfo.UserName = "";
+            this.processDBCheck.SynchronizingObject = this;
             // 
             // Splash
             // 
@@ -310,7 +321,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Splash";
-            this.Padding = new System.Windows.Forms.Padding(21, 57, 21, 19);
+            this.Padding = new System.Windows.Forms.Padding(21, 60, 21, 19);
             this.Resizable = false;
             this.ShadowType = MetroFramework.Forms.MetroForm.MetroFormShadowType.Flat;
             this.TopMost = true;
@@ -353,5 +364,6 @@
         private System.Windows.Forms.PictureBox pictureBox7;
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.PictureBox pictureBox9;
+        private System.Diagnostics.Process processDBCheck;
     }
 }

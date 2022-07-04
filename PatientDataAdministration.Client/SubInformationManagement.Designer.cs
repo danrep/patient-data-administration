@@ -44,7 +44,6 @@ namespace PatientDataAdministration.Client
             this.lblTagUid = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.listView1 = new System.Windows.Forms.ListView();
             this.label13 = new System.Windows.Forms.Label();
             this.chkInstantDedup = new System.Windows.Forms.CheckBox();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -128,7 +127,7 @@ namespace PatientDataAdministration.Client
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.flowLayoutPanel1);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(30, 64);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(182, 411);
@@ -248,7 +247,7 @@ namespace PatientDataAdministration.Client
             this.groupBox2.Controls.Add(this.pnlPersonalInformation);
             this.groupBox2.Controls.Add(this.pnlDataControl);
             this.groupBox2.Controls.Add(this.pnlOfficialInformation);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(218, 64);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(904, 411);
@@ -259,41 +258,33 @@ namespace PatientDataAdministration.Client
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.listView1);
             this.panel2.Controls.Add(this.label13);
             this.panel2.Controls.Add(this.chkInstantDedup);
             this.panel2.Location = new System.Drawing.Point(735, 22);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(163, 180);
+            this.panel2.Size = new System.Drawing.Size(163, 76);
             this.panel2.TabIndex = 137;
-            // 
-            // listView1
-            // 
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(3, 60);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(154, 115);
-            this.listView1.TabIndex = 138;
-            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // label13
             // 
-            this.label13.AutoSize = true;
+            this.label13.BackColor = System.Drawing.Color.SteelBlue;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.ForeColor = System.Drawing.Color.SteelBlue;
-            this.label13.Location = new System.Drawing.Point(3, 9);
+            this.label13.ForeColor = System.Drawing.Color.White;
+            this.label13.Location = new System.Drawing.Point(3, 3);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(89, 13);
+            this.label13.Size = new System.Drawing.Size(155, 22);
             this.label13.TabIndex = 140;
             this.label13.Text = "Verification Mode";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // chkInstantDedup
             // 
             this.chkInstantDedup.AutoSize = true;
+            this.chkInstantDedup.Checked = true;
+            this.chkInstantDedup.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkInstantDedup.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkInstantDedup.ForeColor = System.Drawing.Color.Black;
-            this.chkInstantDedup.Location = new System.Drawing.Point(5, 34);
+            this.chkInstantDedup.Location = new System.Drawing.Point(7, 37);
             this.chkInstantDedup.Name = "chkInstantDedup";
             this.chkInstantDedup.Size = new System.Drawing.Size(148, 17);
             this.chkInstantDedup.TabIndex = 62;
@@ -314,7 +305,7 @@ namespace PatientDataAdministration.Client
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.Silver;
+            this.btnSave.BackColor = System.Drawing.Color.MediumSeaGreen;
             this.btnSave.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnSave.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -333,7 +324,7 @@ namespace PatientDataAdministration.Client
             // 
             // btnRefreshNfcDevice
             // 
-            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.Silver;
+            this.btnRefreshNfcDevice.BackColor = System.Drawing.Color.LightBlue;
             this.btnRefreshNfcDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnRefreshNfcDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRefreshNfcDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -352,7 +343,7 @@ namespace PatientDataAdministration.Client
             // 
             // btnRefreshBioDevice
             // 
-            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.Silver;
+            this.btnRefreshBioDevice.BackColor = System.Drawing.Color.LightBlue;
             this.btnRefreshBioDevice.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnRefreshBioDevice.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnRefreshBioDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -371,7 +362,7 @@ namespace PatientDataAdministration.Client
             // 
             // btnClear
             // 
-            this.btnClear.BackColor = System.Drawing.Color.Silver;
+            this.btnClear.BackColor = System.Drawing.Color.Orange;
             this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -1127,6 +1118,5 @@ namespace PatientDataAdministration.Client
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.CheckBox chkInstantDedup;
-        private System.Windows.Forms.ListView listView1;
     }
 }

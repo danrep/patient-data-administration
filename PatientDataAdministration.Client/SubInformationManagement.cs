@@ -573,33 +573,37 @@ namespace PatientDataAdministration.Client
                         PepId = pepId
                     };
 
-                    var responseData = LocalCore.Post(@"/ClientCommunication/InstantBioCheckController/PostNewVerification",
+                    var responseData = LocalCore.Post(@"/ClientCommunication/InstantBioCheck/PostNewVerification",
                         JsonConvert.SerializeObject(patientInformation));
 
                     if (responseData.Status)
                     {
-                        InstantDudupModel dedupResponse;
-                        
-                        while (true)
+                        using (var verificationWindow = new SubDedupProcess(_administrationStaffInformation.Id, responseData.Data.ToString()))
                         {
-                            var response = LocalCore.Get($"/ClientCommunication/InstantBioCheckController/PostNewVerification?CheckOperationStatus={responseData.Data}").Result;
+                            this.Hide();
+                            verificationWindow.ShowDialog();
+                            this.Show();
 
-                            if (response.Data == null)
+                            if (verificationWindow.DialogResultMessage == DialogResult.No)
                             {
-                                Thread.Sleep(10000);
-                                continue;
+                                message = $"User concluded that Submitted Biometric Data is Duplicated";
+                                return true;
                             }
-
-                            dedupResponse = JsonConvert.DeserializeObject<InstantDudupModel>(response.Data.ToString());
-                            break;
+                            else if (verificationWindow.DialogResultMessage == DialogResult.Abort)
+                            {
+                                message = $"User aborted the Verification Process";
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-
-                        
                     }
                     else
                     {
-                        message = $"Instant Deduplication Failed at this time. Reason: {responseData.Message}";
-                        return false;
+                        message = $"Instant Deduplication Failed at this time. Reason: {responseData.Message}. Please retry or switch to local verification!";
+                        return true;
                     }
                 }
                 else

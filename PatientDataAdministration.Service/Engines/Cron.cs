@@ -102,6 +102,8 @@ namespace PatientDataAdministration.Service.Engines
                         pdaEntities.Entry(pendingHash).State = System.Data.Entity.EntityState.Modified;
                         pdaEntities.SaveChanges();
                     }
+
+                    pendingHashes = null;
                 }
             }
             catch (Exception ex)
@@ -171,6 +173,9 @@ namespace PatientDataAdministration.Service.Engines
                         dynamic payload;
                         var messageStatuSms = Messaging.InquireSms(processingMessage.MessageId, out payload);
 
+                        if (messageStatuSms == MessageResponse.Error)
+                            continue;
+
                         processingMessage.MessageStatus = (int)messageStatuSms;
                         processingMessage.FinalResponsePayload =
                             Newtonsoft.Json.JsonConvert.SerializeObject(payload);
@@ -201,10 +206,6 @@ namespace PatientDataAdministration.Service.Engines
 
                             if (messageStatuSms == MessageResponse.Invalid)
                                 processingMessage.MessageStatus = (int) MessageResponse.Expired;
-                        }
-                        else 
-                        {
-                            continue;
                         }
 
                         RegisterMessage(processingMessage.Id, processingMessage.MessageId, MessageResponse.Delivered);

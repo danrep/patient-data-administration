@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcessingStatus.cs" />
     <Compile Include="FingerPrintStore.cs" />
     <Compile Include="FingerPrintPosition.cs" />
     <Compile Include="Dictionary\EnumDescriptor.cs" />

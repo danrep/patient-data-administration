@@ -74,6 +74,8 @@ namespace Codesistance.UniqueBioSearchSecugen
                     ActivityLogger.Log("WARN", $"failed to initialize SecuSearch(code = {error})");
                     break;
             }
+
+            ActivityLogger.Log("INFO", $"Version ==> {SSearch.GetVersion()}");
         }
 
         public void DeInitialize()
@@ -91,6 +93,8 @@ namespace Codesistance.UniqueBioSearchSecugen
             for (uint i = 0; i < SearchModel.Size; i++)
                 SSearch.RemoveFP(i);
 
+            SSearch.ClearFPDB();
+
             SearchModel.Clear();
         }
 
@@ -98,8 +102,6 @@ namespace Codesistance.UniqueBioSearchSecugen
         {
             if (!Initialized)
                 Initialize();
-
-            ActivityLogger.Log("INFO", $"Version ==> {SSearch.GetVersion()}");
 
             ActivityLogger.Log("INFO", $"Loaded {patientData.Count}");
             var loaded = SearchModel.Load(patientData); 
@@ -130,7 +132,9 @@ namespace Codesistance.UniqueBioSearchSecugen
 
                         if (patientData.FingerPrintStore == FingerPrintStore.Primary)
                         {
+                            error = SSearch.RemoveFP(templateId);
                             error = SSearch.RegisterFP(templateBuff, templateId);
+                            
                             if (error != SSError.NONE)
                             {
                                 ActivityLogger.Log("ERROR", $"Finger Registration Error: {error.DisplayName()}");
@@ -154,6 +158,7 @@ namespace Codesistance.UniqueBioSearchSecugen
                                         continue;
                                     }
 
+                                    error = SSearch.RemoveFP(templateId);
                                     error = SSearch.RegisterFP(sgTemplate, templateId);
                                     if (error != SSError.NONE)
                                     {
@@ -279,7 +284,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             return matchModels;
         }
 
-        public MatchModel SingleProcess(PatientData patientData)
+        public MatchModel SingleProcess(PatientData patientData, uint id)
         {
             if (!Initialized)
                 return null;
@@ -309,30 +314,39 @@ namespace Codesistance.UniqueBioSearchSecugen
                 var candList = new SSCandList();
                 byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
 
-                var template = new Template(patientData.PepId, 0,
+                var template = new Template(patientData.PepId, id,
                         Convert.FromBase64String(patientData.FingerPrintData), patientData);
 
                 var templateBuff = template.TemplatesBuffer;
 
                 uint numberOfViews = 0;
                 SSearch.GetNumberOfView(templateBuff, SSTemplateType.ISO19794, ref numberOfViews);
-                for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
-                {
-                    error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
-                    if (error != SSError.NONE)
-                    {
-                        ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
-                        continue;
-                    }
 
-                    error = SSearch.SearchFP(sgTemplate, ref candList);
+                if (numberOfViews > 0)
+                    for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                    {
+                        error = SSearch.ExtractTemplate(templateBuff, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Extraction Error: {error.DisplayName()}");
+                            continue;
+                        }
+
+                        error = SSearch.SearchFP(sgTemplate, ref candList);
+
+                        if (error != SSError.NONE)
+                        {
+                            ActivityLogger.Log("ERROR", $"Finger Confirmation Error: {error.DisplayName()}");
+                        }
+                    }
+                else{
+                    error = SSearch.SearchFP(templateBuff, ref candList);
 
                     if (error != SSError.NONE)
                     {
                         ActivityLogger.Log("ERROR", $"Finger Confirmation Error: {error.DisplayName()}");
                     }
                 }
-
 
                 if (error != SSError.NONE)
                 {
@@ -359,6 +373,10 @@ namespace Codesistance.UniqueBioSearchSecugen
                                 MatchScore = x.MatchScore
                             }).ToList()
                     };
+                }
+                else
+                {
+                    matchModel.SuspectedCandidates = new List<SuspectedCandidate>();
                 }
             }
             catch (Exception e)

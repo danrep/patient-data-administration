@@ -29,19 +29,13 @@ namespace PatientDataAdministration.Client
         {
             ShowInfo("Starting Up");
 
-            var process = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "cmd.exe",
-                    Arguments = "/c sqllocaldb start mssqllocaldb",
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                }
+            processDBCheck.StartInfo = new ProcessStartInfo("powershell.exe", "sqllocaldb start mssqllocaldb") { 
+                CreateNoWindow = true, 
+                WindowStyle = ProcessWindowStyle.Hidden
             };
-            process.Start();
+            processDBCheck.Start();
 
-            while (!process.HasExited)
+            while (!processDBCheck.HasExited)
             {
                 //
             }

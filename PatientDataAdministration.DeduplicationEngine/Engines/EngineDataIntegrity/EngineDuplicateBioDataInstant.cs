@@ -10,6 +10,7 @@ using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.Data.SecondaryBioDataModels;
 using PatientDataAdministration.EnumLibrary;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 using StackExchange.Redis;
 
 namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegrity
@@ -17,7 +18,8 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
     public class EngineDuplicateBioDataInstant
     {
         private List<PatientData> PatientData;
-        
+        private SearchEngine BiomtricSearchEngine;
+
         public EngineDuplicateBioDataInstant()
         {
             ActivityLogger.Log("INFO", $"Starting Instant Dedup Engine");
@@ -25,14 +27,18 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             PatientData = new List<PatientData>();
 
             new Thread(()=> {
-                //PatientData.AddRange(LoadPrimary());
+                PatientData.AddRange(LoadPrimary());
                 PatientData.AddRange(LoadSecondary());
             }).Start();
+
+            BiomtricSearchEngine = new SearchEngine();
         }
 
         ~EngineDuplicateBioDataInstant()
         {
-            PatientData.Clear();
+            PatientData = new List<PatientData>();
+            BiomtricSearchEngine.Clear();
+            BiomtricSearchEngine.DeInitialize();
         }
 
         private List<PatientData> LoadPrimary()
@@ -44,7 +50,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                      var allPatientBiometrics = new List<PatientData>();
 
                     allPatientBiometrics.AddRange(entities.Patient_PatientBiometricData
-                        .Where(x => !x.IsDeleted && x.IsValid && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId)).Select(
+                        .Where(x => !x.IsDeleted && x.IsValid && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
+                        .Take(Setting.DedupDataLimit / 4)
+                        .Select(
                             x => new PatientData()
                             {
                                 RowId = x.Id,
@@ -56,7 +64,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                             }));
 
                     allPatientBiometrics.AddRange(entities.Patient_PatientBiometricData
-                        .Where(x => !x.IsDeleted && x.IsValid && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId)).Select(
+                        .Where(x => !x.IsDeleted && x.IsValid && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
+                        .Take(Setting.DedupDataLimit / 4)
+                        .Select(
                             x => new PatientData()
                             {
                                 RowId = x.Id,
@@ -66,6 +76,36 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                                 FingerPrintStore = FingerPrintStore.Primary, 
                                 BioDataSource = 0
                             }));
+
+                    allPatientBiometrics.Add(entities.Patient_PatientBiometricData
+                        .Where(x => !x.IsDeleted && x.IsValid && x.PepId == "LU-10-0975" && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
+                        .Take(Setting.DedupDataLimit / 4)
+                        .Select(
+                            x => new PatientData()
+                            {
+                                RowId = x.Id,
+                                PepId = x.PepId,
+                                FingerPrintData = x.FingerSecondary,
+                                FingerPosition = FingerPrintPosition.LeftThumb,
+                                FingerPrintStore = FingerPrintStore.Primary,
+                                BioDataSource = 0
+                            })
+                        .FirstOrDefault());
+
+                    allPatientBiometrics.Add(entities.Patient_PatientBiometricData
+                        .Where(x => !x.IsDeleted && x.IsValid && x.PepId == "LU-10-0975" && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
+                        .Take(Setting.DedupDataLimit / 4)
+                        .Select(
+                            x => new PatientData()
+                            {
+                                RowId = x.Id,
+                                PepId = x.PepId,
+                                FingerPrintData = x.FingerSecondary,
+                                FingerPosition = FingerPrintPosition.RightThumb,
+                                FingerPrintStore = FingerPrintStore.Primary,
+                                BioDataSource = 0
+                            })
+                        .FirstOrDefault());
 
                     ActivityLogger.Log("INFO", $"Loaded {allPatientBiometrics.Count} Primary Patient Templates");
 
@@ -97,14 +137,14 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                             x.DataModel
                         })
                         .OrderBy(x => Guid.NewGuid())
-                        .Take(50000)
+                        .Take(Setting.DedupDataLimit / 20)
                         .ToList();
 
                     foreach (var secondaryBiometrics in allSecondaryBiometrics)
                     {
                         allPatientBiometrics.AddRange(ResolveSecondaryBioData(secondaryBiometrics));
 
-                        if (allPatientBiometrics.Count > 250000)
+                        if (allPatientBiometrics.Count > Setting.DedupDataLimit / 2)
                         {
                             ActivityLogger.Log("WARNING", $"250000 Patient Templates Exceeded");
                             break;
@@ -113,6 +153,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                     allSecondaryBiometrics = null;
                     ActivityLogger.Log("INFO", $"Loaded {allPatientBiometrics.Count} Secondary Patient Templates");
+                    GC.Collect();
                     return allPatientBiometrics;
                 }
             }
@@ -127,12 +168,11 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
         {
             try
             {
+                ActivityLogger.Log("INFO>>IDUP", $"Received Message: {channelMessage.Message}");
                 var message = JsonConvert.DeserializeObject<CommunicationModel>(channelMessage.Message.ToString());
                 DedupSubmission data = JsonConvert.DeserializeObject<DedupSubmission>(message.Data);
 
                 new Thread(() => Process(data.OperationId, data.PatientDataSubmitted)).Start();
-                data = null;
-                message = null;
 
                 return PubSubResponse.Success;
             }
@@ -147,37 +187,47 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
         {
             try
             {
+                ActivityLogger.Log("INFO>>IDUP", $"Processing {operationId}");
+
                 var model = new InstantDudupModel
                 {
                     OperationId = operationId,
                     DuplicationSuspects = new List<DuplicationSuspect>(), 
-                    IsDuplicated = false
+                    IsDuplicated = false,
+                    ProcessingStatus = ProcessingStatus.Processing
                 };
 
+                PublishResponse(model);
+
                 var patientBiometricDataChunks =
-                        Transforms.ListChunk(PatientData.OrderBy(x => Guid.NewGuid()).ToList(), 1000);
+                        Transforms.ListChunk(PatientData.OrderBy(x => Guid.NewGuid()).ToList(), Setting.DedupProcLimit);
 
                 ActivityLogger.Log("INFO", $"{operationId}: Processing {PatientData.Count} in {patientBiometricDataChunks.Count} chunks");
-
-                var biomtricSearchEngine = new SearchEngine();
 
                 foreach (var patientBiometricDataChunk in patientBiometricDataChunks)
                 {
                     try
                     {
+                        BiomtricSearchEngine.Clear();
+
                         ActivityLogger.Log("INFO", $"{operationId}: Current Chunk Member Size is {patientBiometricDataChunk.Count}");
 
-                        biomtricSearchEngine.LoadTemplates(patientBiometricDataChunk);
+                        BiomtricSearchEngine.LoadTemplates(patientBiometricDataChunk);
 
+                        uint i = 0;
                         foreach(var patientDataSubmittedinstance in patientDataSubmitted)
                         {
-                            var result = biomtricSearchEngine.SingleProcess(patientDataSubmittedinstance);
+                            var result = BiomtricSearchEngine.SingleProcess(patientDataSubmittedinstance, i);
+                            i++;
 
                             if (result == null)
                                 continue;
 
+                            if (!result.SuspectedCandidates.Any())
+                                continue;
+
                             var validCases = result.SuspectedCandidates
-                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 9000)
+                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= Setting.DedupConfidenceLevel)
                                     .ToList();
 
                             ActivityLogger.Log("INFO", $"{operationId}: Found {validCases.Count} Relevant Matches");
@@ -188,7 +238,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                                 {
                                     model.DuplicationSuspects.Add(new DuplicationSuspect()
                                     {
-                                        FingerPosition = validCase.BioDataSuspect.Filename,
+                                        Data = JsonConvert.SerializeObject(PatientInformation((PatientData)validCase.BioDataSuspect.Data)),
                                         MatchScore = validCase.MatchScore,
                                         PepId = validCase.BioDataSuspect.Filename
                                     });
@@ -198,8 +248,8 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                             validCases = null;
                             result = null;
                         }
-                                                
-                        biomtricSearchEngine.Clear();
+
+                        BiomtricSearchEngine.Clear();
                         ActivityLogger.Log("INFO", $"{operationId}: Current Chunk Member Size is {patientBiometricDataChunk.Count} is Complete");
                     }
                     catch (Exception e)
@@ -208,18 +258,23 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                     }
                 }
 
-                biomtricSearchEngine.DeInitialize();
+                BiomtricSearchEngine.Clear();
                 ActivityLogger.Log("INFO", $"{operationId}: Processing is Completed at this time");
 
+                model.DuplicationSuspects = model.DuplicationSuspects.OrderByDescending(x => x.MatchScore).Take(10).ToList();
                 model.IsSuccessful = true;
+                model.ProcessingStatus = ProcessingStatus.Completed;
+
                 PublishResponse(model);
             }
             catch (Exception e)
             {
                 ActivityLogger.Log(e);
+
                 PublishResponse(new InstantDudupModel() { 
                     OperationId = operationId, 
-                    ErrorMessage = e.Message
+                    ErrorMessage = e.Message, 
+                    ProcessingStatus = ProcessingStatus.Completed
                 });
             }
         }
@@ -540,7 +595,8 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
         {
             try
             {
-               Core.InMemory.Redis.Operations.SaveData(instantDudupModel.OperationId, instantDudupModel);
+                ClearResponse(instantDudupModel.OperationId);
+                Core.InMemory.Redis.Operations.SaveData(instantDudupModel.OperationId, instantDudupModel);
             }
             catch (Exception e)
             {
@@ -548,9 +604,71 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             }
         }
 
-        public void Kill()
+        private void ClearResponse(string operationId)
         {
-            PatientData = new List<PatientData>();
+            try
+            {
+                Core.InMemory.Redis.Operations.DeleteData(operationId);
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+            }
+        }
+
+        private object PatientInformation(PatientData patientData)
+        {
+            try
+            {
+                using (var entities = new Entities())
+                {
+                    var patientSecondaryInformation = 
+                        entities.Patient_PatientBiometricDataSecondary.FirstOrDefault(x => x.PepId == patientData.PepId);
+
+                    if (patientSecondaryInformation != null)
+                    {
+                        return new { 
+                            patientSecondaryInformation.PepId,
+                            Facility = entities.Administration_SiteInformation
+                            .Where(x => x.Id == patientSecondaryInformation.FacilityId)
+                            .Select(x => new { x.SiteCode, x.SiteNameOfficial}).FirstOrDefault(),
+                            DateUploaded = patientSecondaryInformation.DateUploaded.ToLongDateString(),
+                            DateRegistered = patientSecondaryInformation.DateRegistered.ToLongDateString(),
+                            Source = ((SecondaryBioDataSources)patientSecondaryInformation.DataModel).DisplayName(),
+                            FingerPosition = patientData.FingerPosition.DisplayName()
+                        };
+                    }
+
+                    var patientPrimaryInformation = 
+                        entities.Patient_PatientInformation.FirstOrDefault(x => x.PepId == patientData.PepId);
+
+                    if (patientPrimaryInformation != null)
+                    {
+                        return new
+                        {
+                            patientPrimaryInformation.PepId,
+                            Facility = entities.Administration_SiteInformation
+                            .Where(x => x.Id == patientPrimaryInformation.SiteId)
+                            .Select(x => new { x.SiteCode, x.SiteNameOfficial }).FirstOrDefault(),
+                            LastUpdated = patientPrimaryInformation.LastUpdated?.ToLongDateString(),
+                            Source = "PBS Client",
+                            FingerPosition = patientData.FingerPosition.DisplayName(),
+                            DateOfBirth = patientPrimaryInformation.DateOfBirth?.ToLongDateString(),
+                            patientPrimaryInformation.HouseAddress,
+                            patientPrimaryInformation.PhoneNumber,
+                            patientPrimaryInformation.Surname,
+                            patientPrimaryInformation.Othername
+                        };
+                    }
+                }
+
+                return patientData;
+            }
+            catch (Exception e)
+            {
+                ActivityLogger.Log(e);
+                return patientData;
+            }
         }
     }
 }

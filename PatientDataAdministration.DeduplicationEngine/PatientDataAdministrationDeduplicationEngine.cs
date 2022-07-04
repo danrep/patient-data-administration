@@ -23,6 +23,8 @@ namespace PatientDataAdministration.DeduplicationEngine
         {
             try
             {
+                //Thread.Sleep(10000);
+
                 ActivityLogger.LogFileName = "PDA_DeduplicationEngine_Logs.txt";
 
                 ActivityLogger.Log("INFO", "Starting Up PBS DeduplicationEngine Services");

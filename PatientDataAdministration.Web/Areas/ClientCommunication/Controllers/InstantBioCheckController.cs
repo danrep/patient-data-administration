@@ -5,6 +5,7 @@ using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
@@ -12,7 +13,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
     public class InstantBioCheckController : BaseClientCommController
     {
         [HttpPost]
-        public JsonResult PostNewVerification(dynamic patientInformation)
+        public JsonResult PostNewVerification(DuplicationSubmission patientInformation)
         {
             try
             {
@@ -24,7 +25,7 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         Data = JsonConvert.SerializeObject(new DedupSubmission()
                         {
                             OperationId = operationId, 
-                            PatientDataSubmitted = new System.Collections.Generic.List<PatientData> { 
+                            PatientDataSubmitted = new List<PatientData> { 
                                 new PatientData() { 
                                     BioDataSource = 0, 
                                     FingerPosition = FingerPrintPosition.LeftThumb, 
@@ -44,6 +45,13 @@ namespace PatientDataAdministration.Web.Areas.ClientCommunication.Controllers
                         }),
                         PubSubAction = PubSubAction.InstaDedupClientSub
                     })));
+
+                Core.InMemory.Redis.Operations.SaveData(operationId, new InstantDudupModel
+                {
+                    OperationId = operationId,
+                    DuplicationSuspects = new List<DuplicationSuspect>(),
+                    ProcessingStatus = ProcessingStatus.Submitted
+                });
 
                 return
                     Json(

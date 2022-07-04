@@ -96,7 +96,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                     #endregion
 
                     // select random candidates
-                    var patientBiometricDataChunks = Transforms.ListChunk(allPatientBiometrics.OrderBy(x => Guid.NewGuid()).ToList(), 800);
+                    var patientBiometricDataChunks = Transforms.ListChunk(allPatientBiometrics.OrderBy(x => Guid.NewGuid()).ToList(), Setting.DedupProcLimit);
                     
                     ActivityLogger.Log("INFO", $"{TraceId}: Processing {allPatientBiometrics.Count} in {patientBiometricDataChunks.Count} chunks");
 
