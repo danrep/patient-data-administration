@@ -77,36 +77,6 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                                 BioDataSource = 0
                             }));
 
-                    allPatientBiometrics.Add(entities.Patient_PatientBiometricData
-                        .Where(x => !x.IsDeleted && x.IsValid && x.PepId == "LU-10-0975" && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
-                        .Take(Setting.DedupDataLimit / 4)
-                        .Select(
-                            x => new PatientData()
-                            {
-                                RowId = x.Id,
-                                PepId = x.PepId,
-                                FingerPrintData = x.FingerSecondary,
-                                FingerPosition = FingerPrintPosition.LeftThumb,
-                                FingerPrintStore = FingerPrintStore.Primary,
-                                BioDataSource = 0
-                            })
-                        .FirstOrDefault());
-
-                    allPatientBiometrics.Add(entities.Patient_PatientBiometricData
-                        .Where(x => !x.IsDeleted && x.IsValid && x.PepId == "LU-10-0975" && entities.Patient_PatientInformation.Any(y => y.PepId == x.PepId))
-                        .Take(Setting.DedupDataLimit / 4)
-                        .Select(
-                            x => new PatientData()
-                            {
-                                RowId = x.Id,
-                                PepId = x.PepId,
-                                FingerPrintData = x.FingerSecondary,
-                                FingerPosition = FingerPrintPosition.RightThumb,
-                                FingerPrintStore = FingerPrintStore.Primary,
-                                BioDataSource = 0
-                            })
-                        .FirstOrDefault());
-
                     ActivityLogger.Log("INFO", $"Loaded {allPatientBiometrics.Count} Primary Patient Templates");
 
                     return allPatientBiometrics;

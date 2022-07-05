@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.EnumLibrary;
@@ -115,6 +116,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             ActivityLogger.Log("INFO", $"Loaded Data Size {SearchModel.Size}");
         }
 
+        [HandleProcessCorruptedStateExceptions]
         private SSError RegisterSearchModel()
         {
             ActivityLogger.Log("INFO", "Registering Templates");
@@ -192,6 +194,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             return error;
         }
 
+        [HandleProcessCorruptedStateExceptions]
         public List<MatchModel> BulkProcess()
         {
             if (!Initialized)
@@ -284,6 +287,7 @@ namespace Codesistance.UniqueBioSearchSecugen
             return matchModels;
         }
 
+        [HandleProcessCorruptedStateExceptions]
         public MatchModel SingleProcess(PatientData patientData, uint id)
         {
             if (!Initialized)
