@@ -41,17 +41,23 @@ namespace Codesistance.UniqueBioSearchSecugen
                 LicenseFile = "license.dat"
             };
 
-            //var param = new SSParam
-            //{
-            //    CandidateCount = 10,
-            //    Concurrency = 0,
-            //    EnableRotation = true
-            //};
-
             // license file - Ask SecuGen with your volume number which bin\VolNoReader.exe returns.
             // param.LicenseFile = "./license.dat";
 
             SSError error = SSearch.InitializeEngine(param);
+            
+            if (error == SSError.INVALID_PARAM)
+            {
+                param = new SSParam
+                {
+                    CandidateCount = 10,
+                    Concurrency = 0,
+                    EnableRotation = true
+                };
+                
+                error = SSearch.InitializeEngine(param);
+            }
+
             switch (error)
             {
                 case SSError.NONE:
@@ -192,6 +198,39 @@ namespace Codesistance.UniqueBioSearchSecugen
             }
 
             return error;
+        }
+
+        [HandleProcessCorruptedStateExceptions]
+        public bool TestData(byte[] template)
+        {
+            byte[] sgTemplate = new byte[SSConstants.TEMPLATE_SIZE];
+            bool result = false;
+
+            try
+            {
+                uint numberOfViews = 0;
+
+                SSearch.GetNumberOfView(template, SSTemplateType.ISO19794, ref numberOfViews);
+
+                for (uint indexOfView = 0; indexOfView < numberOfViews; indexOfView++)
+                {
+                    try
+                    {
+                        var error = SSearch.ExtractTemplate(template, SSTemplateType.ISO19794, indexOfView, sgTemplate);
+                        result = error == SSError.NONE;
+                    }
+                    catch (Exception exx)
+                    {
+                        ActivityLogger.Log("ERROR >> Codesistance.UniqueBioSearch", $"{exx.Message}: {exx}");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            sgTemplate = template = null;
+            return result;
         }
 
         [HandleProcessCorruptedStateExceptions]

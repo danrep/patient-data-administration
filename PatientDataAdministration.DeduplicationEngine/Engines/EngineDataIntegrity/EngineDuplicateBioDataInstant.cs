@@ -8,7 +8,6 @@ using PatientDataAdministration.Core;
 using PatientDataAdministration.Core.PubSub;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.InterchangeModels;
-using PatientDataAdministration.Data.SecondaryBioDataModels;
 using PatientDataAdministration.EnumLibrary;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using StackExchange.Redis;
@@ -98,7 +97,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                     var allPatientBiometrics = new List<PatientData>();
 
                     var allSecondaryBiometrics = entities.Patient_PatientBiometricDataSecondary
-                        .Where(x => !x.IsDeleted && x.BioDataScore >= 70)
+                        .Where(x => !x.IsDeleted && x.BioDataScore >= Setting.DedupBioDataScore)
                         .Select(x => new 
                         {
                             x.Id,
@@ -112,7 +111,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                     foreach (var secondaryBiometrics in allSecondaryBiometrics)
                     {
-                        allPatientBiometrics.AddRange(ResolveSecondaryBioData(secondaryBiometrics));
+                        allPatientBiometrics.AddRange(Resolvers.ResolveSecondaryBioData(secondaryBiometrics));
 
                         if (allPatientBiometrics.Count > Setting.DedupDataLimit / 2)
                         {
@@ -197,7 +196,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                                 continue;
 
                             var validCases = result.SuspectedCandidates
-                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= Setting.DedupConfidenceLevel)
+                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= Setting.DedupMatchScore)
                                     .ToList();
 
                             ActivityLogger.Log("INFO", $"{operationId}: Found {validCases.Count} Relevant Matches");
@@ -246,293 +245,6 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                     ErrorMessage = e.Message, 
                     ProcessingStatus = ProcessingStatus.Completed
                 });
-            }
-        }
-
-        private List<PatientData> ResolveSecondaryBioData(dynamic secondaryData)
-        {
-            try
-            {
-                switch ((SecondaryBioDataSources)secondaryData.DataModel)
-                {
-                    case SecondaryBioDataSources.NmrsBioDataXml:
-                        return ResolveNmrsBioDataXml(secondaryData.BioDataExtract,
-                            secondaryData.PepId,
-                            secondaryData.Id);
-
-                    case SecondaryBioDataSources.NdrBioDataCsv:
-                        return ResolveNdrBioDataCsv(secondaryData.BioDataExtract,
-                            secondaryData.PepId,
-                            secondaryData.Id);
-
-                    default:
-                        return new List<PatientData>();
-                }
-            }
-            catch (Exception e)
-            {
-                ActivityLogger.Log(e);
-                return new List<PatientData>();
-            }
-        } 
-
-        private List<PatientData> ResolveNmrsBioDataXml(string bioDataExtract, string pepId, long rowId)
-        {
-            try
-            {
-                var patientData = new List<PatientData>();
-
-                var fingerPrints = JsonConvert.DeserializeObject<FingerPrints>(bioDataExtract);
-
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftIndex))
-                    patientData.Add(new PatientData() {
-                        FingerPosition = FingerPrintPosition.LeftIndex,
-                        FingerPrintData = fingerPrints.LeftHand.LeftIndex,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId, 
-                        RowId = rowId, 
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftMiddle))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftMiddle,
-                        FingerPrintData = fingerPrints.LeftHand.LeftMiddle,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftSmall))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftSmall,
-                        FingerPrintData = fingerPrints.LeftHand.LeftSmall,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftThumb,
-                        FingerPrintData = fingerPrints.LeftHand.LeftThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftWedding))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftRing,
-                        FingerPrintData = fingerPrints.LeftHand.LeftWedding,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightIndex))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightIndex,
-                        FingerPrintData = fingerPrints.RightHand.RightIndex,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightMiddle))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightMiddle,
-                        FingerPrintData = fingerPrints.RightHand.RightMiddle,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightSmall))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightSmall,
-                        FingerPrintData = fingerPrints.RightHand.RightSmall,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightThumb,
-                        FingerPrintData = fingerPrints.RightHand.RightThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightHand?.RightWedding))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightRing,
-                        FingerPrintData = fingerPrints.RightHand.RightWedding,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NmrsBioDataXml
-                    });
-
-                return patientData;
-            }
-            catch (Exception e)
-            {
-                ActivityLogger.Log(e);
-                return new List<PatientData>();
-            }
-        }
-
-        private List<PatientData> ResolveNdrBioDataCsv(string bioDataExtract, string pepId, long rowId)
-        {
-            try
-            {
-                var patientData = new List<PatientData>();
-
-                var fingerPrints = JsonConvert.DeserializeObject<NdrCsvFingerprints>(bioDataExtract);
-
-                if (!string.IsNullOrEmpty(fingerPrints.LeftThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftThumb,
-                        FingerPrintData = fingerPrints.LeftThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-
-                if (!string.IsNullOrEmpty(fingerPrints.RightThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightThumb,
-                        FingerPrintData = fingerPrints.RightThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-
-                return patientData;
-                // ommited due to memory limits
-
-                if (!string.IsNullOrEmpty(fingerPrints.LeftIndex))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftIndex,
-                        FingerPrintData = fingerPrints.LeftIndex,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftMiddle))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftMiddle,
-                        FingerPrintData = fingerPrints.LeftMiddle,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftSmall))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftSmall,
-                        FingerPrintData = fingerPrints.LeftSmall,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftThumb,
-                        FingerPrintData = fingerPrints.LeftThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.LeftWedding))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.LeftRing,
-                        FingerPrintData = fingerPrints.LeftWedding,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightIndex))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightIndex,
-                        FingerPrintData = fingerPrints.RightIndex,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightMiddle))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightMiddle,
-                        FingerPrintData = fingerPrints.RightMiddle,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightSmall))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightSmall,
-                        FingerPrintData = fingerPrints.RightSmall,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightThumb))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightThumb,
-                        FingerPrintData = fingerPrints.RightThumb,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-                if (!string.IsNullOrEmpty(fingerPrints.RightWedding))
-                    patientData.Add(new PatientData()
-                    {
-                        FingerPosition = FingerPrintPosition.RightRing,
-                        FingerPrintData = fingerPrints.RightWedding,
-                        FingerPrintStore = FingerPrintStore.Secondary,
-                        PepId = pepId,
-                        RowId = rowId,
-                        BioDataSource = (int)SecondaryBioDataSources.NdrBioDataCsv
-                    });
-
-                return patientData;
-            }
-            catch (Exception e)
-            {
-                ActivityLogger.Log(e);
-                return new List<PatientData>();
             }
         }
 

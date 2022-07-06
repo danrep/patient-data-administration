@@ -129,7 +129,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                                 //gunning for a 90% above match
                                 var validCases = result.SuspectedCandidates
-                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= 9000)
+                                    .Where(x => x.BioDataSuspect.Filename != result.Pivot && x.MatchScore >= Setting.DedupMatchScore)
                                     .ToList();
 
                                 ActivityLogger.Log("INFO", $"{TraceId}: Found {validCases.Count} Relevant Matches");

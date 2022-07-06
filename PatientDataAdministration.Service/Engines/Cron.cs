@@ -141,7 +141,7 @@ namespace PatientDataAdministration.Service.Engines
         private void StatusCheckAppointment()
         {
             #region SMS Status Check
-
+            return;
             try
             {
                 using (var entity = new Entities())
@@ -224,6 +224,7 @@ namespace PatientDataAdministration.Service.Engines
 
         private void PendingSendAppointment()
         {
+            return;
             try
             {
                 using (var entity = new Entities())
@@ -281,6 +282,7 @@ namespace PatientDataAdministration.Service.Engines
         {
             try
             {
+                return;
                 using (var entity = new Entities())
                 {
                     var currentDate = DateTime.Now.Date;

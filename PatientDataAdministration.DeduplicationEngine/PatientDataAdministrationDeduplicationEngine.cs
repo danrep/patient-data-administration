@@ -1,6 +1,7 @@
 ﻿using PatientDataAdministration.Core;
 using PatientDataAdministration.Data.InterchangeModels;
 using PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegrity;
+using PatientDataAdministration.DeduplicationEngine.Engines.EngineDataValidation;
 using PatientDataAdministration.DeduplicationEngine.Engines.FileOperations;
 using PatientDataAdministration.EnumLibrary.Dictionary;
 using System;
@@ -12,7 +13,11 @@ namespace PatientDataAdministration.DeduplicationEngine
     public partial class PatientDataAdministrationDeduplicationEngine : ServiceBase
     {
         System.Timers.Timer _nightly;
+        System.Timers.Timer _dusk;
+
         static EngineDuplicateBioDataInstant _instant;
+
+        static Thread _bioDataValidation;
 
         public PatientDataAdministrationDeduplicationEngine()
         {
@@ -37,6 +42,24 @@ namespace PatientDataAdministration.DeduplicationEngine
                 _nightly.Start();
                 ActivityLogger.Log("INFO", "Started Nightly Services");
 
+                _dusk = new System.Timers.Timer(60000)
+                {
+                    Enabled = true
+                };
+                _dusk.Elapsed += Dusk_Elapsed;
+                _dusk.Start();
+                ActivityLogger.Log("INFO", "Started Dusk Services");
+
+                _bioDataValidation = new Thread(() => {
+                    using (var engineValidation = new EngineSecondaryValidation())
+                    {
+                        ActivityLogger.Log("INFO", "Starting Secondary Validation Engine");
+                        engineValidation.Execute();
+                        ActivityLogger.Log("INFO", "Completing Secondary Validation Engine");
+                    }
+                });
+                _bioDataValidation.Start();
+
                 LoadMessageListeners();
                 ActivityLogger.Log("INFO", "Started Message Listener Services");
             }
@@ -53,12 +76,17 @@ namespace PatientDataAdministration.DeduplicationEngine
                 _nightly.Stop();
                 _nightly.Enabled = false;
 
+                _dusk.Stop();
+                _dusk.Enabled = false;
+
                 EngineDuplicateBioData.KillProcessing();
                 EngineDuplicateBioDataSecondary.KillProcessing();
 
                 StopMessageListeners();
 
                 _instant = null;
+
+                _bioDataValidation.Abort();
             }
             catch (Exception ex)
             {
@@ -86,6 +114,36 @@ namespace PatientDataAdministration.DeduplicationEngine
                 {
                     ActivityLogger.Log("INFO", "Starting Up Secondary Dedup Engine");
                     TaskManagerEngineDuplicateBioDataSecondary()?.ThreadEngine.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+
+            #endregion
+        }
+
+        private static void Dusk_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            #region Data Integrity Engine
+
+            if (DateTime.Now.Hour != Setting.DuskHour)
+                return;
+
+            try
+            {
+                if (_bioDataValidation.ThreadState == ThreadState.Running)
+                {
+                    _bioDataValidation = new Thread(() => {
+                        using (var engineValidation = new EngineSecondaryValidation())
+                        {
+                            ActivityLogger.Log("INFO", "Starting Secondary Validation Engine");
+                            engineValidation.Execute();
+                            ActivityLogger.Log("INFO", "Completing Secondary Validation Engine");
+                        }
+                    });
+                    _bioDataValidation.Start();
                 }
             }
             catch (Exception ex)
