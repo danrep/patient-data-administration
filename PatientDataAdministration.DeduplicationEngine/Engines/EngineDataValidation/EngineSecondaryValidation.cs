@@ -51,7 +51,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataValida
 
                 using (var entities = new Entities())
                 {
-                    populationBatches = entities.Patient_PatientBiometricDataSecondary.Count() / batchSize;
+                    populationBatches = entities.Patient_PatientBiometricDataSecondary
+                        .Where(x => x.BioDataScore != 0)
+                        .Count() / batchSize;
                 }
 
                 for (int i = 0; i < populationBatches; i++)

@@ -17,7 +17,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
     public class EngineDuplicateBioDataInstant
     {
         private List<PatientData> PatientData;
-        private SearchEngine BiomtricSearchEngine;
+        private static SearchEngine BiomtricSearchEngine;
+
+        System.Timers.Timer _checkStatus;
 
         public EngineDuplicateBioDataInstant()
         {
@@ -30,6 +32,13 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                 PatientData.AddRange(LoadSecondary());
             }).Start();
 
+            _checkStatus = new System.Timers.Timer(60000)
+            {
+                Enabled = true
+            };
+            _checkStatus.Elapsed += CheckStatus_Elapsed;
+            _checkStatus.Start();
+
             BiomtricSearchEngine = new SearchEngine();
         }
 
@@ -38,6 +47,20 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             PatientData = new List<PatientData>();
             BiomtricSearchEngine.Clear();
             BiomtricSearchEngine.DeInitialize();
+            _checkStatus.Enabled = false;
+        }
+
+        private static void CheckStatus_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                if (!BiomtricSearchEngine.Initialized)
+                    BiomtricSearchEngine = new SearchEngine();
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
         }
 
         private List<PatientData> LoadPrimary()

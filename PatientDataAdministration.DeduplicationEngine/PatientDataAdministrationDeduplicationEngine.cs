@@ -50,16 +50,6 @@ namespace PatientDataAdministration.DeduplicationEngine
                 _dusk.Start();
                 ActivityLogger.Log("INFO", "Started Dusk Services");
 
-                _bioDataValidation = new Thread(() => {
-                    using (var engineValidation = new EngineSecondaryValidation())
-                    {
-                        ActivityLogger.Log("INFO", "Starting Secondary Validation Engine");
-                        engineValidation.Execute();
-                        ActivityLogger.Log("INFO", "Completing Secondary Validation Engine");
-                    }
-                });
-                _bioDataValidation.Start();
-
                 LoadMessageListeners();
                 ActivityLogger.Log("INFO", "Started Message Listener Services");
             }
@@ -133,7 +123,16 @@ namespace PatientDataAdministration.DeduplicationEngine
 
             try
             {
-                if (_bioDataValidation.ThreadState == ThreadState.Running)
+                if (_bioDataValidation == null)
+                {
+                    _bioDataValidation = new Thread(() =>
+                    {
+                        ActivityLogger.Log("INFO", "Registered Secondary Validation Engine Thread Handle");
+                    });
+                    _bioDataValidation.Start();
+                }
+
+                if (_bioDataValidation.ThreadState != ThreadState.Running)
                 {
                     _bioDataValidation = new Thread(() => {
                         using (var engineValidation = new EngineSecondaryValidation())

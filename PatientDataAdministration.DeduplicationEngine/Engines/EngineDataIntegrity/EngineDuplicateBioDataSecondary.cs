@@ -63,17 +63,14 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                 {
                     //var patientsWithUnresolvedCases = entities.Patient_PatientBiometricSecondaryIntegrityCaseMember
                     //    .Where(x => !x.IsDeleted && !x.IsTreated).Select(x => x.SuspectPepId).ToList();
+                    var biomtricSearchEngine = new SearchEngine();
 
-                    var limiter = DateTime.Now.AddHours(-7 * 24);
                     var allPatientBiometrics = new List<PatientData>();
 
                     #region Secondary Processing
 
-                    if (!entities.Patient_PatientBiometricDataSecondary.Any(x => !x.IsDeleted && x.DateUploaded > limiter))
-                        return;
-
                     var allSecondaryBiometrics = entities.Patient_PatientBiometricDataSecondary
-                        .Where(x => !x.IsDeleted && x.DateUploaded > limiter && x.BioDataScore >= Setting.DedupBioDataScore)
+                        .Where(x => !x.IsDeleted && x.BioDataScore >= Setting.DedupBioDataScore && x.StateId == 7)
                         .OrderBy(x => Guid.NewGuid())
                         .ToList();
 
@@ -87,11 +84,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                     // select random candidates
                     var patientBiometricDataChunks =
-                        Transforms.ListChunk(allPatientBiometrics.OrderBy(x => Guid.NewGuid()).ToList(), Setting.DedupProcLimit);
+                        Transforms.ListChunk(allPatientBiometrics, Setting.DedupProcLimit);
                     
                     ActivityLogger.Log("INFO", $"{TraceId}: Processing {allPatientBiometrics.Count} in {patientBiometricDataChunks.Count} chunks");
-
-                    var biomtricSearchEngine = new SearchEngine();
 
                     foreach (var patientBiometricDataChunk in patientBiometricDataChunks)
                     {
