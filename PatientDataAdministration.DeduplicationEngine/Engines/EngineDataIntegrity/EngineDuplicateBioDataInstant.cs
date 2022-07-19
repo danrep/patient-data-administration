@@ -28,7 +28,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             PatientData = new List<PatientData>();
 
             new Thread(()=> {
-                PatientData.AddRange(LoadPrimary());
+                // PatientData.AddRange(LoadPrimary());
                 PatientData.AddRange(LoadSecondary());
             }).Start();
 
@@ -129,16 +129,16 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                             x.DataModel
                         })
                         .OrderBy(x => Guid.NewGuid())
-                        .Take(Setting.DedupDataLimit / 20)
+                        .Take(Setting.DedupDataLimit / 10)
                         .ToList();
 
                     foreach (var secondaryBiometrics in allSecondaryBiometrics)
                     {
                         allPatientBiometrics.AddRange(Resolvers.ResolveSecondaryBioData(secondaryBiometrics));
 
-                        if (allPatientBiometrics.Count > Setting.DedupDataLimit / 2)
+                        if (allPatientBiometrics.Count > Setting.DedupDataLimit)
                         {
-                            ActivityLogger.Log("WARNING", $"250000 Patient Templates Exceeded");
+                            ActivityLogger.Log("WARNING", $"{Setting.DedupDataLimit} Patient Templates Exceeded");
                             break;
                         }
                     }
