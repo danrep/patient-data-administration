@@ -58,7 +58,9 @@ namespace PatientDataAdministration.Client
             {
                 this._administrationStaffInformation = administrationStaffInformation;
                 InitializeComponent();
+
                 _fingerPrintManager = new SGFingerPrintManager();
+                _fingerPrintManager.SetTemplateFormat(SGFPMTemplateFormat.ISO19794);
             }
             catch (Exception exception)
             {

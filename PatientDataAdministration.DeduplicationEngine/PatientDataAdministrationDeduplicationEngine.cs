@@ -14,6 +14,7 @@ namespace PatientDataAdministration.DeduplicationEngine
     {
         System.Timers.Timer _nightly;
         System.Timers.Timer _dusk;
+        static System.Timers.Timer _day;
 
         static EngineDuplicateBioDataInstant _instant;
 
@@ -49,6 +50,14 @@ namespace PatientDataAdministration.DeduplicationEngine
                 _dusk.Elapsed += Dusk_Elapsed;
                 _dusk.Start();
                 ActivityLogger.Log("INFO", "Started Dusk Services");
+
+                _day = new System.Timers.Timer(10000)
+                {
+                    Enabled = true
+                };
+                _day.Elapsed += Day_Elapsed;
+                _day.Start();
+                ActivityLogger.Log("INFO", "Started Day Services");
 
                 LoadMessageListeners();
                 ActivityLogger.Log("INFO", "Started Message Listener Services");
@@ -94,15 +103,16 @@ namespace PatientDataAdministration.DeduplicationEngine
 
             try
             {
-                if (!EngineDuplicateBioData.IsProcessing)
-                {
-                    ActivityLogger.Log("INFO", "Starting Up Primary Dedup Engine");
-                    TaskManagerEngineDuplicateBioData()?.ThreadEngine.Start();
-                }
+                //if (!EngineDuplicateBioData.IsProcessing)
+                //{
+                //    ActivityLogger.Log("INFO", "Starting Up Primary Dedup Engine");
+                //    TaskManagerEngineDuplicateBioData()?.ThreadEngine.Start();
+                //}
 
                 if (!EngineDuplicateBioDataSecondary.IsProcessing)
                 {
                     ActivityLogger.Log("INFO", "Starting Up Secondary Dedup Engine");
+
                     TaskManagerEngineDuplicateBioDataSecondary()?.ThreadEngine.Start();
                 }
             }
@@ -153,6 +163,36 @@ namespace PatientDataAdministration.DeduplicationEngine
             #endregion
         }
 
+        private static void Day_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (DateTime.Now.Hour == Setting.NightlyHour)
+                return;
+
+            if (EngineDuplicateBioDataSecondary.IsProcessing)
+                return;
+
+            _day.Enabled = false;
+
+            try
+            {
+                if (_instant == null)
+                {
+                    _instant = new EngineDuplicateBioDataInstant();
+                    Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.InstaDedupClientSub.NormalizeDisplayName(), _instant.ReceiveMessage);
+                    return;
+                }
+
+                if (!_instant.IsAlive)
+                    _instant = null;           
+            }
+            catch (Exception ex)
+            {
+                ActivityLogger.Log(ex);
+            }
+
+            _day.Enabled = true;
+        }
+
         private static TaskManager TaskManagerEngineDuplicateBioData()
         {
             if (EngineDuplicateBioData.IsProcessing)
@@ -169,6 +209,13 @@ namespace PatientDataAdministration.DeduplicationEngine
             if (EngineDuplicateBioDataSecondary.IsProcessing)
                 return null;
 
+            if (_instant != null)
+            {
+                _instant.Kil();
+                _instant = null;
+                GC.Collect();
+            }
+
             return new TaskManager()
             {
                 ThreadEngine = new Thread(EngineDuplicateBioDataSecondary.ProcessDataIntegrityBiometric)
@@ -182,9 +229,6 @@ namespace PatientDataAdministration.DeduplicationEngine
                 Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.ProcessSecondaryDataUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
 
                 Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.DeleteUploadedFile.NormalizeDisplayName(), FileOperations.ProcessRouter);
-
-                _instant = new EngineDuplicateBioDataInstant();
-                Core.PubSub.Redis.Operations.Subscribe(EnumLibrary.PubSubAction.InstaDedupClientSub.NormalizeDisplayName(), _instant.ReceiveMessage);
             }
             catch (Exception e)
             {

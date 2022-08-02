@@ -25,5 +25,7 @@ namespace PatientDataAdministration.Data
         public string SiteNameOfficial { get; set; }
         public System.DateTime LastUpdate { get; set; }
         public bool IsDeleted { get; set; }
+        public int LgaId { get; set; }
+        public string DatimCode { get; set; }
     }
 }

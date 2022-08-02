@@ -73,7 +73,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines
 
                 var fingerPrints = Newtonsoft.Json.JsonConvert.DeserializeObject<FingerPrints>(bioDataExtract);
 
-                if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftIndex))
+               if (!string.IsNullOrEmpty(fingerPrints.LeftHand?.LeftIndex))
                     patientData.Add(new PatientData()
                     {
                         FingerPosition = FingerPrintPosition.LeftIndex,

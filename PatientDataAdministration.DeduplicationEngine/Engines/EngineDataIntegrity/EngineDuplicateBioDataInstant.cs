@@ -18,6 +18,7 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
     {
         private List<PatientData> PatientData;
         private static SearchEngine BiomtricSearchEngine;
+        private bool KillFlag;
 
         System.Timers.Timer _checkStatus;
 
@@ -26,6 +27,8 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             ActivityLogger.Log("INFO", $"Starting Instant Dedup Engine");
 
             PatientData = new List<PatientData>();
+
+            KillFlag = false;
 
             new Thread(()=> {
                 // PatientData.AddRange(LoadPrimary());
@@ -49,6 +52,8 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
             BiomtricSearchEngine.DeInitialize();
             _checkStatus.Enabled = false;
         }
+
+        public bool IsAlive => BiomtricSearchEngine.Initialized;
 
         private static void CheckStatus_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -134,6 +139,9 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
 
                     foreach (var secondaryBiometrics in allSecondaryBiometrics)
                     {
+                        if (KillFlag)
+                            break;
+
                         allPatientBiometrics.AddRange(Resolvers.ResolveSecondaryBioData(secondaryBiometrics));
 
                         if (allPatientBiometrics.Count > Setting.DedupDataLimit)
@@ -349,6 +357,15 @@ namespace PatientDataAdministration.DeduplicationEngine.Engines.EngineDataIntegr
                 ActivityLogger.Log(e);
                 return patientData;
             }
+        }
+
+        public void Kil()
+        {
+            PatientData = new List<PatientData>();
+            BiomtricSearchEngine.Clear();
+            BiomtricSearchEngine.DeInitialize();
+            _checkStatus.Enabled = false;
+            KillFlag = true;
         }
     }
 }

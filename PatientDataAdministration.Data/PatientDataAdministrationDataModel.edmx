@@ -97,6 +97,8 @@
           <Property Name="SiteNameInformal" Type="nvarchar" MaxLength="255" />
           <Property Name="SiteNameOfficial" Type="nvarchar" MaxLength="255" />
           <Property Name="LastUpdate" Type="datetime" Nullable="false" />
+          <Property Name="LgaId" Type="int" Nullable="false" />
+          <Property Name="DatimCode" Type="nvarchar" MaxLength="255" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Administration_StaffInformation">
@@ -773,6 +775,8 @@
           <Property Name="SiteNameOfficial" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="LastUpdate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="LgaId" Type="Int32" Nullable="false" />
+          <Property Name="DatimCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Administration_StaffInformation">
           <Key>
@@ -1373,6 +1377,8 @@
           <EntitySetMapping Name="Administration_SiteInformation">
             <EntityTypeMapping TypeName="PatientDataAdministration.DatabaseModel.Administration_SiteInformation">
               <MappingFragment StoreEntitySet="Administration_SiteInformation">
+                <ScalarProperty Name="DatimCode" ColumnName="DatimCode" />
+                <ScalarProperty Name="LgaId" ColumnName="LgaId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="LastUpdate" ColumnName="LastUpdate" />
                 <ScalarProperty Name="SiteNameOfficial" ColumnName="SiteNameOfficial" />

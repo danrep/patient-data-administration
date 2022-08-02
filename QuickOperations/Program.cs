@@ -1,9 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using Newtonsoft.Json;
 using PatientDataAdministration.Core;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.Data.SecondaryBioDataModels;
+using QuickOperations.models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +20,14 @@ namespace QuickOperations
 
         static void Main(string[] args)
         {
-            siteInfo = new List<Administration_SiteInformation>();
-
-            ExtractPatientData();
+            ReInitSites();
+            Console.WriteLine("ALL DONE");
+            Console.ReadLine();
         }
 
+        //from main
+        //siteInfo = new List<Administration_SiteInformation>();
+        //ExtractPatientData();
         public static void ExtractPatientData()
         {
             Console.WriteLine($"Running Patient Data Update for Secondary Biometrics.");
@@ -141,6 +149,76 @@ namespace QuickOperations
                 entities.Administration_SiteInformation.AddRange(siteInfo);
                 entities.SaveChanges();
                 siteInfo = new List<Administration_SiteInformation>();
+            }
+        }
+
+        private static void ReInitSites()
+        {
+            try
+            {
+                List<sites_datim_states_lga> records;
+
+                var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = true
+                };
+
+                using (var reader = new StreamReader(Path.Combine(
+                                   Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location),
+                                   "data\\sites_datim_states_lga.csv")))
+                using (var csv = new CsvReader(reader, config))
+                {
+                    records = csv.GetRecords<sites_datim_states_lga>().ToList();
+                }
+
+                using(var entities = new Entities())
+                {
+                    object[] param = new object[] { };
+
+                    entities.Database.ExecuteSqlCommand("truncate table dbo.Administration_SiteInformation;", param);
+
+                    foreach(var record in records)
+                    {
+                        var stateId = entities.System_State.FirstOrDefault(x => x.StateName == record.State)?.Id ?? 0;
+                        var lgaId = entities.System_LocalGovermentArea.FirstOrDefault(x => x.StateID == stateId && x.LocalGovermentAreaName.Trim() == record.Lga.Trim())?.Id ?? 0;
+
+                        if (lgaId == 0)
+                        {
+                            entities.System_LocalGovermentArea.Add(new System_LocalGovermentArea()
+                            {
+                                IsDeleted = false,
+                                LocalGovermentAreaCode = "",
+                                LocalGovermentAreaName = record.Lga,
+                                StateID = stateId
+                            });
+                            entities.SaveChanges();
+
+                            lgaId = entities.System_LocalGovermentArea.FirstOrDefault(x => x.StateID == stateId && x.LocalGovermentAreaName.Trim() == record.Lga.Trim())?.Id ?? 0;
+                        }
+
+                        if (lgaId == 0)
+                            Console.WriteLine($"{record.Lga}");
+
+                        entities.Administration_SiteInformation.Add(new Administration_SiteInformation() { 
+                            DatimCode = record.DatimCode, 
+                            IsDeleted = false, 
+                            LastUpdate = DateTime.Now, 
+                            LgaId = lgaId, 
+                            SiteCode = record.DatimCode, 
+                            SiteCodeExposedInfants = record.DatimCode,
+                            SiteCodePediatric = record.DatimCode,
+                            SiteCodePMTCT = record.DatimCode,
+                            SiteCodeVCT = record.DatimCode,
+                            SiteNameInformal = record.FacilityName,
+                            SiteNameOfficial = record.FacilityName,
+                            StateId = stateId
+                        });
+                        entities.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }

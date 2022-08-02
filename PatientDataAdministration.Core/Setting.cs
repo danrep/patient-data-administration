@@ -30,7 +30,7 @@ namespace PatientDataAdministration.Core
 
         public static int DedupDataLimit => Convert.ToInt32(ConfigurationManager.AppSettings["DedupDataLimit"] ?? "10000");
         public static int DedupProcLimit => Convert.ToInt32(ConfigurationManager.AppSettings["DedupProcLimit"] ?? "1000");
-        public static int DedupMatchScore => Convert.ToInt32(ConfigurationManager.AppSettings["DedupMatchScore"] ?? "8000");
+        public static int DedupMatchScore => Convert.ToInt32(ConfigurationManager.AppSettings["DedupMatchScore"] ?? "7000");
         public static int DedupBioDataScore => Convert.ToInt32(ConfigurationManager.AppSettings["DedupBioDataScore"] ?? "70");
 
         public static string FileLanding => ConfigurationManager.AppSettings["FileLanding"] ?? "";

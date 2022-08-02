@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\msoft\OneDrive\Documents\GitHub\patient-data-administration\PatientDataAdministration.Data\PatientDataAdministrationDataModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\msoft\source\repos\patient-data-administration\PatientDataAdministration.Data\PatientDataAdministrationDataModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
