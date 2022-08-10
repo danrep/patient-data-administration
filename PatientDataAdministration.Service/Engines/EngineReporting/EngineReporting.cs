@@ -650,8 +650,12 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                     //    .Where(x => !x.IsDeleted && x.DateGenerated > yesterday && x.DateGenerated < today)
                     //    .ToList();
 
+                    //var caseData = entity.Patient_PatientBiometricSecondaryIntegrityCase
+                    //    .Where(x => !x.IsDeleted && x.DateGenerated > yesterday)
+                    //    .ToList();
+
                     var caseData = entity.Patient_PatientBiometricSecondaryIntegrityCase
-                        .Where(x => !x.IsDeleted && x.DateGenerated > yesterday)
+                        .Where(x => !x.IsDeleted)
                         .ToList();
 
                     ActivityLogger.Log("INFO", $"Pulled {caseData.Count} Case List Items");
@@ -676,12 +680,15 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting
                         }
                     });
 
-                    listOfCases = listOfCases.Where(x => x != null).ToList();
+                    listOfCases = listOfCases.Where(x => x != null)
+                        .OrderBy(x => x.PivotData.StateId)
+                        .ThenBy(x => x.PivotData.PepId)
+                        .ToList();
                     
                     ActivityLogger.Log("INFO", $"Materialized {listOfCases.Count} Cases out of {caseData.Count} Case List Items");
 
                     var stateDict = entity.System_State.Where(x => !x.IsDeleted).ToDictionary(x => x.Id, x => x.StateName);
-                    var lgaDict = entity.System_State.Where(x => !x.IsDeleted).ToDictionary(x => x.Id, x => x.StateName);
+                    var lgaDict = entity.System_LocalGovermentArea.Where(x => !x.IsDeleted).ToDictionary(x => x.Id, x => x.LocalGovermentAreaName);
 
                     var resultingFile =
                         SecondaryBioDataDuplicationReportExcelWriter.GetFile(fileName, listOfCases, stateDict, lgaDict);
