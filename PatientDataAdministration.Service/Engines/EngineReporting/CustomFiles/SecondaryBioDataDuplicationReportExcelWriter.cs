@@ -76,7 +76,7 @@ namespace PatientDataAdministration.Service.Engines.EngineReporting.CustomFiles
                             worksheet.Cells[suspectRows, 2].LoadFromText($"{secondaryBioDatum.PivotData.PepId}");
 
                             stateData.TryGetValue(secondaryBioDatum.PivotData.StateId, out stateName);
-                            lgaData.TryGetValue(secondaryBioDatum.PivotData.StateId, out lgaName);
+                            lgaData.TryGetValue(secondaryBioDatum.PivotData.FacilityId, out lgaName);
 
                             worksheet.Cells[suspectRows, 3].LoadFromText($"{stateName ?? "NA"}");
                             worksheet.Cells[suspectRows, 4].LoadFromText($"{lgaName ?? "NA"}");
