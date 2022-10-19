@@ -5,6 +5,7 @@ using System.Linq;
 using PatientDataAdministration.Data;
 using PatientDataAdministration.EnumLibrary;
 using System.Threading;
+using PatientDataAdministration.EnumLibrary.Dictionary;
 
 namespace PatientDataAdministration.Service.Engines
 {
@@ -17,12 +18,12 @@ namespace PatientDataAdministration.Service.Engines
 
         public Cron()
         {
-            var timer = new System.Timers.Timer(60000)
-            {
-                Enabled = true
-            };
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            //var timer = new System.Timers.Timer(60000)
+            //{
+            //    Enabled = true
+            //};
+            //timer.Elapsed += Timer_Elapsed;
+            //timer.Start();
 
             _currentHour = 0;
             _isTriggered = false;
@@ -141,7 +142,6 @@ namespace PatientDataAdministration.Service.Engines
         private void StatusCheckAppointment()
         {
             #region SMS Status Check
-            return;
             try
             {
                 using (var entity = new Entities())
@@ -168,10 +168,14 @@ namespace PatientDataAdministration.Service.Engines
                                 x.MessageStatus == pendingStatus && !string.IsNullOrEmpty(x.MessageId)).ToList();
                     }
 
+                    ActivityLogger.Log("INFO", $"Processing {pendingConfirmations.Count()} messages in StatusCheckAppointment");
+
                     foreach (var processingMessage in pendingConfirmations)
                     {
                         dynamic payload;
                         var messageStatuSms = Messaging.InquireSms(processingMessage.MessageId, out payload);
+
+                        ActivityLogger.Log("TRACE", $"{processingMessage.PhoneNumber}:{processingMessage.MessageId}:{messageStatuSms.DisplayName()}");
 
                         if (messageStatuSms == MessageResponse.Error)
                             continue;
@@ -218,13 +222,11 @@ namespace PatientDataAdministration.Service.Engines
             {
                 ActivityLogger.Log(ex);
             }
-
             #endregion
         }
 
         private void PendingSendAppointment()
         {
-            return;
             try
             {
                 using (var entity = new Entities())
@@ -235,6 +237,8 @@ namespace PatientDataAdministration.Service.Engines
                         entity.Integration_SystemAppointmentDataItem.Where(x =>
                             x.MessageStatus == pendingStatus && string.IsNullOrEmpty(x.MessageId) &&
                             x.AppointmentDate > currentDate).ToList();
+
+                    ActivityLogger.Log("INFO", $"Processing {pendingSends.Count()} messages in PendingSendAppointment");
 
                     if (!entity.Sp_Integration_GetCreditStatus(pendingSends.Count).FirstOrDefault().Value)
                         return;
@@ -263,6 +267,8 @@ namespace PatientDataAdministration.Service.Engines
                         entity.Entry(pendingSend).State = EntityState.Modified;
                         entity.SaveChanges();
 
+                        ActivityLogger.Log("TRACE", $"{pendingSend.PhoneNumber}:{pendingSend.MessageId}:{((MessageResponse)pendingSend.MessageStatus).DisplayName()}");
+
                         new Thread(()=> {
                             using(var entities = new Entities())
                             {
@@ -282,7 +288,6 @@ namespace PatientDataAdministration.Service.Engines
         {
             try
             {
-                return;
                 using (var entity = new Entities())
                 {
                     var currentDate = DateTime.Now.Date;
@@ -291,6 +296,8 @@ namespace PatientDataAdministration.Service.Engines
                         entity.Integration_SystemDeliveryManifest.Where(x =>
                             !x.IsDelivered && 
                             DbFunctions.TruncateTime(x.MessageDate) == currentDate).ToList();
+
+                    ActivityLogger.Log("INFO", $"Processing {pendingSends.Count()} messages in PendingSendGeneral");
 
                     if (!entity.Sp_Integration_GetCreditStatus(pendingSends.Count).FirstOrDefault().Value)
                         return;
@@ -311,6 +318,7 @@ namespace PatientDataAdministration.Service.Engines
                                 Newtonsoft.Json.JsonConvert.SerializeObject(new { StatusMessage = "Successful 00", GeneratedMessage = message, Payload = payload });
 
                             RegisterMessage(pendingSend.Id, pendingSend.MessageId, MessageResponse.Delivered);
+                            ActivityLogger.Log("TRACE", $"{pendingSend.PhoneNumber}:{pendingSend.MessageId}:{MessageResponse.Delivered.DisplayName()}");
                         }
 
                         entity.Entry(pendingSend).State = EntityState.Modified;

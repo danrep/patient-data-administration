@@ -43,7 +43,7 @@ namespace PatientDataAdministration.Service
 
             try
             {
-                EngineReporting.PatientSecondaryBioDataDuplicationReport();
+                //EngineReporting.PatientSecondaryBioDataDuplicationReport();
 
                 //if (!EngineDuplicateBioData.IsProcessing)
                 //{

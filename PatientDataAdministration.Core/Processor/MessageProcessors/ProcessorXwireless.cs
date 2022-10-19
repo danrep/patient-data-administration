@@ -60,8 +60,12 @@ namespace PatientDataAdministration.Core.Processor.MessageProcessors
                 //var url =
                 //    $"http://smsc.xwireless.net/API/WebSMS/Http/v3.1/index.php?method=show_dlr&username=codesistance&password=skyRunn3r&msg_id={messageId}&seq_id=1,2&limit=0,10&format=json";
 
+                //var url =
+                //    "http://45.77.146.255:6005/api/v2/MessageStatus?ApiKey=ulLP6gO0xxClzTwRtw88tw%2B%2FvAWAJDzl1xSjEjEfUkM%3D&ClientId=f039365c-940e-4971-8fec-6700076178b4&MessageId=" +
+                //    messageId;
+
                 var url =
-                    "http://45.77.146.255:6005/api/v2/MessageStatus?ApiKey=ulLP6gO0xxClzTwRtw88tw%2B%2FvAWAJDzl1xSjEjEfUkM%3D&ClientId=f039365c-940e-4971-8fec-6700076178b4&MessageId=" +
+                    "https://secure.xwireless.net/api/v2/MessageStatus?ApiKey=ulLP6gO0xxClzTwRtw88tw%2B%2FvAWAJDzl1xSjEjEfUkM%3D&ClientId=f039365c-940e-4971-8fec-6700076178b4&MessageId=" +
                     messageId;
 
                 ActivityLogger.Log($"MSG_PROC_XWIRE_REQ".ToUpper(),
