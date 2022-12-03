@@ -197,7 +197,12 @@ namespace PatientDataAdministration.Service.Engines
                                  (messageStatuSms == MessageResponse.Processing &&
                                   DateTime.Now.Subtract(processingMessage.DateLogged).TotalHours > 12))
                         {
-                            entity.Integration_SystemPhoneNumberBlacklist.Add(
+                            if (!entity.Integration_SystemPhoneNumberBlacklist
+                                .Any(x => x.PhoneNumber == processingMessage.PhoneNumber && 
+                                            !x.IsDeleted && 
+                                            x.LastOperationStatus == processingMessage.MessageStatus))
+                            {
+                                entity.Integration_SystemPhoneNumberBlacklist.Add(
                                 new Integration_SystemPhoneNumberBlacklist()
                                 {
                                     PhoneNumber = processingMessage.PhoneNumber,
@@ -206,10 +211,11 @@ namespace PatientDataAdministration.Service.Engines
                                     LastOperationStatus = processingMessage.MessageStatus
                                 });
 
-                            processingMessage.OperationStatus = false;
+                                processingMessage.OperationStatus = false;
 
-                            if (messageStatuSms == MessageResponse.Invalid)
-                                processingMessage.MessageStatus = (int) MessageResponse.Expired;
+                                if (messageStatuSms == MessageResponse.Invalid)
+                                    processingMessage.MessageStatus = (int)MessageResponse.Expired;
+                            }
                         }
 
                         RegisterMessage(processingMessage.Id, processingMessage.MessageId, MessageResponse.Delivered);
